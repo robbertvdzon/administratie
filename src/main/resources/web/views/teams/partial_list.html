@@ -1,0 +1,18 @@
+<md-list >
+    <md-subheader class="md-no-sticky" id="teams-title">Alle Gewichten</md-subheader>
+
+    <md-list-item ng-repeat="gewicht in gewichten" ng-class-odd="'odd'" ng-class-even="'even'">
+        <div md-ink-ripple ng-click="teamscontroller.edit('{{gewicht.uuid}}')" style="width: 100%;"  >
+            <gewicht-row></gewicht-row>
+        </div>
+    </md-list-item>
+</md-list>
+
+<br>
+<br>
+
+<md-button class="md-raised md-primary" ng-click="teamscontroller.newTeam()"  >
+    Gewicht toevoegen
+</md-button>
+
+

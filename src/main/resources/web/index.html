@@ -1,0 +1,112 @@
+
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>Administratie</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/font.css">
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+
+    <style type="text/css">
+        /**
+        * Hide when Angular is not yet loaded and initialized 
+        */
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+        }
+    </style>
+</head>
+<body ng-app="mswFrontendApp" layout="row" ng-controller='menuCtrl as menuController' ng-cloak >
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar layout="row" class="md-whiteframe-z1">
+    </md-toolbar>
+
+    <md-list>
+        <md-list-item hide-gt-md="">
+            <md-button ng-click="toggleMenu()" class="md-primary" id="close_main_button">
+                Close
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/home" ng-show="isAuth()" class="md-primary" id="home_main_button">
+                Home
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/teams" ng-show="isAuth()" class="md-primary" id="teams_main_button">
+                Gewichten
+            </md-button>
+        </md-list-item>
+    </md-list>
+</md-sidenav>
+
+<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+    <md-toolbar layout="row" class="md-whiteframe-z1">
+        <md-button class="menu" hide-gt-sm ng-click="toggleMenu()" aria-label="Show User List">
+            <md-icon md-svg-icon="menu" ></md-icon>
+        </md-button>
+
+        <h1 class="md-toolbar-tools">DIGITALE WEEGSCHAAL</h1>
+
+        <md-button ng-click="menuController.openLoginPopup()" ng-hide="menuController.isAuth()" class="md-primary" id="login_button" >
+            Login
+        </md-button>
+        <md-button ng-click="menuController.logOff()" ng-show="menuController.isAuth()" class="md-primary" id="logoff_button">
+            Logoff
+        </md-button>
+
+    </md-toolbar>
+
+    <md-content flex id="content">
+        <div ng-controller="MainCtrl">
+            <div ng-view=""></div>
+        </div>
+    </md-content>
+    <div flex=""></div>
+
+    </md-content>
+
+
+</div>
+
+<!-- build:js(.) scripts/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/interceptor.js"></script>
+<script src="scripts/directives/gewichtRow.js"></script>
+
+<script src="scripts/controllers/dataService.js"></script>
+<script src="scripts/controllers/authService.js"></script>
+<script src="scripts/controllers/loginController.js"></script>
+<script src="scripts/controllers/mainController.js"></script>
+<script src="scripts/controllers/menuController.js"></script>
+<script src="scripts/controllers/teamsController.js"></script>
+
+
+<!-- endbuild -->
+</body>
+</html>

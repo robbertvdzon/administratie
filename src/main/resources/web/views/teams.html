@@ -1,0 +1,57 @@
+<h1>Gewicht</h1>
+
+<table>
+    <tr ng-repeat="team in teams" >
+        <td>{{ team.uuid }}</td>
+        <td>&nbsp;</td>
+        <td>{{ team.teamname }}</td>
+        <td>&nbsp;</td>
+        <td>
+            <button ng-click="edit('{{team.uuid}}')">
+                edit
+            </button>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+            <button ng-click="delete('{{team.uuid}}')">
+                remove
+            </button>
+        </td>
+    </tr>
+</table>
+
+<br>
+<br>
+
+<button ng-click="newTeam()">
+    New team
+</button>
+
+
+<div class="editTeam" ng-show="showEditTeam">
+    <h2>Edit team</h2>
+    <input type="text" name="teamname" ng-model="selectedteam.teamname" required>
+    <br><br>
+    <button ng-click="save()">
+        save
+    </button>
+    <button ng-click="cancel()">
+        cancel
+    </button>
+</div>
+
+<br>
+<br>
+
+<div  class="editTeam" ng-show="showNewTeam">
+    <h2>New team</h2>
+    <input type="text" name="teamname" ng-model="newteam.teamname" required>
+    <br><br>
+    <button ng-click="add()">
+        toevoegen
+    </button>
+    <button ng-click="cancel()">
+        cancel
+    </button>
+</div>
+

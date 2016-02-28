@@ -1,0 +1,23 @@
+
+
+/* Space out content a bit */
+body {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background:#15f5f5 ;
+}
+
+
+.even{
+  background:#B2DFDB ;
+
+}
+.odd{
+  background:#80CBC4 ;
+}
+
+input.err {
+  background-color : #d1d1d1;
+}

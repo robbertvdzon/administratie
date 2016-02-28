@@ -1,0 +1,14 @@
+<div ng-cloak data-ng-controller="TeamsCtrl as teamscontroller">
+    <div ng-show="showList">
+        <ng-include src="'/views/teams/partial_list.html'"></ng-include>
+    </div>
+
+    <div ng-show="showEdit">
+        <ng-include src="'/views/teams/partial_edit.html'"></ng-include>
+    </div>
+
+    <div  ng-show="showNew">
+        <ng-include src="'/views/teams/partial_add.html'"></ng-include>
+    </div>
+</div>
+
