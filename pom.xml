@@ -131,7 +131,6 @@
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Version>${project.version}</Implementation-Version>
                                     <Implementation-Build-Number>${build.number}</Implementation-Build-Number>
-                                    <Implementation-SCM-Revision>${build.revision}</Implementation-SCM-Revision>
                                 </manifestEntries>
                             </manifestSection>
                         </manifestSections>
