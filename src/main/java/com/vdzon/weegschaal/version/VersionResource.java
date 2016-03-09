@@ -22,8 +22,8 @@ public class VersionResource {
         InputStream inputStream = this.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
         Manifest manifest = new Manifest(inputStream);
         Attributes attributes = manifest.getMainAttributes();
-        String version = attributes.getValue("Implementation-Version");
-        return "from manifest:" + version;
+        String version = attributes.getValue("Implementation-Build-Number");
+        return version;
     }
 
 
