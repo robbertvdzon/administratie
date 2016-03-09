@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vdzon.weegschaal.auth.AuthResource;
 import com.vdzon.weegschaal.gewicht.GewichtResource;
+import com.vdzon.weegschaal.version.VersionResource;
 import spark.Spark;
 
 public class App {
@@ -28,5 +29,6 @@ public class App {
         // instanciate the objects that need injections
         GewichtResource testResource = injector.getInstance(GewichtResource.class);
         AuthResource authResource = injector.getInstance(AuthResource.class);
+        VersionResource versionResource = injector.getInstance(VersionResource.class);
     }
 }
