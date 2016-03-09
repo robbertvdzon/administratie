@@ -12,7 +12,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <build.number>SNAPSHOT</build.number>
     </properties>
 
     <dependencies>
@@ -109,19 +108,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Specification-Title>${project.name}</Specification-Title>
-                            <Specification-Version>${project.version}</Specification-Version>
-                            <Implementation-Version>${build.number}</Implementation-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
 
         </plugins>
     </build>
