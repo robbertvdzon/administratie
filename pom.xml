@@ -6,7 +6,7 @@
 
     <groupId>com.vdzon</groupId>
     <artifactId>administratie</artifactId>
-    <version>POPULATED_BY_JENKINS</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <properties>
