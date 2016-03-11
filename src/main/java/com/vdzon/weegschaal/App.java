@@ -46,41 +46,26 @@ public class App {
 
     private static void loadVersion() {
 
-        System.out.println("Load version from manifest: list from jar, via props");
+        System.out.println("Load version from manifest");
 
-
-        Enumeration<URL> resources = null;
         try {
-            resources = App.class.getClassLoader()
-                    .getResources("META-INF/MANIFEST.MF");
+            Enumeration<URL> resources = App.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            // walk through all manifest files (for each included jar there is a manifest,
+            // we need find ours by checking the mainClass
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+                Properties properties = new Properties();
+                properties.load(url.openStream());
+                String mainClass = properties.getProperty("Main-Class");
+                if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
+                    //Correct manifest found
+                    setVersion(properties.getProperty("Implementation-Build-Number"));
+                    setBuildTime(properties.getProperty("Build-Time"));
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (resources.hasMoreElements()) {
-            try {
-                URL url = resources.nextElement();
-                System.out.println("------- " + url.toString());
-                Properties pr = new Properties();
-                pr.load(url.openStream());
-                for (Object key : pr.keySet()) {
-                    System.out.println(key + "=" + pr.getProperty(key.toString()));
-                }
-                String version = pr.getProperty("Implementation-Build-Number");
-                String buildTime = pr.getProperty("Build-Time");
-                String mainClass = pr.getProperty("Main-Class");
-                if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
-                    System.out.println("Correct manifest found");
-                    setVersion(version);
-                    setBuildTime(buildTime);
-
-                }
-
-
-            } catch (IOException E) {
-                // handle
-            }
-        }
-        System.out.println("-----------");
         System.out.println("Version is " + getVersion());
         System.out.println("Buildtime is " + getBuildTime());
     }
