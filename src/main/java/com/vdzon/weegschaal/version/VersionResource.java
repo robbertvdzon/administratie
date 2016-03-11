@@ -7,6 +7,7 @@ import spark.Spark;
 
 import javax.inject.Inject;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -20,9 +21,9 @@ public class VersionResource {
 
     protected Object getVersion(Request req, Response res) throws Exception {
         InputStream inputStream = this.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
-        Manifest manifest = new Manifest(inputStream);
-        Attributes attributes = manifest.getMainAttributes();
-        String version = attributes.getValue("Implementation-Build-Number");
+        Properties pr = new Properties();
+        pr.load(inputStream);
+        String version = pr.getProperty("Implementation-Build-Number");
         return version;
     }
 
