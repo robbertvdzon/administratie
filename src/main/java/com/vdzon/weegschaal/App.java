@@ -8,11 +8,17 @@ import com.vdzon.weegschaal.version.VersionResource;
 import spark.Spark;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 
 public class App {
+    private static String version = "Undetermined";
+    private static String buildTime = "Undetermined";
+
     public static void main(String[] args) {
+        loadVersion();
+
         // init spark with web statics
         Spark.staticFileLocation("/web");
         // change port if needed
@@ -35,21 +41,49 @@ public class App {
         AuthResource authResource = injector.getInstance(AuthResource.class);
         VersionResource versionResource = injector.getInstance(VersionResource.class);
 
-        System.out.println("Load version from manifest");
-        try {
-            InputStream inputStream = App.class.getResourceAsStream("/META-INF/MANIFEST.MF");
-            Properties pr = new Properties();
-            pr.load(inputStream);
-            String version = pr.getProperty("Implementation-Build-Number");
-            setVersion(version);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Version is "+getVersion());
 
     }
 
-    private static String version = "Undetermined";
+    private static void loadVersion() {
+
+        System.out.println("Load version from manifest: list from jar, via props");
+
+
+        Enumeration<URL> resources = null;
+        try {
+            resources = App.class.getClassLoader()
+                    .getResources("META-INF/MANIFEST.MF");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (resources.hasMoreElements()) {
+            try {
+                URL url = resources.nextElement();
+                System.out.println("------- " + url.toString());
+                Properties pr = new Properties();
+                pr.load(url.openStream());
+                for (Object key : pr.keySet()) {
+                    System.out.println(key + "=" + pr.getProperty(key.toString()));
+                }
+                String version = pr.getProperty("Implementation-Build-Number");
+                String buildTime = pr.getProperty("Build-Time");
+                String mainClass = pr.getProperty("Main-Class");
+                if (mainClass.equals(App.class.getCanonicalName())) {
+                    System.out.println("Correct manifest found");
+                    setVersion(version);
+                    setBuildTime(buildTime);
+
+                }
+
+
+            } catch (IOException E) {
+                // handle
+            }
+        }
+        System.out.println("-----------");
+        System.out.println("Version is " + getVersion());
+        System.out.println("Buildtime is " + getBuildTime());
+    }
 
     public static String getVersion() {
         return version;
@@ -57,5 +91,13 @@ public class App {
 
     public static void setVersion(String version) {
         App.version = version;
+    }
+
+    public static String getBuildTime() {
+        return buildTime;
+    }
+
+    public static void setBuildTime(String buildTime) {
+        App.buildTime = buildTime;
     }
 }
