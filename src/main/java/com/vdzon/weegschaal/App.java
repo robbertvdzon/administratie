@@ -68,7 +68,7 @@ public class App {
                 String version = pr.getProperty("Implementation-Build-Number");
                 String buildTime = pr.getProperty("Build-Time");
                 String mainClass = pr.getProperty("Main-Class");
-                if (mainClass.equals(App.class.getCanonicalName())) {
+                if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
                     System.out.println("Correct manifest found");
                     setVersion(version);
                     setBuildTime(buildTime);
