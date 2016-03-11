@@ -13,9 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <build.manifest.section>Build Details</build.manifest.section>
-        <build.unknown>UNKNOWN</build.unknown>
-        <build.number>${build.unknown}</build.number>
-        <build.revision>${build.unknown}</build.revision>
+        <build.number>unknown</build.number>
     </properties>
 
     <dependencies>
