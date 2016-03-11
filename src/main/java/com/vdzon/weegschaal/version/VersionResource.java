@@ -1,5 +1,6 @@
 package com.vdzon.weegschaal.version;
 
+import com.vdzon.weegschaal.App;
 import com.vdzon.weegschaal.util.JsonUtil;
 import spark.Request;
 import spark.Response;
@@ -20,11 +21,7 @@ public class VersionResource {
     }
 
     protected Object getVersion(Request req, Response res) throws Exception {
-        InputStream inputStream = this.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
-        Properties pr = new Properties();
-        pr.load(inputStream);
-        String version = pr.getProperty("Implementation-Build-Number");
-        return version;
+        return App.getVersion();
     }
 
 
