@@ -21,7 +21,7 @@ public class VersionResource {
     }
 
     protected Object getVersion(Request req, Response res) throws Exception {
-        return "&nbsp;&nbsp;&nbsp;Build on :"+App.getBuildTime()+"&nbsp;&nbsp;&nbsp;Versie : "+App.getVersion();
+        return "Build on :"+App.getBuildTime()+"    Versie : "+App.getVersion();
     }
 
 
