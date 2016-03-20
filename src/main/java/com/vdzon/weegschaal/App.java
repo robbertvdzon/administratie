@@ -9,6 +9,9 @@ import spark.Spark;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -60,7 +63,7 @@ public class App {
                 if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
                     //Correct manifest found
                     setVersion(properties.getProperty("Implementation-Build-Number"));
-                    setBuildTime(properties.getProperty("Build-Time"));
+                    setBuildTime(reformatBuildTime(properties.getProperty("Build-Time")));
                 }
             }
         } catch (IOException e) {
@@ -72,6 +75,17 @@ public class App {
 
     public static String getVersion() {
         return version;
+    }
+
+    private static String reformatBuildTime(String buildTime){
+        try {
+            Date date = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")).parse(buildTime.replaceAll("Z$", "+0000"));
+            return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
+
     }
 
     public static void setVersion(String version) {
