@@ -41,8 +41,8 @@ module Application.Controllers {
             });
         };
 
-        setBuildtime(version:String) {
-            this.$scope.version = version;
+        setBuildtime(buildtime:String) {
+            this.$scope.buildtime = buildtime;
         }
 
     }
