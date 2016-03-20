@@ -4,6 +4,7 @@ module Application.Controllers {
 
     interface MyScope extends ng.IScope{
         version : String;
+        buildtime : String;
     }
 
     export class MainController {
@@ -14,8 +15,10 @@ module Application.Controllers {
             this.$scope = $scope;
             this.$http=$http;
             this.$scope.version="wait";
+            this.$scope.buildtime="wait";
             authService.checkLogin();
             this.loadVersion();
+            this.loadBuildtime();
         }
 
         loadVersion() {
@@ -29,7 +32,22 @@ module Application.Controllers {
         setVersion(version:String) {
             this.$scope.version = version;
         }
+
+        loadBuildtime() {
+            return this.$http.get('/rest/buildtime').success((data)=> {
+                this.setBuildtime(data);
+            }).error(()=> {
+                this.setBuildtime("unkown buildtime");
+            });
+        };
+
+        setBuildtime(version:String) {
+            this.$scope.version = version;
+        }
+
     }
+
+
 }
 
 angular.module('mswFrontendApp').controller('MainCtrl', Application.Controllers.MainController);

@@ -18,10 +18,15 @@ public class VersionResource {
     @Inject
     public VersionResource() {
         Spark.get("/rest/version", this::getVersion, JsonUtil.json());
+        Spark.get("/rest/buildtime", this::getBuildtime, JsonUtil.json());
     }
 
     protected Object getVersion(Request req, Response res) throws Exception {
-        return "Buildtime :"+App.getBuildTime()+"<br>Versie : "+App.getVersion();
+        return App.getVersion();
+    }
+
+    protected Object getBuildtime(Request req, Response res) throws Exception {
+        return App.getBuildTime();
     }
 
 
