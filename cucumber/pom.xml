@@ -31,7 +31,7 @@
         <version>0.4</version>
     </parent>
 
-    <groupId>com.vdzon.administatie</groupId>
+    <groupId>com.vdzon.administratie</groupId>
     <artifactId>cucumber</artifactId>
     <!--<version>${project-version}</version>-->
     <packaging>pom</packaging>

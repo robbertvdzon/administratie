@@ -11,7 +11,7 @@
         <version>0.4</version>
     </parent>
 
-    <groupId>com.vdzon.administatie</groupId>
+    <groupId>com.vdzon.administratie</groupId>
     <artifactId>applicatie</artifactId>
     <packaging>jar</packaging>
 
