@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 
-    <!--<groupId>com.vdzon.mijnsportwedstrijden</groupId>-->
-    <!--<artifactId>cucumber</artifactId>-->
-    <!--<version>0.0.1-SNAPSHOT</version>-->
+    <groupId>com.vdzon.administratie</groupId>
+    <artifactId>cucumber</artifactId>
+    <version>0.0.1</version>
     <!--<packaging>jar</packaging>-->
 
-    <!--<name>mijnsportwedstrijden</name>-->
-    <!--<description>Mijnsportwedstrijden</description>-->
+    <name>administratie-cucumber</name>
+    <description>administratie-cucumber</description>
 
 
     <!--<parent>-->
@@ -19,23 +19,6 @@
         <!--<version>0.0.1-SNAPSHOT</version>-->
     <!--</parent>-->
     <modelVersion>4.0.0</modelVersion>
-
-
-
-
-
-    <parent>
-        <relativePath>../pom.xml</relativePath>
-        <groupId>com.vdzon</groupId>
-        <artifactId>administratie</artifactId>
-        <version>0.4</version>
-    </parent>
-
-    <groupId>com.vdzon.administratie</groupId>
-    <artifactId>cucumber</artifactId>
-    <!--<version>${project-version}</version>-->
-    <packaging>pom</packaging>
-
 
     <!--<artifactId>cucumber</artifactId>-->
 
