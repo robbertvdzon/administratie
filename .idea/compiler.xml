@@ -40,7 +40,7 @@
     <bytecodeTargetLevel>
       <module name="administratie" target="1.5" />
       <module name="applicatie" target="1.8" />
-      <module name="cucumber" target="1.8" />
+      <module name="cucumber" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,7 +1,6 @@
-package com.vdzon.weegschaal.auth;
+package com.vdzon.administratie.auth;
 
-import com.vdzon.weegschaal.auth.AuthService;
-import com.vdzon.weegschaal.util.JsonUtil;
+import com.vdzon.administratie.util.JsonUtil;
 import spark.Spark;
 
 import javax.inject.Inject;

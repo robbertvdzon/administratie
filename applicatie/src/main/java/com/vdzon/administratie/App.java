@@ -1,10 +1,11 @@
-package com.vdzon.weegschaal;
+package com.vdzon.administratie;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.vdzon.weegschaal.auth.AuthResource;
-import com.vdzon.weegschaal.gewicht.GewichtResource;
-import com.vdzon.weegschaal.version.VersionResource;
+import com.vdzon.administratie.auth.AuthResource;
+import com.vdzon.administratie.factuur.FactuurResource;
+import com.vdzon.administratie.gebruiker.GebruikerResource;
+import com.vdzon.administratie.version.VersionResource;
 import spark.Spark;
 
 import java.io.IOException;
@@ -40,9 +41,10 @@ public class App {
         Injector injector = Guice.createInjector(new AppInjector());
 
         // instanciate the objects that need injections
-        GewichtResource testResource = injector.getInstance(GewichtResource.class);
         AuthResource authResource = injector.getInstance(AuthResource.class);
         VersionResource versionResource = injector.getInstance(VersionResource.class);
+        FactuurResource factuurResource = injector.getInstance(FactuurResource.class);
+        GebruikerResource gebruikerResource = injector.getInstance(GebruikerResource.class);
 
 
     }

@@ -1,7 +1,7 @@
-package com.vdzon.weegschaal.auth;
+package com.vdzon.administratie.auth;
 
 import com.jayway.restassured.RestAssured;
-import com.vdzon.weegschaal.testutil.AbstractRestIT;
+import com.vdzon.administratie.testutil.AbstractRestIT;
 import org.junit.Test;
 
 import static com.jayway.restassured.RestAssured.given;

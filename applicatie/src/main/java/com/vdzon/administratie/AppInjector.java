@@ -1,4 +1,4 @@
-package com.vdzon.weegschaal;
+package com.vdzon.administratie;
 
 import com.google.inject.AbstractModule;
 

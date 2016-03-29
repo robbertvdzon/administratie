@@ -1,4 +1,4 @@
-package com.vdzon.weegschaal.util;
+package com.vdzon.administratie.util;
 
 
 import com.google.gson.Gson;

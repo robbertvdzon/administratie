@@ -7,10 +7,16 @@ module Application.Controllers {
         uuid: String;
     }
 
+    export class Gebruiker {
+        name: String;
+        username: String;
+        password: String;
+        uuid: String;
+    }
+
     interface MyScope extends ng.IScope{
-        gewichten : GewichtData[];
-        selectedgewicht : GewichtData;
-        newgewicht : GewichtData;
+        gebruiker : Gebruiker;
+        name: String;
         showEdit : boolean;
         showNew : boolean;
         showList : boolean;
@@ -32,9 +38,6 @@ module Application.Controllers {
             this.dataService=dataService;
             this.$location=$location;
 
-            this.$scope.gewichten = [];
-            this.$scope.selectedgewicht = new GewichtData();
-            this.$scope.newgewicht = new GewichtData();
             this.$scope.showEdit = false;
             this.$scope.showNew = false;
             this.$scope.showList = false;
@@ -63,42 +66,77 @@ module Application.Controllers {
 
         loadData() {
             if (this.dataService.getData() != undefined){
-                this.$scope.gewichten = this.dataService.getData().gewichten;
+                this.$scope.name= this.dataService.getData().name;
+                this.$scope.gebruiker= this.dataService.getData();
+                //this.$scope.gewichten = this.dataService.getData().gewichten;
             }
         }
 
         edit(uuid) {
-            for (var i = 0; i < this.$scope.gewichten.length; i++) {
-                var gewicht = this.$scope.gewichten[i];
-                if (gewicht.uuid===uuid) {
-                    this.$scope.selectedgewicht = new GewichtData();
-                    this.$scope.selectedgewicht.uuid = gewicht.uuid;
-                    this.$scope.selectedgewicht.gewicht = gewicht.gewicht;
-                }
-            }
+            //for (var i = 0; i < this.$scope.gewichten.length; i++) {
+            //    var gewicht = this.$scope.gewichten[i];
+            //    if (gewicht.uuid===uuid) {
+            //        this.$scope.selectedgewicht = new GewichtData();
+            //        this.$scope.selectedgewicht.uuid = gewicht.uuid;
+            //        this.$scope.selectedgewicht.gewicht = gewicht.gewicht;
+            //    }
+            //}
             this.showPartial('showEdit');
         }
 
         save() {
+
             this.$http({
-                url: "/rest/gewicht/",
+                url: "/rest/gebruiker/",
                 method: "POST",
-                params: this.$scope.selectedgewicht
+                data: this.$scope.gebruiker,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success((response) => {
                 this.dataService.reload();
             });
             this.showPartial('showList');
+
+
+                //this.$http({
+                //    method: 'POST',
+                //    url: "/rest/gebruiker/",
+                //    data: "gebruiker=" + encodeURIComponent(this.$scope.gebruiker),
+                //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                //}).success((data)=> {
+                //    this.authService.checkLogin().success(()=>{
+                //        this.$location.path('teams');
+                //        this.$scope.loginfailed = false;
+                //        this.$mdDialog.hide('succes');
+                //    }).error(()=>{
+                //        this.$scope.loginfailed = true;
+                //    });
+                //
+                //}).error(()=> {
+                //    this.$scope.loginfailed = true;
+                //});
+
+
+            //this.$http({
+            //    url: "/rest/gebruiker/",
+            //    method: "POST",
+            //    params: this.$scope.gebruiker
+            //}).success((response) => {
+            //    this.dataService.reload();
+            //});
+            //this.showPartial('showList');
+
+
         }
 
         delete() {
-            this.$http({
-                url: "/rest/gewicht/"+this.$scope.selectedgewicht.uuid,
-                method: "DELETE"
-            }).success(
-                (response)=> {
-                    this.dataService.reload();
-                    this.showPartial('showList');
-                });
+            //this.$http({
+            //    url: "/rest/gebruiker/"+this.$scope.selectedgewicht.uuid,
+            //    method: "DELETE"
+            //}).success(
+            //    (response)=> {
+            //        this.dataService.reload();
+            //        this.showPartial('showList');
+            //    });
         }
 
         newTeam() {
@@ -108,9 +146,9 @@ module Application.Controllers {
 
         add() {
             var newGewicht = new GewichtData();
-            newGewicht.gewicht = this.$scope.newgewicht.gewicht;
+            //newGewicht.gewicht = this.$scope.newgewicht.gewicht;
             this.$http({
-                url: "/rest/gewicht/",
+                url: "/rest/gebruiker/",
                 method: "PUT",
                 params: newGewicht
             }).success(

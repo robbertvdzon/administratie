@@ -1,7 +1,7 @@
-package com.vdzon.weegschaal.testutil;
+package com.vdzon.administratie.testutil;
 
 import com.jayway.restassured.response.Response;
-import com.vdzon.weegschaal.App;
+import com.vdzon.administratie.App;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;

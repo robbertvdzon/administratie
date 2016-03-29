@@ -1,3 +1,9 @@
+Typescript compiler gebruiken:
+
+cd C:\workspace\administratie\applicatie\src\main\resources\web
+tsc -w --rootDir scripts-ts --outDir scripts
+
+
 Open:
 http://localhost:4567
 http://localhost:4567/rest/test/all

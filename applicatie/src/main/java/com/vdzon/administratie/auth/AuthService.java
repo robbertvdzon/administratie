@@ -1,16 +1,19 @@
-package com.vdzon.weegschaal.auth;
+package com.vdzon.administratie.auth;
 
-import com.vdzon.weegschaal.crud.UserCrud;
-import com.vdzon.weegschaal.util.SingleAnswer;
+import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.model.Gebruiker;
+import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
+import spark.Session;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class AuthService {
-    private boolean authenticated = false;
+
+    public static final String AUTHENTICATED_USER_UUID = "authenticatedUserUuid";
 
     @Inject
     UserCrud userCrud;
@@ -18,26 +21,28 @@ public class AuthService {
     protected Object login(Request req, Response res) throws Exception{
         String username = req.queryParams("username");
         String password = req.queryParams("password");
-        if (!username.equals("q")){
+        Gebruiker gebruiker = userCrud.getGebruikerByUsername(username);
+        if (gebruiker == null || !gebruiker.authenticate(password)){
             res.status(401);
-            authenticated = false;
+            SessionHelper.removeAuthenticatedUserUuid(req);
             return new SingleAnswer("not authorized");
         }
-        authenticated = true;
+        SessionHelper.setAuthenticatedUserUuid(req,gebruiker.getUuid());
         return new SingleAnswer("ok");
     }
 
     protected Object logout(Request req, Response res) throws Exception{
-        authenticated = false;
+        SessionHelper.removeAuthenticatedUserUuid(req);
         return new SingleAnswer("ok");
     }
 
     protected Object getcurrentuser(Request req, Response res) throws Exception{
-        if (!authenticated){
+        String uuid = SessionHelper.getAuthenticatedUserUuid(req);
+        if (uuid == null){
             res.status(404);
             return new SingleAnswer("not found");
         }
-        return userCrud.getCustomer("");
+        return userCrud.getGebruiker(uuid);
     }
 
 }

@@ -10,7 +10,7 @@ public class NavigationPage {
         String url = System.getProperty("testurl");
         System.out.println("URL TO TEST="+url);
 //        return url == null ? "http://149.210.235.58" : url;
-        return url == null ? "http://regressie.administratie.vdzon.com" : url;
+        return url == null ? "http://localhost:4567" : url;
     }
 
     public HomePage when_I_logout() {
