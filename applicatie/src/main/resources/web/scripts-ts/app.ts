@@ -39,9 +39,9 @@ angular
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
-            .when('/teams', {
+            .when('/facturen', {
                 templateUrl: 'views/teams/main.html',
-                controller: 'TeamsCtrl'
+                controller: 'FacturenCtrl'
             })
             .otherwise({
                 redirectTo: '/'

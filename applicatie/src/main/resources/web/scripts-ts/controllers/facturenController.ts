@@ -23,7 +23,7 @@ module Application.Controllers {
         partial : boolean;
     }
 
-    export class TeamController {
+    export class FacturenController {
 
         $scope:MyScope;
         $rootScope:ng.IScope;
@@ -85,7 +85,6 @@ module Application.Controllers {
         }
 
         save() {
-
             this.$http({
                 url: "/rest/gebruiker/",
                 method: "POST",
@@ -95,37 +94,6 @@ module Application.Controllers {
                 this.dataService.reload();
             });
             this.showPartial('showList');
-
-
-                //this.$http({
-                //    method: 'POST',
-                //    url: "/rest/gebruiker/",
-                //    data: "gebruiker=" + encodeURIComponent(this.$scope.gebruiker),
-                //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                //}).success((data)=> {
-                //    this.authService.checkLogin().success(()=>{
-                //        this.$location.path('teams');
-                //        this.$scope.loginfailed = false;
-                //        this.$mdDialog.hide('succes');
-                //    }).error(()=>{
-                //        this.$scope.loginfailed = true;
-                //    });
-                //
-                //}).error(()=> {
-                //    this.$scope.loginfailed = true;
-                //});
-
-
-            //this.$http({
-            //    url: "/rest/gebruiker/",
-            //    method: "POST",
-            //    params: this.$scope.gebruiker
-            //}).success((response) => {
-            //    this.dataService.reload();
-            //});
-            //this.showPartial('showList');
-
-
         }
 
         delete() {
@@ -166,6 +134,6 @@ module Application.Controllers {
 }
 
 
-angular.module('mswFrontendApp').controller('TeamsCtrl', Application.Controllers.TeamController);
+angular.module('mswFrontendApp').controller('FacturenCtrl', Application.Controllers.FacturenController);
 
 

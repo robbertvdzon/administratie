@@ -39,7 +39,7 @@ module Application.Controllers {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success((data)=> {
                 this.authService.checkLogin().success(()=>{
-                    this.$location.path('teams');
+                    this.$location.path('facturen');
                     this.$scope.loginfailed = false;
                     this.$mdDialog.hide('succes');
                 }).error(()=>{
