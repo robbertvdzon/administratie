@@ -3,19 +3,19 @@
 Username: {{ team.name }}
 
 <table>
-    <tr ng-repeat="team in teams" >
-        <td>{{ team.uuid }}</td>
+    <tr ng-repeat="factuur in facturen" >
+        <td>{{ factuur.uuid }}</td>
         <td>&nbsp;</td>
-        <td>{{ team.teamname }}</td>
+        <td>{{ factuur.omschrijving }}</td>
         <td>&nbsp;</td>
         <td>
-            <button ng-click="edit('{{team.uuid}}')">
+            <button ng-click="edit('{{factuur.uuid}}')">
                 edit
             </button>
         </td>
         <td>&nbsp;</td>
         <td>
-            <button ng-click="delete('{{team.uuid}}')">
+            <button ng-click="delete('{{factuur.uuid}}')">
                 remove
             </button>
         </td>
@@ -25,35 +25,35 @@ Username: {{ team.name }}
 <br>
 <br>
 
-<button ng-click="newTeam()">
-    New team
+<button ng-click="newFactuur()">
+    Nieuwe factuur
 </button>
 
 
-<div class="editTeam" ng-show="showEditTeam">
-    <h2>Edit team</h2>
-    <input type="text" name="teamname" ng-model="selectedteam.teamname" required>
+<div class="editFactuur" ng-show="showEditFactuur">
+    <h2>Edit factuur</h2>
+    <input type="text" name="omschrijving" ng-model="selectedfactuur.omschrijving" required>
     <br><br>
     <button ng-click="save()">
-        save
+        Opslaan
     </button>
     <button ng-click="cancel()">
-        cancel
+        Annuleren
     </button>
 </div>
 
 <br>
 <br>
 
-<div  class="editTeam" ng-show="showNewTeam">
-    <h2>New team</h2>
-    <input type="text" name="teamname" ng-model="newteam.teamname" required>
+<div  class="editFactuur" ng-show="showNewFactuur">
+    <h2>Bewerk Factuur</h2>
+    <input type="text" name="omschrijving" ng-model="newfactuur.omschrijving" required>
     <br><br>
     <button ng-click="add()">
-        toevoegen
+        Toevoegen
     </button>
     <button ng-click="cancel()">
-        cancel
+        Annuleren
     </button>
 </div>
 

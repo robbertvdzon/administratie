@@ -40,7 +40,7 @@ angular
                 controller: 'LoginCtrl'
             })
             .when('/facturen', {
-                templateUrl: 'views/teams/main.html',
+                templateUrl: 'views/facturen/main.html',
                 controller: 'FacturenCtrl'
             })
             .otherwise({

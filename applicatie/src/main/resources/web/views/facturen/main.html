@@ -1,0 +1,32 @@
+
+<div ng-cloak data-ng-controller="FacturenCtrl as facturencontroller">
+    <br><br>
+    Name: {{ gebruiker.name }}<br>
+    Username: {{ gebruiker.username }}<br>
+    Password: {{ gebruiker.password }}<br>
+    <input ng-model="gebruiker.name" STYLE="background-color: #B2DFDB;">
+
+    <md-button class="md-raised md-primary"  ng-click="facturencontrollerr.save()">
+        Opslaan
+    </md-button>
+    <md-button class="md-raised md-primary"  ng-click="save()">
+        Opslaan2
+    </md-button>
+
+    <hr>
+
+    <div ng-show="showList">
+        <ng-include src="'/views/facturen/partial_list.html'"></ng-include>
+    </div>
+
+    <div ng-show="showEdit">
+        <ng-include src="'/views/facturen/partial_edit.html'"></ng-include>
+    </div>
+
+    <div  ng-show="showNew">
+        <ng-include src="'/views/facturen/partial_add.html'"></ng-include>
+    </div>
+
+
+</div>
+
