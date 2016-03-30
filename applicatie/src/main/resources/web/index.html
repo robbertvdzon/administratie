@@ -19,6 +19,7 @@
         }
     </style>
 </head>
+
 <body ng-app="mswFrontendApp" layout="row" ng-controller='menuCtrl as menuController' ng-cloak >
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
     <md-toolbar layout="row" class="md-whiteframe-z1">
@@ -26,18 +27,38 @@
 
     <md-list>
         <md-list-item hide-gt-md="">
-            <md-button ng-click="toggleMenu()" class="md-primary" id="close_main_button">
-                Close
+            <md-button ng-click="menuController.toggleMenu()" class="md-primary" id="close_main_button">
+                Verberg menu
             </md-button>
         </md-list-item>
         <md-list-item >
-            <md-button ng-href="#/home" ng-show="isAuth()" class="md-primary" id="home_main_button">
+            <md-button ng-href="#/home" ng-show="menuController.isAuth()" class="md-primary" id="home_main_button">
                 Home
             </md-button>
         </md-list-item>
         <md-list-item >
-            <md-button ng-href="#/teams" ng-show="isAuth()" class="md-primary" id="teams_main_button">
-                Gewichten
+            <md-button ng-href="#/teams" ng-show="menuController.isAuth()" class="md-primary" id="teams_main_button">
+                Facturen
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/teams" ng-show="menuController.isAuth()" class="md-primary" id="teams_main_button">
+                Rekeningen
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/teams" ng-show="menuController.isAuth()" class="md-primary" id="teams_main_button">
+                Declaratie
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/teams" ng-show="menuController.isAuth()" class="md-primary" id="teams_main_button">
+                Aftrekposten
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/teams" ng-show="menuController.isAuth()" class="md-primary" id="teams_main_button">
+                Overzichten
             </md-button>
         </md-list-item>
     </md-list>
@@ -45,11 +66,11 @@
 
 <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
     <md-toolbar layout="row" class="md-whiteframe-z1">
-        <md-button class="menu" hide-gt-sm ng-click="toggleMenu()" aria-label="Show User List">
+        <md-button class="menu" hide-gt-sm ng-click="menuController.toggleMenu()" aria-label="Show User List">
             <md-icon md-svg-icon="menu" ></md-icon>
         </md-button>
 
-        <h1 class="md-toolbar-tools">Administratie</h1>
+        <h1 class="md-toolbar-tools">ZZP Administratie</h1>
 
         <md-button ng-click="menuController.openLoginPopup()" ng-hide="menuController.isAuth()" class="md-primary" id="login_button" >
             Login

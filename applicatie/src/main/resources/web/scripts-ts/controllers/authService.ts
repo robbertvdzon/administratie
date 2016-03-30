@@ -37,6 +37,7 @@ module Application.Services {
             }).error(()=> {
                 this.dataService.userData = undefined;
                 this.dataService.setData(undefined);
+                this.$location.path('/');
             });
         };
     }

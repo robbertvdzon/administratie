@@ -11,7 +11,6 @@ public class SessionHelper {
         Session session = req.session(true);
         String id = session.id();
         boolean aNew = session.isNew();
-        System.out.println("get:sessie "+id+" "+aNew);
         String uuid = session.<String>attribute(AUTHENTICATED_USER_UUID);
         return uuid;
     }
@@ -20,7 +19,6 @@ public class SessionHelper {
         Session session = req.session(true);
         String id = session.id();
         boolean aNew = session.isNew();
-        System.out.println("set:sessie "+id+" "+aNew);
         session.attribute(AUTHENTICATED_USER_UUID, uuid);
     }
 
@@ -28,7 +26,6 @@ public class SessionHelper {
         Session session = req.session(true);
         String id = session.id();
         boolean aNew = session.isNew();
-        System.out.println("remove:sessie "+id+" "+aNew);
         session.removeAttribute(AUTHENTICATED_USER_UUID);
     }
 
