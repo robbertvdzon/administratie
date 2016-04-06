@@ -106,7 +106,6 @@ public class UserCrud {
 
     public void updateGebruiker(Gebruiker gebruiker) {
         this.datastore.save(gebruiker);
-        System.out.println("test");
     }
 
 

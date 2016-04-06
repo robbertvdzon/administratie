@@ -1,8 +1,12 @@
 <md-list >
     <md-subheader class="md-no-sticky" id="facturen-title">Alle facturen</md-subheader>
+    <table><tr>
+        <td width="200">FactuurNummer</td>
+        <td>Omschrijving</td>
+    </tr></table>
 
     <md-list-item ng-repeat="factuur in gebruiker.facturen" ng-class-odd="'odd'" ng-class-even="'even'">
-        <div md-ink-ripple ng-click="facturencontroller.edit('{{factuur.uuid}}')" style="width: 100%;"  >
+        <div md-ink-ripple ng-click="facturencontroller.edit(factuur.uuid)" style="width: 100%;"  >
             <gewicht-row></gewicht-row>
         </div>
     </md-list-item>

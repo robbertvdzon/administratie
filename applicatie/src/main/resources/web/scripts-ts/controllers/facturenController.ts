@@ -2,20 +2,35 @@
 
 module Application.Controllers {
 
-    export class GewichtData {
-        gewicht: String;
-        uuid: String;
+    export class FactuurRegelData {
+        omschrijving:String;
+        aantal:number;
+        stuksPrijs:number;
+        btwPercentage:number;
+    }
+
+    export class FactuurData {
+        omschrijving:String;
+        factuurNummer:String;
+        factuurRegels:FactuurRegelData[];
+        factuurRegelsText:String;
+        uuid:String;
+        editMode:boolean;
     }
 
     export class Gebruiker {
-        name: String;
-        username: String;
-        password: String;
-        uuid: String;
+        name:String;
+        username:String;
+        password:String;
+        uuid:String;
+        facturen:FactuurData[];
+
     }
 
-    interface MyScope extends ng.IScope{
+    interface MyScope extends ng.IScope {
         gebruiker : Gebruiker;
+        selectedfactuur : FactuurData;
+        newfactuur : FactuurData;
         name: String;
         showEdit : boolean;
         showNew : boolean;
@@ -32,12 +47,15 @@ module Application.Controllers {
         $location:ng.ILocationService;
 
         constructor($scope, $rootScope, $http, dataService, $location) {
-            this.$scope=$scope;
-            this.$rootScope=$rootScope;
-            this.$http=$http;
-            this.dataService=dataService;
-            this.$location=$location;
+            this.$scope = $scope;
+            this.$rootScope = $rootScope;
+            this.$http = $http;
+            this.dataService = dataService;
+            this.$location = $location;
 
+            this.$scope.gebruiker = new Gebruiker();
+            this.$scope.selectedfactuur = new FactuurData();
+            this.$scope.newfactuur = new FactuurData();
             this.$scope.showEdit = false;
             this.$scope.showNew = false;
             this.$scope.showList = false;
@@ -63,62 +81,105 @@ module Application.Controllers {
         }
 
 
-
         loadData() {
-            if (this.dataService.getData() != undefined){
-                this.$scope.name= this.dataService.getData().name;
-                this.$scope.gebruiker= this.dataService.getData();
+            if (this.dataService.getData() != undefined) {
+                this.$scope.name = this.dataService.getData().name;
+                this.$scope.gebruiker = this.dataService.getData();
                 //this.$scope.gewichten = this.dataService.getData().gewichten;
             }
         }
 
+        editRegel() {
+            this.$scope.selectedfactuur.editMode = true;
+        }
+
+        saveRegels() {
+            this.$scope.selectedfactuur.editMode = false;
+            var regels = this.$scope.selectedfactuur.factuurRegelsText.split('\n');
+            this.$scope.selectedfactuur.factuurRegels = [];
+            regels.forEach(regel => {
+                var values = regel.split('#');
+                if (values.length >= 4) {
+                    var aantal:number = Number(values[0]);
+                    var stuksprijs:number = Number(values[1]);
+                    var btwPerc:number = Number(values[2]);
+                    var omschrijving:String = values[3];
+                    var factuurRegel = new FactuurRegelData();
+                    factuurRegel.aantal = aantal;
+                    factuurRegel.stuksPrijs = stuksprijs;
+                    factuurRegel.btwPercentage = btwPerc;
+                    factuurRegel.omschrijving = omschrijving;
+                    this.$scope.selectedfactuur.factuurRegels.push(factuurRegel);
+                }
+            });
+
+
+        }
+
+
         edit(uuid) {
-            //for (var i = 0; i < this.$scope.gewichten.length; i++) {
-            //    var gewicht = this.$scope.gewichten[i];
-            //    if (gewicht.uuid===uuid) {
-            //        this.$scope.selectedgewicht = new GewichtData();
-            //        this.$scope.selectedgewicht.uuid = gewicht.uuid;
-            //        this.$scope.selectedgewicht.gewicht = gewicht.gewicht;
-            //    }
-            //}
+            for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
+                var factuur = this.$scope.gebruiker.facturen[i];
+                if (factuur.uuid === uuid) {
+                    this.$scope.selectedfactuur = new FactuurData();
+                    this.$scope.selectedfactuur.uuid = factuur.uuid;
+                    this.$scope.selectedfactuur.omschrijving = factuur.omschrijving;
+                    this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
+                    this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
+                    this.$scope.selectedfactuur.factuurRegelsText = "";
+                    this.$scope.selectedfactuur.editMode = true;
+                    if (factuur.factuurRegels != null) {
+                        for (var j = 0; j < factuur.factuurRegels.length; j++) {
+                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].aantal;
+                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
+                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].stuksPrijs;
+                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
+                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].btwPercentage;
+                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
+                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].omschrijving;
+                            this.$scope.selectedfactuur.factuurRegelsText += "\n";
+                            this.$scope.selectedfactuur.editMode = false;
+                        }
+                    }
+                }
+            }
             this.showPartial('showEdit');
         }
 
         save() {
             this.$http({
-                url: "/rest/gebruiker/",
+                url: "/rest/factuur/",
                 method: "POST",
-                data: this.$scope.gebruiker,
+                data: this.$scope.selectedfactuur,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success((response) => {
                 this.dataService.reload();
             });
             this.showPartial('showList');
+            this.$scope.selectedfactuur.editMode = false;
         }
 
         delete() {
-            //this.$http({
-            //    url: "/rest/gebruiker/"+this.$scope.selectedgewicht.uuid,
-            //    method: "DELETE"
-            //}).success(
-            //    (response)=> {
-            //        this.dataService.reload();
-            //        this.showPartial('showList');
-            //    });
+            this.$http({
+                url: "/rest/factuur/" + this.$scope.selectedfactuur.factuurNummer,
+                method: "DELETE"
+            }).success(
+                (response)=> {
+                    this.dataService.reload();
+                    this.showPartial('showList');
+                });
         }
 
-        newTeam() {
+        newFactuur() {
             this.showPartial('showNew');
         }
 
 
         add() {
-            var newGewicht = new GewichtData();
-            //newGewicht.gewicht = this.$scope.newgewicht.gewicht;
             this.$http({
-                url: "/rest/gebruiker/",
+                url: "/rest/factuur/",
                 method: "PUT",
-                params: newGewicht
+                data: this.$scope.newfactuur,
             }).success(
                 (response) => {
                     this.dataService.reload();

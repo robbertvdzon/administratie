@@ -12,6 +12,7 @@ import spark.Response;
 
 import javax.inject.Inject;
 import java.util.Random;
+import java.util.UUID;
 
 public class FactuurService {
 
@@ -25,7 +26,8 @@ public class FactuurService {
             res.status(404);
             return new SingleAnswer("not found");
         }
-        String factuurJson = req.queryParams("factuur");
+//        String factuurJson = req.queryParams("factuur");
+        String factuurJson = req.body();
         Factuur factuur = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -33,8 +35,10 @@ public class FactuurService {
         } catch (JsonParseException e){
             // Hey, you did not send a valid request!
         }
+        Factuur newFactuur = new Factuur(factuur.getOmschrijving(),factuur.getFactuurNummer(),factuur.getDatum(),factuur.getKlant(), factuur.isBetaald(),factuur.getFactuurRegels(), UUID.randomUUID().toString());
+
         gebruiker.removeFactuur(factuur.getFactuurNummer());
-        gebruiker.addFactuur(factuur);
+        gebruiker.addFactuur(newFactuur);
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }

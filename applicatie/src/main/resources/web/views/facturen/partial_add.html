@@ -1,9 +1,15 @@
-<md-subheader class="md-no-sticky">Gewicht toevoegen</md-subheader>
+<md-subheader class="md-no-sticky">Nieuwe factuur</md-subheader>
 
 <md-input-container flex>
-    <label>Gewicht</label>
-    <input ng-model="newgewicht.gewicht">
+    <label>Omschrijving</label>
+    <input ng-model="newfactuur.omschrijving" STYLE="background-color: #B2DFDB;">
 </md-input-container>
+
+<md-input-container flex>
+    <label>factuurNummer</label>
+    <input ng-model="newfactuur.factuurNummer" STYLE="background-color: #B2DFDB;">
+</md-input-container>
+
 
 <br><br>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.add()">

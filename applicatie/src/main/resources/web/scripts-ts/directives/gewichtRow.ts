@@ -1,9 +1,9 @@
 module Application.Directives {
-    import GewichtData = Application.Controllers.GewichtData;
+    import FactuurData = Application.Controllers.FactuurData;
     'use strict';
 
     interface IProgressbarScope extends ng.IScope {
-        gewicht : GewichtData;
+        factuur : FactuurData;
     }
 
     class GewichtRow implements ng.IDirective {

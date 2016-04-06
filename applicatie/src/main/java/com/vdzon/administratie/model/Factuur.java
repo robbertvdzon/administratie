@@ -5,6 +5,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class Factuur {
     }
 
     public List<FactuurRegel> getFactuurRegels() {
-        return Collections.unmodifiableList(factuurRegels);
+        return Collections.unmodifiableList(factuurRegels == null ? new ArrayList<FactuurRegel>() : factuurRegels);
     }
 
     public void removeAllFactuurRegels(){
