@@ -46,6 +46,7 @@ module Application.Controllers {
         dataService:Application.Services.MyDataservice;
         $location:ng.ILocationService;
         $mdSidenav:any;
+        //$mdSidenav:angular.material.MDSidenavObject;
 
         constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav) {
             this.$scope = $scope;
@@ -145,7 +146,7 @@ module Application.Controllers {
                     }
                 }
             }
-            this.showPartial('showEdit');
+            this.$mdSidenav('editScherm').toggle();
         }
 
         save() {
@@ -158,6 +159,7 @@ module Application.Controllers {
                 this.dataService.reload();
             });
             this.closeEditScherm();
+            //this.showPartial('showList');
             this.$scope.selectedfactuur.editMode = false;
         }
 
@@ -191,6 +193,7 @@ module Application.Controllers {
 
         cancel() {
             this.closeEditScherm();
+            //this.showPartial('showList');
         }
 
         closeEditScherm() {
