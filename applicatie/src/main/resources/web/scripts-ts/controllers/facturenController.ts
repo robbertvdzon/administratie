@@ -45,13 +45,15 @@ module Application.Controllers {
         $http:ng.IHttpService;
         dataService:Application.Services.MyDataservice;
         $location:ng.ILocationService;
+        $mdSidenav:any;
 
-        constructor($scope, $rootScope, $http, dataService, $location) {
+        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$http = $http;
             this.dataService = dataService;
             this.$location = $location;
+            this.$mdSidenav = $mdSidenav;
 
             this.$scope.gebruiker = new Gebruiker();
             this.$scope.selectedfactuur = new FactuurData();
@@ -155,7 +157,7 @@ module Application.Controllers {
             }).success((response) => {
                 this.dataService.reload();
             });
-            this.showPartial('showList');
+            this.closeEditScherm();
             this.$scope.selectedfactuur.editMode = false;
         }
 
@@ -188,10 +190,14 @@ module Application.Controllers {
         }
 
         cancel() {
-            this.showPartial('showList');
+            this.closeEditScherm();
         }
 
+        closeEditScherm() {
+            this.$mdSidenav('editScherm').close();
+        }
     }
+
 }
 
 
