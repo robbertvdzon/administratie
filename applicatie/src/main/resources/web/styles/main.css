@@ -21,3 +21,15 @@ body {
 input.err {
   background-color : #d1d1d1;
 }
+
+.md-sidenav-left {
+  width : 200px !important;
+  min-width : 200px !important;
+  max-width : 200px !important;
+}
+
+.md-sidenav-right-factuur {
+  width : 500px !important;
+  min-width : 500px !important;
+  max-width : 500px !important;
+}
