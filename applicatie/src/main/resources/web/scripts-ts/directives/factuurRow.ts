@@ -6,18 +6,18 @@ module Application.Directives {
         factuur : FactuurData;
     }
 
-    class GewichtRow implements ng.IDirective {
+    class FactuurRow implements ng.IDirective {
 
         static instance() : ng.IDirective {
-            return new GewichtRow;
+            return new FactuurRow;
         }
 
         restrict = 'E';
-        templateUrl = 'directives/gewichtrow.html';
+        templateUrl = 'directives/factuurrow.html';
         link(scope : IProgressbarScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
         }
     }
 
-angular.module('mswFrontendApp').directive('gewichtRow', GewichtRow.instance);
+angular.module('mswFrontendApp').directive('factuurRow', FactuurRow.instance);
 
 }

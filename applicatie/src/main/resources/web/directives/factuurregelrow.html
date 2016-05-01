@@ -1,6 +1,13 @@
-<table><tr>
-    <td width="70px">{{ factuurregel.aantal}}</td>
-    <td width="70px">{{ factuurregel.stuksPrijs}}</td>
-    <td width="70px">{{ factuurregel.btwPercentage}}</td>
-    <td>{{ factuurregel.omschrijving }}</td>
-</tr></table>
+<table width="100%">
+    <tr>
+        <td colspan="5">{{ factuurregel.omschrijving }}</td>
+    </tr>
+    <tr>
+        <td width="50px"><b>{{ factuurregel.aantal}}</b></td>
+        <td width="20px">x</td>
+        <td width="50px">&euro; {{ factuurregel.stuksPrijs}}</td>
+        <td width="20px"><small>({{ factuurregel.btwPercentage}}%)</small></td>
+        <td align="right" >&euro; {{ factuurregel.aantal * factuurregel.stuksPrijs}}</td>
+    </tr>
+
+</table>

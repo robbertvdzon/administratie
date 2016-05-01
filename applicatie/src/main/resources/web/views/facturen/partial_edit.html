@@ -1,32 +1,24 @@
-<md-subheader class="md-no-sticky">Bewerk factuur</md-subheader>
+Factuur {{selectedfactuur.factuurNummer}} <br>
 
 <md-input-container flex>
-    <label>Omschrijving</label>
-    <input ng-model="selectedfactuur.omschrijving" STYLE="background-color: #B2DFDB;">
+    <label>Datum</label>
+    <input ng-model="selectedfactuur.datum" STYLE="background-color: #B2DFDB;">
 </md-input-container>
 
-<md-input-container flex>
-    <label>factuurNummer</label>
-    <input ng-model="selectedfactuur.factuurNummer" STYLE="background-color: #B2DFDB;">
-</md-input-container>
-
-
-<md-input-container flex  ng-show="selectedfactuur.editMode">
-    <label>factuurRegels (aantal # uurprijs # btw% # omschrijving)</label>
-    <textarea cols=6 ng-model="selsectedfactuur.factuurRegelsText" ng-blur="facturencontroller.saveRegels()"  STYLE="background-color: #B2DFDB;"></textarea>
-</md-input-container>
-
+<label>Betaald:
+    <input type="checkbox" ng-model="selectedfactuur.betaald">
+</label><br/>
 
 <br>
 
+<b>Jouke de vries:</b>
+<br>
+Adres1<br>
+Adres2<br>
+Adres3<br>
+<br>
+<br>
 <md-list ng-hide="selectedfactuur.editMode">
-    <md-subheader class="md-no-sticky" id="facturen-title">Regels</md-subheader>
-    <table><tr>
-        <td width="70px">Aantal</td>
-        <td width="70px">Uurprijs</td>
-        <td width="70px">btw%</td>
-        <td>Omschrijving</td>
-    </tr></table>
     <md-list-item ng-repeat="factuurregel in selectedfactuur.factuurRegels" ng-class-odd="'odd'" ng-class-even="'even'">
         <div md-ink-ripple ng-click="facturencontroller.editRegel()" style="width: 100%;"  >
             <factuurRegelRow></factuurRegelRow>
@@ -39,11 +31,11 @@
 
 <br><br>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.save()">
-    Opslaan
+    Opsl
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.cancel()">
-    Annuleren
+    Ann
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.delete()">
-    Verwijderen
+    Verw
 </md-button>

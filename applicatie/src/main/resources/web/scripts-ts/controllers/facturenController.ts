@@ -10,12 +10,11 @@ module Application.Controllers {
     }
 
     export class FactuurData {
-        omschrijving:String;
         factuurNummer:String;
         factuurRegels:FactuurRegelData[];
-        factuurRegelsText:String;
         uuid:String;
-        editMode:boolean;
+        betaald:boolean;
+        datum:String;
     }
 
     export class Gebruiker {
@@ -88,36 +87,35 @@ module Application.Controllers {
             if (this.dataService.getData() != undefined) {
                 this.$scope.name = this.dataService.getData().name;
                 this.$scope.gebruiker = this.dataService.getData();
-                //this.$scope.gewichten = this.dataService.getData().gewichten;
             }
         }
 
-        editRegel() {
-            this.$scope.selectedfactuur.editMode = true;
-        }
-
-        saveRegels() {
-            this.$scope.selectedfactuur.editMode = false;
-            var regels = this.$scope.selectedfactuur.factuurRegelsText.split('\n');
-            this.$scope.selectedfactuur.factuurRegels = [];
-            regels.forEach(regel => {
-                var values = regel.split('#');
-                if (values.length >= 4) {
-                    var aantal:number = Number(values[0]);
-                    var stuksprijs:number = Number(values[1]);
-                    var btwPerc:number = Number(values[2]);
-                    var omschrijving:String = values[3];
-                    var factuurRegel = new FactuurRegelData();
-                    factuurRegel.aantal = aantal;
-                    factuurRegel.stuksPrijs = stuksprijs;
-                    factuurRegel.btwPercentage = btwPerc;
-                    factuurRegel.omschrijving = omschrijving;
-                    this.$scope.selectedfactuur.factuurRegels.push(factuurRegel);
-                }
-            });
-
-
-        }
+        //editRegel() {
+        //    this.$scope.selectedfactuur.editMode = true;
+        //}
+        //
+        //saveRegels() {
+        //    this.$scope.selectedfactuur.editMode = false;
+        //    var regels = this.$scope.selectedfactuur.factuurRegelsText.split('\n');
+        //    this.$scope.selectedfactuur.factuurRegels = [];
+        //    regels.forEach(regel => {
+        //        var values = regel.split('#');
+        //        if (values.length >= 4) {
+        //            var aantal:number = Number(values[0]);
+        //            var stuksprijs:number = Number(values[1]);
+        //            var btwPerc:number = Number(values[2]);
+        //            var omschrijving:String = values[3];
+        //            var factuurRegel = new FactuurRegelData();
+        //            factuurRegel.aantal = aantal;
+        //            factuurRegel.stuksPrijs = stuksprijs;
+        //            factuurRegel.btwPercentage = btwPerc;
+        //            factuurRegel.omschrijving = omschrijving;
+        //            this.$scope.selectedfactuur.factuurRegels.push(factuurRegel);
+        //        }
+        //    });
+        //
+        //
+        //}
 
 
         edit(uuid) {
@@ -126,24 +124,10 @@ module Application.Controllers {
                 if (factuur.uuid === uuid) {
                     this.$scope.selectedfactuur = new FactuurData();
                     this.$scope.selectedfactuur.uuid = factuur.uuid;
-                    this.$scope.selectedfactuur.omschrijving = factuur.omschrijving;
                     this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
                     this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
-                    this.$scope.selectedfactuur.factuurRegelsText = "";
-                    this.$scope.selectedfactuur.editMode = true;
-                    if (factuur.factuurRegels != null) {
-                        for (var j = 0; j < factuur.factuurRegels.length; j++) {
-                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].aantal;
-                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
-                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].stuksPrijs;
-                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
-                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].btwPercentage;
-                            this.$scope.selectedfactuur.factuurRegelsText += " # ";
-                            this.$scope.selectedfactuur.factuurRegelsText += factuur.factuurRegels[j].omschrijving;
-                            this.$scope.selectedfactuur.factuurRegelsText += "\n";
-                            this.$scope.selectedfactuur.editMode = false;
-                        }
-                    }
+                    this.$scope.selectedfactuur.betaald = factuur.betaald;
+                    this.$scope.selectedfactuur.datum = factuur.datum;
                 }
             }
             this.$mdSidenav('editScherm').toggle();
@@ -160,7 +144,7 @@ module Application.Controllers {
             });
             this.closeEditScherm();
             //this.showPartial('showList');
-            this.$scope.selectedfactuur.editMode = false;
+            //this.$scope.selectedfactuur.editMode = false;
         }
 
         delete() {
