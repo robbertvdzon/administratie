@@ -1,6 +1,7 @@
 package com.vdzon.administratie.auth;
 
 import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.dto.GebruikerDto;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
@@ -42,7 +43,7 @@ public class AuthService {
             res.status(404);
             return new SingleAnswer("not found");
         }
-        return userCrud.getGebruiker(uuid);
+        return new GebruikerDto(userCrud.getGebruiker(uuid));
     }
 
 }

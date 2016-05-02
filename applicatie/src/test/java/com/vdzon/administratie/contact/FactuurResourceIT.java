@@ -52,17 +52,17 @@ public class FactuurResourceIT extends AbstractRestIT {
 
         Assert.assertEquals(1,currentUser.getFacturen().size());
 
-        // check factuur for omschrijving
+        // check factuur for date
         Factuur factuur = currentUser.getFacturen().get(0);
-        Assert.assertEquals("werk maart", factuur.getOmschrijving());
+        Assert.assertEquals(LocalDate.now(), factuur.getFactuurDate());
 
-        // change omschrijving
-        factuur.setOmschrijving("werkzaamheden april");
+        // change date
+        factuur.setFactuurDate(LocalDate.ofYearDay(2014,4));
         updateFactuur(factuur);
 
         // check factuur for omschrijving
         factuur = currentUser.getFacturen().get(0);
-        Assert.assertEquals("werkzaamheden april", factuur.getOmschrijving());
+        Assert.assertEquals(LocalDate.ofYearDay(2014,4), factuur.getFactuurDate());
 
         // remove last factuur
         removeFactuur("2016003");
@@ -77,7 +77,7 @@ public class FactuurResourceIT extends AbstractRestIT {
         List<FactuurRegel> regels1 = new ArrayList<>();
         regels1.add(regel1);
         regels1.add(regel2);
-        return new Factuur("werk maart","2016003", LocalDate.now().toEpochDay(),new Klant("123","001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, "1234");
+        return new Factuur("2016003", LocalDate.now(),new Klant("123","001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, "1234");
     }
 
 

@@ -14,7 +14,7 @@ module Application.Controllers {
         factuurRegels:FactuurRegelData[];
         uuid:String;
         betaald:boolean;
-        datum:String;
+        factuurDate:String;
     }
 
     export class Gebruiker {
@@ -127,7 +127,7 @@ module Application.Controllers {
                     this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
                     this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
                     this.$scope.selectedfactuur.betaald = factuur.betaald;
-                    this.$scope.selectedfactuur.datum = factuur.datum;
+                    this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
                 }
             }
             this.$mdSidenav('editScherm').toggle();

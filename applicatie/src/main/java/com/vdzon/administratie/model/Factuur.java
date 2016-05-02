@@ -1,6 +1,5 @@
 package com.vdzon.administratie.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -10,14 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity("factuur")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Factuur {
 
     @Id
     private String uuid;
-    private String omschrijving;
     private String factuurNummer;
-    private long datum;
+    private LocalDate factuurDate;
     private Klant klant;
     private boolean betaald;
     private List<FactuurRegel> factuurRegels;
@@ -25,27 +22,17 @@ public class Factuur {
     private double bedragIncBtw = 0;
     private double btw = 0;
 
-    // for jackson
     public Factuur() {
     }
 
-    public Factuur(String omschrijving, String factuurNummer, long datum, Klant klant, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
-        this.omschrijving = omschrijving;
+    public Factuur(String factuurNummer, LocalDate factuurDate, Klant klant, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
         this.factuurNummer = factuurNummer;
-        this.datum = datum;
+        this.factuurDate = factuurDate;
         this.klant = klant;
         this.betaald = betaald;
         this.factuurRegels = factuurRegels;
         this.uuid = uuid;
         calculate();
-    }
-
-    public String getOmschrijving() {
-        return omschrijving;
-    }
-
-    public void setOmschrijving(String omschrijving) {
-        this.omschrijving = omschrijving;
     }
 
     public String getFactuurNummer() {
@@ -56,12 +43,12 @@ public class Factuur {
         this.factuurNummer = factuurNummer;
     }
 
-    public long getDatum() {
-        return datum;
+    public LocalDate getFactuurDate() {
+        return factuurDate;
     }
 
-    public void setDatum(long datum) {
-        this.datum = datum;
+    public void setFactuurDate(LocalDate factuurDate) {
+        this.factuurDate = factuurDate;
     }
 
     public Klant getKlant() {
@@ -88,30 +75,41 @@ public class Factuur {
         return Collections.unmodifiableList(factuurRegels == null ? new ArrayList<FactuurRegel>() : factuurRegels);
     }
 
-    public void removeAllFactuurRegels(){
+    public void removeAllFactuurRegels() {
         factuurRegels.clear();
         calculate();
     }
 
-    public void addFactuurRegel(FactuurRegel factuurRegel){
+    public void addFactuurRegel(FactuurRegel factuurRegel) {
         factuurRegels.add(factuurRegel);
         calculate();
     }
 
-    public void addFactuurRegels(List<FactuurRegel> factuurRegels){
+    public void addFactuurRegels(List<FactuurRegel> factuurRegels) {
         factuurRegels.addAll(factuurRegels);
         calculate();
     }
 
-    private void calculate(){
+    public double getBedragExBtw() {
+        return bedragExBtw;
+    }
+
+    public double getBedragIncBtw() {
+        return bedragIncBtw;
+    }
+
+    public double getBtw() {
+        return btw;
+    }
+
+    private void calculate() {
         bedragExBtw = 0;
         bedragIncBtw = 0;
         btw = 0;
-        for (FactuurRegel factuurRegel:factuurRegels){
+        for (FactuurRegel factuurRegel : factuurRegels) {
             bedragExBtw += factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
-            btw +=  bedragExBtw * (factuurRegel.getBtwPercentage()/100);
+            btw += bedragExBtw * (factuurRegel.getBtwPercentage() / 100);
             bedragIncBtw += bedragExBtw + btw;
-
         }
     }
 

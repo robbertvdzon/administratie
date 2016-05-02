@@ -1,8 +1,12 @@
-Factuur {{selectedfactuur.factuurNummer}} <br>
+Factuur {{selectedfactuur.factuurNummer}}
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.delete()">
+    Verwijder
+</md-button>
+<br>
 
 <md-input-container flex>
     <label>Datum</label>
-    <input ng-model="selectedfactuur.datum" STYLE="background-color: #B2DFDB;">
+    <input ng-model="selectedfactuur.factuurDate" STYLE="background-color: #B2DFDB;">
 </md-input-container>
 
 <label>Betaald:
@@ -31,11 +35,8 @@ Adres3<br>
 
 <br><br>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.save()">
-    Opsl
+    Save
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.cancel()">
-    Ann
-</md-button>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.delete()">
-    Verw
+    Cancel
 </md-button>

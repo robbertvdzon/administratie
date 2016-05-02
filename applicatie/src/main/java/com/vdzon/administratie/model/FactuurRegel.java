@@ -1,13 +1,9 @@
 package com.vdzon.administratie.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mongodb.annotations.Immutable;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity("factuurRegel")
-//@Immutable
-@JsonIgnoreProperties
 public class FactuurRegel {
 
     @Id
@@ -17,7 +13,6 @@ public class FactuurRegel {
     private double stuksPrijs;
     private double btwPercentage;
 
-    // for jackson
     public FactuurRegel() {
     }
 

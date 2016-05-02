@@ -1,13 +1,9 @@
 package com.vdzon.administratie.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mongodb.annotations.Immutable;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity("klant")
-//@Immutable
-@JsonIgnoreProperties
 public class Klant {
 
     @Id
@@ -19,7 +15,6 @@ public class Klant {
     private String postcode;
     private String land;
 
-    // for jackson
     public Klant() {
     }
 

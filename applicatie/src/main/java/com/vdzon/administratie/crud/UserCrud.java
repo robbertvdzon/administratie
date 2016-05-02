@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.Klant;
+import com.vdzon.administratie.util.LocalDateTimeConverter;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
@@ -23,6 +24,7 @@ public class UserCrud {
 
     public UserCrud() {
         final Morphia morphia = new Morphia();
+        morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
         System.out.println("connect to mongo");
         morphia.mapPackage("org.mongodb.morphia.example");
         String mongoDbPort = System.getProperties().getProperty("mongoDbPort");
@@ -36,7 +38,7 @@ public class UserCrud {
         } else {
             mongoClient = new MongoClient(host);
         }
-        datastore = morphia.createDatastore(mongoClient, "administratie");
+        datastore = morphia.createDatastore(mongoClient, "zzpadministratie");
         datastore.ensureIndexes();
 
         buildTestData("q","q","q");
@@ -58,8 +60,8 @@ public class UserCrud {
         regels1.add(regel2);
         List<FactuurRegel> regels2 = new ArrayList<>();
         regels2.add(regel3);
-        Factuur factuur1 = new Factuur("werk maart","2016001",LocalDate.now().toEpochDay(),new Klant(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, getNewUuid());
-        Factuur factuur2 = new Factuur("werk april","2016002",LocalDate.now().toEpochDay(),new Klant(getNewUuid(),"002","loxia","Utrecht","Weg1","1234AB","NL"), false,regels2, getNewUuid());
+        Factuur factuur1 = new Factuur("2016001",LocalDate.now(),new Klant(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, getNewUuid());
+        Factuur factuur2 = new Factuur("2016002",LocalDate.now(),new Klant(getNewUuid(),"002","loxia","Utrecht","Weg1","1234AB","NL"), false,regels2, getNewUuid());
         facturen.add(factuur1);
         facturen.add(factuur2);
         Gebruiker gebruiker = new Gebruiker(getNewUuid(),name,username,passwd,facturen, adresboek);

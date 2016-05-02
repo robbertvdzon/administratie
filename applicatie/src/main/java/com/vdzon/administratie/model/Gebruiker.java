@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity("gebruiker")
-@JsonIgnoreProperties
 public class Gebruiker {
 
     @Id
@@ -20,7 +19,6 @@ public class Gebruiker {
     private List<Factuur> facturen;
     private List<Klant> adresboek;
 
-    // for jackson
     public Gebruiker() {
     }
 
