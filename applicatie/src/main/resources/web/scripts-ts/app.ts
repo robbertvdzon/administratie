@@ -41,7 +41,12 @@ angular
             })
             .when('/facturen', {
                 templateUrl: 'views/facturen/main.html',
-                controller: 'FacturenCtrl'
+                controller: 'FacturenCtrl',
+                controllerAs: 'facturencontroller'
+            })
+            .when('/facturenregel', {
+                templateUrl: 'views/facturen/main.html',
+                controller: 'FacturenregelCtrl'
             })
             .otherwise({
                 redirectTo: '/'

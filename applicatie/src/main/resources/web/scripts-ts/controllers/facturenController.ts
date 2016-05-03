@@ -30,6 +30,7 @@ module Application.Controllers {
         gebruiker : Gebruiker;
         selectedfactuur : FactuurData;
         newfactuur : FactuurData;
+        selectedfactuurregel : FactuurRegelData;
         name: String;
         showEdit : boolean;
         showNew : boolean;
@@ -45,15 +46,17 @@ module Application.Controllers {
         dataService:Application.Services.MyDataservice;
         $location:ng.ILocationService;
         $mdSidenav:any;
-        //$mdSidenav:angular.material.MDSidenavObject;
+        $mdDialog:any;
+        unregisterAddRegelFromDialogEvent;
 
-        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav) {
+        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav, $mdDialog) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$http = $http;
             this.dataService = dataService;
             this.$location = $location;
             this.$mdSidenav = $mdSidenav;
+            this.$mdDialog = $mdDialog;
 
             this.$scope.gebruiker = new Gebruiker();
             this.$scope.selectedfactuur = new FactuurData();
@@ -67,12 +70,62 @@ module Application.Controllers {
         }
 
         initialize() {
-            this.$rootScope.$on('data-updated', ()=> {
+            var unregisterDataUpdatedEvent = this.$rootScope.$on('data-updated', ()=> {
                 this.loadData();
             });
+
+            var unregisterCloseAddRegelEvent = this.$rootScope.$on('closeAddRegel', ()=> {
+                this.closeAddRegel();
+            });
+
+            var unregisterAddRegelFromDialogEvent = this.$rootScope.$on('addRegelFromDialog', (event, regel)=> {
+                this.addRegelFromDialog(regel);
+            });
+
+            this.$scope.$on("$destroy", function() {
+                unregisterDataUpdatedEvent();
+                unregisterCloseAddRegelEvent();
+                unregisterAddRegelFromDialogEvent();
+            });
+
             this.loadData();
             this.showPartial('showList');
         }
+
+        newFactuurregel() {
+            // get factuurID
+            console.log("showpart");
+            this.$scope.selectedfactuurregel = new FactuurRegelData();
+            this.$scope.selectedfactuurregel.omschrijving = "werkje";
+            this.$scope.selectedfactuurregel.aantal = 41;
+            this.$scope.selectedfactuurregel.btwPercentage = 41;
+            this.$scope.selectedfactuurregel.stuksPrijs = 41;
+            this.openDialog();
+        }
+
+
+        openDialog() {
+            this.$mdDialog.show({
+                controller: 'FacturenregelCtrl',
+                controllerAs : 'facturenregelController',
+                templateUrl: 'views/popup/factuurregeltemplate.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose:true,
+                locals : {
+                    message : "toevoegen"
+                }
+
+            });
+        }
+
+        addRegelFromDialog(regel){
+            this.$mdDialog.hide();
+        }
+
+        closeAddRegel(){
+            this.$mdDialog.hide();
+        }
+
 
         showPartial(partial) {
             console.log("showpart");
@@ -183,6 +236,11 @@ module Application.Controllers {
         closeEditScherm() {
             this.$mdSidenav('editScherm').close();
         }
+
+        startAddRegel(ev) {
+            this.newFactuurregel();
+        }
+
     }
 
 }
