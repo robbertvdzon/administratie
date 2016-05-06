@@ -2,12 +2,24 @@
 <div ng-cloak >
 
     <div ng-show="showList">
+
         <ng-include src="'/views/facturen/partial_list.html'"></ng-include>
+
+        <div class="panel" ng-show="showEdit" style="background:white;width:100%; height:100%">
+            <ng-include src="'/views/facturen/partial_edit.html'"></ng-include>
+        </div>
+
+
+
+        <!--<div class="panel" ng-show="checked" style="border:1px solid #dddddd;background:orange;width:300px">-->
+            <!--<ng-include src="'/views/        -->
+        <!---->
+
     </div>
 
-    <div ng-show="showEdit">
-        <ng-include src="'/views/facturen/partial_edit.html'"></ng-include>
-    </div>
+    <!--<div ng-show="showEdit">-->
+        <!--<ng-include src="'/views/facturen/partial_edit.html'"></ng-include>-->
+    <!--</div>-->
 
     <div  ng-show="showNew">
         <ng-include src="'/views/facturen/partial_add.html'"></ng-include>
@@ -15,13 +27,16 @@
 
 
 
-    <section layout="row" flex>
-        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="editScherm">
-            <md-content layout-padding>
-                <ng-include src="'/views/facturen/partial_edit.html'"></ng-include>
-            </md-content>
-        </md-sidenav>
-    </section>
+    <!--<section layout="row" flex>-->
+        <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="editScherm">-->
+            <!--<md-content layout-padding>-->
+                <!--<ng-include src="'/views/facturen/partial_edit.html'"></ng-include>-->
+            <!--</md-content>-->
+        <!--</md-sidenav>-->
+    <!--</section>-->
+
+
+    <!--Show <input type="checkbox" ng-model="showEdit" />-->
 
 
 </div>

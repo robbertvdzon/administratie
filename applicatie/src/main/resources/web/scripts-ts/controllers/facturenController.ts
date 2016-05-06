@@ -131,7 +131,7 @@ module Application.Controllers {
             console.log("showpart");
             this.$scope.showEdit = false;
             this.$scope.showNew = false;
-            this.$scope.showList = false;
+            //this.$scope.showList = false;
             this.$scope[partial] = true;
         }
 
@@ -172,18 +172,19 @@ module Application.Controllers {
 
 
         edit(uuid) {
-            for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
-                var factuur = this.$scope.gebruiker.facturen[i];
-                if (factuur.uuid === uuid) {
-                    this.$scope.selectedfactuur = new FactuurData();
-                    this.$scope.selectedfactuur.uuid = factuur.uuid;
-                    this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
-                    this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
-                    this.$scope.selectedfactuur.betaald = factuur.betaald;
-                    this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
-                }
-            }
-            this.$mdSidenav('editScherm').toggle();
+            this.showPartial('showEdit');
+            //for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
+            //    var factuur = this.$scope.gebruiker.facturen[i];
+            //    if (factuur.uuid === uuid) {
+            //        this.$scope.selectedfactuur = new FactuurData();
+            //        this.$scope.selectedfactuur.uuid = factuur.uuid;
+            //        this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
+            //        this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
+            //        this.$scope.selectedfactuur.betaald = factuur.betaald;
+            //        this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
+            //    }
+            //}
+            //this.$mdSidenav('editScherm').toggle();
         }
 
         save() {
@@ -229,8 +230,8 @@ module Application.Controllers {
         }
 
         cancel() {
-            this.closeEditScherm();
-            //this.showPartial('showList');
+            //this.closeEditScherm();
+            this.showPartial('showList');
         }
 
         closeEditScherm() {

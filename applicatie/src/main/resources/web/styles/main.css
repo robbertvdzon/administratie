@@ -27,3 +27,27 @@ input.err {
   min-width : 200px !important;
   max-width : 200px !important;
 }
+
+.panel{
+  position: absolute;
+  top: 0px;
+  right: -2px;
+
+}
+
+.panel.ng-hide {
+  right: -200px;
+}
+.panel.ng-hide-add, .panel.ng-hide-remove {
+  /* this is required as of 1.3x to properly
+     apply all styling in a show/hide animation */
+  transition: 0s linear all;
+}
+
+
+.panel.ng-hide-add-active, .panel.ng-hide-remove-active {
+  transition: all ease-in-out 0.2s;
+}
+.panel.ng-show-add-active {
+  display: block;
+}
