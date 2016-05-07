@@ -104,6 +104,7 @@ module Application.Controllers {
             this.$scope.selectedfactuurregel.aantal = 41;
             this.$scope.selectedfactuurregel.btwPercentage = 41;
             this.$scope.selectedfactuurregel.stuksPrijs = 41;
+            this.$scope.tab3Disabled=false;
             this.page3();
             //this.openDialog();
         }
@@ -177,22 +178,15 @@ module Application.Controllers {
 
         page1() {
             this.$scope.selectedIndex=0;
-            this.$scope.box1="Facturen";
-            this.$scope.box2="";
-            this.$scope.box3="";
+            this.$scope.tab2Disabled=true;
+            this.$scope.tab3Disabled=true;
         }
         page2() {
             this.$scope.selectedIndex=1;
-            this.$scope.showEdit2=true;
-            this.$scope.box1="Facturen";
-            this.$scope.box2="Edit";
-            this.$scope.box3="";
+            this.$scope.tab3Disabled=true;
         }
         page3() {
             this.$scope.selectedIndex=2;
-            this.$scope.box1="Facturen";
-            this.$scope.box2="Edit";
-            this.$scope.box3="Regel";
         }
 
         edit(uuid) {
@@ -207,6 +201,7 @@ module Application.Controllers {
                     this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
                 }
             }
+            this.$scope.tab2Disabled=false;
             this.page2();
             //this.showPartial('showEdit');
             //this.$mdSidenav('editScherm').toggle();
