@@ -3,6 +3,7 @@
 module Application.Controllers {
 
     export class FactuurRegelData {
+        uuid:String;
         omschrijving:String;
         aantal:number;
         stuksPrijs:number;
@@ -36,6 +37,9 @@ module Application.Controllers {
         showNew : boolean;
         showList : boolean;
         partial : boolean;
+        tab2Disabled:boolean;
+        tab3Disabled:boolean;
+        selectedIndex : number;
     }
 
     export class FacturenController {
@@ -65,6 +69,10 @@ module Application.Controllers {
             this.$scope.showNew = false;
             this.$scope.showList = false;
             this.$scope.partial = false;
+
+            this.$scope.tab2Disabled=true;
+            this.$scope.tab3Disabled=true;
+            this.$scope.selectedIndex = 0;
 
             this.initialize();
         }
@@ -149,9 +157,60 @@ module Application.Controllers {
             }
         }
 
-        //editRegel() {
-        //    this.$scope.selectedfactuur.editMode = true;
-        //}
+        saveAddRegel(){
+            var regel = this.$scope.selectedfactuurregel;
+            this.$scope.selectedfactuur.factuurRegels.push(regel);
+            this.$http({
+                url: "/rest/factuur/",
+                method: "POST",
+                data: this.$scope.selectedfactuur,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success((response) => {
+                this.page2();
+            });
+        }
+
+        saveEditRegel(){
+            //var regel = this.$scope.selectedfactuurregel;
+            //this.$scope.selectedfactuur.factuurRegels.push(regel);
+            for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
+                var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
+                if (factuurRegel.uuid === this.$scope.selectedfactuurregel.uuid) {
+                    factuurRegel.aantal = this.$scope.selectedfactuurregel.aantal;
+                    factuurRegel.omschrijving = this.$scope.selectedfactuurregel.omschrijving;
+                    factuurRegel.btwPercentage = this.$scope.selectedfactuurregel.btwPercentage;
+                    factuurRegel.stuksPrijs = this.$scope.selectedfactuurregel.stuksPrijs;
+                    factuurRegel.uuid = this.$scope.selectedfactuurregel.uuid;
+                }
+            }
+
+
+            this.$http({
+                url: "/rest/factuur/",
+                method: "POST",
+                data: this.$scope.selectedfactuur,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success((response) => {
+                this.page2();
+            });
+        }
+
+
+        editRegel(uuid) {
+            for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
+                var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
+                if (factuurRegel.uuid === uuid) {
+                    this.$scope.selectedfactuurregel = new FactuurRegelData();
+                    this.$scope.selectedfactuurregel.aantal = factuurRegel.aantal;
+                    this.$scope.selectedfactuurregel.omschrijving = factuurRegel.omschrijving;
+                    this.$scope.selectedfactuurregel.btwPercentage = factuurRegel.btwPercentage;
+                    this.$scope.selectedfactuurregel.stuksPrijs = factuurRegel.stuksPrijs;
+                    this.$scope.selectedfactuurregel.uuid = factuurRegel.uuid;
+                }
+            }
+            this.$scope.tab3Disabled=false;
+            this.page3();
+        }
         //
         //saveRegels() {
         //    this.$scope.selectedfactuur.editMode = false;
@@ -215,8 +274,8 @@ module Application.Controllers {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success((response) => {
                 this.dataService.reload();
+                this.closeEditScherm();
             });
-            this.closeEditScherm();
             //this.showPartial('showList');
             //this.$scope.selectedfactuur.editMode = false;
         }
@@ -256,7 +315,8 @@ module Application.Controllers {
         }
 
         closeEditScherm() {
-            this.$mdSidenav('editScherm').close();
+            this.page1();
+            //this.$mdSidenav('editScherm').close();
         }
 
         startAddRegel(ev) {

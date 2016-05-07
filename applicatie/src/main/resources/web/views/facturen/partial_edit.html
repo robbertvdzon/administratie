@@ -25,7 +25,7 @@ Adres3<br>
 <br>
 <md-list ng-hide="selectedfactuur.editMode">
     <md-list-item ng-repeat="factuurregel in selectedfactuur.factuurRegels" ng-class-odd="'odd'" ng-class-even="'even'">
-        <div md-ink-ripple ng-click="facturencontroller.editRegel()" style="width: 100%;"  >
+        <div md-ink-ripple  ng-click="facturencontroller.editRegel(factuurregel.uuid)"  style="width: 100%;"  >
             <factuurRegelRow></factuurRegelRow>
             <factuur-regel-row></factuur-regel-row>
         </div>
