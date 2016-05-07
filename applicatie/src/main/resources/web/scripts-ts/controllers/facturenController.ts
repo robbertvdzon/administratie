@@ -33,8 +33,8 @@ module Application.Controllers {
         newfactuur : FactuurData;
         selectedfactuurregel : FactuurRegelData;
         name: String;
-        tab2Disabled:boolean;
-        tab3Disabled:boolean;
+        factuurTabDisabled:boolean;
+        factuurRegelTabDisabled:boolean;
         selectedIndex : number;
         addRegelMode:boolean;
 
@@ -47,23 +47,21 @@ module Application.Controllers {
         dataService:Application.Services.MyDataservice;
         $location:ng.ILocationService;
         $mdSidenav:any;
-        $mdDialog:any;
 
-        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav, $mdDialog) {
+        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$http = $http;
             this.dataService = dataService;
             this.$location = $location;
             this.$mdSidenav = $mdSidenav;
-            this.$mdDialog = $mdDialog;
 
             this.$scope.gebruiker = new Gebruiker();
             this.$scope.selectedfactuur = new FactuurData();
             this.$scope.newfactuur = new FactuurData();
 
-            this.$scope.tab2Disabled=true;
-            this.$scope.tab3Disabled=true;
+            this.$scope.factuurTabDisabled=true;
+            this.$scope.factuurRegelTabDisabled=true;
             this.$scope.selectedIndex = 0;
             this.$scope.addRegelMode = false;
 
@@ -83,31 +81,20 @@ module Application.Controllers {
         }
 
         cancelAddRegel(){
-            this.page2();
+            this.showFactuurPage();
         }
 
         startAddRegel(ev) {
             this.$scope.selectedfactuurregel = new FactuurRegelData();
-            this.$scope.selectedfactuurregel.omschrijving = "werkje jan";
-            this.$scope.selectedfactuurregel.aantal = 41;
+            this.$scope.selectedfactuurregel.omschrijving = "Werkzaamheden";
+            this.$scope.selectedfactuurregel.aantal = 1;
             this.$scope.selectedfactuurregel.btwPercentage = 21;
-            this.$scope.selectedfactuurregel.stuksPrijs = 72;
+            this.$scope.selectedfactuurregel.stuksPrijs = 72.5;
             this.$scope.selectedfactuurregel.uuid = "";
-            this.$scope.tab3Disabled=false;
+            this.$scope.factuurRegelTabDisabled=false;
             this.$scope.addRegelMode = true;
-            this.page3();
+            this.showFactuurRegelPage();
         }
-
-
-
-        addRegelFromDialog(regel){
-            this.$mdDialog.hide();
-        }
-
-        closeAddRegel(){
-            this.$mdDialog.hide();
-        }
-
 
         loadData() {
             if (this.dataService.getData() != undefined) {
@@ -119,15 +106,7 @@ module Application.Controllers {
         saveAddRegel(){
             var regel = this.$scope.selectedfactuurregel;
             this.$scope.selectedfactuur.factuurRegels.push(regel);
-            //this.$http({
-            //    url: "/rest/factuur/",
-            //    method: "POST",
-            //    data: this.$scope.selectedfactuur,
-            //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            //}).success((response) => {
-            //    this.page2();
-            //});
-                this.page2();
+            this.showFactuurPage();
         }
 
         saveEditRegel(){
@@ -141,16 +120,7 @@ module Application.Controllers {
                     factuurRegel.uuid = this.$scope.selectedfactuurregel.uuid;
                 }
             }
-
-            //this.$http({
-            //    url: "/rest/factuur/",
-            //    method: "POST",
-            //    data: this.$scope.selectedfactuur,
-            //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            //}).success((response) => {
-            //    this.page2();
-            //});
-            this.page2();
+            this.showFactuurPage();
         }
 
 
@@ -165,8 +135,8 @@ module Application.Controllers {
             if (selectedNumber >= 0) {
                 this.$scope.selectedfactuur.factuurRegels.splice(selectedNumber, 1);
             }
-            this.$scope.tab3Disabled=false;
-            this.page2();
+            this.$scope.factuurRegelTabDisabled=false;
+            this.showFactuurPage();
         }
 
         editRegel(uuid) {
@@ -181,21 +151,21 @@ module Application.Controllers {
                     this.$scope.selectedfactuurregel.uuid = factuurRegel.uuid;
                 }
             }
-            this.$scope.tab3Disabled=false;
+            this.$scope.factuurRegelTabDisabled=false;
             this.$scope.addRegelMode = false;
-            this.page3();
+            this.showFactuurRegelPage();
         }
 
-        page1() {
+        showListPage() {
             this.$scope.selectedIndex=0;
-            this.$scope.tab2Disabled=true;
-            this.$scope.tab3Disabled=true;
+            this.$scope.factuurTabDisabled=true;
+            this.$scope.factuurRegelTabDisabled=true;
         }
-        page2() {
+        showFactuurPage() {
             this.$scope.selectedIndex=1;
-            this.$scope.tab3Disabled=true;
+            this.$scope.factuurRegelTabDisabled=true;
         }
-        page3() {
+        showFactuurRegelPage() {
             this.$scope.selectedIndex=2;
         }
 
@@ -211,8 +181,8 @@ module Application.Controllers {
                     this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
                 }
             }
-            this.$scope.tab2Disabled=false;
-            this.page2();
+            this.$scope.factuurTabDisabled=false;
+            this.showFactuurPage();
         }
 
         save() {
@@ -234,12 +204,12 @@ module Application.Controllers {
             }).success(
                 (response)=> {
                     this.dataService.reload();
-                    this.page1();
+                    this.showListPage();
                 });
         }
 
         newFactuur() {
-            this.page2();
+            this.showFactuurPage();
         }
 
 
@@ -252,18 +222,17 @@ module Application.Controllers {
                 (response) => {
                     this.dataService.reload();
                 });
-            this.page1();
+            this.showListPage();
         }
 
         cancel() {
             this.dataService.reload();
-            this.page1();
+            this.showListPage();
         }
 
         closeEditScherm() {
-            this.page1();
+            this.showListPage();
         }
-
 
     }
 

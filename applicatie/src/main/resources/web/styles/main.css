@@ -27,6 +27,6 @@ input.err {
 }
 
 
-/*md-tabs-canvas{*/
-  /*height:0px;*/
-/*}*/
+md-tabs-canvas{
+  height:0px;
+}
