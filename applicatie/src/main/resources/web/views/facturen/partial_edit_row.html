@@ -1,0 +1,36 @@
+<md-subheader class="md-no-sticky">Factuurregel</md-subheader>
+
+<form>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Factuur regel</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; ">
+        <md-input-container>
+            <label>Omschrijving:</label>
+            <input ng-model="selectedfactuurregel.omschrijving" required id="selectedfactuurregel_omschrijving">
+        </md-input-container>
+        <md-input-container>
+            <label>Aantal:</label>
+            <input ng-model="selectedfactuurregel.aantal" required id="selectedfactuurregel_aantal">
+        </md-input-container>
+        <md-input-container>
+            <label>Tarief:</label>
+            <input ng-model="selectedfactuurregel.stuksPrijs" required id="selectedfactuurregel_tarief">
+        </md-input-container>
+        <md-input-container>
+            <label>Btw:</label>
+            <input ng-model="selectedfactuurregel.btwPercentage" required id="selectedfactuurregel_btw">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="facturenregelController.addFactuurRegel()" style="margin-right:20px;" id="add_factuurregel_button">
+            {{okButtonText}}
+        </md-button>
+        <md-button ng-click="facturenregelController.cancelAddRegel()" style="margin-right:20px;">
+            Cancel
+        </md-button>
+    </md-dialog-actions>
+</form>

@@ -38,6 +38,34 @@
 
     <!--Show <input type="checkbox" ng-model="showEdit" />-->
 
+    <md-button class="md-raised md-primary" ng-click="facturencontroller.page1()"  >
+        page1
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="facturencontroller.page2()"  >
+        page2
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="facturencontroller.page3()"  >
+        page3
+    </md-button>
+
+
+    <md-tabs md-selected="selectedIndex" md-dynamic-height md-swipe-content >
+        <md-tab label="tab1">
+            <md-content class="md-padding">
+                <ng-include src="'/views/facturen/partial_list.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab2" >
+            <md-content class="md-padding">
+                <ng-include src="'/views/facturen/partial_edit.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab3" >
+            <md-content class="md-padding">
+                <ng-include src="'/views/facturen/partial_edit_row.html'"></ng-include>
+            </md-content>
+        </md-tab>
+    </md-tabs>
 
 </div>
 

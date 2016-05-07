@@ -170,6 +170,25 @@ module Application.Controllers {
         //
         //}
 
+        page1() {
+            this.$scope.selectedIndex=0;
+            this.$scope.box1="Facturen";
+            this.$scope.box2="";
+            this.$scope.box3="";
+        }
+        page2() {
+            this.$scope.selectedIndex=1;
+            this.$scope.showEdit2=true;
+            this.$scope.box1="Facturen";
+            this.$scope.box2="Edit";
+            this.$scope.box3="";
+        }
+        page3() {
+            this.$scope.selectedIndex=2;
+            this.$scope.box1="Facturen";
+            this.$scope.box2="Edit";
+            this.$scope.box3="Regel";
+        }
 
         edit(uuid) {
             this.showPartial('showEdit');
