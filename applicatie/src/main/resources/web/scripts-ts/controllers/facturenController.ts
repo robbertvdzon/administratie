@@ -92,6 +92,10 @@ module Application.Controllers {
             this.showPartial('showList');
         }
 
+        cancelAddRegel(){
+            this.page2();
+        }
+
         newFactuurregel() {
             // get factuurID
             console.log("showpart");
@@ -100,7 +104,8 @@ module Application.Controllers {
             this.$scope.selectedfactuurregel.aantal = 41;
             this.$scope.selectedfactuurregel.btwPercentage = 41;
             this.$scope.selectedfactuurregel.stuksPrijs = 41;
-            this.openDialog();
+            this.page3();
+            //this.openDialog();
         }
 
 
@@ -191,18 +196,19 @@ module Application.Controllers {
         }
 
         edit(uuid) {
-            this.showPartial('showEdit');
-            //for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
-            //    var factuur = this.$scope.gebruiker.facturen[i];
-            //    if (factuur.uuid === uuid) {
-            //        this.$scope.selectedfactuur = new FactuurData();
-            //        this.$scope.selectedfactuur.uuid = factuur.uuid;
-            //        this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
-            //        this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
-            //        this.$scope.selectedfactuur.betaald = factuur.betaald;
-            //        this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
-            //    }
-            //}
+            for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
+                var factuur = this.$scope.gebruiker.facturen[i];
+                if (factuur.uuid === uuid) {
+                    this.$scope.selectedfactuur = new FactuurData();
+                    this.$scope.selectedfactuur.uuid = factuur.uuid;
+                    this.$scope.selectedfactuur.factuurNummer = factuur.factuurNummer;
+                    this.$scope.selectedfactuur.factuurRegels = factuur.factuurRegels;
+                    this.$scope.selectedfactuur.betaald = factuur.betaald;
+                    this.$scope.selectedfactuur.factuurDate = factuur.factuurDate;
+                }
+            }
+            this.page2();
+            //this.showPartial('showEdit');
             //this.$mdSidenav('editScherm').toggle();
         }
 
@@ -249,8 +255,9 @@ module Application.Controllers {
         }
 
         cancel() {
+            this.page1();
             //this.closeEditScherm();
-            this.showPartial('showList');
+            //this.showPartial('showList');
         }
 
         closeEditScherm() {

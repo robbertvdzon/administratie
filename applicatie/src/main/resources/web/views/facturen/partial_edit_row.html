@@ -24,13 +24,13 @@
             <input ng-model="selectedfactuurregel.btwPercentage" required id="selectedfactuurregel_btw">
         </md-input-container>
     </md-dialog-content>
-    <md-dialog-actions layout="row">
-        <span flex></span>
-        <md-button ng-click="facturenregelController.addFactuurRegel()" style="margin-right:20px;" id="add_factuurregel_button">
-            {{okButtonText}}
-        </md-button>
-        <md-button ng-click="facturenregelController.cancelAddRegel()" style="margin-right:20px;">
-            Cancel
-        </md-button>
-    </md-dialog-actions>
+
 </form>
+
+<br><br>
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.save()">
+    Save
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.cancelAddRegel()">
+    Cancel
+</md-button>
