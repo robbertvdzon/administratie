@@ -1,5 +1,5 @@
 <md-subheader class="md-no-sticky">Factuurregel</md-subheader>
-
+{{selectedfactuurregel.uuid}}
 <form>
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -28,12 +28,15 @@
 </form>
 
 <br><br>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveAddRegel()">
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveAddRegel()" ng-show="addRegelMode">
     Add
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveEditRegel()">
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveEditRegel()" ng-hide="addRegelMode">
     Save
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="facturencontroller.cancelAddRegel()">
     Cancel
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="facturencontroller.deleteRegel()">
+    Delete
 </md-button>

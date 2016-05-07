@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
 
+import java.util.UUID;
+
 @JsonIgnoreProperties
 public class FactuurRegelDto {
 
@@ -30,7 +32,15 @@ public class FactuurRegelDto {
 
 
     public FactuurRegel toFactuurRegel() {
-        return new FactuurRegel(omschrijving, aantal, stuksPrijs, btwPercentage, uuid);
+        return new FactuurRegel(omschrijving, aantal, stuksPrijs, btwPercentage, emptyUuid(uuid) ? getNewUuid() : uuid);
+    }
+
+    private String getNewUuid(){
+        return UUID.randomUUID().toString();
+    }
+
+    private boolean emptyUuid(String uuid) {
+        return uuid == null || uuid.length() == 0;
     }
 
     public void setUuid(String uuid) {

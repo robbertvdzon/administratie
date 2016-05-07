@@ -33,17 +33,14 @@ module Application.Controllers {
         newfactuur : FactuurData;
         selectedfactuurregel : FactuurRegelData;
         name: String;
-        showEdit : boolean;
-        showNew : boolean;
-        showList : boolean;
-        partial : boolean;
         tab2Disabled:boolean;
         tab3Disabled:boolean;
         selectedIndex : number;
+        addRegelMode:boolean;
+
     }
 
     export class FacturenController {
-
         $scope:MyScope;
         $rootScope:ng.IScope;
         $http:ng.IHttpService;
@@ -51,7 +48,6 @@ module Application.Controllers {
         $location:ng.ILocationService;
         $mdSidenav:any;
         $mdDialog:any;
-        unregisterAddRegelFromDialogEvent;
 
         constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav, $mdDialog) {
             this.$scope = $scope;
@@ -65,14 +61,11 @@ module Application.Controllers {
             this.$scope.gebruiker = new Gebruiker();
             this.$scope.selectedfactuur = new FactuurData();
             this.$scope.newfactuur = new FactuurData();
-            this.$scope.showEdit = false;
-            this.$scope.showNew = false;
-            this.$scope.showList = false;
-            this.$scope.partial = false;
 
             this.$scope.tab2Disabled=true;
             this.$scope.tab3Disabled=true;
             this.$scope.selectedIndex = 0;
+            this.$scope.addRegelMode = false;
 
             this.initialize();
         }
@@ -82,55 +75,30 @@ module Application.Controllers {
                 this.loadData();
             });
 
-            var unregisterCloseAddRegelEvent = this.$rootScope.$on('closeAddRegel', ()=> {
-                this.closeAddRegel();
-            });
-
-            var unregisterAddRegelFromDialogEvent = this.$rootScope.$on('addRegelFromDialog', (event, regel)=> {
-                this.addRegelFromDialog(regel);
-            });
-
             this.$scope.$on("$destroy", function() {
                 unregisterDataUpdatedEvent();
-                unregisterCloseAddRegelEvent();
-                unregisterAddRegelFromDialogEvent();
             });
 
             this.loadData();
-            this.showPartial('showList');
         }
 
         cancelAddRegel(){
             this.page2();
         }
 
-        newFactuurregel() {
-            // get factuurID
-            console.log("showpart");
+        startAddRegel(ev) {
             this.$scope.selectedfactuurregel = new FactuurRegelData();
-            this.$scope.selectedfactuurregel.omschrijving = "werkje";
+            this.$scope.selectedfactuurregel.omschrijving = "werkje jan";
             this.$scope.selectedfactuurregel.aantal = 41;
-            this.$scope.selectedfactuurregel.btwPercentage = 41;
-            this.$scope.selectedfactuurregel.stuksPrijs = 41;
+            this.$scope.selectedfactuurregel.btwPercentage = 21;
+            this.$scope.selectedfactuurregel.stuksPrijs = 72;
+            this.$scope.selectedfactuurregel.uuid = "";
             this.$scope.tab3Disabled=false;
+            this.$scope.addRegelMode = true;
             this.page3();
-            //this.openDialog();
         }
 
 
-        openDialog() {
-            this.$mdDialog.show({
-                controller: 'FacturenregelCtrl',
-                controllerAs : 'facturenregelController',
-                templateUrl: 'views/popup/factuurregeltemplate.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose:true,
-                locals : {
-                    message : "toevoegen"
-                }
-
-            });
-        }
 
         addRegelFromDialog(regel){
             this.$mdDialog.hide();
@@ -138,15 +106,6 @@ module Application.Controllers {
 
         closeAddRegel(){
             this.$mdDialog.hide();
-        }
-
-
-        showPartial(partial) {
-            console.log("showpart");
-            this.$scope.showEdit = false;
-            this.$scope.showNew = false;
-            //this.$scope.showList = false;
-            this.$scope[partial] = true;
         }
 
 
@@ -160,19 +119,18 @@ module Application.Controllers {
         saveAddRegel(){
             var regel = this.$scope.selectedfactuurregel;
             this.$scope.selectedfactuur.factuurRegels.push(regel);
-            this.$http({
-                url: "/rest/factuur/",
-                method: "POST",
-                data: this.$scope.selectedfactuur,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success((response) => {
+            //this.$http({
+            //    url: "/rest/factuur/",
+            //    method: "POST",
+            //    data: this.$scope.selectedfactuur,
+            //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            //}).success((response) => {
+            //    this.page2();
+            //});
                 this.page2();
-            });
         }
 
         saveEditRegel(){
-            //var regel = this.$scope.selectedfactuurregel;
-            //this.$scope.selectedfactuur.factuurRegels.push(regel);
             for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
                 var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
                 if (factuurRegel.uuid === this.$scope.selectedfactuurregel.uuid) {
@@ -184,17 +142,32 @@ module Application.Controllers {
                 }
             }
 
-
-            this.$http({
-                url: "/rest/factuur/",
-                method: "POST",
-                data: this.$scope.selectedfactuur,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success((response) => {
-                this.page2();
-            });
+            //this.$http({
+            //    url: "/rest/factuur/",
+            //    method: "POST",
+            //    data: this.$scope.selectedfactuur,
+            //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            //}).success((response) => {
+            //    this.page2();
+            //});
+            this.page2();
         }
 
+
+        deleteRegel(uuid) {
+            var selectedNumber = -1;
+            for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
+                var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
+                if (factuurRegel.uuid === uuid) {
+                    selectedNumber = i;
+                }
+            }
+            if (selectedNumber >= 0) {
+                this.$scope.selectedfactuur.factuurRegels.splice(selectedNumber, 1);
+            }
+            this.$scope.tab3Disabled=false;
+            this.page2();
+        }
 
         editRegel(uuid) {
             for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
@@ -209,31 +182,9 @@ module Application.Controllers {
                 }
             }
             this.$scope.tab3Disabled=false;
+            this.$scope.addRegelMode = false;
             this.page3();
         }
-        //
-        //saveRegels() {
-        //    this.$scope.selectedfactuur.editMode = false;
-        //    var regels = this.$scope.selectedfactuur.factuurRegelsText.split('\n');
-        //    this.$scope.selectedfactuur.factuurRegels = [];
-        //    regels.forEach(regel => {
-        //        var values = regel.split('#');
-        //        if (values.length >= 4) {
-        //            var aantal:number = Number(values[0]);
-        //            var stuksprijs:number = Number(values[1]);
-        //            var btwPerc:number = Number(values[2]);
-        //            var omschrijving:String = values[3];
-        //            var factuurRegel = new FactuurRegelData();
-        //            factuurRegel.aantal = aantal;
-        //            factuurRegel.stuksPrijs = stuksprijs;
-        //            factuurRegel.btwPercentage = btwPerc;
-        //            factuurRegel.omschrijving = omschrijving;
-        //            this.$scope.selectedfactuur.factuurRegels.push(factuurRegel);
-        //        }
-        //    });
-        //
-        //
-        //}
 
         page1() {
             this.$scope.selectedIndex=0;
@@ -262,8 +213,6 @@ module Application.Controllers {
             }
             this.$scope.tab2Disabled=false;
             this.page2();
-            //this.showPartial('showEdit');
-            //this.$mdSidenav('editScherm').toggle();
         }
 
         save() {
@@ -276,8 +225,6 @@ module Application.Controllers {
                 this.dataService.reload();
                 this.closeEditScherm();
             });
-            //this.showPartial('showList');
-            //this.$scope.selectedfactuur.editMode = false;
         }
 
         delete() {
@@ -287,12 +234,12 @@ module Application.Controllers {
             }).success(
                 (response)=> {
                     this.dataService.reload();
-                    this.showPartial('showList');
+                    this.page1();
                 });
         }
 
         newFactuur() {
-            this.showPartial('showNew');
+            this.page2();
         }
 
 
@@ -305,23 +252,18 @@ module Application.Controllers {
                 (response) => {
                     this.dataService.reload();
                 });
-            this.showPartial('showList');
+            this.page1();
         }
 
         cancel() {
+            this.dataService.reload();
             this.page1();
-            //this.closeEditScherm();
-            //this.showPartial('showList');
         }
 
         closeEditScherm() {
             this.page1();
-            //this.$mdSidenav('editScherm').close();
         }
 
-        startAddRegel(ev) {
-            this.newFactuurregel();
-        }
 
     }
 
