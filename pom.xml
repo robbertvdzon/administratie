@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>sparkjava</module>
         <module>applicatie</module>
         <module>cucumber</module>
-        <module>sparkjava</module>
     </modules>
 
 
