@@ -22,7 +22,7 @@ module Application.Controllers {
         }
 
         loadVersion() {
-            return this.$http.get('/rest/version').success((data)=> {
+            return this.$http.get('/rest/version').success((data:String)=> {
                 this.setVersion(data);
             }).error(()=> {
                 this.setVersion("unkown version");
@@ -34,7 +34,7 @@ module Application.Controllers {
         }
 
         loadBuildtime() {
-            return this.$http.get('/rest/buildtime').success((data)=> {
+            return this.$http.get('/rest/buildtime').success((data:String)=> {
                 this.setBuildtime(data);
             }).error(()=> {
                 this.setBuildtime("unkown buildtime");

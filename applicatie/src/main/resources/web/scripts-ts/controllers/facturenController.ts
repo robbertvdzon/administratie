@@ -64,7 +64,6 @@ module Application.Controllers {
             this.$scope.factuurRegelTabDisabled=true;
             this.$scope.selectedIndex = 0;
             this.$scope.addRegelMode = false;
-
             this.initialize();
         }
 
@@ -78,7 +77,6 @@ module Application.Controllers {
             });
 
             this.loadData();
-            alert("test10");
         }
 
         cancelAddRegel(){
