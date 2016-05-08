@@ -11,7 +11,7 @@
     <modules>
         <module>applicatie</module>
         <module>cucumber</module>
-        <module>spark</module>
+        <module>sparkjava</module>
     </modules>
 
 
