@@ -8,6 +8,7 @@ import com.vdzon.administratie.gebruiker.GebruikerResource;
 import com.vdzon.administratie.version.VersionResource;
 import spark.Spark;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -24,7 +25,13 @@ public class App {
         loadVersion();
 
         // init spark with web statics
-        Spark.staticFileLocation("/web");
+        if (new File("C:\\workspace\\administratie\\applicatie\\src\\main\\resources\\web").exists()){
+            Spark.externalStaticFileLocation("C:\\workspace\\administratie\\applicatie\\src\\main\\resources\\web");
+        }
+        else{
+            Spark.staticFileLocation("/web");
+        }
+
         // change port if needed
         if (args.length > 0) {
             Spark.port(Integer.parseInt(args[0]));
@@ -32,6 +39,8 @@ public class App {
         if (args.length > 1) {
             System.getProperties().setProperty("mongoDbPort", args[1]);
         }
+
+
 
 
         // default json response

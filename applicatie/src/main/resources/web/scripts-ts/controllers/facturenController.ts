@@ -78,6 +78,7 @@ module Application.Controllers {
             });
 
             this.loadData();
+            alert("test9");
         }
 
         cancelAddRegel(){
