@@ -42,7 +42,6 @@ public class App {
 
 
 
-
         // default json response
         Spark.before((request, response) -> response.type("application/json"));
 

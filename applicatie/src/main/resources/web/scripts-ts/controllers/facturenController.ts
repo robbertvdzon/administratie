@@ -2,30 +2,9 @@
 
 module Application.Controllers {
 
-    export class FactuurRegelData {
-        uuid:String;
-        omschrijving:String;
-        aantal:number;
-        stuksPrijs:number;
-        btwPercentage:number;
-    }
-
-    export class FactuurData {
-        factuurNummer:String;
-        factuurRegels:FactuurRegelData[];
-        uuid:String;
-        betaald:boolean;
-        factuurDate:String;
-    }
-
-    export class Gebruiker {
-        name:String;
-        username:String;
-        password:String;
-        uuid:String;
-        facturen:FactuurData[];
-
-    }
+    import FactuurData = Application.Model.FactuurData;
+    import Gebruiker = Application.Model.Gebruiker;
+    import FactuurRegelData = Application.Model.FactuurRegelData;
 
     interface MyScope extends ng.IScope {
         gebruiker : Gebruiker;
@@ -45,16 +24,18 @@ module Application.Controllers {
         $rootScope:ng.IScope;
         $http:ng.IHttpService;
         dataService:Application.Services.MyDataservice;
+        factuurDataService:Application.Services.FactuurDataService;
         $location:ng.ILocationService;
         $mdSidenav:any;
 
-        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav) {
+        constructor($scope, $rootScope, $http, dataService, $location, $mdSidenav, factuurDataService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$http = $http;
             this.dataService = dataService;
             this.$location = $location;
             this.$mdSidenav = $mdSidenav;
+            this.factuurDataService = factuurDataService;
 
             this.$scope.gebruiker = new Gebruiker();
             this.$scope.selectedfactuur = new FactuurData();
@@ -79,6 +60,16 @@ module Application.Controllers {
             this.loadData();
         }
 
+        loadData() {
+            if (this.dataService.getData() != undefined) {
+                this.$scope.name = this.dataService.getData().name;
+                this.$scope.gebruiker = this.dataService.getData();
+            }
+        }
+
+
+//-- regel
+
         cancelAddRegel(){
             this.showFactuurPage();
         }
@@ -93,13 +84,6 @@ module Application.Controllers {
             this.$scope.factuurRegelTabDisabled=false;
             this.$scope.addRegelMode = true;
             this.showFactuurRegelPage();
-        }
-
-        loadData() {
-            if (this.dataService.getData() != undefined) {
-                this.$scope.name = this.dataService.getData().name;
-                this.$scope.gebruiker = this.dataService.getData();
-            }
         }
 
         saveAddRegel(){
@@ -155,6 +139,8 @@ module Application.Controllers {
             this.showFactuurRegelPage();
         }
 
+//-----------
+
         showListPage() {
             this.$scope.selectedIndex=0;
             this.$scope.factuurTabDisabled=true;
@@ -167,6 +153,8 @@ module Application.Controllers {
         showFactuurRegelPage() {
             this.$scope.selectedIndex=2;
         }
+
+//-----------
 
         edit(uuid) {
             for (var i = 0; i < this.$scope.gebruiker.facturen.length; i++) {
@@ -185,27 +173,31 @@ module Application.Controllers {
         }
 
         save() {
-            this.$http({
-                url: "/rest/factuur/",
-                method: "POST",
-                data: this.$scope.selectedfactuur,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success((response) => {
-                this.dataService.reload();
+            this.factuurDataService.saveFactuur(this.$scope.selectedfactuur).then((response) => {
                 this.closeEditScherm();
-            });
+            }).catch((response) => {
+                alert("Opslaan mislukt");
+            })
         }
 
         delete() {
-            this.$http({
-                url: "/rest/factuur/" + this.$scope.selectedfactuur.factuurNummer,
-                method: "DELETE"
-            }).success(
-                (response)=> {
-                    this.dataService.reload();
-                    this.showListPage();
-                });
+            this.factuurDataService.deleteFactuur(this.$scope.selectedfactuur).then((response) => {
+                this.closeEditScherm();
+            }).catch((response) => {
+                alert("Opslaan mislukt");
+            })
         }
+
+        closeEditScherm() {
+            this.showListPage();
+        }
+
+        cancel() {
+            this.dataService.reload();
+            this.showListPage();
+        }
+
+//-----------
 
         newFactuur() {
             this.showFactuurPage();
@@ -224,14 +216,7 @@ module Application.Controllers {
             this.showListPage();
         }
 
-        cancel() {
-            this.dataService.reload();
-            this.showListPage();
-        }
 
-        closeEditScherm() {
-            this.showListPage();
-        }
 
     }
 

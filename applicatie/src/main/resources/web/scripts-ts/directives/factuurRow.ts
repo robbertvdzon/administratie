@@ -1,5 +1,6 @@
 module Application.Directives {
-    import FactuurData = Application.Controllers.FactuurData;
+    import FactuurData = Application.Model.FactuurData;
+
     'use strict';
 
     interface IProgressbarScope extends ng.IScope {

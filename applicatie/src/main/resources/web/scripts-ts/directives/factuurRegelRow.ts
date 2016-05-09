@@ -1,6 +1,7 @@
 module Application.Directives {
-    import FactuurRegelData = Application.Controllers.FactuurRegelData;
     'use strict';
+
+    import FactuurRegelData = Application.Model.FactuurRegelData;
 
     interface IFactuurRegelRowScope extends ng.IScope {
         factuurregel : FactuurRegelData;
