@@ -1,3 +1,5 @@
+<div ng-cloak data-ng-controller="FactuurRegelEditController as factuurRegelEditController">
+
 <md-subheader class="md-no-sticky">Factuurregel</md-subheader>
 {{selectedfactuurregel.uuid}}
 <form>
@@ -28,15 +30,16 @@
 </form>
 
 <br><br>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveAddRegel()" ng-show="addRegelMode">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveAddRegel()" ng-show="addRegelMode">
     Add
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.saveEditRegel()" ng-hide="addRegelMode">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveEditRegel()" ng-hide="addRegelMode">
     Save
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.cancelAddRegel()">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.cancelAddRegel()">
     Cancel
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="facturencontroller.deleteRegel()">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.deleteRegel()">
     Delete
 </md-button>
+</div>
