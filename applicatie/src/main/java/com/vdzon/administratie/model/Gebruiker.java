@@ -74,7 +74,7 @@ public class Gebruiker {
     public void removeFactuur(String factuurNummer){
         Factuur factuurToRemove = null;
         for (Factuur factuur : getFacturen()){
-            if (factuur.getFactuurNummer().equals(factuurNummer)){
+            if (factuurNummer.equals(factuur.getFactuurNummer())){
                 factuurToRemove = factuur;
             }
         }
