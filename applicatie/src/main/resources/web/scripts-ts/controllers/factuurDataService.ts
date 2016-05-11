@@ -89,6 +89,31 @@ module Application.Services {
             return clonedRegel;
         }
 
+        updateFactuurRegel(factuur:FactuurData, factuurregel:FactuurRegelData){
+            for (var i = 0; i < factuur.factuurRegels.length; i++) {
+                var factuurRegel = factuur.factuurRegels[i];
+                if (factuurRegel.uuid === factuurregel.uuid) {
+                    factuurRegel.aantal = factuurregel.aantal;
+                    factuurRegel.omschrijving = factuurregel.omschrijving;
+                    factuurRegel.btwPercentage = factuurregel.btwPercentage;
+                    factuurRegel.stuksPrijs = factuurregel.stuksPrijs;
+                    factuurRegel.uuid = factuurregel.uuid;
+                }
+            }
+        }
+
+        deleteFactuurRegel(factuur:FactuurData, factuurregel:FactuurRegelData) {
+            var selectedNumber = -1;
+            for (var i = 0; i < factuur.factuurRegels.length; i++) {
+                var factuurRegel = factuur.factuurRegels[i];
+                if (factuurRegel.uuid === factuurregel.uuid) {
+                    selectedNumber = i;
+                }
+            }
+            if (selectedNumber >= 0) {
+                factuur.factuurRegels.splice(selectedNumber, 1);
+            }
+        }
 
 
 

@@ -3,6 +3,7 @@
 module Application.Controllers {
 
     import FactuurData = Application.Model.FactuurData;
+    import FactuurRegelData = Application.Model.FactuurRegelData;
 
     interface MyScope extends ng.IScope {
         selectedfactuur : FactuurData;
@@ -29,10 +30,22 @@ module Application.Controllers {
             var loadFactuurToAddEvent = this.$rootScope.$on('load-factuur-to-add', ()=> {
                 this.loadNewFactuur();
             });
+            var addFactuurRegelEvent = this.$rootScope.$on('add-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
+                this.addFactuurRegel(factuurregel);
+            });
+            var updateFactuurRegelEvent = this.$rootScope.$on('update-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
+                this.updateFactuurRegel(factuurregel);
+            });
+            var deleteFactuurRegelEvent = this.$rootScope.$on('delete-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
+                this.deleteFactuurRegel(factuurregel);
+            });
+
 
             this.$scope.$on("$destroy", function () {
                 loadFactuurToEditEvent();
                 loadFactuurToAddEvent();
+                addFactuurRegelEvent();
+                updateFactuurRegelEvent();
             });
 
         }
@@ -82,12 +95,26 @@ module Application.Controllers {
         }
 
         addRegel(ev) {
-            this.$rootScope.$broadcast('load-factuurregel-to-add', this.$scope.selectedfactuur);
+            this.$rootScope.$broadcast('load-factuurregel-to-add');
         }
 
         editRegel(uuid) {
-            this.$rootScope.$broadcast('load-factuurregel-to-edit', this.$scope.selectedfactuur, uuid);
+            var selectedfactuurregel:FactuurRegelData = this.factuurDataService.cloneFactuurRegel(this.factuurDataService.getRegelByUuid(this.$scope.selectedfactuur, uuid));
+            this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
         }
+
+        addFactuurRegel(factuurregel:FactuurRegelData){
+            this.$scope.selectedfactuur.factuurRegels.push(factuurregel);
+        }
+
+        updateFactuurRegel(factuurregel:FactuurRegelData){
+            this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuur, factuurregel);
+        }
+
+        deleteFactuurRegel(factuurregel:FactuurRegelData) {
+            this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuur, factuurregel);
+        }
+
     }
 }
 

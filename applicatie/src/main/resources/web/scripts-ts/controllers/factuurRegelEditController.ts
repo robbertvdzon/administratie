@@ -8,7 +8,6 @@ module Application.Controllers {
 
     interface MyScope extends ng.IScope {
         selectedfactuurregel : FactuurRegelData;
-        selectedfactuur : FactuurData;
         addRegelMode:boolean;
 
     }
@@ -21,11 +20,11 @@ module Application.Controllers {
         }
 
         initialize() {
-            var loadFactuurToEditEvent = this.$rootScope.$on('load-factuurregel-to-edit', (event, selectedfactuur:FactuurData, uuid: String)=> {
-                this.loadExistingFactuur(selectedfactuur, uuid);
+            var loadFactuurToEditEvent = this.$rootScope.$on('load-factuurregel-to-edit', (event, selectedfactuurregel : FactuurRegelData)=> {
+                this.loadExistingFactuurRegel(selectedfactuurregel);
             });
-            var loadFactuurToAddEvent = this.$rootScope.$on('load-factuurregel-to-add', (event, selectedfactuur:FactuurData)=> {
-                this.loadNewFactuurRegel(selectedfactuur);
+            var loadFactuurToAddEvent = this.$rootScope.$on('load-factuurregel-to-add', ()=> {
+                this.loadNewFactuurRegel();
             });
 
             this.$scope.$on("$destroy", function () {
@@ -35,15 +34,13 @@ module Application.Controllers {
 
         }
 
-        loadExistingFactuur(selectedfactuur:FactuurData, uuid) {
-            this.$scope.selectedfactuur = selectedfactuur;
-            this.$scope.selectedfactuurregel = this.factuurDataService.cloneFactuurRegel(this.factuurDataService.getRegelByUuid(selectedfactuur, uuid));
+        loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
+            this.$scope.selectedfactuurregel = selectedfactuurregel;
             this.$scope.addRegelMode = false;
             this.$rootScope.$broadcast('show-factuurregel-screen');
          }
 
-        loadNewFactuurRegel(selectedfactuur:FactuurData) {
-            this.$scope.selectedfactuur = selectedfactuur;
+        loadNewFactuurRegel() {
             this.$scope.selectedfactuurregel = new FactuurRegelData();
             this.$scope.selectedfactuurregel.omschrijving = "Werkzaamheden";
             this.$scope.selectedfactuurregel.aantal = 1;
@@ -60,36 +57,18 @@ module Application.Controllers {
         }
 
         saveAddRegel(){
-            this.$scope.selectedfactuur.factuurRegels.push(this.$scope.selectedfactuurregel);
+            this.$rootScope.$broadcast('add-factuurregel-screen', this.$scope.selectedfactuurregel);
             this.$rootScope.$broadcast('close-factuurregel-screen');
         }
 
         saveEditRegel(){
+            this.$rootScope.$broadcast('update-factuurregel-screen', this.$scope.selectedfactuurregel);
             this.$rootScope.$broadcast('close-factuurregel-screen');
-            for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
-                var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
-                if (factuurRegel.uuid === this.$scope.selectedfactuurregel.uuid) {
-                    factuurRegel.aantal = this.$scope.selectedfactuurregel.aantal;
-                    factuurRegel.omschrijving = this.$scope.selectedfactuurregel.omschrijving;
-                    factuurRegel.btwPercentage = this.$scope.selectedfactuurregel.btwPercentage;
-                    factuurRegel.stuksPrijs = this.$scope.selectedfactuurregel.stuksPrijs;
-                    factuurRegel.uuid = this.$scope.selectedfactuurregel.uuid;
-                }
-            }
         }
 
 
         deleteRegel() {
-            var selectedNumber = -1;
-            for (var i = 0; i < this.$scope.selectedfactuur.factuurRegels.length; i++) {
-                var factuurRegel = this.$scope.selectedfactuur.factuurRegels[i];
-                if (factuurRegel.uuid === this.$scope.selectedfactuurregel.uuid) {
-                    selectedNumber = i;
-                }
-            }
-            if (selectedNumber >= 0) {
-                this.$scope.selectedfactuur.factuurRegels.splice(selectedNumber, 1);
-            }
+            this.$rootScope.$broadcast('delete-factuurregel-screen', this.$scope.selectedfactuurregel);
             this.$rootScope.$broadcast('close-factuurregel-screen');
         }
     }
