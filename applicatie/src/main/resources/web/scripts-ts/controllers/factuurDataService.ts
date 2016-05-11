@@ -4,6 +4,7 @@ module Application.Services {
 
     import FactuurData = Application.Model.FactuurData;
     import Gebruiker = Application.Model.Gebruiker;
+    import FactuurRegelData = Application.Model.FactuurRegelData;
 
     export class FactuurDataService {
 
@@ -63,6 +64,30 @@ module Application.Services {
                 this.dataService.reload();
             });
         };
+
+// Util services
+        public getRegelByUuid(factuur:FactuurData, uuid:String):FactuurRegelData {
+            for (var i = 0; i < factuur.factuurRegels.length; i++) {
+                var factuurRegel:FactuurRegelData = factuur.factuurRegels[i];
+                if (factuurRegel.uuid === uuid) {
+                    return factuurRegel;
+                }
+            }
+            return null;
+        }
+
+        public cloneFactuurRegel(regel:FactuurRegelData):FactuurRegelData{
+            if (regel == null){
+                return null;
+            }
+            var clonedRegel = new FactuurRegelData();
+            clonedRegel.aantal = regel.aantal;
+            clonedRegel.omschrijving = regel.omschrijving;
+            clonedRegel.btwPercentage = regel.btwPercentage;
+            clonedRegel.stuksPrijs = regel.stuksPrijs;
+            clonedRegel.uuid = regel.uuid;
+            return clonedRegel;
+        }
 
 
 

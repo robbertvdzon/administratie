@@ -4,6 +4,7 @@ module Application.Controllers {
 
     import FactuurData = Application.Model.FactuurData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
+    import FactuurDataService = Application.Services.FactuurDataService;
 
     interface MyScope extends ng.IScope {
         selectedfactuurregel : FactuurRegelData;
@@ -13,13 +14,9 @@ module Application.Controllers {
     }
 
     export class FactuurRegelEditController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
 
 
-        constructor($scope, $rootScope) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
+        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService) {
             this.initialize();
         }
 
@@ -39,29 +36,13 @@ module Application.Controllers {
         }
 
         loadExistingFactuur(selectedfactuur:FactuurData, uuid) {
-            /*
-             * DIT NAAR DATA SERVICE
-             */
             this.$scope.selectedfactuur = selectedfactuur;
-            for (var i = 0; i < selectedfactuur.factuurRegels.length; i++) {
-                var factuurRegel = selectedfactuur.factuurRegels[i];
-                if (factuurRegel.uuid === uuid) {
-                    this.$scope.selectedfactuurregel = new FactuurRegelData();
-                    this.$scope.selectedfactuurregel.aantal = factuurRegel.aantal;
-                    this.$scope.selectedfactuurregel.omschrijving = factuurRegel.omschrijving;
-                    this.$scope.selectedfactuurregel.btwPercentage = factuurRegel.btwPercentage;
-                    this.$scope.selectedfactuurregel.stuksPrijs = factuurRegel.stuksPrijs;
-                    this.$scope.selectedfactuurregel.uuid = factuurRegel.uuid;
-                }
-            }
+            this.$scope.selectedfactuurregel = this.factuurDataService.cloneFactuurRegel(this.factuurDataService.getRegelByUuid(selectedfactuur, uuid));
             this.$scope.addRegelMode = false;
             this.$rootScope.$broadcast('show-factuurregel-screen');
          }
 
         loadNewFactuurRegel(selectedfactuur:FactuurData) {
-            /*
-             * DIT NAAR DATA SERVICE
-             */
             this.$scope.selectedfactuur = selectedfactuur;
             this.$scope.selectedfactuurregel = new FactuurRegelData();
             this.$scope.selectedfactuurregel.omschrijving = "Werkzaamheden";
