@@ -68,7 +68,6 @@ module Application.Services {
 
 // Util services
         public findNextFactuurnummer():String {
-
             var gebruiker:Gebruiker = this.dataService.getData();
             var hoogste = 0;
             for (var i = 0; i < gebruiker.facturen.length; i++) {

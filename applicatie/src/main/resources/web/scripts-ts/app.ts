@@ -40,12 +40,12 @@ angular
                 controller: 'LoginCtrl'
             })
             .when('/facturen', {
-                templateUrl: 'views/facturen/main.html',
+                templateUrl: 'facturen/views/main.html',
                 controller: 'FacturenCtrl',
                 controllerAs: 'facturencontroller'
             })
             .when('/facturenregel', {
-                templateUrl: 'views/facturen/main.html',
+                templateUrl: 'facturen/views/main.html',
                 controller: 'FacturenregelCtrl'
             })
             .otherwise({

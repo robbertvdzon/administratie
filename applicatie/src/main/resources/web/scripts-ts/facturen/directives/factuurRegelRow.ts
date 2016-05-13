@@ -14,7 +14,7 @@ module Application.Directives {
         }
 
         restrict = 'E';
-        templateUrl = 'directives/factuurregelrow.html';
+        templateUrl = '../facturen/directives/factuurregelrow.html';
         link(scope : IFactuurRegelRowScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
         }
     }
