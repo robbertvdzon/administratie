@@ -1,5 +1,5 @@
 'use strict';
-/// <reference path="../lib/typings/main.d.ts" />
+/// <reference path="../../lib/typings/main.d.ts" />
 /**
  * @ngdoc overview
  * @name mswFrontendApp
@@ -32,7 +32,7 @@ angular
             .accentPalette('grey');
         $routeProvider
             .when('/', {
-                templateUrl: 'views/main.html',
+                templateUrl: 'menu/views/main.html',
                 controller: 'MainCtrl'
             })
             .when('/login', {

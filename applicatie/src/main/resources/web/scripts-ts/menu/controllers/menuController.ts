@@ -26,7 +26,7 @@ module Application.Controllers {
         openLoginPopup(ev) {
             this.$mdDialog.show({
                 controller: 'LoginCtrl',
-                templateUrl: 'views/popup/logintemplate.html',
+                templateUrl: 'menu/views/popup/logintemplate.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose:true

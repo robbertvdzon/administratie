@@ -5,7 +5,6 @@ module Application.Services {
     import FactuurData = Application.Model.FactuurData;
     import Gebruiker = Application.Model.Gebruiker;
     import FactuurRegelData = Application.Model.FactuurRegelData;
-    import Gebruiker = Application.Model.Gebruiker;
 
     export class FactuurDataService {
 
@@ -67,16 +66,17 @@ module Application.Services {
         };
 
 // Util services
-        public findNextFactuurnummer():String {
+        public findNextFactuurnummer():string {
             var gebruiker:Gebruiker = this.dataService.getData();
-            var hoogste = 0;
+            var hoogste:number = 0;
             for (var i = 0; i < gebruiker.facturen.length; i++) {
-                var factuurNr = parseInt(gebruiker.facturen[i].factuurNummer,10);
+                var factuurNr:number = parseInt(String(gebruiker.facturen[i].factuurNummer),10);
                 if (factuurNr>hoogste){
                     hoogste = factuurNr;
                 }
             }
-            return hoogste+1;;
+            var nieuwNummer = hoogste+1;
+            return ""+nieuwNummer;
         }
 
         public getRegelByUuid(factuur:FactuurData, uuid:String):FactuurRegelData {
