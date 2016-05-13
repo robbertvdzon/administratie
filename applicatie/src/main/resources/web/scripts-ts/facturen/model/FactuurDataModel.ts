@@ -18,12 +18,19 @@ module Application.Model {
         factuurDate:String;
     }
 
+    export class Administratie {
+        name:String;
+        uuid:String;
+        facturen:FactuurData[];
+
+    }
+
     export class Gebruiker {
         name:String;
         username:String;
         password:String;
         uuid:String;
-        facturen:FactuurData[];
+        administraties:Administratie[];
 
     }
 }

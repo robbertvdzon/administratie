@@ -1,0 +1,18 @@
+<mongoChangeLog>
+
+    <changeSet changeId="update-001">
+        <script>
+            db.gebruiker.find({}).forEach(
+                function(doc) {
+                    administraties = [];
+                    administratie = {};
+                    administratie.facturen = doc.facturen;
+                    administraties.push(administratie);
+                    doc.administraties = administraties;
+                    db.gebruiker.save(doc);
+                }
+            )
+        </script>
+    </changeSet>
+
+</mongoChangeLog>

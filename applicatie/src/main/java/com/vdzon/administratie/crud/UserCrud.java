@@ -1,10 +1,8 @@
 package com.vdzon.administratie.crud;
 
 import com.mongodb.MongoClient;
-import com.vdzon.administratie.model.Factuur;
-import com.vdzon.administratie.model.FactuurRegel;
-import com.vdzon.administratie.model.Gebruiker;
-import com.vdzon.administratie.model.Klant;
+import com.vdzon.administratie.UpdateMongo;
+import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.util.LocalDateTimeConverter;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -43,6 +41,8 @@ public class UserCrud {
 
         buildTestData("q","q","q");
         buildTestData("w","w","w");
+
+        new UpdateMongo().start(mongoClient, "zzpadministratie");
     }
 
     private void buildTestData(String username, String name, String passwd) {
@@ -64,7 +64,10 @@ public class UserCrud {
         Factuur factuur2 = new Factuur("2016002",LocalDate.now(),new Klant(getNewUuid(),"002","loxia","Utrecht","Weg1","1234AB","NL"), false,regels2, getNewUuid());
         facturen.add(factuur1);
         facturen.add(factuur2);
-        Gebruiker gebruiker = new Gebruiker(getNewUuid(),name,username,passwd,facturen, adresboek);
+        Administratie administratie = new Administratie(getNewUuid(),name,facturen, adresboek);
+        List<Administratie> administraties = new ArrayList<>();
+        administraties.add(administratie);
+        Gebruiker gebruiker = new Gebruiker(getNewUuid(),name,username,passwd,administraties);
         addGebruiker(gebruiker);
     }
 

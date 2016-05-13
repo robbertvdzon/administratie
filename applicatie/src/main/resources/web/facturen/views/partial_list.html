@@ -3,7 +3,7 @@ Facturen
 
 <md-list >
 
-    <md-list-item ng-repeat="factuur in gebruiker.facturen" ng-click="facturenListController.edit(factuur.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
+    <md-list-item ng-repeat="factuur in gebruiker.administraties[0].facturen" ng-click="facturenListController.edit(factuur.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
         <div md-ink-ripple style="width: 100%;"  >
             <factuur-row></factuur-row>
         </div>

@@ -6,6 +6,7 @@ import org.mongodb.morphia.annotations.Id;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Entity("gebruiker")
 public class Gebruiker {
@@ -15,19 +16,17 @@ public class Gebruiker {
     private String name;
     private String username;
     private String password;
-    private List<Factuur> facturen;
-    private List<Klant> adresboek;
+    private List<Administratie> administraties;
 
     public Gebruiker() {
     }
 
-    public Gebruiker(String uuid, String name, String username, String password, List<Factuur> facturen, List<Klant> adresboek) {
+    public Gebruiker(String uuid, String name, String username, String password, List<Administratie> administraties) {
         this.uuid = uuid;
         this.name = name;
         this.username = username;
         this.password = password;
-        this.facturen = facturen;
-        this.adresboek = adresboek;
+        this.administraties = administraties;
     }
 
     public String getName() {
@@ -58,47 +57,47 @@ public class Gebruiker {
         return uuid;
     }
 
-    public List<Factuur> getFacturen() {
-        return Collections.unmodifiableList(facturen == null ? new ArrayList<Factuur>() : facturen);
+    public List<Administratie> getAdministraties() {
+        return Collections.unmodifiableList(administraties == null ? new ArrayList<Administratie>() : administraties);
     }
 
-    public List<Klant> getAdresboek() {
-        return Collections.unmodifiableList(adresboek == null ? new ArrayList<Klant>() : adresboek);
+    public Administratie getDefaultAdministratie(){
+        if (administraties==null){
+            administraties = new ArrayList<>();
+        }
+        if (administraties.size()==0){
+            administraties.add(new Administratie(getUuid(),"mijn admin",null,null));
+        }
+        return administraties.get(0);
     }
 
-    public void addFactuur(Factuur factuur){
-        facturen.add(factuur);
+    public void addAdministratie(Administratie administratie){
+        administraties.add(administratie);
     }
 
-    public void removeFactuur(String uuid){
-        Factuur factuurToRemove = null;
-        for (Factuur factuur : getFacturen()){
-            if (factuurNummerMatchesUuid(uuid, factuur)){
-                factuurToRemove = factuur;
+    public void removeAdministratie(String uuid){
+        Administratie administratieToRemove = null;
+        for (Administratie administratie : getAdministraties()){
+            if (administratieNummerMatchesUuid(uuid, administratie)){
+                administratieToRemove = administratie;
             }
         }
-        if (factuurToRemove != null) {
-            facturen.remove(factuurToRemove);
+        if (administratieToRemove != null) {
+            administraties.remove(administratieToRemove);
         }
     }
 
-    private boolean factuurNummerMatchesUuid(String uuid, Factuur factuur) {
-        return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
-    }
-
-    public void addContact(Klant klant){
-        adresboek.add(klant);
-    }
-
-    public void removeKlant(String klantNummer){
-        for (Klant klant : getAdresboek()){
-            if (klant.getKlantNummer().equals(klantNummer)){
-                adresboek.remove(klant);
-            }
-        }
+    private boolean administratieNummerMatchesUuid(String uuid, Administratie administratie) {
+        return uuid == null && administratie.getUuid() == null || uuid != null && uuid.equals(administratie.getUuid());
     }
 
     public boolean authenticate(String password) {
         return getPassword().equals(password);
     }
+
+    // TODO: naar utils
+    private String getNewUuid() {
+        return UUID.randomUUID().toString();
+    }
+
 }

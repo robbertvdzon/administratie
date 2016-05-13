@@ -45,8 +45,8 @@ public class FactuurService {
                 // Hey, you did not send a valid request!
             }
 
-            gebruiker.removeFactuur(factuur.getUuid());
-            gebruiker.addFactuur(factuur);
+            gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
+            gebruiker.getDefaultAdministratie().addFactuur(factuur);
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -67,7 +67,7 @@ public class FactuurService {
             if ("undefined".equals(factuurUuid)) {
                 factuurUuid = null;
             }
-            gebruiker.removeFactuur(factuurUuid);
+            gebruiker.getDefaultAdministratie().removeFactuur(factuurUuid);
             crudService.updateGebruiker(gebruiker);
             return new SingleAnswer("ok");
         } catch (Exception ex) {

@@ -1,6 +1,7 @@
 package com.vdzon.administratie.dto;
 
 
+import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.Klant;
@@ -14,8 +15,7 @@ public class GebruikerDto {
     private String name;
     private String username;
     private String password;
-    private List<FactuurDto> facturen;
-    private List<KlantDto> adresboek;
+    private List<AdministratieDto> administraties;
 
     public GebruikerDto() {
     }
@@ -25,40 +25,24 @@ public class GebruikerDto {
         this.name = gebruiker.getName();
         this.username = gebruiker.getUsername();
         this.password = gebruiker.getPassword();
-        this.facturen = toFacturenDto(gebruiker.getFacturen());
-        this.adresboek = toAdressenDto(gebruiker.getAdresboek());
+        this.administraties = toAdministratiesDto(gebruiker.getAdministraties());
     }
 
-    private List<KlantDto> toAdressenDto(List<Klant> klanten) {
-        return klanten
+    private List<AdministratieDto> toAdministratiesDto(List<Administratie> administraties) {
+        return administraties
                 .stream()
-                .map(klant -> new KlantDto(klant))
-                .collect(Collectors.toList());
-    }
-
-    private List<FactuurDto> toFacturenDto(List<Factuur> facturen) {
-        return facturen
-                .stream()
-                .map(factuur -> new FactuurDto(factuur))
-                .sorted((factuurDto1,factuurDto2)  -> factuurDto2.getFactuurNummer().compareTo(factuurDto1.getFactuurNummer()))
+                .map(administratie -> new AdministratieDto(administratie))
                 .collect(Collectors.toList());
     }
 
     public Gebruiker toGebruiker() {
-        return new Gebruiker(uuid, name, username, password, toFacturen(), toAdressen());
+        return new Gebruiker(uuid, name, username, password, toAdministraties());
     }
 
-    private List<Factuur> toFacturen() {
-        return facturen
+    private List<Administratie> toAdministraties() {
+        return administraties
                 .stream()
-                .map(factuur -> factuur.toFactuur())
-                .collect(Collectors.toList());
-    }
-
-    private List<Klant> toAdressen() {
-        return adresboek
-                .stream()
-                .map(klant -> klant.toKlant())
+                .map(administratie -> administratie.toAdministratie())
                 .collect(Collectors.toList());
     }
 
@@ -78,11 +62,11 @@ public class GebruikerDto {
         this.password = password;
     }
 
-    public void setFacturen(List<FactuurDto> facturen) {
-        this.facturen = facturen;
+    public List<AdministratieDto> getAdministraties() {
+        return administraties;
     }
 
-    public void setAdresboek(List<KlantDto> adresboek) {
-        this.adresboek = adresboek;
+    public void setAdministraties(List<AdministratieDto> administraties) {
+        this.administraties = administraties;
     }
 }
