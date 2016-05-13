@@ -62,39 +62,83 @@ public class FactuurDto {
                 .collect(Collectors.toList());
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
     }
 
     public void setFactuurNummer(String factuurNummer) {
         this.factuurNummer = factuurNummer;
     }
 
+    public String getFactuurDate() {
+        return factuurDate;
+    }
+
     public void setFactuurDate(String factuurDate) {
         this.factuurDate = factuurDate;
+    }
+
+    public KlantDto getKlant() {
+        return klant;
     }
 
     public void setKlant(KlantDto klant) {
         this.klant = klant;
     }
 
+    public boolean isBetaald() {
+        return betaald;
+    }
+
     public void setBetaald(boolean betaald) {
         this.betaald = betaald;
+    }
+
+    public List<FactuurRegelDto> getFactuurRegels() {
+        return factuurRegels;
     }
 
     public void setFactuurRegels(List<FactuurRegelDto> factuurRegels) {
         this.factuurRegels = factuurRegels;
     }
 
+    public double getBedragExBtw() {
+        return bedragExBtw;
+    }
+
     public void setBedragExBtw(double bedragExBtw) {
         this.bedragExBtw = bedragExBtw;
+    }
+
+    public double getBedragIncBtw() {
+        return bedragIncBtw;
     }
 
     public void setBedragIncBtw(double bedragIncBtw) {
         this.bedragIncBtw = bedragIncBtw;
     }
 
+    public double getBtw() {
+        return btw;
+    }
+
     public void setBtw(double btw) {
         this.btw = btw;
+    }
+
+    public static DateTimeFormatter getDateFormatter() {
+        return DATE_FORMATTER;
+    }
+
+    public static void setDateFormatter(DateTimeFormatter dateFormatter) {
+        DATE_FORMATTER = dateFormatter;
     }
 }

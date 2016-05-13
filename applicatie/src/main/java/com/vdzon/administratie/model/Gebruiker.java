@@ -1,6 +1,5 @@
 package com.vdzon.administratie.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -71,16 +70,20 @@ public class Gebruiker {
         facturen.add(factuur);
     }
 
-    public void removeFactuur(String factuurNummer){
+    public void removeFactuur(String uuid){
         Factuur factuurToRemove = null;
         for (Factuur factuur : getFacturen()){
-            if (factuurNummer.equals(factuur.getFactuurNummer())){
+            if (factuurNummerMatchesUuid(uuid, factuur)){
                 factuurToRemove = factuur;
             }
         }
         if (factuurToRemove != null) {
             facturen.remove(factuurToRemove);
         }
+    }
+
+    private boolean factuurNummerMatchesUuid(String uuid, Factuur factuur) {
+        return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
     }
 
     public void addContact(Klant klant){

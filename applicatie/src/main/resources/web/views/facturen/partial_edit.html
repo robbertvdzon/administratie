@@ -1,9 +1,15 @@
 <div ng-cloak data-ng-controller="FactuurEditController as facturenEditcontroller">
-Factuur {{selectedfactuur.factuurNummer}}
+    Factuur {{selectedfactuur.factuurNummer}}
 <md-button class="md-raised md-primary"  ng-click="facturenEditcontroller.delete()">
     Verwijder
 </md-button>
 <br>
+
+<md-input-container flex>
+    <label>Nummer</label>
+    <input ng-model="selectedfactuur.factuurNummer" STYLE="background-color: #B2DFDB;">
+</md-input-container>
+
 
 <md-input-container flex>
     <label>Datum</label>

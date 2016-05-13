@@ -5,6 +5,7 @@ module Application.Services {
     import FactuurData = Application.Model.FactuurData;
     import Gebruiker = Application.Model.Gebruiker;
     import FactuurRegelData = Application.Model.FactuurRegelData;
+    import Gebruiker = Application.Model.Gebruiker;
 
     export class FactuurDataService {
 
@@ -47,7 +48,7 @@ module Application.Services {
 
         public deleteFactuur(factuur:FactuurData): ng.IPromise<any> {
             return this.$http({
-                url: "/rest/factuur/" + factuur.factuurNummer,
+                url: "/rest/factuur/" + factuur.uuid,
                 method: "DELETE"
             }).then((response) => {
                 this.dataService.reload();
@@ -66,6 +67,19 @@ module Application.Services {
         };
 
 // Util services
+        public findNextFactuurnummer():String {
+
+            var gebruiker:Gebruiker = this.dataService.getData();
+            var hoogste = 0;
+            for (var i = 0; i < gebruiker.facturen.length; i++) {
+                var factuurNr = parseInt(gebruiker.facturen[i].factuurNummer,10);
+                if (factuurNr>hoogste){
+                    hoogste = factuurNr;
+                }
+            }
+            return hoogste+1;;
+        }
+
         public getRegelByUuid(factuur:FactuurData, uuid:String):FactuurRegelData {
             for (var i = 0; i < factuur.factuurRegels.length; i++) {
                 var factuurRegel:FactuurRegelData = factuur.factuurRegels[i];

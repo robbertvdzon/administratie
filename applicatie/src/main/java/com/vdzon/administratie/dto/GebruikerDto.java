@@ -40,6 +40,7 @@ public class GebruikerDto {
         return facturen
                 .stream()
                 .map(factuur -> new FactuurDto(factuur))
+                .sorted((factuurDto1,factuurDto2)  -> factuurDto2.getFactuurNummer().compareTo(factuurDto1.getFactuurNummer()))
                 .collect(Collectors.toList());
     }
 

@@ -11,15 +11,8 @@ module Application.Controllers {
     }
 
     export class FactuurEditController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
-        factuurDataService:Application.Services.FactuurDataService;
 
-
-        constructor($scope, $rootScope, factuurDataService) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
-            this.factuurDataService = factuurDataService;
+        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private $filter) {
             this.initialize();
         }
 
@@ -62,6 +55,8 @@ module Application.Controllers {
 
         loadNewFactuur() {
             this.$scope.selectedfactuur = new FactuurData();
+            this.$scope.selectedfactuur.factuurNummer = this.factuurDataService.findNextFactuurnummer();
+            this.$scope.selectedfactuur.factuurDate = this.$filter('date')(new Date(),'dd-MM-yyyy');
             this.$scope.addMode = true;
             this.$rootScope.$broadcast('show-factuur-screen');
         }
