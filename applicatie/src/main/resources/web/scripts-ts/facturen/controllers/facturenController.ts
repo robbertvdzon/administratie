@@ -51,6 +51,8 @@ module Application.Controllers {
 
             this.$scope.$on("$destroy", function() {
                 unregisterCloseEditEvent();
+                showFactuurScreenEvent();
+                closeFactuurScreenEvent();
                 showFactuurRegelScreenEvent();
                 closeFactuurRegelScreenEvent();
             });

@@ -16,7 +16,7 @@ public class FactuurDto {
     private String uuid;
     private String factuurNummer;
     private String factuurDate;
-    private KlantDto klant;
+    private ContactDto klant;
     private boolean betaald;
     private List<FactuurRegelDto> factuurRegels;
     private double bedragExBtw = 0;
@@ -28,7 +28,7 @@ public class FactuurDto {
     public FactuurDto() {
     }
 
-    public FactuurDto(String uuid, String factuurNummer, String factuurDate, KlantDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public FactuurDto(String uuid, String factuurNummer, String factuurDate, ContactDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
         this.factuurDate = factuurDate;
@@ -41,7 +41,7 @@ public class FactuurDto {
     }
 
     public FactuurDto(Factuur factuur){
-        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getKlant()==null ? null : new KlantDto(factuur.getKlant()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw());
+        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getContact()==null ? null : new ContactDto(factuur.getContact()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw());
     }
 
     private static List<FactuurRegelDto> toFactuurRegelsDto(List<FactuurRegel> factuurRegels) {
@@ -52,7 +52,7 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return new Factuur(factuurNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toKlant(), betaald, toFactuurRegels(), uuid);
+        return new Factuur(factuurNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid);
     }
 
     private List<FactuurRegel> toFactuurRegels() {
@@ -86,11 +86,11 @@ public class FactuurDto {
         this.factuurDate = factuurDate;
     }
 
-    public KlantDto getKlant() {
+    public ContactDto getKlant() {
         return klant;
     }
 
-    public void setKlant(KlantDto klant) {
+    public void setKlant(ContactDto klant) {
         this.klant = klant;
     }
 

@@ -3,8 +3,7 @@ package com.vdzon.administratie.dto;
 
 import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.Factuur;
-import com.vdzon.administratie.model.Gebruiker;
-import com.vdzon.administratie.model.Klant;
+import com.vdzon.administratie.model.Contact;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +13,7 @@ public class AdministratieDto {
     private String uuid;
     private String name;
     private List<FactuurDto> facturen;
-    private List<KlantDto> adresboek;
+    private List<ContactDto> adresboek;
 
     public AdministratieDto() {
     }
@@ -25,10 +24,10 @@ public class AdministratieDto {
         this.facturen = toFacturenDto(administratie.getFacturen());
     }
 
-    private List<KlantDto> toAdressenDto(List<Klant> klanten) {
+    private List<ContactDto> toAdressenDto(List<Contact> klanten) {
         return klanten
                 .stream()
-                .map(klant -> new KlantDto(klant))
+                .map(klant -> new ContactDto(klant))
                 .collect(Collectors.toList());
     }
 
@@ -51,10 +50,10 @@ public class AdministratieDto {
                 .collect(Collectors.toList());
     }
 
-    private List<Klant> toAdressen() {
+    private List<Contact> toAdressen() {
         return adresboek
                 .stream()
-                .map(klant -> klant.toKlant())
+                .map(klant -> klant.toContact())
                 .collect(Collectors.toList());
     }
 
@@ -70,7 +69,7 @@ public class AdministratieDto {
         this.facturen = facturen;
     }
 
-    public void setAdresboek(List<KlantDto> adresboek) {
+    public void setAdresboek(List<ContactDto> adresboek) {
         this.adresboek = adresboek;
     }
 }

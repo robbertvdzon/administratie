@@ -22,6 +22,7 @@ module Application.Model {
         name:String;
         uuid:String;
         facturen:FactuurData[];
+        adresboek:ContactData[];
 
     }
 

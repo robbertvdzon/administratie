@@ -2,9 +2,7 @@ package com.vdzon.administratie.dto;
 
 
 import com.vdzon.administratie.model.Administratie;
-import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
-import com.vdzon.administratie.model.Klant;
 
 import java.util.List;
 import java.util.stream.Collectors;

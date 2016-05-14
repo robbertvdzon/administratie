@@ -14,12 +14,12 @@ public class Administratie {
     private String uuid;
     private String name;
     private List<Factuur> facturen;
-    private List<Klant> adresboek;
+    private List<Contact> adresboek;
 
     public Administratie() {
     }
 
-    public Administratie(String uuid, String name, List<Factuur> facturen, List<Klant> adresboek) {
+    public Administratie(String uuid, String name, List<Factuur> facturen, List<Contact> adresboek) {
         this.uuid = uuid;
         this.name = name;
         this.facturen = facturen;
@@ -42,8 +42,8 @@ public class Administratie {
         return Collections.unmodifiableList(facturen == null ? new ArrayList<Factuur>() : facturen);
     }
 
-    public List<Klant> getAdresboek() {
-        return Collections.unmodifiableList(adresboek == null ? new ArrayList<Klant>() : adresboek);
+    public List<Contact> getAdresboek() {
+        return Collections.unmodifiableList(adresboek == null ? new ArrayList<Contact>() : adresboek);
     }
 
     public void addFactuur(Factuur factuur) {
@@ -66,14 +66,14 @@ public class Administratie {
         return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
     }
 
-    public void addContact(Klant klant) {
-        adresboek.add(klant);
+    public void addContact(Contact contact) {
+        adresboek.add(contact);
     }
 
-    public void removeKlant(String klantNummer) {
-        for (Klant klant : getAdresboek()) {
-            if (klant.getKlantNummer().equals(klantNummer)) {
-                adresboek.remove(klant);
+    public void removeContact(String klantNummer) {
+        for (Contact contact : getAdresboek()) {
+            if (contact.getKlantNummer().equals(klantNummer)) {
+                adresboek.remove(contact);
             }
         }
     }

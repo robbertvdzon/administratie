@@ -1,0 +1,26 @@
+<div ng-cloak data-ng-controller="ContactEditController as contactenEditcontroller">
+    Contact {{selectedcontact.naam}}
+<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.delete()">
+    Verwijder
+</md-button>
+<br>
+
+<md-input-container flex>
+    <label>Naam</label>
+    <input ng-model="selectedcontact.naam" STYLE="background-color: #B2DFDB;">
+</md-input-container>
+
+<br>
+
+
+<br><br>
+<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.add()" ng-show="addMode">
+    Contact toevoegen
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.save()" ng-hide="addMode">
+    Contact opslaan
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.cancel()">
+    Annuleren
+</md-button>
+</div>

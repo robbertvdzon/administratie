@@ -34,7 +34,6 @@ module Application.Controllers {
                 this.deleteFactuurRegel(factuurregel);
             });
 
-
             this.$scope.$on("$destroy", function () {
                 loadFactuurToEditEvent();
                 loadFactuurToAddEvent();

@@ -42,6 +42,11 @@
             </md-button>
         </md-list-item>
         <md-list-item >
+            <md-button ng-href="#/contacten" ng-show="menuController.isAuth()" class="md-primary" id="contacten_main_button">
+                Contacten
+            </md-button>
+        </md-list-item>
+        <md-list-item >
             <md-button ng-href="#/facturen" ng-show="menuController.isAuth()" class="md-primary" id="rekeningen_main_button">
                 Rekeningen
             </md-button>
@@ -130,6 +135,15 @@
 <script src="scripts/facturen/controllers/facturenListController.js"></script>
 <script src="scripts/facturen/controllers/factuurEditController.js"></script>
 <script src="scripts/facturen/controllers/factuurRegelEditController.js"></script>
+
+<script src="scripts/contacten/model/ContactDataModel.js"></script>
+<script src="scripts/contacten/directives/contactRow.js"></script>
+<script src="scripts/contacten/directives/contactRegelRow.js"></script>
+<script src="scripts/contacten/services/contactDataService.js"></script>
+<script src="scripts/contacten/controllers/contactenController.js"></script>
+<script src="scripts/contacten/controllers/contactenListController.js"></script>
+<script src="scripts/contacten/controllers/contactEditController.js"></script>
+<script src="scripts/contacten/controllers/contactRegelEditController.js"></script>
 
 <!-- endbuild -->
 </body>

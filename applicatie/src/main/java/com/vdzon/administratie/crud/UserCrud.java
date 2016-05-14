@@ -48,10 +48,10 @@ public class UserCrud {
     private void buildTestData(String username, String name, String passwd) {
         System.out.println("Test use robbert al bestaat in database");
         System.out.println("Maak gebruiker robbert aan met testdata");
-        List<Klant> adresboek = new ArrayList<>();
+        List<Contact> adresboek = new ArrayList<>();
         List<Factuur> facturen = new ArrayList<>();
-        adresboek.add(new Klant(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"));
-        adresboek.add(new Klant(getNewUuid(),"002","Nozem","Haarlem","Weg2","2345AB","NL"));
+        adresboek.add(new Contact(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"));
+        adresboek.add(new Contact(getNewUuid(),"002","Nozem","Haarlem","Weg2","2345AB","NL"));
         FactuurRegel regel1 = new FactuurRegel("ontwikkeling",getRandomUren(),getRandomPrijs(),21,getNewUuid());
         FactuurRegel regel2 = new FactuurRegel("ontwikkeling",getRandomUren(),getRandomPrijs(),21,getNewUuid());
         FactuurRegel regel3 = new FactuurRegel("overwerk",getRandomUren(),getRandomPrijs(),21,getNewUuid());
@@ -60,8 +60,8 @@ public class UserCrud {
         regels1.add(regel2);
         List<FactuurRegel> regels2 = new ArrayList<>();
         regels2.add(regel3);
-        Factuur factuur1 = new Factuur("2016001",LocalDate.now(),new Klant(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, getNewUuid());
-        Factuur factuur2 = new Factuur("2016002",LocalDate.now(),new Klant(getNewUuid(),"002","loxia","Utrecht","Weg1","1234AB","NL"), false,regels2, getNewUuid());
+        Factuur factuur1 = new Factuur("2016001",LocalDate.now(),new Contact(getNewUuid(),"001","loxia","Utrecht","Weg1","1234AB","NL"), false,regels1, getNewUuid());
+        Factuur factuur2 = new Factuur("2016002",LocalDate.now(),new Contact(getNewUuid(),"002","loxia","Utrecht","Weg1","1234AB","NL"), false,regels2, getNewUuid());
         facturen.add(factuur1);
         facturen.add(factuur2);
         Administratie administratie = new Administratie(getNewUuid(),name,facturen, adresboek);

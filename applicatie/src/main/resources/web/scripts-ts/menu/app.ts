@@ -44,10 +44,15 @@ angular
                 controller: 'FacturenCtrl',
                 controllerAs: 'facturencontroller'
             })
-            .when('/facturenregel', {
-                templateUrl: 'facturen/views/main.html',
-                controller: 'FacturenregelCtrl'
+            .when('/contacten', {
+                templateUrl: 'contacten/views/main.html',
+                controller: 'ContactenCtrl',
+                controllerAs: 'contactencontroller'
             })
+            //.when('/facturenregel', {
+            //    templateUrl: 'facturen/views/main.html',
+            //    controller: 'FacturenregelCtrl'
+            //})
             .otherwise({
                 redirectTo: '/'
             });

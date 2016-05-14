@@ -15,7 +15,7 @@ public class Factuur {
     private String uuid;
     private String factuurNummer;
     private LocalDate factuurDate;
-    private Klant klant;
+    private Contact contact;
     private boolean betaald;
     private List<FactuurRegel> factuurRegels;
     private double bedragExBtw = 0;
@@ -25,10 +25,10 @@ public class Factuur {
     public Factuur() {
     }
 
-    public Factuur(String factuurNummer, LocalDate factuurDate, Klant klant, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
+    public Factuur(String factuurNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
         this.factuurNummer = factuurNummer;
         this.factuurDate = factuurDate;
-        this.klant = klant;
+        this.contact = contact;
         this.betaald = betaald;
         this.factuurRegels = factuurRegels;
         this.uuid = uuid;
@@ -51,12 +51,12 @@ public class Factuur {
         this.factuurDate = factuurDate;
     }
 
-    public Klant getKlant() {
-        return klant;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setKlant(Klant klant) {
-        this.klant = klant;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public boolean isBetaald() {

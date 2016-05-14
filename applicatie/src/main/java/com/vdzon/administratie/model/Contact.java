@@ -3,8 +3,8 @@ package com.vdzon.administratie.model;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity("klant")
-public class Klant {
+@Entity("contact")
+public class Contact {
 
     @Id
     private String uuid;
@@ -15,10 +15,10 @@ public class Klant {
     private String postcode;
     private String land;
 
-    public Klant() {
+    public Contact() {
     }
 
-    public Klant(String uuid, String klantNummer, String naam, String woonplaats, String adres, String postcode, String land) {
+    public Contact(String uuid, String klantNummer, String naam, String woonplaats, String adres, String postcode, String land) {
         this.uuid = uuid;
         this.klantNummer = klantNummer;
         this.naam = naam;

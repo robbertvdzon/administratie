@@ -3,6 +3,7 @@ package com.vdzon.administratie;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vdzon.administratie.auth.AuthResource;
+import com.vdzon.administratie.contact.ContactResource;
 import com.vdzon.administratie.factuur.FactuurResource;
 import com.vdzon.administratie.gebruiker.GebruikerResource;
 import com.vdzon.administratie.version.VersionResource;
@@ -52,6 +53,7 @@ public class App {
         AuthResource authResource = injector.getInstance(AuthResource.class);
         VersionResource versionResource = injector.getInstance(VersionResource.class);
         FactuurResource factuurResource = injector.getInstance(FactuurResource.class);
+        ContactResource contactResource = injector.getInstance(ContactResource.class);
         GebruikerResource gebruikerResource = injector.getInstance(GebruikerResource.class);
 
 
