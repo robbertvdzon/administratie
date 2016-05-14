@@ -34,7 +34,7 @@ module Application.Services {
         };
 
         public reload() {
-            return this.$http.get('/users/getcurrentuser').success((data)=> {
+            return this.$http.get('/users/getcurrentadministratie').success((data)=> {
                 this.setData(data);
             }).error(()=> {
                 this.setData(undefined);

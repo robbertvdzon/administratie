@@ -3,11 +3,11 @@
 module Application.Controllers {
 
     import FactuurData = Application.Model.FactuurData;
-    import Gebruiker = Application.Model.Gebruiker;
     import FactuurRegelData = Application.Model.FactuurRegelData;
+    import Administratie = Application.Model.Administratie;
 
     interface MyScope extends ng.IScope {
-        gebruiker : Gebruiker;
+        administratie : Administratie;
 
     }
 
@@ -38,7 +38,7 @@ module Application.Controllers {
 
         loadData() {
             if (this.dataService.getData() != undefined) {
-                this.$scope.gebruiker = this.dataService.getData();
+                this.$scope.administratie = this.dataService.getData();
             }
         }
 

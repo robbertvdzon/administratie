@@ -3,8 +3,8 @@
 module Application.Services {
 
     import FactuurData = Application.Model.FactuurData;
-    import Gebruiker = Application.Model.Gebruiker;
     import FactuurRegelData = Application.Model.FactuurRegelData;
+    import Administratie = Application.Model.Administratie;
 
     export class FactuurDataService {
 
@@ -13,9 +13,9 @@ module Application.Services {
         }
 
         public getFactuurByUuid(uuid):FactuurData {
-            var gebruiker:Gebruiker  = this.dataService.getData();
-            for (var i = 0; i < gebruiker.facturen.length; i++) {
-                var factuur:FactuurData = gebruiker.facturen[i];
+            var administratie:Administratie = this.dataService.getData();
+            for (var i = 0; i < administratie.facturen.length; i++) {
+                var factuur:FactuurData = administratie.facturen[i];
                 if (factuur.uuid === uuid) {
                     return factuur;
                 }
@@ -67,10 +67,10 @@ module Application.Services {
 
 // Util services
         public findNextFactuurnummer():string {
-            var gebruiker:Gebruiker = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData();
             var hoogste:number = 0;
-            for (var i = 0; i < gebruiker.facturen.length; i++) {
-                var factuurNr:number = parseInt(String(gebruiker.facturen[i].factuurNummer),10);
+            for (var i = 0; i < administratie.facturen.length; i++) {
+                var factuurNr:number = parseInt(String(administratie.facturen[i].factuurNummer),10);
                 if (factuurNr>hoogste){
                     hoogste = factuurNr;
                 }

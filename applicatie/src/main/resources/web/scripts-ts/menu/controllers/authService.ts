@@ -31,7 +31,7 @@ module Application.Services {
         };
 
         public checkLogin() {
-            return this.$http.get('/users/getcurrentuser').success((data) => {
+            return this.$http.get('/users/getcurrentadministratie').success((data) => {
                 this.dataService.setData(data);
                 this.authData.userData = data;
             }).error(()=> {

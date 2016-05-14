@@ -25,13 +25,13 @@ module Application.Model {
 
     }
 
-    export class Gebruiker {
-        name:String;
-        username:String;
-        password:String;
-        uuid:String;
-        administraties:Administratie[];
-
-    }
+    //export class Gebruiker {
+    //    name:String;
+    //    username:String;
+    //    password:String;
+    //    uuid:String;
+    //    administraties:Administratie[];
+    //
+    //}
 }
 

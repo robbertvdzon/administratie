@@ -1,6 +1,7 @@
 package com.vdzon.administratie.auth;
 
 import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.dto.AdministratieDto;
 import com.vdzon.administratie.dto.GebruikerDto;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
@@ -37,13 +38,14 @@ public class AuthService {
         return new SingleAnswer("ok");
     }
 
-    protected Object getcurrentuser(Request req, Response res) throws Exception{
+    protected Object  getCurrentAdministratie(Request req, Response res) throws Exception{
         String uuid = SessionHelper.getAuthenticatedUserUuid(req);
         if (uuid == null){
             res.status(404);
+            res.status(404);
             return new SingleAnswer("not found");
         }
-        return new GebruikerDto(userCrud.getGebruiker(uuid));
+        return new AdministratieDto(userCrud.getGebruiker(uuid).getDefaultAdministratie());
     }
 
 }
