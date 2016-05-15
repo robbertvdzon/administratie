@@ -47,12 +47,14 @@ module Application.Controllers {
 
         selectContact(uuid: String) {
             this.$rootScope.$broadcast('update-contact', this.factuurDataService.getContactByUuid(uuid));
-            this.$rootScope.$broadcast('close-search-contact-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_CONTACT);
+            //this.$rootScope.$broadcast('close-search-contact-screen');
         }
 
 
         cancel() {
-            this.$rootScope.$broadcast('close-search-contact-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_CONTACT);
+            //this.$rootScope.$broadcast('close-search-contact-screen');
         }
 
 

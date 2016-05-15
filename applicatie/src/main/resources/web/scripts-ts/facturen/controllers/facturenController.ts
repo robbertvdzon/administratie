@@ -2,6 +2,10 @@
 
 module Application.Controllers {
 
+    export var SCREEN_FACTUUR_LIJST = "SCREEN_FACTUUR_LIJST";
+    export var SCREEN_FACTUUR_EDIT = "SCREEN_FACTUUR_EDIT";
+    export var SCREEN_FACTUUR_REGEL = "SCREEN_FACTUUR_REGEL";
+    export var SCREEN_FACTUUR_CONTACT = "SCREEN_FACTUUR_CONTACT";
 
     interface MyScope extends ng.IScope {
         factuurTabDisabled:boolean;
@@ -27,67 +31,56 @@ module Application.Controllers {
 
         initialize() {
 
-            var unregisterCloseEditEvent = this.$rootScope.$on('close-edit-factuur', ()=> {
-                this.showListPage();
+            var showPageEvent  = this.$rootScope.$on('factuur-show-page', (event, page)=> {
+                this.showPage(page);
             });
 
-            var showFactuurScreenEvent = this.$rootScope.$on('show-factuur-screen', ()=> {
-                this.showFactuurPage();
-            });
-
-            var closeFactuurScreenEvent = this.$rootScope.$on('close-factuur-screen', ()=> {
-                this.showListPage();
-            });
-
-            var showFactuurRegelScreenEvent = this.$rootScope.$on('show-factuurregel-screen', ()=> {
-                this.showFactuurRegelPage();
-            });
-
-            var closeFactuurRegelScreenEvent = this.$rootScope.$on('close-factuurregel-screen', ()=> {
-                this.showFactuurPage();
-            });
-            var showSearchContactScreenEvent = this.$rootScope.$on('show-search-contact-screen', ()=> {
-                this.showSearchContactPage();
-            });
-
-            var closeSearchContactScreenEvent  = this.$rootScope.$on('close-search-contact-screen', ()=> {
-                this.showFactuurPage();
+            var closePageEvent  = this.$rootScope.$on('factuur-close-page', (event, page)=> {
+                this.closePage(page);
             });
 
             this.$scope.$on("$destroy", function() {
-                unregisterCloseEditEvent();
-                showFactuurScreenEvent();
-                closeFactuurScreenEvent();
-                showFactuurRegelScreenEvent();
-                closeFactuurRegelScreenEvent();
-                showSearchContactScreenEvent();
-                closeSearchContactScreenEvent();
+                showPageEvent();
+                closePageEvent();
             });
 
         }
 
-
-        showListPage() {
-            this.$scope.selectedIndex=0;
+        showPage(page:String) {
             this.$scope.factuurTabDisabled=true;
             this.$scope.factuurRegelTabDisabled=true;
             this.$scope.searchContactTabDisabled=true;
+            if (page == SCREEN_FACTUUR_LIJST) {
+                this.$scope.selectedIndex=0;
+            }
+            if (page == SCREEN_FACTUUR_EDIT) {
+                this.$scope.selectedIndex=1;
+                this.$scope.factuurTabDisabled=false;
+            }
+            if (page == SCREEN_FACTUUR_REGEL) {
+                this.$scope.selectedIndex=2;
+                this.$scope.factuurTabDisabled=false;
+                this.$scope.factuurRegelTabDisabled=false;
+            }
+            if (page == SCREEN_FACTUUR_CONTACT) {
+                this.$scope.selectedIndex=3;
+                this.$scope.factuurTabDisabled=false;
+                this.$scope.searchContactTabDisabled=false;
+            }
         }
-        showFactuurPage() {
-            this.$scope.selectedIndex=1;
-            this.$scope.factuurTabDisabled=false;
-            this.$scope.factuurRegelTabDisabled=true;
-            this.$scope.searchContactTabDisabled=true;
-        }
-        showFactuurRegelPage() {
-            this.$scope.selectedIndex=2;
-            this.$scope.factuurRegelTabDisabled=false;
-            this.$scope.searchContactTabDisabled=true;
-        }
-        showSearchContactPage() {
-            this.$scope.selectedIndex=3;
-            this.$scope.factuurRegelTabDisabled=true;
-            this.$scope.searchContactTabDisabled=false;
+
+        closePage(page:number) {
+            if (page == SCREEN_FACTUUR_LIJST) {
+            }
+            if (page == SCREEN_FACTUUR_EDIT) {
+                this.showPage(SCREEN_FACTUUR_LIJST);
+            }
+            if (page == SCREEN_FACTUUR_REGEL) {
+                this.showPage(SCREEN_FACTUUR_EDIT);
+            }
+            if (page == SCREEN_FACTUUR_CONTACT) {
+                this.showPage(SCREEN_FACTUUR_EDIT);
+            }
         }
 
     }

@@ -37,7 +37,8 @@ module Application.Controllers {
         loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
             this.$scope.selectedfactuurregel = selectedfactuurregel;
             this.$scope.addRegelMode = false;
-            this.$rootScope.$broadcast('show-factuurregel-screen');
+            //this.$rootScope.$broadcast('show-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_REGEL);
          }
 
         loadNewFactuurRegel() {
@@ -48,28 +49,33 @@ module Application.Controllers {
             this.$scope.selectedfactuurregel.stuksPrijs = 72.5;
             this.$scope.selectedfactuurregel.uuid = "";
             this.$scope.addRegelMode = true;
-            this.$rootScope.$broadcast('show-factuurregel-screen');
+            //this.$rootScope.$broadcast('show-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_REGEL);
         }
 
 
         cancelAddRegel(){
-            this.$rootScope.$broadcast('close-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_REGEL);
+            //this.$rootScope.$broadcast('close-factuurregel-screen');
         }
 
         saveAddRegel(){
             this.$rootScope.$broadcast('add-factuurregel-screen', this.$scope.selectedfactuurregel);
-            this.$rootScope.$broadcast('close-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_REGEL);
+            //this.$rootScope.$broadcast('close-factuurregel-screen');
         }
 
         saveEditRegel(){
             this.$rootScope.$broadcast('update-factuurregel-screen', this.$scope.selectedfactuurregel);
-            this.$rootScope.$broadcast('close-factuurregel-screen');
+            //this.$rootScope.$broadcast('close-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_REGEL);
         }
 
 
         deleteRegel() {
             this.$rootScope.$broadcast('delete-factuurregel-screen', this.$scope.selectedfactuurregel);
-            this.$rootScope.$broadcast('close-factuurregel-screen');
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_REGEL);
+            //this.$rootScope.$broadcast('close-factuurregel-screen');
         }
     }
 }
