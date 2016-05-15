@@ -6,6 +6,7 @@ module Application.Controllers {
     interface MyScope extends ng.IScope {
         factuurTabDisabled:boolean;
         factuurRegelTabDisabled:boolean;
+        searchContactTabDisabled:boolean;
         selectedIndex : number;
 
     }
@@ -45,9 +46,13 @@ module Application.Controllers {
             var closeFactuurRegelScreenEvent = this.$rootScope.$on('close-factuurregel-screen', ()=> {
                 this.showFactuurPage();
             });
+            var showSearchContactScreenEvent = this.$rootScope.$on('show-search-contact-screen', ()=> {
+                this.showSearchContactPage();
+            });
 
-
-
+            var closeSearchContactScreenEvent  = this.$rootScope.$on('close-search-contact-screen', ()=> {
+                this.showFactuurPage();
+            });
 
             this.$scope.$on("$destroy", function() {
                 unregisterCloseEditEvent();
@@ -55,6 +60,8 @@ module Application.Controllers {
                 closeFactuurScreenEvent();
                 showFactuurRegelScreenEvent();
                 closeFactuurRegelScreenEvent();
+                showSearchContactScreenEvent();
+                closeSearchContactScreenEvent();
             });
 
         }
@@ -64,15 +71,23 @@ module Application.Controllers {
             this.$scope.selectedIndex=0;
             this.$scope.factuurTabDisabled=true;
             this.$scope.factuurRegelTabDisabled=true;
+            this.$scope.searchContactTabDisabled=true;
         }
         showFactuurPage() {
-            this.$scope.factuurTabDisabled=false;
             this.$scope.selectedIndex=1;
+            this.$scope.factuurTabDisabled=false;
             this.$scope.factuurRegelTabDisabled=true;
+            this.$scope.searchContactTabDisabled=true;
         }
         showFactuurRegelPage() {
-            this.$scope.factuurRegelTabDisabled=false;
             this.$scope.selectedIndex=2;
+            this.$scope.factuurRegelTabDisabled=false;
+            this.$scope.searchContactTabDisabled=true;
+        }
+        showSearchContactPage() {
+            this.$scope.selectedIndex=3;
+            this.$scope.factuurRegelTabDisabled=true;
+            this.$scope.searchContactTabDisabled=false;
         }
 
     }

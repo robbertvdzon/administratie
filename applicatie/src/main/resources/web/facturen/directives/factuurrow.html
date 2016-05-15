@@ -1,6 +1,7 @@
 
 <table><tr>
     <td width="100">{{ factuur.factuurNummer }}</td>
+    <td width="100">{{ factuur.klant.naam }}</td>
     <td width="100">{{factuur.factuurDate}}</td>
     <td width="100">&euro; {{ factuur.bedragExBtw }}</td>
     <td> <small>{{ factuur.betaald?"":"(*)" }}</small> </td>

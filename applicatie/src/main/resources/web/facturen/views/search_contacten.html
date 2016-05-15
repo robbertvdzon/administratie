@@ -1,0 +1,21 @@
+<div ng-cloak data-ng-controller="SearchContactController as searchContactController">
+    Facturen
+
+    <md-list>
+        <md-list-item ng-repeat="contact in administratie.adresboek"
+                      ng-click="searchContactController.selectContact(contact.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
+            <div md-ink-ripple style="width: 100%;">
+                <contact-row></contact-row>
+            </div>
+        </md-list-item>
+    </md-list>
+
+    <br>
+    <br>
+
+    <md-button class="md-raised md-primary" ng-click="searchContactController.cancel()">
+        Annuleren
+    </md-button>
+
+
+</div>

@@ -16,6 +16,7 @@ module Application.Model {
         uuid:String;
         betaald:boolean;
         factuurDate:String;
+        klant:ContactData;
     }
 
     export class Administratie {

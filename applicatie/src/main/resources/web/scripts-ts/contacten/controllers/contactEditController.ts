@@ -62,7 +62,7 @@ module Application.Controllers {
             this.contactDataService.addContact(this.$scope.selectedcontact).then((response) => {
                 this.$rootScope.$broadcast('close-edit-contact');
             }).catch((response) => {
-                alert("Toeveogen mislukt");
+                alert("Toevoegen mislukt");
             })
         }
 

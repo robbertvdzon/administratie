@@ -3,8 +3,10 @@
 module Application.Controllers {
 
     import FactuurData = Application.Model.FactuurData;
+    import ContactData = Application.Model.ContactData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import FactuurDataService = Application.Services.FactuurDataService;
+    import ContactDataService = Application.Services.ContactDataService;
 
     interface MyScope extends ng.IScope {
         selectedfactuur : FactuurData;
@@ -13,7 +15,7 @@ module Application.Controllers {
 
     export class FactuurEditController {
 
-        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private $filter) {
+        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private $filter, private contactDataService:ContactDataService) {
             this.initialize();
         }
 
@@ -32,6 +34,9 @@ module Application.Controllers {
             });
             var deleteFactuurRegelEvent = this.$rootScope.$on('delete-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
                 this.deleteFactuurRegel(factuurregel);
+            });
+            var addFactuurRegelEvent = this.$rootScope.$on('update-contact', (event, contact : ContactData)=> {
+                this.updateContact(contact);
             });
 
             this.$scope.$on("$destroy", function () {
@@ -73,7 +78,7 @@ module Application.Controllers {
             this.factuurDataService.addFactuur(this.$scope.selectedfactuur).then((response) => {
                 this.$rootScope.$broadcast('close-edit-factuur');
             }).catch((response) => {
-                alert("Toeveogen mislukt");
+                alert("Toevoegen mislukt");
             })
         }
 
@@ -110,6 +115,16 @@ module Application.Controllers {
             this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuur, factuurregel);
         }
 
+        searchContact(){
+            this.$rootScope.$broadcast('show-search-contact-screen');
+        }
+
+        private updateContact(contact:ContactData):void {
+            var contactClone = this.contactDataService.cloneContact(contact);
+            // TODO: genereer uuid?
+            contactClone.uuid = "";
+            this.$scope.selectedfactuur.klant = contactClone;
+        }
     }
 }
 

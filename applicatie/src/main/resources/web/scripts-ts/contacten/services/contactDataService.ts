@@ -23,6 +23,7 @@ module Application.Services {
         }
 
         public cloneContact(contact:ContactData):ContactData {
+            if (contact==null) return null;
             var contactClone = new ContactData();
             contactClone.uuid = contact.uuid;
             contactClone.naam = contact.naam;

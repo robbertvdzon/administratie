@@ -3,13 +3,16 @@
 module Application.Services {
 
     import FactuurData = Application.Model.FactuurData;
+    import ContactData = Application.Model.ContactData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
+    import ContactDataService = Application.Services.ContactDataService;
+
 
     export class FactuurDataService {
 
 
-        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice) {
+        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService) {
         }
 
         public getFactuurByUuid(uuid):FactuurData {
@@ -30,6 +33,7 @@ module Application.Services {
             factuurClone.factuurRegels = factuur.factuurRegels;
             factuurClone.betaald = factuur.betaald;
             factuurClone.factuurDate = factuur.factuurDate;
+            factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
             return factuurClone;
         }
 
@@ -129,7 +133,16 @@ module Application.Services {
         }
 
 
-
+        getContactByUuid(uuid:String):ContactData {
+            var administratie:Administratie = this.dataService.getData();
+            for (var i = 0; i < administratie.adresboek.length; i++) {
+                var contact:ContactData = administratie.adresboek[i];
+                if (contact.uuid === uuid) {
+                    return contact;
+                }
+            }
+            return null;
+        }
     }
 }
 
