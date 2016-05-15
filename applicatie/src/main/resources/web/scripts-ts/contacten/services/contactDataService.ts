@@ -25,7 +25,12 @@ module Application.Services {
         public cloneContact(contact:ContactData):ContactData {
             var contactClone = new ContactData();
             contactClone.uuid = contact.uuid;
-            contactClone.name = contact.name;
+            contactClone.naam = contact.naam;
+            contactClone.klantNummer = contact.klantNummer;
+            contactClone.land = contact.land;
+            contactClone.postcode = contact.postcode;
+            contactClone.woonplaats = contact.woonplaats;
+            contactClone.adres = contact.adres;
             return contactClone;
         }
 
@@ -60,6 +65,19 @@ module Application.Services {
                 this.dataService.reload();
             });
         };
+
+        public findNextKlantnummer():string {
+            var administratie:Administratie = this.dataService.getData();
+            var hoogste:number = 0;
+            for (var i = 0; i < administratie.adresboek.length; i++) {
+                var klantNr:number = parseInt(String(administratie.adresboek[i].klantNummer),10);
+                if (klantNr>hoogste){
+                    hoogste = klantNr;
+                }
+            }
+            var nieuwNummer = hoogste+1;
+            return ""+nieuwNummer;
+        }
 
     }
 }

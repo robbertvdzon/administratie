@@ -17,7 +17,7 @@ public class Factuur {
     private LocalDate factuurDate;
     private Contact contact;
     private boolean betaald;
-    private List<FactuurRegel> factuurRegels;
+    private List<FactuurRegel> factuurRegels = new ArrayList<>();
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
@@ -72,7 +72,7 @@ public class Factuur {
     }
 
     public List<FactuurRegel> getFactuurRegels() {
-        return Collections.unmodifiableList(factuurRegels == null ? new ArrayList<FactuurRegel>() : factuurRegels);
+        return Collections.unmodifiableList(new ArrayList<>(factuurRegels));
     }
 
     public void removeAllFactuurRegels() {

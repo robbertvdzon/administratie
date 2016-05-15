@@ -16,7 +16,7 @@ public class Gebruiker {
     private String name;
     private String username;
     private String password;
-    private List<Administratie> administraties;
+    private List<Administratie> administraties = new ArrayList<>();
 
     public Gebruiker() {
     }
@@ -58,7 +58,7 @@ public class Gebruiker {
     }
 
     public List<Administratie> getAdministraties() {
-        return Collections.unmodifiableList(administraties == null ? new ArrayList<Administratie>() : administraties);
+        return Collections.unmodifiableList(new ArrayList<>(administraties));
     }
 
     public Administratie getDefaultAdministratie(){

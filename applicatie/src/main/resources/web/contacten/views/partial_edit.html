@@ -1,26 +1,52 @@
 <div ng-cloak data-ng-controller="ContactEditController as contactenEditcontroller">
     Contact {{selectedcontact.naam}}
-<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.delete()">
-    Verwijder
-</md-button>
-<br>
+    <md-button class="md-raised md-primary" ng-click="contactenEditcontroller.delete()">
+        Verwijder
+    </md-button>
+    <br>
 
-<md-input-container flex>
-    <label>Naam</label>
-    <input ng-model="selectedcontact.naam" STYLE="background-color: #B2DFDB;">
-</md-input-container>
+    <md-input-container flex>
+        <label>KlantNummer</label>
+        <input ng-model="selectedcontact.klantNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
 
-<br>
+    <md-input-container flex>
+        <label>Naam</label>
+        <input ng-model="selectedcontact.naam" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Woonplaats</label>
+        <input ng-model="selectedcontact.woonplaats" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Adres</label>
+        <input ng-model="selectedcontact.adres" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Postcode</label>
+        <input ng-model="selectedcontact.postcode" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Land</label>
+        <input ng-model="selectedcontact.land" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
 
 
-<br><br>
-<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.add()" ng-show="addMode">
-    Contact toevoegen
-</md-button>
-<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.save()" ng-hide="addMode">
-    Contact opslaan
-</md-button>
-<md-button class="md-raised md-primary"  ng-click="contactenEditcontroller.cancel()">
-    Annuleren
-</md-button>
+    <br>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="contactenEditcontroller.add()" ng-show="addMode">
+        Contact toevoegen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="contactenEditcontroller.save()" ng-hide="addMode">
+        Contact opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="contactenEditcontroller.cancel()">
+        Annuleren
+    </md-button>
 </div>

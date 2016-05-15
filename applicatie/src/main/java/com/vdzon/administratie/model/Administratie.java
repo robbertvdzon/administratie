@@ -13,8 +13,8 @@ public class Administratie {
     @Id
     private String uuid;
     private String name;
-    private List<Factuur> facturen;
-    private List<Contact> adresboek;
+    private List<Factuur> facturen = new ArrayList<>();
+    private List<Contact> adresboek = new ArrayList<>();
 
     public Administratie() {
     }
@@ -39,11 +39,11 @@ public class Administratie {
     }
 
     public List<Factuur> getFacturen() {
-        return Collections.unmodifiableList(facturen == null ? new ArrayList<Factuur>() : facturen);
+        return Collections.unmodifiableList(new ArrayList<>(facturen));
     }
 
     public List<Contact> getAdresboek() {
-        return Collections.unmodifiableList(adresboek == null ? new ArrayList<Contact>() : adresboek);
+        return Collections.unmodifiableList(new ArrayList<>(adresboek));
     }
 
     public void addFactuur(Factuur factuur) {
@@ -70,10 +70,11 @@ public class Administratie {
         adresboek.add(contact);
     }
 
-    public void removeContact(String klantNummer) {
-        for (Contact contact : getAdresboek()) {
-            if (contact.getKlantNummer().equals(klantNummer)) {
-                adresboek.remove(contact);
+    public void removeContact(String uuid) {
+        List<Contact> adresboekClone = getAdresboek();
+        for (Contact contact : adresboekClone) {
+            if (contact.getUuid().equals(uuid)) {
+                this.adresboek.remove(contact);
             }
         }
     }

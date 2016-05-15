@@ -22,12 +22,14 @@ public class AdministratieDto {
         this.uuid = administratie.getUuid();
         this.name = administratie.getName();
         this.facturen = toFacturenDto(administratie.getFacturen());
+        this.adresboek = toAdressenDto(administratie.getAdresboek());
     }
 
     private List<ContactDto> toAdressenDto(List<Contact> klanten) {
         return klanten
                 .stream()
                 .map(klant -> new ContactDto(klant))
+                .sorted((ContactDto1,ContactDto2)  -> ContactDto2.getKlantNummer().compareTo(ContactDto1.getKlantNummer()))
                 .collect(Collectors.toList());
     }
 

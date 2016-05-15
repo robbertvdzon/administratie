@@ -43,7 +43,9 @@ module Application.Controllers {
 
         loadNewFactuur() {
             this.$scope.selectedcontact = new ContactData();
-            this.$scope.selectedcontact.name = "gebruiker";
+            this.$scope.selectedcontact.naam = "klant";
+            this.$scope.selectedcontact.klantNummer = this.contactDataService.findNextKlantnummer();
+            this.$scope.selectedcontact.land = "Nederland";
             this.$scope.addMode = true;
             this.$rootScope.$broadcast('show-contact-screen');
         }

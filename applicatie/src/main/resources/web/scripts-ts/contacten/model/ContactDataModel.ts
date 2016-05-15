@@ -3,8 +3,14 @@
 module Application.Model {
 
     export class ContactData {
-        name:String;
+        naam:String;
+        klantNummer:String;
         uuid:String;
+        woonplaats:String;
+        adres:String;
+        postcode:String;
+        land :String;
+
     }
 }
 
