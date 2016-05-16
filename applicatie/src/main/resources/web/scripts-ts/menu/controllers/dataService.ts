@@ -26,7 +26,6 @@ module Application.Services {
 
         public setData (data: any) {
             this.userData = data;
-            alert("send broadcast "+data.facturen.length);
             this.$rootScope.$broadcast('data-updated', data);
         };
 

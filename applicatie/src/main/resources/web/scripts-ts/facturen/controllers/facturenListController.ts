@@ -23,7 +23,6 @@ module Application.Controllers {
 
         initialize() {
             this.$scope.data = this.factuurGuiService.getFactuurGui().data;
-            alert(this.$scope.data);
         }
 
         edit(uuid: String) {

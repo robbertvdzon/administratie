@@ -2,7 +2,7 @@
     Facturen
 
     <md-list>
-        <md-list-item ng-repeat="contact in administratie.adresboek"
+        <md-list-item ng-repeat="contact in data.administratie.adresboek"
                       ng-click="searchContactController.selectContact(contact.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
             <div md-ink-ripple style="width: 100%;">
                 <contact-row></contact-row>

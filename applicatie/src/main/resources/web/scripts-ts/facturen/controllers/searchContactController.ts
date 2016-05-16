@@ -7,39 +7,27 @@ module Application.Controllers {
     import Administratie = Application.Model.Administratie;
     import FactuurDataService = Application.Services.FactuurDataService;
     import FactuurGuiService = Application.Services.FactuurGuiService;
+    import FactuurGuiData = Application.Services.FactuurGuiData;
+    import MyDataservice = Application.Services.MyDataservice;
+
 
     interface MyScope extends ng.IScope {
-        administratie : Administratie;
+        data : FactuurGuiData;
     }
 
     export class SearchContactController {
         $scope:MyScope;
         $rootScope:ng.IScope;
-        dataService:Application.Services.MyDataservice;
 
-        constructor($scope:MyScope, $rootScope, dataService, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
+        constructor($scope:MyScope, $rootScope, private dataService:MyDataservice , private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
-            this.dataService = dataService;
             this.initialize();
         }
 
+        //
         initialize() {
-            var unregisterDataUpdatedEvent = this.$rootScope.$on('data-updated', ()=> {
-                this.loadData();
-            });
-
-            this.$scope.$on("$destroy", function() {
-                unregisterDataUpdatedEvent();
-            });
-
-            this.loadData();
-        }
-
-        loadData() {
-            if (this.dataService.getData() != undefined) {
-                this.$scope.administratie = this.dataService.getData();
-            }
+            this.$scope.data = this.factuurGuiService.getFactuurGui().data;
         }
 
         selectContact(uuid: String) {
