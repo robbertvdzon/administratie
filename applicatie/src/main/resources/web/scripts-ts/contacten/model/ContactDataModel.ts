@@ -10,6 +10,8 @@ module Application.Model {
         adres:String;
         postcode:String;
         land :String;
+        // velden voor gui
+        addToAdresboek : boolean;
 
     }
 }

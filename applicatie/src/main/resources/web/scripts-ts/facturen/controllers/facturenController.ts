@@ -6,11 +6,15 @@ module Application.Controllers {
     export var SCREEN_FACTUUR_EDIT = "SCREEN_FACTUUR_EDIT";
     export var SCREEN_FACTUUR_REGEL = "SCREEN_FACTUUR_REGEL";
     export var SCREEN_FACTUUR_CONTACT = "SCREEN_FACTUUR_CONTACT";
+    export var SCREEN_FACTUUR_EDIT_DETAIL = "SCREEN_FACTUUR_EDIT_DETAIL";
+    export var SCREEN_FACTUUR_EDIT_CONTACT = "SCREEN_FACTUUR_EDIT_CONTACT";
 
     interface MyScope extends ng.IScope {
         factuurTabDisabled:boolean;
+        factuurDetailTabDisabled:boolean;
         factuurRegelTabDisabled:boolean;
         searchContactTabDisabled:boolean;
+        factuurEditContactTabDisabled:boolean;
         selectedIndex : number;
 
     }
@@ -50,6 +54,9 @@ module Application.Controllers {
             this.$scope.factuurTabDisabled=true;
             this.$scope.factuurRegelTabDisabled=true;
             this.$scope.searchContactTabDisabled=true;
+            this.$scope.factuurDetailTabDisabled=true;
+            this.$scope.factuurEditContactTabDisabled=true;
+
             if (page == SCREEN_FACTUUR_LIJST) {
                 this.$scope.selectedIndex=0;
             }
@@ -67,9 +74,20 @@ module Application.Controllers {
                 this.$scope.factuurTabDisabled=false;
                 this.$scope.searchContactTabDisabled=false;
             }
+            if (page == SCREEN_FACTUUR_EDIT_DETAIL) {
+                this.$scope.selectedIndex=4;
+                this.$scope.factuurTabDisabled=false;
+                this.$scope.factuurDetailTabDisabled=false;
+            }
+            if (page == SCREEN_FACTUUR_EDIT_CONTACT) {
+                this.$scope.selectedIndex=5;
+                this.$scope.factuurTabDisabled=false;
+                this.$scope.factuurEditContactTabDisabled=false;
+            }
+
         }
 
-        closePage(page:number) {
+        closePage(page:String) {
             if (page == SCREEN_FACTUUR_LIJST) {
             }
             if (page == SCREEN_FACTUUR_EDIT) {
@@ -79,6 +97,12 @@ module Application.Controllers {
                 this.showPage(SCREEN_FACTUUR_EDIT);
             }
             if (page == SCREEN_FACTUUR_CONTACT) {
+                this.showPage(SCREEN_FACTUUR_EDIT);
+            }
+            if (page == SCREEN_FACTUUR_EDIT_DETAIL) {
+                this.showPage(SCREEN_FACTUUR_EDIT);
+            }
+            if (page == SCREEN_FACTUUR_EDIT_CONTACT) {
                 this.showPage(SCREEN_FACTUUR_EDIT);
             }
         }

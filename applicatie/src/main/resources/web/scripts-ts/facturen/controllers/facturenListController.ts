@@ -44,12 +44,14 @@ module Application.Controllers {
 
 
         edit(uuid: String) {
-            this.$rootScope.$broadcast('load-factuur-to-edit', uuid);
+            this.$rootScope.$broadcast('set_existing_factuur_as_selected', uuid);
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT);
         }
 
 
         newFactuur() {
-            this.$rootScope.$broadcast('load-factuur-to-add');
+            this.$rootScope.$broadcast('create_and_select_new_factuur');
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT);
         }
 
 

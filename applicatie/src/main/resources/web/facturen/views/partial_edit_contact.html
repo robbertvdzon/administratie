@@ -1,0 +1,35 @@
+<div ng-cloak data-ng-controller="FactuurEditController as facturenEditcontroller">
+
+    <md-input-container flex>
+        <label>Naam</label>
+        <input ng-model="factuurToEdit.klant.naam" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>adres</label>
+        <input ng-model="factuurToEdit.klant.adres" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>postcode</label>
+        <input ng-model="factuurToEdit.klant.postcode" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>woonplaats</label>
+        <input ng-model="factuurToEdit.klant.woonplaats" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>Land</label>
+        <input ng-model="factuurToEdit.klant.land" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <label>Toevoegen aan adresboek:
+        <input type="checkbox" ng-model="addToAdresboek">
+    </label><br/>
+
+
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.saveContactDetails()" ng-hide="addMode">
+        Ok
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.cancelEditDetails()">
+        Annuleren
+    </md-button>
+
+</div>

@@ -35,7 +35,6 @@ module Application.Services {
             return contactClone;
         }
 
-
         public saveContact(contact:ContactData): ng.IPromise<any> {
             return this.$http({
                 url: "/rest/contact/",
@@ -46,6 +45,7 @@ module Application.Services {
                 this.dataService.reload();
             });
         };
+
 
         public deleteContact(contact:ContactData): ng.IPromise<any> {
             return this.$http({

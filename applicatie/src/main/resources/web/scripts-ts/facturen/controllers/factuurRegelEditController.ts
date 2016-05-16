@@ -47,7 +47,7 @@ module Application.Controllers {
             this.$scope.selectedfactuurregel.aantal = 1;
             this.$scope.selectedfactuurregel.btwPercentage = 21;
             this.$scope.selectedfactuurregel.stuksPrijs = 72.5;
-            this.$scope.selectedfactuurregel.uuid = "";
+            this.$scope.selectedfactuurregel.uuid = this.factuurDataService.createUuid();
             this.$scope.addRegelMode = true;
             //this.$rootScope.$broadcast('show-factuurregel-screen');
             this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_REGEL);

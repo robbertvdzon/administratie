@@ -39,7 +39,7 @@ public class FactuurService {
                     factuurDto.setUuid(getNewUuid());
                 }
                 // TODO; dit op een betere plek. Bij een nieuwe klant moet er een uuid komen (een klant is altijd een copy van een klant uit de adresboek)
-                if (factuurDto.getKlant()!=null && factuurDto.getKlant().getUuid() == null) {
+                if (factuurDto.getKlant()!=null && (factuurDto.getKlant().getUuid() == null || factuurDto.getKlant().getUuid().length()==0)) {
                     factuurDto.getKlant().setUuid(getNewUuid());
                 }
 

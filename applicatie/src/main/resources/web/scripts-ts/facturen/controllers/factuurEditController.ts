@@ -10,62 +10,37 @@ module Application.Controllers {
 
     interface MyScope extends ng.IScope {
         selectedfactuur : FactuurData;
+        factuurToEdit : FactuurData;
         addMode : boolean;
+        addToAdresboek : boolean;
     }
 
     export class FactuurEditController {
 
-        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private $filter, private contactDataService:ContactDataService) {
+        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private contactDataService:ContactDataService) {
             this.initialize();
         }
 
         initialize() {
-            var loadFactuurToEditEvent = this.$rootScope.$on('load-factuur-to-edit', (event, uuid: String)=> {
-                this.loadExistingFactuur(uuid);
+            var newFactuurAvailableEvent = this.$rootScope.$on('new_selected_factuur_available', (event, factuur : FactuurData)=> {
+                this.setSelectedFactuur(factuur);
             });
-            var loadFactuurToAddEvent = this.$rootScope.$on('load-factuur-to-add', ()=> {
-                this.loadNewFactuur();
-            });
-            var addFactuurRegelEvent = this.$rootScope.$on('add-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
-                this.addFactuurRegel(factuurregel);
-            });
-            var updateFactuurRegelEvent = this.$rootScope.$on('update-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
-                this.updateFactuurRegel(factuurregel);
-            });
-            var deleteFactuurRegelEvent = this.$rootScope.$on('delete-factuurregel-screen', (event, factuurregel : FactuurRegelData)=> {
-                this.deleteFactuurRegel(factuurregel);
-            });
+
             var addFactuurRegelEvent = this.$rootScope.$on('update-contact', (event, contact : ContactData)=> {
                 this.updateContact(contact);
             });
 
             this.$scope.$on("$destroy", function () {
-                loadFactuurToEditEvent();
-                loadFactuurToAddEvent();
+                newFactuurAvailableEvent();
                 addFactuurRegelEvent();
-                updateFactuurRegelEvent();
             });
 
         }
 
-        loadExistingFactuur(uuid) {
-            var factuur:FactuurData = this.factuurDataService.getFactuurByUuid(uuid);
-            if (factuur != null){
-                this.$scope.selectedfactuur = this.factuurDataService.cloneFactuur(factuur);
-                this.$scope.addMode = false;
-                this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT);
-                //this.$rootScope.$broadcast('show-factuur-screen');
-            }
-
-        }
-
-        loadNewFactuur() {
-            this.$scope.selectedfactuur = new FactuurData();
-            this.$scope.selectedfactuur.factuurNummer = this.factuurDataService.findNextFactuurnummer();
-            this.$scope.selectedfactuur.factuurDate = this.$filter('date')(new Date(),'dd-MM-yyyy');
-            this.$scope.addMode = true;
-            //this.$rootScope.$broadcast('show-factuur-screen');
-            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT);
+        private setSelectedFactuur(factuur:FactuurData):void {
+            this.$scope.selectedfactuur = factuur;
+            this.$scope.factuurToEdit = this.factuurDataService.cloneFactuur(factuur);
+            this.$scope.addMode = factuur.uuid == null;
         }
 
         save() {
@@ -109,29 +84,78 @@ module Application.Controllers {
             this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
         }
 
-        addFactuurRegel(factuurregel:FactuurRegelData){
-            this.$scope.selectedfactuur.factuurRegels.push(factuurregel);
-        }
-
-        updateFactuurRegel(factuurregel:FactuurRegelData){
-            this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuur, factuurregel);
-        }
-
-        deleteFactuurRegel(factuurregel:FactuurRegelData) {
-            this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuur, factuurregel);
-        }
-
+        //addFactuurRegel(factuurregel:FactuurRegelData){
+        //    alert("add "+factuurregel.omschrijving);
+        //    this.$scope.selectedfactuur.factuurRegels.push(factuurregel);
+        //    alert("add "+this.$scope.selectedfactuur.factuurRegels.length);
+        //}
+        //
+        //updateFactuurRegel(factuurregel:FactuurRegelData){
+        //    this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuur, factuurregel);
+        //}
+        //
+        //deleteFactuurRegel(factuurregel:FactuurRegelData) {
+        //    this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuur, factuurregel);
+        //}
+        //
         searchContact(){
             this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_CONTACT);
             //this.$rootScope.$broadcast('show-search-contact-screen');
         }
 
+        editDetails(){
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT_DETAIL);
+        }
+
+        editContactDetails(){
+            this.$scope.addToAdresboek = false;
+            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT_CONTACT);
+        }
+
+        saveDetails(){
+            this.copyFactuurDetailsInto(this.$scope.factuurToEdit, this.$scope.selectedfactuur);
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+        }
+
+        saveContactDetails(){
+            this.copyContactDetailsInto(this.$scope.factuurToEdit, this.$scope.selectedfactuur);
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+            if (this.$scope.addToAdresboek){
+                this.factuurDataService.copyContactFromSelectedFactuurToAdresboek();
+                this.$scope.addToAdresboek = false;
+            }
+        }
+
+
+
+        copyFactuurDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
+            factuurDst.factuurNummer = factuurSrc.factuurNummer;
+            factuurDst.betaald = factuurSrc.betaald;
+            factuurDst.factuurDate = factuurSrc.factuurDate;
+            factuurDst.klant = this.contactDataService.cloneContact(factuurSrc.klant);
+        }
+
+
+        copyContactDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
+            factuurDst.klant.naam = factuurSrc.klant.naam;
+            factuurDst.klant.adres = factuurSrc.klant.adres;
+            factuurDst.klant.klantNummer = factuurSrc.klant.klantNummer;
+            factuurDst.klant.land = factuurSrc.klant.land;
+            factuurDst.klant.postcode = factuurSrc.klant.postcode;
+            factuurDst.klant.woonplaats = factuurSrc.klant.woonplaats;
+        }
+
+        cancelEditDetails(){
+            this.$scope.factuurToEdit = this.factuurDataService.cloneFactuur(this.$scope.selectedfactuur);
+            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+        }
+
         private updateContact(contact:ContactData):void {
             var contactClone = this.contactDataService.cloneContact(contact);
-            // TODO: genereer uuid?
-            contactClone.uuid = "";
+            contactClone.uuid = this.factuurDataService.createUuid()
             this.$scope.selectedfactuur.klant = contactClone;
         }
+
     }
 }
 

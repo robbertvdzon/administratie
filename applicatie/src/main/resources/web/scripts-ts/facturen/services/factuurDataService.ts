@@ -7,12 +7,59 @@ module Application.Services {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import ContactDataService = Application.Services.ContactDataService;
+    import SCREEN_FACTUUR_EDIT = Application.Controllers.SCREEN_FACTUUR_EDIT;
 
 
     export class FactuurDataService {
+        selectedFactuur:FactuurData;
 
 
-        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService) {
+        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter) {
+            this.initialize();
+        }
+
+        initialize() {
+            this.$rootScope.$on('set_existing_factuur_as_selected', (event, uuid:String)=> {
+                this.setExistingFactuurAsSelected(uuid);
+            });
+            this.$rootScope.$on('create_and_select_new_factuur', ()=> {
+                this.createAndSelectNewFactuur();
+            });
+            this.$rootScope.$on('add-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
+                this.addFactuurRegel(factuurregel);
+            });
+            this.$rootScope.$on('update-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
+                this.updateFactuurRegel(factuurregel);
+            });
+            this.$rootScope.$on('delete-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
+                this.deleteFactuurRegel(factuurregel);
+            });
+
+
+        }
+
+        setSelectedFactuur(factuur:FactuurData) {
+            this.selectedFactuur = factuur;
+        }
+
+        setExistingFactuurAsSelected(uuid) {
+            var factuur:FactuurData = this.getFactuurByUuid(uuid);
+            if (factuur != null) {
+                factuur = this.cloneFactuur(factuur);
+            }
+            this.setSelectedFactuur(factuur);
+            this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
+
+
+        }
+
+        createAndSelectNewFactuur() {
+            var factuur:FactuurData = new FactuurData();
+            factuur.factuurNummer = this.findNextFactuurnummer();
+            factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
+            factuur.uuid = this.createUuid();
+            this.setSelectedFactuur(factuur);
+            this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
 
         public getFactuurByUuid(uuid):FactuurData {
@@ -26,6 +73,38 @@ module Application.Services {
             return null;
         }
 
+        addFactuurRegel(factuurregel:FactuurRegelData) {
+            this.selectedFactuur.factuurRegels.push(factuurregel);
+        }
+
+        updateFactuurRegel(factuurregel:FactuurRegelData) {
+            for (var i = 0; i < this.selectedFactuur.factuurRegels.length; i++) {
+                var factuurRegel = this.selectedFactuur.factuurRegels[i];
+                if (factuurRegel.uuid === factuurregel.uuid) {
+                    factuurRegel.aantal = factuurregel.aantal;
+                    factuurRegel.omschrijving = factuurregel.omschrijving;
+                    factuurRegel.btwPercentage = factuurregel.btwPercentage;
+                    factuurRegel.stuksPrijs = factuurregel.stuksPrijs;
+                    factuurRegel.uuid = factuurregel.uuid;
+                }
+            }
+
+        }
+
+        deleteFactuurRegel(factuurregel:FactuurRegelData) {
+            var selectedNumber = -1;
+            for (var i = 0; i < this.selectedFactuur.factuurRegels.length; i++) {
+                var factuurRegel = this.selectedFactuur.factuurRegels[i];
+                if (factuurRegel.uuid === factuurregel.uuid) {
+                    selectedNumber = i;
+                }
+            }
+            if (selectedNumber >= 0) {
+                this.selectedFactuur.factuurRegels.splice(selectedNumber, 1);
+            }
+        }
+
+
         public cloneFactuur(factuur:FactuurData):FactuurData {
             var factuurClone = new FactuurData();
             factuurClone.uuid = factuur.uuid;
@@ -37,8 +116,7 @@ module Application.Services {
             return factuurClone;
         }
 
-
-        public saveFactuur(factuur:FactuurData): ng.IPromise<any> {
+        public saveFactuur(factuur:FactuurData):ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "POST",
@@ -49,7 +127,7 @@ module Application.Services {
             });
         };
 
-        public deleteFactuur(factuur:FactuurData): ng.IPromise<any> {
+        public deleteFactuur(factuur:FactuurData):ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/" + factuur.uuid,
                 method: "DELETE"
@@ -58,7 +136,7 @@ module Application.Services {
             });
         };
 
-        public addFactuur(factuur:FactuurData): ng.IPromise<any> {
+        public addFactuur(factuur:FactuurData):ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "PUT",
@@ -74,13 +152,13 @@ module Application.Services {
             var administratie:Administratie = this.dataService.getData();
             var hoogste:number = 0;
             for (var i = 0; i < administratie.facturen.length; i++) {
-                var factuurNr:number = parseInt(String(administratie.facturen[i].factuurNummer),10);
-                if (factuurNr>hoogste){
+                var factuurNr:number = parseInt(String(administratie.facturen[i].factuurNummer), 10);
+                if (factuurNr > hoogste) {
                     hoogste = factuurNr;
                 }
             }
-            var nieuwNummer = hoogste+1;
-            return ""+nieuwNummer;
+            var nieuwNummer = hoogste + 1;
+            return "" + nieuwNummer;
         }
 
         public getRegelByUuid(factuur:FactuurData, uuid:String):FactuurRegelData {
@@ -93,8 +171,8 @@ module Application.Services {
             return null;
         }
 
-        public cloneFactuurRegel(regel:FactuurRegelData):FactuurRegelData{
-            if (regel == null){
+        public cloneFactuurRegel(regel:FactuurRegelData):FactuurRegelData {
+            if (regel == null) {
                 return null;
             }
             var clonedRegel = new FactuurRegelData();
@@ -104,32 +182,6 @@ module Application.Services {
             clonedRegel.stuksPrijs = regel.stuksPrijs;
             clonedRegel.uuid = regel.uuid;
             return clonedRegel;
-        }
-
-        updateFactuurRegel(factuur:FactuurData, factuurregel:FactuurRegelData){
-            for (var i = 0; i < factuur.factuurRegels.length; i++) {
-                var factuurRegel = factuur.factuurRegels[i];
-                if (factuurRegel.uuid === factuurregel.uuid) {
-                    factuurRegel.aantal = factuurregel.aantal;
-                    factuurRegel.omschrijving = factuurregel.omschrijving;
-                    factuurRegel.btwPercentage = factuurregel.btwPercentage;
-                    factuurRegel.stuksPrijs = factuurregel.stuksPrijs;
-                    factuurRegel.uuid = factuurregel.uuid;
-                }
-            }
-        }
-
-        deleteFactuurRegel(factuur:FactuurData, factuurregel:FactuurRegelData) {
-            var selectedNumber = -1;
-            for (var i = 0; i < factuur.factuurRegels.length; i++) {
-                var factuurRegel = factuur.factuurRegels[i];
-                if (factuurRegel.uuid === factuurregel.uuid) {
-                    selectedNumber = i;
-                }
-            }
-            if (selectedNumber >= 0) {
-                factuur.factuurRegels.splice(selectedNumber, 1);
-            }
         }
 
 
@@ -143,6 +195,26 @@ module Application.Services {
             }
             return null;
         }
+
+        public copyContactFromSelectedFactuurToAdresboek(){
+            var nextNr = this.contactDataService.findNextKlantnummer();
+            this.selectedFactuur.klant.klantNummer = nextNr;
+            this.selectedFactuur.klant.uuid= this.createUuid();
+            this.contactDataService.addContact(this.selectedFactuur.klant);
+        }
+
+
+        createUuid():String {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        };
+
+
     }
 }
 

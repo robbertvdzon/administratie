@@ -1,56 +1,67 @@
 <div ng-cloak data-ng-controller="FactuurEditController as facturenEditcontroller">
-    Factuur {{selectedfactuur.factuurNummer}}
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.delete()">
-        Verwijder
+    <br>
+
+    <b>Factuur Details:</b>
+    <table>
+        <tr>
+            <td>FactuurNummer :</td>
+            <td>{{selectedfactuur.factuurNummer}}</td>
+        </tr>
+        <tr>
+            <td>Datum :</td>
+            <td>{{selectedfactuur.factuurDate}}</td>
+        </tr>
+        <tr>
+            <td>Betaald :</td>
+            <td>{{selectedfactuur.betaald}}</td>
+        </tr>
+    </table>
+
+
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.editDetails()">
+        Bewerk factuur gegevens
     </md-button>
-    <br>
-
-    <md-input-container flex>
-        <label>Nummer</label>
-        <input ng-model="selectedfactuur.factuurNummer" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-
-
-    <md-input-container flex>
-        <label>Datum</label>
-        <input ng-model="selectedfactuur.factuurDate" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-
-    <label>Betaald:
-        <input type="checkbox" ng-model="selectedfactuur.betaald">
-    </label><br/>
 
     <br>
+    <br>
+
+    <b>Klant Gegevens:</b>
+    <table>
+        <tr>
+            <td>Naam :</td>
+            <td>{{selectedfactuur.klant.naam}}</td>
+        </tr>
+        <tr>
+            <td>Adres :</td>
+            <td>{{selectedfactuur.klant.adres}}</td>
+        </tr>
+        <tr>
+            <td>Postcode :</td>
+            <td>{{selectedfactuur.klant.postcode}}</td>
+        </tr>
+        <tr>
+            <td>Woonplaats :</td>
+            <td>{{selectedfactuur.klant.woonplaats}}</td>
+        </tr>
+        <tr>
+            <td>Land :</td>
+            <td>{{selectedfactuur.klant.land}}</td>
+        </tr>
+    </table>
 
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.searchContact()">
         Zoek contact
     </md-button>
 
-    <br>
-    <md-input-container flex>
-        <label>Naam</label>
-        <input ng-model="selectedfactuur.klant.naam" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-    <md-input-container flex>
-        <label>adres</label>
-        <input ng-model="selectedfactuur.klant.adres" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-    <md-input-container flex>
-        <label>postcode</label>
-        <input ng-model="selectedfactuur.klant.postcode" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-    <md-input-container flex>
-        <label>woonplaats</label>
-        <input ng-model="selectedfactuur.klant.woonplaats" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-    <md-input-container flex>
-        <label>Land</label>
-        <input ng-model="selectedfactuur.klant.land" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.editContactDetails()">
+        Bewerk Contact
+    </md-button>
+
 
 
     <br>
     <br>
+    <b>Factuur regels:</b>
     <md-list ng-hide="selectedfactuur.editMode">
         <md-list-item ng-repeat="factuurregel in selectedfactuur.factuurRegels" ng-class-odd="'odd'"
                       ng-class-even="'even'">
@@ -75,4 +86,8 @@
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.cancel()">
         Annuleren
     </md-button>
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.delete()">
+        Verwijder Factuur
+    </md-button>
+
 </div>
