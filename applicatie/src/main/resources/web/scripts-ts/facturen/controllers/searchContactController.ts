@@ -10,7 +10,6 @@ module Application.Controllers {
 
     interface MyScope extends ng.IScope {
         administratie : Administratie;
-
     }
 
     export class SearchContactController {
@@ -30,7 +29,6 @@ module Application.Controllers {
                 this.loadData();
             });
 
-
             this.$scope.$on("$destroy", function() {
                 unregisterDataUpdatedEvent();
             });
@@ -44,23 +42,15 @@ module Application.Controllers {
             }
         }
 
-
         selectContact(uuid: String) {
             this.$rootScope.$broadcast('update-contact', this.factuurDataService.getContactByUuid(uuid));
             this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
-            //this.$rootScope.$broadcast('close-search-contact-screen');
         }
-
 
         cancel() {
             this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
-            //this.$rootScope.$broadcast('close-search-contact-screen');
         }
-
-
-
     }
-
 }
 
 

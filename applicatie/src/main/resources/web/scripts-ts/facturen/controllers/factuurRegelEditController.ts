@@ -38,7 +38,6 @@ module Application.Controllers {
         loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
             this.$scope.selectedfactuurregel = selectedfactuurregel;
             this.$scope.addRegelMode = false;
-            //this.$rootScope.$broadcast('show-factuurregel-screen');
             this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
          }
 
@@ -50,7 +49,6 @@ module Application.Controllers {
             this.$scope.selectedfactuurregel.stuksPrijs = 72.5;
             this.$scope.selectedfactuurregel.uuid = this.factuurDataService.createUuid();
             this.$scope.addRegelMode = true;
-            //this.$rootScope.$broadcast('show-factuurregel-screen');
             this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
         }
 
@@ -60,18 +58,18 @@ module Application.Controllers {
         }
 
         saveAddRegel(){
-            this.$rootScope.$broadcast('add-factuurregel-screen', this.$scope.selectedfactuurregel);
+            this.factuurDataService.addFactuurRegel(this.$scope.selectedfactuurregel);
             this.factuurGuiService.closePage(SCREEN_FACTUUR_REGEL);
         }
 
         saveEditRegel(){
-            this.$rootScope.$broadcast('update-factuurregel-screen', this.$scope.selectedfactuurregel);
+            this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuurregel);
             this.factuurGuiService.closePage(SCREEN_FACTUUR_REGEL);
         }
 
 
         deleteRegel() {
-            this.$rootScope.$broadcast('delete-factuurregel-screen', this.$scope.selectedfactuurregel);
+            this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuurregel);
             this.factuurGuiService.closePage(SCREEN_FACTUUR_REGEL);
         }
     }

@@ -12,29 +12,7 @@ module Application.Services {
     export class FactuurDataService {
         selectedFactuur:FactuurData;
 
-
         constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter) {
-            this.initialize();
-        }
-
-        initialize() {
-            this.$rootScope.$on('set_existing_factuur_as_selected', (event, uuid:String)=> {
-                this.setExistingFactuurAsSelected(uuid);
-            });
-            this.$rootScope.$on('create_and_select_new_factuur', ()=> {
-                this.createAndSelectNewFactuur();
-            });
-            this.$rootScope.$on('add-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
-                this.addFactuurRegel(factuurregel);
-            });
-            this.$rootScope.$on('update-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
-                this.updateFactuurRegel(factuurregel);
-            });
-            this.$rootScope.$on('delete-factuurregel-screen', (event, factuurregel:FactuurRegelData)=> {
-                this.deleteFactuurRegel(factuurregel);
-            });
-
-
         }
 
         setSelectedFactuur(factuur:FactuurData) {

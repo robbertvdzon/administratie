@@ -7,6 +7,7 @@ module Application.Controllers {
     import Administratie = Application.Model.Administratie;
     import FactuurGuiService = Application.Services.FactuurGuiService;
     import SCREEN_FACTUUR_EDIT = Application.SCREEN_FACTUUR_EDIT;
+    import MyDataservice = Application.Services.MyDataservice;
 
     interface MyScope extends ng.IScope {
         administratie : Administratie;
@@ -14,14 +15,8 @@ module Application.Controllers {
     }
 
     export class FacturenListController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
-        dataService:Application.Services.MyDataservice;
 
-        constructor($scope, $rootScope, dataService, private factuurGuiService:FactuurGuiService) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
-            this.dataService = dataService;
+        constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.initialize();
         }
 
@@ -44,24 +39,20 @@ module Application.Controllers {
             }
         }
 
-
         edit(uuid: String) {
-            this.$rootScope.$broadcast('set_existing_factuur_as_selected', uuid);
+            this.factuurDataService.setExistingFactuurAsSelected(uuid);
             this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT);
         }
 
 
         newFactuur() {
-            this.$rootScope.$broadcast('create_and_select_new_factuur');
+            this.factuurDataService.createAndSelectNewFactuur();
             this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT);
         }
-
-
 
     }
 
 }
-
 
 angular.module('mswFrontendApp').controller('FacturenListController', Application.Controllers.FacturenListController);
 

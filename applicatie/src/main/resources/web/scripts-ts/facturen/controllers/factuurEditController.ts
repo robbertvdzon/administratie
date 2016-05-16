@@ -49,7 +49,6 @@ module Application.Controllers {
 
         save() {
             this.factuurDataService.saveFactuur(this.$scope.selectedfactuur).then((response) => {
-                //this.$rootScope.$broadcast('close-edit-factuur');
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Opslaan mislukt");
@@ -58,7 +57,6 @@ module Application.Controllers {
 
         add() {
             this.factuurDataService.addFactuur(this.$scope.selectedfactuur).then((response) => {
-                //this.$rootScope.$broadcast('close-edit-factuur');
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Toevoegen mislukt");
@@ -67,7 +65,6 @@ module Application.Controllers {
 
         delete() {
             this.factuurDataService.deleteFactuur(this.$scope.selectedfactuur).then((response) => {
-                //this.$rootScope.$broadcast('close-edit-factuur');
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Delete mislukt");
@@ -75,7 +72,6 @@ module Application.Controllers {
         }
 
         cancel() {
-            //this.$rootScope.$broadcast('close-edit-factuur');
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
         }
 
@@ -88,23 +84,8 @@ module Application.Controllers {
             this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
         }
 
-        //addFactuurRegel(factuurregel:FactuurRegelData){
-        //    alert("add "+factuurregel.omschrijving);
-        //    this.$scope.selectedfactuur.factuurRegels.push(factuurregel);
-        //    alert("add "+this.$scope.selectedfactuur.factuurRegels.length);
-        //}
-        //
-        //updateFactuurRegel(factuurregel:FactuurRegelData){
-        //    this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuur, factuurregel);
-        //}
-        //
-        //deleteFactuurRegel(factuurregel:FactuurRegelData) {
-        //    this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuur, factuurregel);
-        //}
-        //
         searchContact(){
             this.factuurGuiService.showPage(SCREEN_FACTUUR_CONTACT);
-            //this.$rootScope.$broadcast('show-search-contact-screen');
         }
 
         editDetails(){
@@ -129,8 +110,6 @@ module Application.Controllers {
                 this.$scope.addToAdresboek = false;
             }
         }
-
-
 
         copyFactuurDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
             factuurDst.factuurNummer = factuurSrc.factuurNummer;
