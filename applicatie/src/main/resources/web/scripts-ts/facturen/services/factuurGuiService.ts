@@ -9,8 +9,7 @@ module Application {
 }
 
 module Application.Services {
-
-
+    import FactuurData = Application.Model.FactuurData;
 
     export class FactuurGui{
         factuurTabDisabled:boolean = true;
@@ -19,6 +18,13 @@ module Application.Services {
         searchContactTabDisabled:boolean = true;
         factuurEditContactTabDisabled:boolean = true;
         selectedIndex : number = 0;
+
+        // velden voor editController
+        selectedfactuur : FactuurData;
+        factuurToEdit : FactuurData;
+        addMode : boolean;
+        addToAdresboek : boolean;
+
     }
 
 

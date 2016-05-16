@@ -7,16 +7,25 @@ module Application.Services {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import ContactDataService = Application.Services.ContactDataService;
+    import FactuurGuiService = Application.Services.FactuurGuiService;
+
 
 
     export class FactuurDataService {
         selectedFactuur:FactuurData;
 
-        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter) {
+        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter, private factuurGuiService:FactuurGuiService) {
         }
 
         setSelectedFactuur(factuur:FactuurData) {
+            // TODO: de selected factuur alleen in GuiObject en niet nog apart
             this.selectedFactuur = factuur;
+
+            // TODO : onderstaande is voor editFactuur: kan dat algemener?
+            this.factuurGuiService.getFactuurGui().selectedfactuur = factuur;
+            this.factuurGuiService.getFactuurGui().factuurToEdit = this.cloneFactuur(factuur);
+            this.factuurGuiService.getFactuurGui().addMode = factuur.uuid == null;
+
         }
 
         setFactuurAsSelected(uuid) {
@@ -25,7 +34,7 @@ module Application.Services {
                 factuur = this.cloneFactuur(factuur);
             }
             this.setSelectedFactuur(factuur);
-            this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
+            //this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
 
         public updateContact(contact:ContactData):void {
@@ -41,7 +50,7 @@ module Application.Services {
             factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
             factuur.uuid = this.createUuid();
             this.setSelectedFactuur(factuur);
-            this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
+            //this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
 
         public getFactuurByUuid(uuid):FactuurData {
