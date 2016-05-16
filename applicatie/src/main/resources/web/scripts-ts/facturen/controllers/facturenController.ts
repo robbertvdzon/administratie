@@ -2,6 +2,9 @@
 
 module Application.Controllers {
 
+    import FactuurGuiService = Application.Services.FactuurGuiService;
+    import FactuurGui = Application.Services.FactuurGui;
+
     export var SCREEN_FACTUUR_LIJST = "SCREEN_FACTUUR_LIJST";
     export var SCREEN_FACTUUR_EDIT = "SCREEN_FACTUUR_EDIT";
     export var SCREEN_FACTUUR_REGEL = "SCREEN_FACTUUR_REGEL";
@@ -10,26 +13,17 @@ module Application.Controllers {
     export var SCREEN_FACTUUR_EDIT_CONTACT = "SCREEN_FACTUUR_EDIT_CONTACT";
 
     interface MyScope extends ng.IScope {
-        factuurTabDisabled:boolean;
-        factuurDetailTabDisabled:boolean;
-        factuurRegelTabDisabled:boolean;
-        searchContactTabDisabled:boolean;
-        factuurEditContactTabDisabled:boolean;
-        selectedIndex : number;
-
+        factuurGui:FactuurGui;
     }
 
     export class FacturenController {
         $scope:MyScope;
         $rootScope:ng.IScope;
 
-        constructor($scope, $rootScope) {
+        constructor($scope, $rootScope, factuurGuiService:FactuurGuiService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
-
-            this.$scope.factuurTabDisabled=true;
-            this.$scope.factuurRegelTabDisabled=true;
-            this.$scope.selectedIndex = 0;
+            this.$scope.factuurGui = factuurGuiService.getFactuurGui();
             this.initialize();
         }
 
@@ -51,38 +45,38 @@ module Application.Controllers {
         }
 
         showPage(page:String) {
-            this.$scope.factuurTabDisabled=true;
-            this.$scope.factuurRegelTabDisabled=true;
-            this.$scope.searchContactTabDisabled=true;
-            this.$scope.factuurDetailTabDisabled=true;
-            this.$scope.factuurEditContactTabDisabled=true;
+            this.$scope.factuurGui.factuurTabDisabled=true;
+            this.$scope.factuurGui.factuurRegelTabDisabled=true;
+            this.$scope.factuurGui.searchContactTabDisabled=true;
+            this.$scope.factuurGui.factuurDetailTabDisabled=true;
+            this.$scope.factuurGui.factuurEditContactTabDisabled=true;
 
             if (page == SCREEN_FACTUUR_LIJST) {
-                this.$scope.selectedIndex=0;
+                this.$scope.factuurGui.selectedIndex=0;
             }
             if (page == SCREEN_FACTUUR_EDIT) {
-                this.$scope.selectedIndex=1;
-                this.$scope.factuurTabDisabled=false;
+                this.$scope.factuurGui.selectedIndex=1;
+                this.$scope.factuurGui.factuurTabDisabled=false;
             }
             if (page == SCREEN_FACTUUR_REGEL) {
-                this.$scope.selectedIndex=2;
-                this.$scope.factuurTabDisabled=false;
-                this.$scope.factuurRegelTabDisabled=false;
+                this.$scope.factuurGui.selectedIndex=2;
+                this.$scope.factuurGui.factuurTabDisabled=false;
+                this.$scope.factuurGui.factuurRegelTabDisabled=false;
             }
             if (page == SCREEN_FACTUUR_CONTACT) {
-                this.$scope.selectedIndex=3;
-                this.$scope.factuurTabDisabled=false;
-                this.$scope.searchContactTabDisabled=false;
+                this.$scope.factuurGui.selectedIndex=3;
+                this.$scope.factuurGui.factuurTabDisabled=false;
+                this.$scope.factuurGui.searchContactTabDisabled=false;
             }
             if (page == SCREEN_FACTUUR_EDIT_DETAIL) {
-                this.$scope.selectedIndex=4;
-                this.$scope.factuurTabDisabled=false;
-                this.$scope.factuurDetailTabDisabled=false;
+                this.$scope.factuurGui.selectedIndex=4;
+                this.$scope.factuurGui.factuurTabDisabled=false;
+                this.$scope.factuurGui.factuurDetailTabDisabled=false;
             }
             if (page == SCREEN_FACTUUR_EDIT_CONTACT) {
-                this.$scope.selectedIndex=5;
-                this.$scope.factuurTabDisabled=false;
-                this.$scope.factuurEditContactTabDisabled=false;
+                this.$scope.factuurGui.selectedIndex=5;
+                this.$scope.factuurGui.factuurTabDisabled=false;
+                this.$scope.factuurGui.factuurEditContactTabDisabled=false;
             }
 
         }
