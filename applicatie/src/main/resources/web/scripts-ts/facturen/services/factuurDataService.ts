@@ -19,16 +19,21 @@ module Application.Services {
             this.selectedFactuur = factuur;
         }
 
-        setExistingFactuurAsSelected(uuid) {
+        setFactuurAsSelected(uuid) {
             var factuur:FactuurData = this.getFactuurByUuid(uuid);
             if (factuur != null) {
                 factuur = this.cloneFactuur(factuur);
             }
             this.setSelectedFactuur(factuur);
             this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
-
-
         }
+
+        public updateContact(contact:ContactData):void {
+            var contactClone = this.contactDataService.cloneContact(contact);
+            contactClone.uuid = this.createUuid()
+            this.selectedFactuur.klant = contactClone;
+        }
+
 
         createAndSelectNewFactuur() {
             var factuur:FactuurData = new FactuurData();

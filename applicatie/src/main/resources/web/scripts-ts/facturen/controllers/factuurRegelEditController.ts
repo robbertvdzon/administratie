@@ -10,13 +10,10 @@ module Application.Controllers {
     interface MyScope extends ng.IScope {
         selectedfactuurregel : FactuurRegelData;
         addRegelMode:boolean;
-
     }
 
     export class FactuurRegelEditController {
-
-
-        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
+        constructor(private $scope:MyScope, private $rootScope, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.initialize();
         }
 
@@ -66,7 +63,6 @@ module Application.Controllers {
             this.factuurDataService.updateFactuurRegel(this.$scope.selectedfactuurregel);
             this.factuurGuiService.closePage(SCREEN_FACTUUR_REGEL);
         }
-
 
         deleteRegel() {
             this.factuurDataService.deleteFactuurRegel(this.$scope.selectedfactuurregel);

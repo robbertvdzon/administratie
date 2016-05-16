@@ -41,7 +41,7 @@ module Application.Controllers {
         }
 
         edit(uuid: String) {
-            this.factuurDataService.setExistingFactuurAsSelected(uuid);
+            this.factuurDataService.setFactuurAsSelected(uuid);
             this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT);
         }
 

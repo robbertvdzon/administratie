@@ -17,7 +17,7 @@ module Application.Controllers {
         $rootScope:ng.IScope;
         dataService:Application.Services.MyDataservice;
 
-        constructor($scope, $rootScope, dataService, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
+        constructor($scope:MyScope, $rootScope, dataService, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.dataService = dataService;
@@ -43,7 +43,7 @@ module Application.Controllers {
         }
 
         selectContact(uuid: String) {
-            this.$rootScope.$broadcast('update-contact', this.factuurDataService.getContactByUuid(uuid));
+            this.factuurDataService.updateContact(this.factuurDataService.getContactByUuid(uuid));
             this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
         }
 

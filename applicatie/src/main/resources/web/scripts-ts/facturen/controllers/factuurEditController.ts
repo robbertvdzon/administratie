@@ -30,13 +30,8 @@ module Application.Controllers {
                 this.setSelectedFactuur(factuur);
             });
 
-            var addFactuurRegelEvent = this.$rootScope.$on('update-contact', (event, contact : ContactData)=> {
-                this.updateContact(contact);
-            });
-
             this.$scope.$on("$destroy", function () {
                 newFactuurAvailableEvent();
-                addFactuurRegelEvent();
             });
 
         }
@@ -133,11 +128,11 @@ module Application.Controllers {
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
         }
 
-        private updateContact(contact:ContactData):void {
-            var contactClone = this.contactDataService.cloneContact(contact);
-            contactClone.uuid = this.factuurDataService.createUuid()
-            this.$scope.selectedfactuur.klant = contactClone;
-        }
+        //private updateContact(contact:ContactData):void {
+        //    var contactClone = this.contactDataService.cloneContact(contact);
+        //    contactClone.uuid = this.factuurDataService.createUuid()
+        //    this.$scope.selectedfactuur.klant = contactClone;
+        //}
 
     }
 }
