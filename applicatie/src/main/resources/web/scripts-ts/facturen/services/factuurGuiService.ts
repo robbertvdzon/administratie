@@ -20,6 +20,11 @@ module Application.Services {
         selectedIndex : number = 0;
 
         // velden voor editController
+        data : FactuurGuiData = new FactuurGuiData();
+
+    }
+
+    export class FactuurGuiData{
         selectedfactuur : FactuurData;
         factuurToEdit : FactuurData;
         addMode : boolean;

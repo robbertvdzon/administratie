@@ -22,9 +22,9 @@ module Application.Services {
             this.selectedFactuur = factuur;
 
             // TODO : onderstaande is voor editFactuur: kan dat algemener?
-            this.factuurGuiService.getFactuurGui().selectedfactuur = factuur;
-            this.factuurGuiService.getFactuurGui().factuurToEdit = this.cloneFactuur(factuur);
-            this.factuurGuiService.getFactuurGui().addMode = factuur.uuid == null;
+            this.factuurGuiService.getFactuurGui().data.selectedfactuur = factuur;
+            this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(factuur);
+            this.factuurGuiService.getFactuurGui().data.addMode = factuur.uuid == null;
 
         }
 

@@ -5,15 +5,15 @@
     <table>
         <tr>
             <td>FactuurNummer :</td>
-            <td>{{factuurGui.selectedfactuur.factuurNummer}}</td>
+            <td>{{data.selectedfactuur.factuurNummer}}</td>
         </tr>
         <tr>
             <td>Datum :</td>
-            <td>{{factuurGui.selectedfactuur.factuurDate}}</td>
+            <td>{{data.selectedfactuur.factuurDate}}</td>
         </tr>
         <tr>
             <td>Betaald :</td>
-            <td>{{factuurGui.selectedfactuur.betaald}}</td>
+            <td>{{data.selectedfactuur.betaald}}</td>
         </tr>
     </table>
 
@@ -29,23 +29,23 @@
     <table>
         <tr>
             <td>Naam :</td>
-            <td>{{factuurGui.selectedfactuur.klant.naam}}</td>
+            <td>{{data.selectedfactuur.klant.naam}}</td>
         </tr>
         <tr>
             <td>Adres :</td>
-            <td>{{factuurGui.selectedfactuur.klant.adres}}</td>
+            <td>{{data.selectedfactuur.klant.adres}}</td>
         </tr>
         <tr>
             <td>Postcode :</td>
-            <td>{{factuurGui.selectedfactuur.klant.postcode}}</td>
+            <td>{{data.selectedfactuur.klant.postcode}}</td>
         </tr>
         <tr>
             <td>Woonplaats :</td>
-            <td>{{factuurGui.selectedfactuur.klant.woonplaats}}</td>
+            <td>{{data.selectedfactuur.klant.woonplaats}}</td>
         </tr>
         <tr>
             <td>Land :</td>
-            <td>{{factuurGui.selectedfactuur.klant.land}}</td>
+            <td>{{data.selectedfactuur.klant.land}}</td>
         </tr>
     </table>
 
@@ -62,8 +62,8 @@
     <br>
     <br>
     <b>Factuur regels:</b>
-    <md-list ng-hide="factuurGui.selectedfactuur.editMode">
-        <md-list-item ng-repeat="factuurregel in factuurGui.selectedfactuur.factuurRegels" ng-class-odd="'odd'"
+    <md-list ng-hide="data.selectedfactuur.editMode">
+        <md-list-item ng-repeat="factuurregel in data.selectedfactuur.factuurRegels" ng-class-odd="'odd'"
                       ng-class-even="'even'">
             <div md-ink-ripple ng-click="facturenEditcontroller.editRegel(factuurregel.uuid)" style="width: 100%;">
                 <factuurRegelRow></factuurRegelRow>
