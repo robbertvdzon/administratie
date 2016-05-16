@@ -3,7 +3,7 @@ module Application.Directives {
 
     'use strict';
 
-    interface IProgressbarScope extends ng.IScope {
+    interface MyScope extends ng.IScope {
         factuur : FactuurData;
     }
 
@@ -15,7 +15,7 @@ module Application.Directives {
 
         restrict = 'E';
         templateUrl = '../facturen/directives/factuurrow.html';
-        link(scope : IProgressbarScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
+        link(scope : MyScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
         }
     }
 

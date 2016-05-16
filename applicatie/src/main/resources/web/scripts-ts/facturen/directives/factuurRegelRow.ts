@@ -3,7 +3,7 @@ module Application.Directives {
 
     import FactuurRegelData = Application.Model.FactuurRegelData;
 
-    interface IFactuurRegelRowScope extends ng.IScope {
+    interface MyScope extends ng.IScope {
         factuurregel : FactuurRegelData;
     }
 
@@ -15,7 +15,7 @@ module Application.Directives {
 
         restrict = 'E';
         templateUrl = '../facturen/directives/factuurregelrow.html';
-        link(scope : IFactuurRegelRowScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
+        link(scope : MyScope, elements : ng.IAugmentedJQuery, attrs : ng.IAttributes) {
         }
     }
 
