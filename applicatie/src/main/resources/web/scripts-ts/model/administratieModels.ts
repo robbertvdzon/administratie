@@ -19,6 +19,16 @@ module Application.Model {
         klant:ContactData;
     }
 
+    export class ContactData {
+        naam:String;
+        klantNummer:String;
+        uuid:String;
+        woonplaats:String;
+        adres:String;
+        postcode:String;
+        land :String;
+    }
+
     export class Administratie {
         name:String;
         uuid:String;
@@ -27,13 +37,5 @@ module Application.Model {
 
     }
 
-    //export class Gebruiker {
-    //    name:String;
-    //    username:String;
-    //    password:String;
-    //    uuid:String;
-    //    administraties:Administratie[];
-    //
-    //}
 }
 

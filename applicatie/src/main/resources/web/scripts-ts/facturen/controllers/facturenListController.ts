@@ -6,6 +6,7 @@ module Application.Controllers {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import FactuurGuiService = Application.Services.FactuurGuiService;
+    import FactuurDataService = Application.Services.FactuurDataService;
     import SCREEN_FACTUUR_EDIT = Application.SCREEN_FACTUUR_EDIT;
     import MyDataservice = Application.Services.MyDataservice;
 
