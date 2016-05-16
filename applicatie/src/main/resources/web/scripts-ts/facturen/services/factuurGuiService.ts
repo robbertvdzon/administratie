@@ -9,10 +9,12 @@ module Application {
 }
 
 module Application.Services {
+    import Administratie = Application.Model.Administratie;
     import FactuurData = Application.Model.FactuurData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
 
     export class FactuurGui{
+        // velden voor factuur edit schermen
         factuurTabDisabled:boolean = true;
         factuurDetailTabDisabled:boolean = true;
         factuurRegelTabDisabled:boolean = true;
@@ -20,7 +22,7 @@ module Application.Services {
         factuurEditContactTabDisabled:boolean = true;
         selectedIndex : number = 0;
 
-        // velden voor editController
+        // velden voor controllers
         data : FactuurGuiData = new FactuurGuiData();
 
     }
@@ -33,6 +35,8 @@ module Application.Services {
         // factuur regel data
         selectedfactuurregel : FactuurRegelData;
         addRegelMode:boolean;
+        // administatie object
+        administratie : Administratie;
 
     }
 
@@ -40,8 +44,16 @@ module Application.Services {
     export class FactuurGuiService {
         private factuurGui:FactuurGui;
 
-        constructor($rootScope) {
+        constructor($rootScope, private dataService: MyDataservice) {
             this.factuurGui=new FactuurGui();
+
+            $rootScope.$on('data-updated', (event, administratie)=> {
+                this.reloadData(administratie);
+            });
+
+            // load for the first time
+            this.reloadData(this.dataService.getData());
+
         }
 
 
@@ -107,6 +119,9 @@ module Application.Services {
             }
         }
 
+        private reloadData(administratie:Administratie):void {
+            this.factuurGui.data.administratie = administratie;
+        }
     }
 }
 

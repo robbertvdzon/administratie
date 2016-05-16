@@ -6,13 +6,13 @@ module Application.Controllers {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import FactuurGuiService = Application.Services.FactuurGuiService;
+    import FactuurGuiData = Application.Services.FactuurGuiData;
     import FactuurDataService = Application.Services.FactuurDataService;
     import SCREEN_FACTUUR_EDIT = Application.SCREEN_FACTUUR_EDIT;
     import MyDataservice = Application.Services.MyDataservice;
 
     interface MyScope extends ng.IScope {
-        administratie : Administratie;
-
+        data : FactuurGuiData;
     }
 
     export class FacturenListController {
@@ -22,22 +22,8 @@ module Application.Controllers {
         }
 
         initialize() {
-            var unregisterDataUpdatedEvent = this.$rootScope.$on('data-updated', ()=> {
-                this.loadData();
-            });
-
-
-            this.$scope.$on("$destroy", function() {
-                unregisterDataUpdatedEvent();
-            });
-
-            this.loadData();
-        }
-
-        loadData() {
-            if (this.dataService.getData() != undefined) {
-                this.$scope.administratie = this.dataService.getData();
-            }
+            this.$scope.data = this.factuurGuiService.getFactuurGui().data;
+            alert(this.$scope.data);
         }
 
         edit(uuid: String) {

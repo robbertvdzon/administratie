@@ -2,11 +2,12 @@
 
 module Application.Services {
 
-    interface UserData {
-        userData: any;
-    }
+    //import Administratie = Application.Model.Administratie;
+    //interface UserData {
+    //    userData: Administratie;
+    //}
     export class MyDataservice {
-        userData:UserData;
+        userData:any;
         $rootScope:ng.IScope;
         $http: ng.IHttpService;
 
@@ -23,13 +24,14 @@ module Application.Services {
             });
         }
 
-        public setData (data) {
+        public setData (data: any) {
             this.userData = data;
-            this.$rootScope.$broadcast('data-updated');
+            alert("send broadcast "+data.facturen.length);
+            this.$rootScope.$broadcast('data-updated', data);
         };
 
 
-        public getData = function () {
+        public getData = function (): any {
             return this.userData;
         };
 
