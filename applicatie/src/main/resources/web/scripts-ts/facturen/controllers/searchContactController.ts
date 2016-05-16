@@ -6,7 +6,7 @@ module Application.Controllers {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import FactuurDataService = Application.Services.FactuurDataService;
-
+    import FactuurGuiService = Application.Services.FactuurGuiService;
 
     interface MyScope extends ng.IScope {
         administratie : Administratie;
@@ -18,7 +18,7 @@ module Application.Controllers {
         $rootScope:ng.IScope;
         dataService:Application.Services.MyDataservice;
 
-        constructor($scope, $rootScope, dataService, private factuurDataService:FactuurDataService) {
+        constructor($scope, $rootScope, dataService, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.dataService = dataService;
@@ -47,13 +47,13 @@ module Application.Controllers {
 
         selectContact(uuid: String) {
             this.$rootScope.$broadcast('update-contact', this.factuurDataService.getContactByUuid(uuid));
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_CONTACT);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
             //this.$rootScope.$broadcast('close-search-contact-screen');
         }
 
 
         cancel() {
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_CONTACT);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
             //this.$rootScope.$broadcast('close-search-contact-screen');
         }
 

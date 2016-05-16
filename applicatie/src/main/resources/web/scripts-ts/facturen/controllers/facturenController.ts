@@ -5,13 +5,6 @@ module Application.Controllers {
     import FactuurGuiService = Application.Services.FactuurGuiService;
     import FactuurGui = Application.Services.FactuurGui;
 
-    //export var SCREEN_FACTUUR_LIJST = "SCREEN_FACTUUR_LIJST";
-    //export var SCREEN_FACTUUR_EDIT = "SCREEN_FACTUUR_EDIT";
-    //export var SCREEN_FACTUUR_REGEL = "SCREEN_FACTUUR_REGEL";
-    //export var SCREEN_FACTUUR_CONTACT = "SCREEN_FACTUUR_CONTACT";
-    //export var SCREEN_FACTUUR_EDIT_DETAIL = "SCREEN_FACTUUR_EDIT_DETAIL";
-    //export var SCREEN_FACTUUR_EDIT_CONTACT = "SCREEN_FACTUUR_EDIT_CONTACT";
-
     interface MyScope extends ng.IScope {
         factuurGui:FactuurGui;
     }

@@ -27,16 +27,6 @@ module Application.Services {
 
         constructor($rootScope) {
             this.factuurGui=new FactuurGui();
-
-            var showPageEvent  = $rootScope.$on('factuur-show-page', (event, page)=> {
-                this.showPage(page);
-            });
-
-            var closePageEvent  =$rootScope.$on('factuur-close-page', (event, page)=> {
-                this.closePage(page);
-            });
-
-
         }
 
 

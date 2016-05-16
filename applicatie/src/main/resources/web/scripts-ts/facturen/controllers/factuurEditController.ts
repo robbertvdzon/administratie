@@ -6,6 +6,7 @@ module Application.Controllers {
     import ContactData = Application.Model.ContactData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import FactuurDataService = Application.Services.FactuurDataService;
+    import FactuurGuiService = Application.Services.FactuurGuiService;
     import ContactDataService = Application.Services.ContactDataService;
     import SCREEN_FACTUUR_EDIT_DETAIL = Application.SCREEN_FACTUUR_EDIT_DETAIL;
     import SCREEN_FACTUUR_EDIT_CONTACT = Application.SCREEN_FACTUUR_EDIT_CONTACT;
@@ -20,7 +21,7 @@ module Application.Controllers {
 
     export class FactuurEditController {
 
-        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private contactDataService:ContactDataService) {
+        constructor(private $scope, private $rootScope, private factuurDataService:FactuurDataService, private contactDataService:ContactDataService, private factuurGuiService:FactuurGuiService) {
             this.initialize();
         }
 
@@ -49,7 +50,7 @@ module Application.Controllers {
         save() {
             this.factuurDataService.saveFactuur(this.$scope.selectedfactuur).then((response) => {
                 //this.$rootScope.$broadcast('close-edit-factuur');
-                this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT);
+                this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Opslaan mislukt");
             })
@@ -58,7 +59,7 @@ module Application.Controllers {
         add() {
             this.factuurDataService.addFactuur(this.$scope.selectedfactuur).then((response) => {
                 //this.$rootScope.$broadcast('close-edit-factuur');
-                this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT);
+                this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Toevoegen mislukt");
             })
@@ -67,7 +68,7 @@ module Application.Controllers {
         delete() {
             this.factuurDataService.deleteFactuur(this.$scope.selectedfactuur).then((response) => {
                 //this.$rootScope.$broadcast('close-edit-factuur');
-                this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT);
+                this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Delete mislukt");
             })
@@ -75,7 +76,7 @@ module Application.Controllers {
 
         cancel() {
             //this.$rootScope.$broadcast('close-edit-factuur');
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
         }
 
         addRegel(ev) {
@@ -102,27 +103,27 @@ module Application.Controllers {
         //}
         //
         searchContact(){
-            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_CONTACT);
+            this.factuurGuiService.showPage(SCREEN_FACTUUR_CONTACT);
             //this.$rootScope.$broadcast('show-search-contact-screen');
         }
 
         editDetails(){
-            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT_DETAIL);
+            this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT_DETAIL);
         }
 
         editContactDetails(){
             this.$scope.addToAdresboek = false;
-            this.$rootScope.$broadcast('factuur-show-page', SCREEN_FACTUUR_EDIT_CONTACT);
+            this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT_CONTACT);
         }
 
         saveDetails(){
             this.copyFactuurDetailsInto(this.$scope.factuurToEdit, this.$scope.selectedfactuur);
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
         }
 
         saveContactDetails(){
             this.copyContactDetailsInto(this.$scope.factuurToEdit, this.$scope.selectedfactuur);
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
             if (this.$scope.addToAdresboek){
                 this.factuurDataService.copyContactFromSelectedFactuurToAdresboek();
                 this.$scope.addToAdresboek = false;
@@ -150,7 +151,7 @@ module Application.Controllers {
 
         cancelEditDetails(){
             this.$scope.factuurToEdit = this.factuurDataService.cloneFactuur(this.$scope.selectedfactuur);
-            this.$rootScope.$broadcast('factuur-close-page', SCREEN_FACTUUR_EDIT_DETAIL);
+            this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
         }
 
         private updateContact(contact:ContactData):void {
