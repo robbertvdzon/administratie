@@ -25,15 +25,8 @@ module Application.Controllers {
             this.$scope.data = factuurGuiService.getFactuurGui().data;
         }
 
-        private setSelectedFactuur(factuur:FactuurData):void {
-            this.$scope.data.selectedfactuur = factuur;
-            this.$scope.data.factuurToEdit = this.factuurDataService.cloneFactuur(factuur);
-            this.$scope.data.addMode = factuur.uuid == null;
-        }
-
         save() {
-            // TODO: factuur hoef ik niet meer mee te geven
-            this.factuurDataService.saveFactuur(this.$scope.data.selectedfactuur).then((response) => {
+            this.factuurDataService.saveFactuur().then((response) => {
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Opslaan mislukt");
@@ -41,7 +34,7 @@ module Application.Controllers {
         }
 
         add() {
-            this.factuurDataService.addFactuur(this.$scope.data.selectedfactuur).then((response) => {
+            this.factuurDataService.addFactuur().then((response) => {
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Toevoegen mislukt");
@@ -49,7 +42,7 @@ module Application.Controllers {
         }
 
         delete() {
-            this.factuurDataService.deleteFactuur(this.$scope.data.selectedfactuur).then((response) => {
+            this.factuurDataService.deleteFactuur().then((response) => {
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Delete mislukt");
@@ -62,13 +55,11 @@ module Application.Controllers {
 
         addRegel(ev) {
             this.factuurDataService.loadNewFactuurRegel();
-            //this.$rootScope.$broadcast('load-factuurregel-to-add');
         }
 
         editRegel(uuid) {
             var selectedfactuurregel:FactuurRegelData = this.factuurDataService.cloneFactuurRegel(this.factuurDataService.getRegelByUuid(this.$scope.data.selectedfactuur, uuid));
             this.factuurDataService.loadExistingFactuurRegel(selectedfactuurregel);
-            //this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
         }
 
         searchContact(){

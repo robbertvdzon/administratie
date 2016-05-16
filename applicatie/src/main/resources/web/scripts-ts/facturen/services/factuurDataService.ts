@@ -125,31 +125,31 @@ module Application.Services {
             return factuurClone;
         }
 
-        public saveFactuur(factuur:FactuurData):ng.IPromise<any> {
+        public saveFactuur():ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "POST",
-                data: factuur,
+                data: this.selectedFactuur,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();
             });
         };
 
-        public deleteFactuur(factuur:FactuurData):ng.IPromise<any> {
+        public deleteFactuur():ng.IPromise<any> {
             return this.$http({
-                url: "/rest/factuur/" + factuur.uuid,
+                url: "/rest/factuur/" + this.selectedFactuur.uuid,
                 method: "DELETE"
             }).then((response) => {
                 this.dataService.reload();
             });
         };
 
-        public addFactuur(factuur:FactuurData):ng.IPromise<any> {
+        public addFactuur():ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "PUT",
-                data: factuur,
+                data: this.selectedFactuur,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();

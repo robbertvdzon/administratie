@@ -18,14 +18,10 @@ module Application.Controllers {
     export class FacturenListController {
 
         constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
-            this.initialize();
-        }
-
-        initialize() {
             this.$scope.data = this.factuurGuiService.getFactuurGui().data;
         }
 
-        edit(uuid: String) {
+        edit(uuid:String) {
             this.factuurDataService.setFactuurAsSelected(uuid);
             this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT);
         }

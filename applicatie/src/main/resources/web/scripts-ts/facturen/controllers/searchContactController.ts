@@ -16,17 +16,8 @@ module Application.Controllers {
     }
 
     export class SearchContactController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
 
-        constructor($scope:MyScope, $rootScope, private dataService:MyDataservice , private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
-            this.initialize();
-        }
-
-        //
-        initialize() {
+        constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice , private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService) {
             this.$scope.data = this.factuurGuiService.getFactuurGui().data;
         }
 
