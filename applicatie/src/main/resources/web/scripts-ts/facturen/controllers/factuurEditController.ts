@@ -61,12 +61,14 @@ module Application.Controllers {
         }
 
         addRegel(ev) {
-            this.$rootScope.$broadcast('load-factuurregel-to-add');
+            this.factuurDataService.loadNewFactuurRegel();
+            //this.$rootScope.$broadcast('load-factuurregel-to-add');
         }
 
         editRegel(uuid) {
             var selectedfactuurregel:FactuurRegelData = this.factuurDataService.cloneFactuurRegel(this.factuurDataService.getRegelByUuid(this.$scope.data.selectedfactuur, uuid));
-            this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
+            this.factuurDataService.loadExistingFactuurRegel(selectedfactuurregel);
+            //this.$rootScope.$broadcast('load-factuurregel-to-edit', selectedfactuurregel, uuid);
         }
 
         searchContact(){

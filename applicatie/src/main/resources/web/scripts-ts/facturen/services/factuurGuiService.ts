@@ -10,6 +10,7 @@ module Application {
 
 module Application.Services {
     import FactuurData = Application.Model.FactuurData;
+    import FactuurRegelData = Application.Model.FactuurRegelData;
 
     export class FactuurGui{
         factuurTabDisabled:boolean = true;
@@ -29,6 +30,9 @@ module Application.Services {
         factuurToEdit : FactuurData;
         addMode : boolean;
         addToAdresboek : boolean;
+        // factuur regel data
+        selectedfactuurregel : FactuurRegelData;
+        addRegelMode:boolean;
 
     }
 

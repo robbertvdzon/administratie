@@ -96,6 +96,24 @@ module Application.Services {
         }
 
 
+        loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = selectedfactuurregel;
+            this.factuurGuiService.getFactuurGui().data.addRegelMode = false;
+            this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
+        }
+
+        loadNewFactuurRegel() {
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = new FactuurRegelData();
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.omschrijving = "Werkzaamheden";
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.aantal = 1;
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.btwPercentage = 21;
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.stuksPrijs = 72.5;
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.uuid = this.createUuid();
+            this.factuurGuiService.getFactuurGui().data.addRegelMode = true;
+            this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
+        }
+
+
         public cloneFactuur(factuur:FactuurData):FactuurData {
             var factuurClone = new FactuurData();
             factuurClone.uuid = factuur.uuid;

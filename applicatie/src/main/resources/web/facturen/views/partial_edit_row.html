@@ -1,7 +1,7 @@
 <div ng-cloak data-ng-controller="FactuurRegelEditController as factuurRegelEditController">
 
 <md-subheader class="md-no-sticky">Factuurregel</md-subheader>
-{{selectedfactuurregel.uuid}}
+{{data.selectedfactuurregel.uuid}}
 <form>
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -11,29 +11,29 @@
     <md-dialog-content style="max-width:800px;max-height:810px; ">
         <md-input-container>
             <label>Omschrijving:</label>
-            <input ng-model="selectedfactuurregel.omschrijving" required id="selectedfactuurregel_omschrijving">
+            <input ng-model="data.selectedfactuurregel.omschrijving" required id="selectedfactuurregel_omschrijving">
         </md-input-container>
         <md-input-container>
             <label>Aantal:</label>
-            <input ng-model="selectedfactuurregel.aantal" required id="selectedfactuurregel_aantal">
+            <input ng-model="data.selectedfactuurregel.aantal" required id="selectedfactuurregel_aantal">
         </md-input-container>
         <md-input-container>
             <label>Tarief:</label>
-            <input ng-model="selectedfactuurregel.stuksPrijs" required id="selectedfactuurregel_tarief">
+            <input ng-model="data.selectedfactuurregel.stuksPrijs" required id="selectedfactuurregel_tarief">
         </md-input-container>
         <md-input-container>
             <label>Btw:</label>
-            <input ng-model="selectedfactuurregel.btwPercentage" required id="selectedfactuurregel_btw">
+            <input ng-model="data.selectedfactuurregel.btwPercentage" required id="selectedfactuurregel_btw">
         </md-input-container>
     </md-dialog-content>
 
 </form>
 
 <br><br>
-<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveAddRegel()" ng-show="addRegelMode">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveAddRegel()" ng-show="data.addRegelMode">
     Add
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveEditRegel()" ng-hide="addRegelMode">
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveEditRegel()" ng-hide="data.addRegelMode">
     Save
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.cancelAddRegel()">
