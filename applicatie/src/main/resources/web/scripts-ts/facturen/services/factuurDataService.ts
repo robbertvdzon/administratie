@@ -7,7 +7,6 @@ module Application.Services {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
     import ContactDataService = Application.Services.ContactDataService;
-    import SCREEN_FACTUUR_EDIT = Application.Controllers.SCREEN_FACTUUR_EDIT;
 
 
     export class FactuurDataService {

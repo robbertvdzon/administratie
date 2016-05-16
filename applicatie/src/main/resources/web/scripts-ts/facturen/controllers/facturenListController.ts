@@ -5,6 +5,7 @@ module Application.Controllers {
     import FactuurData = Application.Model.FactuurData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
+    import SCREEN_FACTUUR_EDIT = Application.SCREEN_FACTUUR_EDIT;
 
     interface MyScope extends ng.IScope {
         administratie : Administratie;

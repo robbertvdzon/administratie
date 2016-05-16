@@ -7,6 +7,9 @@ module Application.Controllers {
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import FactuurDataService = Application.Services.FactuurDataService;
     import ContactDataService = Application.Services.ContactDataService;
+    import SCREEN_FACTUUR_EDIT_DETAIL = Application.SCREEN_FACTUUR_EDIT_DETAIL;
+    import SCREEN_FACTUUR_EDIT_CONTACT = Application.SCREEN_FACTUUR_EDIT_CONTACT;
+    import SCREEN_FACTUUR_CONTACT = Application.SCREEN_FACTUUR_CONTACT;
 
     interface MyScope extends ng.IScope {
         selectedfactuur : FactuurData;
