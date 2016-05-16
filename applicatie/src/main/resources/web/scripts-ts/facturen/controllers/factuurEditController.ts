@@ -16,7 +16,6 @@ module Application.Controllers {
 
     interface MyScope extends ng.IScope {
         data:FactuurGuiData;
-
     }
 
     export class FactuurEditController {
@@ -85,7 +84,6 @@ module Application.Controllers {
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
             if (this.$scope.data.addToAdresboek){
                 this.factuurDataService.copyContactFromSelectedFactuurToAdresboek();
-                this.$scope.data.addToAdresboek = false;
             }
         }
 
