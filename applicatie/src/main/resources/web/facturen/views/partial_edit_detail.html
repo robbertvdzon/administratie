@@ -1,4 +1,4 @@
-<div ng-cloak data-ng-controller="FactuurEditController as facturenEditcontroller">
+<div ng-cloak data-ng-controller="FactuurEditDetailsController as facturenEditDetailscontroller">
     <md-input-container flex>
         <label>Nummer</label>
         <input ng-model="data.factuurToEdit.factuurNummer" STYLE="background-color: #B2DFDB;">
@@ -14,10 +14,10 @@
         <input type="checkbox" ng-model="data.factuurToEdit.betaald">
     </label><br/>
 
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.saveDetails()" ng-hide="addMode">
+    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.saveDetails()" ng-hide="addMode">
         Ok
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.cancelEditDetails()">
+    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.cancelEditDetails()">
         Annuleren
     </md-button>
 </div>

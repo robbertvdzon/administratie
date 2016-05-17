@@ -23,10 +23,15 @@ module Application.Services {
 
             // TODO : onderstaande is voor editFactuur: kan dat algemener?
             this.factuurGuiService.getFactuurGui().data.selectedfactuur = factuur;
-            this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(factuur);
             this.factuurGuiService.getFactuurGui().data.addMode = factuur.uuid == null;
-
+            this.resetFactuurToEdit();
         }
+
+        resetFactuurToEdit() {
+            this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(this.selectedFactuur);
+        }
+
+
 
         setFactuurAsSelected(uuid) {
             var factuur:FactuurData = this.getFactuurByUuid(uuid);
@@ -36,6 +41,7 @@ module Application.Services {
             this.setSelectedFactuur(factuur);
             //this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
+
 
         public updateContact(contact:ContactData):void {
             var contactClone = this.contactDataService.cloneContact(contact);
@@ -222,8 +228,6 @@ module Application.Services {
             });
             return uuid;
         };
-
-
     }
 }
 
