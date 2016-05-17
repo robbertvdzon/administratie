@@ -12,51 +12,53 @@ module Application.Services {
 
 
     export class FactuurDataService {
-        selectedFactuur:FactuurData;
 
         constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter, private factuurGuiService:FactuurGuiService) {
         }
 
-        setSelectedFactuur(factuur:FactuurData) {
-            // TODO: de selected factuur alleen in GuiObject en niet nog apart
-            this.selectedFactuur = factuur;
-
-            // TODO : onderstaande is voor editFactuur: kan dat algemener?
+        public setSelectedFactuur(factuur:FactuurData) {
             this.factuurGuiService.getFactuurGui().data.selectedfactuur = factuur;
             this.factuurGuiService.getFactuurGui().data.addMode = factuur.uuid == null;
             this.resetFactuurToEdit();
         }
 
-        resetFactuurToEdit() {
-            this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(this.selectedFactuur);
+        private getSelectedFactuur():FactuurData{
+            return this.factuurGuiService.getFactuurGui().data.selectedfactuur;
         }
 
+        private getSelectedFactuurRegel():FactuurRegelData{
+            return this.factuurGuiService.getFactuurGui().data.selectedfactuurregel;
+        }
 
+        private setSelectedFactuurRegel(selectedfactuurregel:FactuurRegelData){
+            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = selectedfactuurregel;
+        }
 
-        setFactuurAsSelected(uuid) {
+        public resetFactuurToEdit() {
+            this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(this.getSelectedFactuur());
+        }
+
+        public setFactuurAsSelected(uuid) {
             var factuur:FactuurData = this.getFactuurByUuid(uuid);
             if (factuur != null) {
                 factuur = this.cloneFactuur(factuur);
             }
             this.setSelectedFactuur(factuur);
-            //this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
-
 
         public updateContact(contact:ContactData):void {
             var contactClone = this.contactDataService.cloneContact(contact);
             contactClone.uuid = this.createUuid()
-            this.selectedFactuur.klant = contactClone;
+            this.getSelectedFactuur().klant = contactClone;
         }
 
-
-        createAndSelectNewFactuur() {
+        public createAndSelectNewFactuur() {
             var factuur:FactuurData = new FactuurData();
             factuur.factuurNummer = this.findNextFactuurnummer();
             factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
+            factuur.factuurRegels = [];
             factuur.uuid = this.createUuid();
             this.setSelectedFactuur(factuur);
-            //this.$rootScope.$broadcast('new_selected_factuur_available', factuur);
         }
 
         public getFactuurByUuid(uuid):FactuurData {
@@ -70,13 +72,13 @@ module Application.Services {
             return null;
         }
 
-        addFactuurRegel(factuurregel:FactuurRegelData) {
-            this.selectedFactuur.factuurRegels.push(factuurregel);
+        public addFactuurRegel(factuurregel:FactuurRegelData) {
+            this.getSelectedFactuur().factuurRegels.push(factuurregel);
         }
 
-        updateFactuurRegel(factuurregel:FactuurRegelData) {
-            for (var i = 0; i < this.selectedFactuur.factuurRegels.length; i++) {
-                var factuurRegel = this.selectedFactuur.factuurRegels[i];
+        public updateFactuurRegel(factuurregel:FactuurRegelData) {
+            for (var i = 0; i < this.getSelectedFactuur().factuurRegels.length; i++) {
+                var factuurRegel = this.getSelectedFactuur().factuurRegels[i];
                 if (factuurRegel.uuid === factuurregel.uuid) {
                     factuurRegel.aantal = factuurregel.aantal;
                     factuurRegel.omschrijving = factuurregel.omschrijving;
@@ -85,40 +87,37 @@ module Application.Services {
                     factuurRegel.uuid = factuurregel.uuid;
                 }
             }
-
         }
 
-        deleteFactuurRegel(factuurregel:FactuurRegelData) {
+        public deleteFactuurRegel(factuurregel:FactuurRegelData) {
             var selectedNumber = -1;
-            for (var i = 0; i < this.selectedFactuur.factuurRegels.length; i++) {
-                var factuurRegel = this.selectedFactuur.factuurRegels[i];
+            for (var i = 0; i < this.getSelectedFactuur().factuurRegels.length; i++) {
+                var factuurRegel = this.getSelectedFactuur().factuurRegels[i];
                 if (factuurRegel.uuid === factuurregel.uuid) {
                     selectedNumber = i;
                 }
             }
             if (selectedNumber >= 0) {
-                this.selectedFactuur.factuurRegels.splice(selectedNumber, 1);
+                this.getSelectedFactuur().factuurRegels.splice(selectedNumber, 1);
             }
         }
 
-
-        loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = selectedfactuurregel;
+        public loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
+            this.setSelectedFactuurRegel(selectedfactuurregel);
             this.factuurGuiService.getFactuurGui().data.addRegelMode = false;
             this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
         }
 
-        loadNewFactuurRegel() {
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = new FactuurRegelData();
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.omschrijving = "Werkzaamheden";
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.aantal = 1;
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.btwPercentage = 21;
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.stuksPrijs = 72.5;
-            this.factuurGuiService.getFactuurGui().data.selectedfactuurregel.uuid = this.createUuid();
+        public loadNewFactuurRegel() {
+            this.setSelectedFactuurRegel(new FactuurRegelData());
+            this.getSelectedFactuurRegel().omschrijving = "Werkzaamheden";
+            this.getSelectedFactuurRegel().aantal = 1;
+            this.getSelectedFactuurRegel().btwPercentage = 21;
+            this.getSelectedFactuurRegel().stuksPrijs = 72.5;
+            this.getSelectedFactuurRegel().uuid = this.createUuid();
             this.factuurGuiService.getFactuurGui().data.addRegelMode = true;
             this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
         }
-
 
         public cloneFactuur(factuur:FactuurData):FactuurData {
             var factuurClone = new FactuurData();
@@ -135,7 +134,7 @@ module Application.Services {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "POST",
-                data: this.selectedFactuur,
+                data: this.getSelectedFactuur(),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();
@@ -144,7 +143,7 @@ module Application.Services {
 
         public deleteFactuur():ng.IPromise<any> {
             return this.$http({
-                url: "/rest/factuur/" + this.selectedFactuur.uuid,
+                url: "/rest/factuur/" + this.getSelectedFactuur().uuid,
                 method: "DELETE"
             }).then((response) => {
                 this.dataService.reload();
@@ -155,14 +154,13 @@ module Application.Services {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "PUT",
-                data: this.selectedFactuur,
+                data: this.getSelectedFactuur(),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();
             });
         };
 
-// Util services
         public findNextFactuurnummer():string {
             var administratie:Administratie = this.dataService.getData();
             var hoogste:number = 0;
@@ -199,8 +197,7 @@ module Application.Services {
             return clonedRegel;
         }
 
-
-        getContactByUuid(uuid:String):ContactData {
+        public getContactByUuid(uuid:String):ContactData {
             var administratie:Administratie = this.dataService.getData();
             for (var i = 0; i < administratie.adresboek.length; i++) {
                 var contact:ContactData = administratie.adresboek[i];
@@ -213,13 +210,12 @@ module Application.Services {
 
         public copyContactFromSelectedFactuurToAdresboek(){
             var nextNr = this.contactDataService.findNextKlantnummer();
-            this.selectedFactuur.klant.klantNummer = nextNr;
-            this.selectedFactuur.klant.uuid= this.createUuid();
-            this.contactDataService.addContact(this.selectedFactuur.klant);
+            this.getSelectedFactuur().klant.klantNummer = nextNr;
+            this.getSelectedFactuur().klant.uuid= this.createUuid();
+            this.contactDataService.addContact(this.getSelectedFactuur().klant);
         }
 
-
-        createUuid():String {
+        public createUuid():String {
             var d = new Date().getTime();
             var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 var r = (d + Math.random() * 16) % 16 | 0;
