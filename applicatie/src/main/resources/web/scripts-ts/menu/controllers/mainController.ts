@@ -8,12 +8,8 @@ module Application.Controllers {
     }
 
     export class MainController {
-        $http:ng.IHttpService;
-        $scope:MyScope;
 
-        constructor($scope, authService, $http) {
-            this.$scope = $scope;
-            this.$http=$http;
+        constructor(private $scope, private authService, private $http) {
             this.$scope.version="wait";
             this.$scope.buildtime="wait";
             authService.checkLogin();

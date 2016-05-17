@@ -9,19 +9,8 @@ module Application.Controllers {
     }
 
     export class MyController {
-        $scope:MyScope;
-        authService:Application.Services.AuthService;
-        $http: ng.IHttpService;
-        $location: ng.ILocationService;
-        $mdDialog:any;
 
-        constructor($scope, authService, $http, $location, $mdDialog) {
-            this.$scope = $scope;
-            this.authService = authService;
-            this.$http = $http;
-            this.$location = $location;
-            this.$mdDialog = $mdDialog;
-
+        constructor(private $scope, private authService, private $http, private $location, private $mdDialog) {
             $scope.name = "q";
             $scope.passwd = "q";
             $scope.loginfailed = false;

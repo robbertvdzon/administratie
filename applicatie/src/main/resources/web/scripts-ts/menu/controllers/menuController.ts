@@ -4,18 +4,8 @@ module Application.Controllers {
 
     export class MenuController {
 
-        $scope:ng.IScope;
-        authService:Application.Services.AuthService;
-        $http: ng.IHttpService;
-        $mdSidenav:any;
-        $mdDialog:any;
 
-        constructor($scope, authService, $http, $mdSidenav, $mdDialog) {
-            this.$scope = $scope;
-            this.authService=authService;
-            this.$http = $http;
-            this.$mdSidenav = $mdSidenav;
-            this.$mdDialog = $mdDialog;
+        constructor(private $scope, private authService, private $mdSidenav, private $mdDialog) {
         }
 
 
