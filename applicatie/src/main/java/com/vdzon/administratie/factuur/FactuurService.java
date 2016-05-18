@@ -1,6 +1,5 @@
 package com.vdzon.administratie.factuur;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
@@ -12,9 +11,6 @@ import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import java.util.UUID;
-
-//import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 
 public class FactuurService {
 
@@ -31,24 +27,9 @@ public class FactuurService {
             }
             String factuurJson = req.body();
             Factuur factuur = null;
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                FactuurDto factuurDto = mapper.readValue(factuurJson, FactuurDto.class);
-                // TODO; dit op een betere plek. Bij een nieuwe factuur moet er een uuid komen
-                if (factuurDto.getUuid() == null) {
-                    factuurDto.setUuid(getNewUuid());
-                }
-                // TODO; dit op een betere plek. Bij een nieuwe klant moet er een uuid komen (een klant is altijd een copy van een klant uit de adresboek)
-                if (factuurDto.getKlant()!=null && (factuurDto.getKlant().getUuid() == null || factuurDto.getKlant().getUuid().length()==0)) {
-                    factuurDto.getKlant().setUuid(getNewUuid());
-                }
-
-                factuur = factuurDto.toFactuur();
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-                // Hey, you did not send a valid request!
-            }
-
+            ObjectMapper mapper = new ObjectMapper();
+            FactuurDto factuurDto = mapper.readValue(factuurJson, FactuurDto.class);
+            factuur = factuurDto.toFactuur();
             gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(factuur);
             crudService.updateGebruiker(gebruiker);
@@ -79,10 +60,6 @@ public class FactuurService {
             throw ex;
         }
 
-    }
-
-    private String getNewUuid() {
-        return UUID.randomUUID().toString();
     }
 
 }

@@ -4,6 +4,7 @@ module Application.Controllers {
 
     import FactuurGuiService = Application.Services.FactuurGuiService;
     import FactuurGui = Application.Services.FactuurGui;
+    import SCREEN_FACTUUR_LIJST = Application.SCREEN_FACTUUR_LIJST;
 
     interface MyScope extends ng.IScope {
         factuurGui:FactuurGui;
@@ -13,6 +14,7 @@ module Application.Controllers {
 
         constructor(private $scope:MyScope, private factuurGuiService:FactuurGuiService) {
             this.$scope.factuurGui = factuurGuiService.getFactuurGui();
+            factuurGuiService.showPage(SCREEN_FACTUUR_LIJST);
         }
     }
 }

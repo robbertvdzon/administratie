@@ -1,16 +1,12 @@
-package com.vdzon.administratie;
+package com.vdzon.administratie.mongo;
 
 import com.mongodb.Mongo;
 import org.mongeez.Mongeez;
 import org.springframework.core.io.ClassPathResource;
 
-/**
- * Created by robbert on 13/05/2016.
- */
 public class UpdateMongo {
 
-    public void start(Mongo mongo, String dbName){
-//        MongoClient mongo = MongoClientFactory.maakMongoClient(config, MongoClient.getDefaultCodecRegistry());
+    public void start(Mongo mongo, String dbName) {
         Mongeez mongeez = new Mongeez();
         mongeez.setFile(new ClassPathResource("dbscripts/mongeez.xml"));
         mongeez.setMongo(mongo);

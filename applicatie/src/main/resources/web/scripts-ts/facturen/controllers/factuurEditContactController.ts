@@ -3,6 +3,7 @@
 module Application.Controllers {
 
     import FactuurData = Application.Model.FactuurData;
+    import ContactData = Application.Model.ContactData;
     import FactuurDataService = Application.Services.FactuurDataService;
     import FactuurGuiService = Application.Services.FactuurGuiService;
     import ContactDataService = Application.Services.ContactDataService;
@@ -29,6 +30,7 @@ module Application.Controllers {
         }
 
         copyContactDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
+            factuurDst.klant = new ContactData;
             factuurDst.klant.naam = factuurSrc.klant.naam;
             factuurDst.klant.adres = factuurSrc.klant.adres;
             factuurDst.klant.klantNummer = factuurSrc.klant.klantNummer;

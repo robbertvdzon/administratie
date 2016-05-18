@@ -1,22 +1,16 @@
 package com.vdzon.administratie.contact;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.ContactDto;
-import com.vdzon.administratie.dto.FactuurDto;
 import com.vdzon.administratie.model.Contact;
-import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import java.util.UUID;
-
-//import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 
 public class ContactService {
 
@@ -33,19 +27,9 @@ public class ContactService {
             }
             String contactJson = req.body();
             Contact contact = null;
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                ContactDto contactDto = mapper.readValue(contactJson, ContactDto.class);
-                // TODO; dit op een betere plek. Bij een nieuwe contact moet er een uuid komen
-                if (contactDto.getUuid() == null) {
-                    contactDto.setUuid(getNewUuid());
-                }
-
-                contact = contactDto.toContact();
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-                // Hey, you did not send a valid request!
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            ContactDto contactDto = mapper.readValue(contactJson, ContactDto.class);
+            contact = contactDto.toContact();
 
             gebruiker.getDefaultAdministratie().removeContact(contact.getUuid());
             gebruiker.getDefaultAdministratie().addContact(contact);
@@ -77,10 +61,6 @@ public class ContactService {
             throw ex;
         }
 
-    }
-
-    private String getNewUuid() {
-        return UUID.randomUUID().toString();
     }
 
 }

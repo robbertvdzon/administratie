@@ -22,7 +22,6 @@ module Application.Services {
         factuurEditContactTabDisabled:boolean = true;
         selectedIndex : number = 0;
 
-        // velden voor controllers
         data : FactuurGuiData = new FactuurGuiData();
 
     }
@@ -32,10 +31,8 @@ module Application.Services {
         factuurToEdit : FactuurData;
         addMode : boolean;
         addToAdresboek : boolean;
-        // factuur regel data
         selectedfactuurregel : FactuurRegelData;
         addRegelMode:boolean;
-        // administatie object
         administratie : Administratie;
 
     }

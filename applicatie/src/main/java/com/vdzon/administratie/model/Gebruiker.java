@@ -95,9 +95,5 @@ public class Gebruiker {
         return getPassword().equals(password);
     }
 
-    // TODO: naar utils
-    private String getNewUuid() {
-        return UUID.randomUUID().toString();
-    }
 
 }

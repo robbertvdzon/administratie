@@ -32,11 +32,7 @@ public class FactuurRegelDto {
 
 
     public FactuurRegel toFactuurRegel() {
-        return new FactuurRegel(omschrijving, aantal, stuksPrijs, btwPercentage, emptyUuid(uuid) ? getNewUuid() : uuid);
-    }
-
-    private String getNewUuid(){
-        return UUID.randomUUID().toString();
+        return new FactuurRegel(omschrijving, aantal, stuksPrijs, btwPercentage, uuid);
     }
 
     private boolean emptyUuid(String uuid) {

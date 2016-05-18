@@ -57,6 +57,7 @@ module Application.Services {
             factuur.factuurNummer = this.findNextFactuurnummer();
             factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
             factuur.factuurRegels = [];
+            factuur.klant = new ContactData();
             factuur.uuid = this.createUuid();
             this.setSelectedFactuur(factuur);
         }
