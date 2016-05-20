@@ -213,7 +213,7 @@ module Application.Services {
             var nextNr = this.contactDataService.findNextKlantnummer();
             this.getSelectedFactuur().klant.klantNummer = nextNr;
             this.getSelectedFactuur().klant.uuid= this.createUuid();
-            this.contactDataService.addContact(this.getSelectedFactuur().klant);
+            this.contactDataService.addNewContact(this.getSelectedFactuur().klant);
         }
 
         public createUuid():String {

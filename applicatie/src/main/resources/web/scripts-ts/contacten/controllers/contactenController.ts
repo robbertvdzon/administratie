@@ -2,62 +2,22 @@
 
 module Application.Controllers {
 
+    import ContactGuiService = Application.Services.ContactGuiService;
+    import SCREEN_CONTACT_LIJST = Application.SCREEN_CONTACT_LIJST;
+    import ContactGui = Application.Services.ContactGui;
 
     interface MyScope extends ng.IScope {
-        contactTabDisabled:boolean;
-        selectedIndex : number;
+        contactGui:ContactGui;
     }
 
     export class ContactenController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
 
-        constructor($scope, $rootScope) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
-
-            this.$scope.contactTabDisabled=true;
-            this.$scope.selectedIndex = 0;
-            this.initialize();
-        }
-
-        initialize() {
-
-            var unregisterCloseEditEvent = this.$rootScope.$on('close-edit-contact', ()=> {
-                this.showListPage();
-            });
-
-            var showFactuurScreenEvent = this.$rootScope.$on('show-contact-screen', ()=> {
-                this.showContactPage();
-            });
-
-            var closeFactuurScreenEvent = this.$rootScope.$on('close-contact-screen', ()=> {
-                this.showListPage();
-            });
-
-
-
-            this.$scope.$on("$destroy", function() {
-                unregisterCloseEditEvent();
-                showFactuurScreenEvent();
-                closeFactuurScreenEvent();
-            });
-
-        }
-
-
-        showListPage() {
-            this.$scope.selectedIndex=0;
-            this.$scope.contactTabDisabled=true;
-        }
-        showContactPage() {
-            this.$scope.contactTabDisabled=false;
-            this.$scope.selectedIndex=1;
+        constructor(private $scope:MyScope, private contactGuiService:ContactGuiService) {
+            this.$scope.contactGui = contactGuiService.getContactGui();
+            contactGuiService.showPage(SCREEN_CONTACT_LIJST);
         }
     }
-
 }
-
 
 angular.module('mswFrontendApp').controller('ContactenCtrl', Application.Controllers.ContactenController);
 

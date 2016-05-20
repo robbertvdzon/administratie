@@ -4,11 +4,35 @@ module Application.Services {
 
     import ContactData = Application.Model.ContactData;
     import Administratie = Application.Model.Administratie;
+    import ContactGuiService = Application.Services.ContactGuiService;
 
     export class ContactDataService {
+        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private contactGuiService:ContactGuiService) {
+        }
 
+        public setSelectedContact(contact:ContactData) {
+            this.contactGuiService.getContactGui().data.selectedcontact = contact;
+            this.contactGuiService.getContactGui().data.addMode = contact.uuid == null;
+        }
 
-        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice) {
+        private getSelectedContact():ContactData{
+            return this.contactGuiService.getContactGui().data.selectedcontact;
+        }
+
+        public setContactAsSelected(uuid) {
+            var contact:ContactData = this.getContactByUuid(uuid);
+            if (contact != null) {
+                contact = this.cloneContact(contact);
+            }
+            this.setSelectedContact(contact);
+        }
+
+        public createAndSelectNewContact() {
+            var contact:ContactData = new ContactData();
+            contact.klantNummer = this.findNextKlantnummer();
+            contact.naam = "Klant";
+            contact.land = "Nederland";
+            this.setSelectedContact(contact);
         }
 
         public getContactByUuid(uuid):ContactData {
@@ -35,11 +59,11 @@ module Application.Services {
             return contactClone;
         }
 
-        public saveContact(contact:ContactData): ng.IPromise<any> {
+        public saveContact(): ng.IPromise<any> {
             return this.$http({
                 url: "/rest/contact/",
                 method: "POST",
-                data: contact,
+                data: this.getSelectedContact(),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();
@@ -47,16 +71,16 @@ module Application.Services {
         };
 
 
-        public deleteContact(contact:ContactData): ng.IPromise<any> {
+        public deleteContact(): ng.IPromise<any> {
             return this.$http({
-                url: "/rest/contact/" + contact.uuid,
+                url: "/rest/contact/" + this.getSelectedContact().uuid,
                 method: "DELETE"
             }).then((response) => {
                 this.dataService.reload();
             });
         };
 
-        public addContact(contact:ContactData): ng.IPromise<any> {
+        public addNewContact(contact:ContactData): ng.IPromise<any> {
             return this.$http({
                 url: "/rest/contact/",
                 method: "PUT",
@@ -65,6 +89,10 @@ module Application.Services {
             }).then((response) => {
                 this.dataService.reload();
             });
+        };
+
+        public addContact(): ng.IPromise<any> {
+            return this.addNewContact(this.getSelectedContact());
         };
 
         public findNextKlantnummer():string {

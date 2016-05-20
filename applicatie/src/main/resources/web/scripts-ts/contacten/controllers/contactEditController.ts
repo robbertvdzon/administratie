@@ -4,80 +4,46 @@ module Application.Controllers {
 
     import ContactData = Application.Model.ContactData;
     import ContactDataService = Application.Services.ContactDataService;
+    import ContactGuiService = Application.Services.ContactGuiService;
+    import ContactGuiData = Application.Services.ContactGuiData;
 
     interface MyScope extends ng.IScope {
-        selectedcontact : ContactData;
-        addMode : boolean;
+        data:ContactGuiData;
     }
 
     export class ContactEditController {
 
-        constructor(private $scope, private $rootScope, private contactDataService:ContactDataService, private $filter) {
-            this.initialize();
-        }
-
-        initialize() {
-            var loadContactToEditEvent = this.$rootScope.$on('load-contact-to-edit', (event, uuid: String)=> {
-                this.loadExistingContact(uuid);
-            });
-            var loadContactToAddEvent = this.$rootScope.$on('load-contact-to-add', ()=> {
-                this.loadNewFactuur();
-            });
-
-            this.$scope.$on("$destroy", function () {
-                loadContactToEditEvent();
-                loadContactToAddEvent();
-            });
-
-        }
-
-        loadExistingContact(uuid) {
-            var contact:ContactData = this.contactDataService.getContactByUuid(uuid);
-            if (contact != null){
-                this.$scope.selectedcontact = this.contactDataService.cloneContact(contact);
-                this.$scope.addMode = false;
-                this.$rootScope.$broadcast('show-contact-screen');
-            }
-
-        }
-
-        loadNewFactuur() {
-            this.$scope.selectedcontact = new ContactData();
-            this.$scope.selectedcontact.naam = "klant";
-            this.$scope.selectedcontact.klantNummer = this.contactDataService.findNextKlantnummer();
-            this.$scope.selectedcontact.land = "Nederland";
-            this.$scope.addMode = true;
-            this.$rootScope.$broadcast('show-contact-screen');
+        constructor(private $scope:MyScope, private contactDataService:ContactDataService, private contactGuiService:ContactGuiService) {
+            this.$scope.data = contactGuiService.getContactGui().data;
         }
 
         save() {
-            this.contactDataService.saveContact(this.$scope.selectedcontact).then((response) => {
-                this.$rootScope.$broadcast('close-edit-contact');
+            this.contactDataService.saveContact().then((response) => {
+                this.contactGuiService.closePage(SCREEN_CONTACT_EDIT);
             }).catch((response) => {
                 alert("Opslaan mislukt");
             })
         }
 
         add() {
-            this.contactDataService.addContact(this.$scope.selectedcontact).then((response) => {
-                this.$rootScope.$broadcast('close-edit-contact');
+            this.contactDataService.addContact().then((response) => {
+                this.contactGuiService.closePage(SCREEN_CONTACT_EDIT);
             }).catch((response) => {
                 alert("Toevoegen mislukt");
             })
         }
 
         delete() {
-            this.contactDataService.deleteContact(this.$scope.selectedcontact).then((response) => {
-                this.$rootScope.$broadcast('close-edit-contact');
+            this.contactDataService.deleteContact().then((response) => {
+                this.contactGuiService.closePage(SCREEN_CONTACT_EDIT);
             }).catch((response) => {
                 alert("Delete mislukt");
             })
         }
 
         cancel() {
-            this.$rootScope.$broadcast('close-edit-contact');
+            this.contactGuiService.closePage(SCREEN_CONTACT_EDIT);
         }
-
 
     }
 }

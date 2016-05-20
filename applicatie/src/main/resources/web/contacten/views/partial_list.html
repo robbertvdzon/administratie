@@ -1,9 +1,9 @@
 <div ng-cloak data-ng-controller="ContactenListController as contactenListController">
-Facturen
+Contacten
 
 <md-list >
 
-    <md-list-item ng-repeat="contact in administratie.adresboek" ng-click="contactenListController.edit(contact.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
+    <md-list-item ng-repeat="contact in data.administratie.adresboek" ng-click="contactenListController.edit(contact.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
         <div md-ink-ripple style="width: 100%;"  >
             <contact-row></contact-row>
         </div>
@@ -13,7 +13,7 @@ Facturen
 <br>
 <br>
 
-<md-button class="md-raised md-primary" ng-click="contactenListController.newFactuur()"  >
+<md-button class="md-raised md-primary" ng-click="contactenListController.newContact()"  >
     Contact toevoegen
 </md-button>
 

@@ -4,54 +4,32 @@ module Application.Controllers {
 
     import ContactData = Application.Model.ContactData;
     import Administratie = Application.Model.Administratie;
+    import ContactGuiData = Application.Services.ContactGuiData;
+    import ContactGuiService = Application.Services.ContactGuiService;
+    import MyDataservice = Application.Services.MyDataservice;
+    import ContactDataService = Application.Services.ContactDataService;
+    import SCREEN_CONTACT_EDIT = Application.SCREEN_CONTACT_EDIT;
 
     interface MyScope extends ng.IScope {
-        administratie : Administratie;
+        data : ContactGuiData;
     }
 
     export class ContactenListController {
-        $scope:MyScope;
-        $rootScope:ng.IScope;
-        dataService:Application.Services.MyDataservice;
 
-        constructor($scope, $rootScope, dataService) {
-            this.$scope = $scope;
-            this.$rootScope = $rootScope;
-            this.dataService = dataService;
-            this.initialize();
+        constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private contactDataService:ContactDataService, private contactGuiService:ContactGuiService) {
+            this.$scope.data = this.contactGuiService.getContactGui().data;
         }
 
-        initialize() {
-            var unregisterDataUpdatedEvent = this.$rootScope.$on('data-updated', ()=> {
-                this.loadData();
-            });
-
-
-            this.$scope.$on("$destroy", function() {
-                unregisterDataUpdatedEvent();
-            });
-
-            this.loadData();
-        }
-
-        loadData() {
-            if (this.dataService.getData() != undefined) {
-                this.$scope.administratie = this.dataService.getData();
-            }
+        edit(uuid:String) {
+            this.contactDataService.setContactAsSelected(uuid);
+            this.contactGuiService.showPage(SCREEN_CONTACT_EDIT);
         }
 
 
-        edit(uuid: String) {
-            this.$rootScope.$broadcast('load-contact-to-edit', uuid);
+        newContact() {
+            this.contactDataService.createAndSelectNewContact();
+            this.contactGuiService.showPage(SCREEN_CONTACT_EDIT);
         }
-
-
-        newFactuur() {
-            this.$rootScope.$broadcast('load-contact-to-add');
-        }
-
-
-
     }
 
 }
