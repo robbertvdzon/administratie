@@ -1,37 +1,62 @@
-
-
 <div data-ng-controller="LoginCtrl as logincontroller">
-    <form>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Login</h2>
-            </div>
-        </md-toolbar>
-        <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div ng-hide="registerUserMode">
+        <form>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Login</h2>
+                </div>
+            </md-toolbar>
+                <md-input-container>
+                    <label>Gebruikersnaam:</label>
+                    <input ng-model="username" id="username">
+                </md-input-container>
+                <md-input-container>
+                    <label>Password:</label>
+                    <input ng-model="passwd" id="password">
+                </md-input-container>
+
+                <p ng-show="loginfailed" class="error" id="auth_failed">
+                    Authentication failed
+                </p>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="logincontroller.login()" style="margin-right:20px;" id="submit_button">
+                    Login
+                </md-button>
+                <md-button ng-click="logincontroller.startRegistreer()" style="margin-right:20px;">
+                    Registreer
+                </md-button>
+            </md-dialog-actions>
+        </form>
+        <br>
+        Versie: {{version}}<br>
+        <small>({{buildtime}})</small>
+
+    </div>
+    <div ng-show="registerUserMode">
+
             <md-input-container>
-                <label>Name:</label>
-                <input ng-model="name" required id="username">
+                <label>Naam:</label>
+                <input ng-model="name" required >
+            </md-input-container>
+            <md-input-container>
+                <label>Gebruikersnaam:</label>
+                <input ng-model="username" required >
             </md-input-container>
             <md-input-container>
                 <label>Password:</label>
-                <input ng-model="passwd" required id="password">
+                <input ng-model="passwd" required >
             </md-input-container>
-
-            <p ng-show="loginfailed" class="error" id="auth_failed">
-                Authentication failed
-            </p>
-        </md-dialog-content>
-        <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button ng-click="logincontroller.login()" style="margin-right:20px;" id="submit_button">
-                Login
+        <md-dialog-actions layout="row">
+            <md-button ng-click="logincontroller.registreer()" style="margin-right:20px;" id="submit_button">
+                Registreer
             </md-button>
-            <md-button ng-click="logincontroller.hide()" style="margin-right:20px;">
-                Cancel
+            <md-button ng-click="logincontroller.cancelRegistreer()" style="margin-right:20px;">
+                Annuleer
             </md-button>
         </md-dialog-actions>
-    </form>
+    </div>
 </div>
 
-Versie: {{version}}<br>
-<small>({{buildtime}})</small>

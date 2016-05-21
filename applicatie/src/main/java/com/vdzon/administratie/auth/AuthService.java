@@ -8,12 +8,43 @@ import spark.Response;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.UUID;
 
 @Singleton
 public class AuthService {
 
     @Inject
     UserCrud userCrud;
+
+    protected Object register(Request req, Response res) throws Exception {
+        String name = req.queryParams("name");
+        String username = req.queryParams("username");
+        String password = req.queryParams("password");
+
+        Gebruiker gebruiker = userCrud.getGebruikerByUsername(username);
+
+        if (gebruiker != null ) {
+            res.status(401);
+            SessionHelper.removeAuthenticatedUserUuid(req);
+            return new SingleAnswer("username bestaat al");
+        }
+
+        gebruiker  = new Gebruiker();
+        gebruiker.setAdmin(false);
+        gebruiker.setName(name);
+        gebruiker.setPassword(password);
+        gebruiker.setUsername(username);
+        gebruiker.setUuid(UUID.randomUUID().toString());
+        gebruiker.initDefaultAdministratie();
+        try {
+            userCrud.updateGebruiker(gebruiker);
+            SessionHelper.setAuthenticatedUserUuid(req, gebruiker.getUuid());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new SingleAnswer("ok");
+    }
 
     protected Object login(Request req, Response res) throws Exception {
         String username = req.queryParams("username");
