@@ -34,7 +34,7 @@ public class AuthService {
         catch (Exception ex){
             ex.printStackTrace();
         }
-            return new SingleAnswer("ok");
+        return new SingleAnswer("ok");
     }
 
     protected Object logout(Request req, Response res) throws Exception {
