@@ -33,7 +33,7 @@ module Application.Services {
         public logOff() {
             this.authData.userData = undefined;
             this.$http.get('/logout').success((data)=> {
-                this.$location.path('/');
+                this.$location.path('/login');
             });
         };
 
@@ -45,7 +45,7 @@ module Application.Services {
             }).error(()=> {
                 this.dataService.userData = undefined;
                 this.dataService.setData(undefined);
-                this.$location.path('/');
+                this.$location.path('/login');
             });
         };
     }

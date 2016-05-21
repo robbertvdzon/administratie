@@ -36,7 +36,7 @@ angular
                 controller: 'MainCtrl'
             })
             .when('/login', {
-                templateUrl: 'views/login.html',
+                templateUrl: 'login/views/main.html',
                 controller: 'LoginCtrl'
             })
             .when('/facturen', {
