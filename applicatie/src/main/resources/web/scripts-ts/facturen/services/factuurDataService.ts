@@ -63,7 +63,7 @@ module Application.Services {
         }
 
         public getFactuurByUuid(uuid):FactuurData {
-            var administratie:Administratie = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData().administratie;
             for (var i = 0; i < administratie.facturen.length; i++) {
                 var factuur:FactuurData = administratie.facturen[i];
                 if (factuur.uuid === uuid) {
@@ -163,7 +163,7 @@ module Application.Services {
         };
 
         public findNextFactuurnummer():string {
-            var administratie:Administratie = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData().administratie;
             var hoogste:number = 0;
             for (var i = 0; i < administratie.facturen.length; i++) {
                 var factuurNr:number = parseInt(String(administratie.facturen[i].factuurNummer), 10);
@@ -199,7 +199,7 @@ module Application.Services {
         }
 
         public getContactByUuid(uuid:String):ContactData {
-            var administratie:Administratie = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData().administratie;
             for (var i = 0; i < administratie.adresboek.length; i++) {
                 var contact:ContactData = administratie.adresboek[i];
                 if (contact.uuid === uuid) {

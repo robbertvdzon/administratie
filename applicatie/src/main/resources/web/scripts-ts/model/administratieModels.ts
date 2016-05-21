@@ -2,6 +2,19 @@
 
 module Application.Model {
 
+    export class GuiData {
+        gebruikers:GebruikerData[];
+        administratie:Administratie;
+        huidigeGebruiker:GebruikerData;
+    }
+
+    export class GebruikerData {
+        uuid:String;
+        username:String;
+        name:String;
+        admin:boolean;
+    }
+
     export class FactuurRegelData {
         uuid:String;
         omschrijving:String;

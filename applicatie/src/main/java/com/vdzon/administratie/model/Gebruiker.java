@@ -16,17 +16,28 @@ public class Gebruiker {
     private String name;
     private String username;
     private String password;
+    private boolean admin;
     private List<Administratie> administraties = new ArrayList<>();
 
     public Gebruiker() {
     }
 
-    public Gebruiker(String uuid, String name, String username, String password, List<Administratie> administraties) {
+    public Gebruiker(String uuid, String name, String username, String password, boolean admin, List<Administratie> administraties) {
         this.uuid = uuid;
         this.name = name;
         this.username = username;
         this.password = password;
+        this.admin = admin;
         this.administraties = administraties;
+    }
+
+    public Gebruiker(Gebruiker gebruiker) {
+        this.uuid = gebruiker.getUuid();
+        this.name = gebruiker.getName();
+        this.username = gebruiker.getUsername();
+        this.password = gebruiker.getPassword();
+        this.admin = gebruiker.isAdmin();
+        this.administraties = gebruiker.getAdministraties();
     }
 
     public String getName() {
@@ -57,18 +68,35 @@ public class Gebruiker {
         return uuid;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
     public List<Administratie> getAdministraties() {
+        initDefaultAdministratie();
         return Collections.unmodifiableList(new ArrayList<>(administraties));
     }
 
     public Administratie getDefaultAdministratie(){
+        initDefaultAdministratie();
+        return administraties.get(0);
+    }
+
+    public void initDefaultAdministratie(){
         if (administraties==null){
             administraties = new ArrayList<>();
         }
         if (administraties.size()==0){
             administraties.add(new Administratie(getUuid(),"mijn admin",null,null));
         }
-        return administraties.get(0);
     }
 
     public void addAdministratie(Administratie administratie){
@@ -94,6 +122,5 @@ public class Gebruiker {
     public boolean authenticate(String password) {
         return getPassword().equals(password);
     }
-
 
 }

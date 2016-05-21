@@ -12,8 +12,7 @@ public class GebruikerDto {
     private String uuid;
     private String name;
     private String username;
-    private String password;
-    private List<AdministratieDto> administraties;
+    private boolean admin;
 
     public GebruikerDto() {
     }
@@ -22,49 +21,47 @@ public class GebruikerDto {
         this.uuid = gebruiker.getUuid();
         this.name = gebruiker.getName();
         this.username = gebruiker.getUsername();
-        this.password = gebruiker.getPassword();
-        this.administraties = toAdministratiesDto(gebruiker.getAdministraties());
+        this.admin = gebruiker.isAdmin();
     }
 
-    private List<AdministratieDto> toAdministratiesDto(List<Administratie> administraties) {
-        return administraties
-                .stream()
-                .map(administratie -> new AdministratieDto(administratie))
-                .collect(Collectors.toList());
+    public Gebruiker cloneGebruikerAndCopyDtoFields(Gebruiker gebruiker) {
+        Gebruiker newGebruiker = new Gebruiker(gebruiker);
+        newGebruiker.setUsername(username);
+        newGebruiker.setName(name);
+        newGebruiker.setUuid(uuid);
+        newGebruiker.setAdmin(admin);
+        return newGebruiker;
     }
 
-    public Gebruiker toGebruiker() {
-        return new Gebruiker(uuid, name, username, password, toAdministraties());
-    }
-
-    private List<Administratie> toAdministraties() {
-        return administraties
-                .stream()
-                .map(administratie -> administratie.toAdministratie())
-                .collect(Collectors.toList());
+    public String getUuid() {
+        return uuid;
     }
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public List<AdministratieDto> getAdministraties() {
-        return administraties;
-    }
-
-    public void setAdministraties(List<AdministratieDto> administraties) {
-        this.administraties = administraties;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

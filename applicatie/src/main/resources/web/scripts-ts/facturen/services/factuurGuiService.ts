@@ -4,6 +4,7 @@ module Application.Services {
     import Administratie = Application.Model.Administratie;
     import FactuurData = Application.Model.FactuurData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
+    import GuiData = Application.Model.GuiData;
 
     export class FactuurGui{
         // velden voor factuur edit schermen
@@ -36,12 +37,12 @@ module Application.Services {
         constructor($rootScope, private dataService: MyDataservice) {
             this.factuurGui=new FactuurGui();
 
-            $rootScope.$on('data-updated', (event, administratie)=> {
-                this.reloadData(administratie);
+            $rootScope.$on('data-updated', (event, guiData:GuiData)=> {
+                this.reloadData(guiData.administratie);
             });
 
             // load for the first time
-            this.reloadData(this.dataService.getData());
+            this.reloadData(this.dataService.getData().administratie);
 
         }
 

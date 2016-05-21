@@ -42,6 +42,7 @@ public class UserCrud {
     }
 
     public void deleteGebruiker(String uuid) {
+        if (uuid == null) return;
         this.datastore.delete(Gebruiker.class, uuid);
     }
 

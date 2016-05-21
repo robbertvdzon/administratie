@@ -31,9 +31,10 @@ module Application.Services {
         };
 
         public checkLogin() {
-            return this.$http.get('/users/getcurrentadministratie').success((data) => {
+            return this.$http.get('/load').success((data) => {
                 this.dataService.setData(data);
                 this.authData.userData = data;
+                //this.dataService.reloadGebruikers();
             }).error(()=> {
                 this.dataService.userData = undefined;
                 this.dataService.setData(undefined);

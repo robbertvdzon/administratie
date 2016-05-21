@@ -32,11 +32,12 @@ module Application.Services {
             contact.klantNummer = this.findNextKlantnummer();
             contact.naam = "Klant";
             contact.land = "Nederland";
+            contact.uuid = this.createUuid();
             this.setSelectedContact(contact);
         }
 
         public getContactByUuid(uuid):ContactData {
-            var administratie:Administratie = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData().administratie;
             for (var i = 0; i < administratie.adresboek.length; i++) {
                 var contact:ContactData = administratie.adresboek[i];
                 if (contact.uuid === uuid) {
@@ -96,7 +97,7 @@ module Application.Services {
         };
 
         public findNextKlantnummer():string {
-            var administratie:Administratie = this.dataService.getData();
+            var administratie:Administratie = this.dataService.getData().administratie;
             var hoogste:number = 0;
             for (var i = 0; i < administratie.adresboek.length; i++) {
                 var klantNr:number = parseInt(String(administratie.adresboek[i].klantNummer),10);
@@ -108,7 +109,19 @@ module Application.Services {
             return ""+nieuwNummer;
         }
 
+        public createUuid():String {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        };
+
     }
+
+
 }
 
 

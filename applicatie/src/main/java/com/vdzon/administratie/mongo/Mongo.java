@@ -1,18 +1,30 @@
 package com.vdzon.administratie.mongo;
 
 import com.mongodb.MongoClient;
+import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.LocalDateTimeConverter;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
+
+import java.util.List;
 
 public class Mongo {
+    public static final String DB_NAME = "administratie";
     private static Mongo mongo = new Mongo();
 
     private Datastore datastore;
 
     private Mongo() {
         init();
-//        TestDataGenerator.buildTestData("q", "q", "q", datastore);
+        createAdminUserWhenNotExists();
+    }
+
+    private void createAdminUserWhenNotExists(){
+        List<Gebruiker> gebruikers = this.datastore.createQuery(Gebruiker.class).asList();
+        if (gebruikers.isEmpty()){
+            TestDataGenerator.buildTestData("admin", "admin", "admin", true, datastore);
+        }
     }
 
     public static Mongo getMongo() {
@@ -39,7 +51,7 @@ public class Mongo {
         } else {
             mongoClient = new MongoClient(host);
         }
-        datastore = morphia.createDatastore(mongoClient, "zzpadministratie");
+        datastore = morphia.createDatastore(mongoClient, DB_NAME);
         datastore.ensureIndexes();
 
         new UpdateMongo().start(mongoClient, "zzpadministratie");

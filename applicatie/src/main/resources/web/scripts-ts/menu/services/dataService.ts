@@ -2,12 +2,10 @@
 
 module Application.Services {
 
-    //import Administratie = Application.Model.Administratie;
-    //interface UserData {
-    //    userData: Administratie;
-    //}
+    import GuiData = Application.Model.GuiData;
     export class MyDataservice {
         userData:any;
+        gebruikers:any;
         $rootScope:ng.IScope;
         $http: ng.IHttpService;
 
@@ -19,9 +17,7 @@ module Application.Services {
 
         private initialize() {
             this.userData = undefined;
-            this.$rootScope.$on('new-data', (data)=> {
-                this.setData(data);
-            });
+            this.gebruikers = undefined;
         }
 
         public setData (data: any) {
@@ -29,18 +25,18 @@ module Application.Services {
             this.$rootScope.$broadcast('data-updated', data);
         };
 
-
-        public getData = function (): any {
+        public getData = function (): GuiData {
             return this.userData;
         };
 
         public reload() {
-            return this.$http.get('/users/getcurrentadministratie').success((data)=> {
+            return this.$http.get('/load').success((data)=> {
                 this.setData(data);
             }).error(()=> {
                 this.setData(undefined);
             });
         };
+
     }
 }
 

@@ -49,10 +49,11 @@ angular
                 controller: 'ContactenCtrl',
                 controllerAs: 'contactencontroller'
             })
-            //.when('/facturenregel', {
-            //    templateUrl: 'facturen/views/main.html',
-            //    controller: 'FacturenregelCtrl'
-            //})
+            .when('/gebruikers', {
+                templateUrl: 'gebruikers/views/main.html',
+                controller: 'GebruikersCtrl',
+                controllerAs: 'gebruikerscontroller'
+            })
             .otherwise({
                 redirectTo: '/'
             });

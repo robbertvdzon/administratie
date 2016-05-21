@@ -66,6 +66,11 @@
                 Overzichten
             </md-button>
         </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/gebruikers" ng-show="menuController.isAuth()" class="md-primary" id="gebruikers_main_button">
+                Gebruikers
+            </md-button>
+        </md-list-item>
     </md-list>
 </md-sidenav>
 
@@ -150,6 +155,15 @@
 <script src="scripts/contacten/controllers/contactenController.js"></script>
 <script src="scripts/contacten/controllers/contactenListController.js"></script>
 <script src="scripts/contacten/controllers/contactEditController.js"></script>
+
+<script src="scripts/gebruikers/GebruikerGuiConstants.js"></script>
+<script src="scripts/gebruikers/directives/gebruikerRow.js"></script>
+<script src="scripts/gebruikers/services/gebruikerDataService.js"></script>
+<script src="scripts/gebruikers/services/gebruikerGuiService.js"></script>
+<script src="scripts/gebruikers/controllers/gebruikersController.js"></script>
+<script src="scripts/gebruikers/controllers/gebruikersListController.js"></script>
+<script src="scripts/gebruikers/controllers/gebruikerEditController.js"></script>
+<script src="scripts/gebruikers/controllers/gebruikerSetPasswordController.js"></script>
 
 <!-- endbuild -->
 </body>

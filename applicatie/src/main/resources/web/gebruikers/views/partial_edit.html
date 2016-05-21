@@ -1,0 +1,36 @@
+<div ng-cloak data-ng-controller="GebruikerEditController as gebruikersEditcontroller">
+    <br>
+    <md-input-container flex>
+        <label>Naam</label>
+        <input ng-model="data.selectedgebruiker.name" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Username</label>
+        <input ng-model="data.selectedgebruiker.username" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <label>Admin:
+        <input type="checkbox" ng-model="data.selectedgebruiker.admin">
+    </label><br/>
+
+    <br>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="gebruikersEditcontroller.add()" ng-show="addMode">
+        Gebruiker toevoegen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="gebruikersEditcontroller.save()" ng-hide="addMode">
+        Gebruiker opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="gebruikersEditcontroller.setPassword()" ng-hide="addMode">
+        Wachtwoord instellen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="gebruikersEditcontroller.cancel()">
+        Annuleren
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="gebruikersEditcontroller.delete()">
+        Verwijder
+    </md-button>
+</div>

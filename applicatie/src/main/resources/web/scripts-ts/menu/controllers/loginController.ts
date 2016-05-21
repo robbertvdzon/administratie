@@ -11,8 +11,8 @@ module Application.Controllers {
     export class MyController {
 
         constructor(private $scope, private authService, private $http, private $location, private $mdDialog) {
-            $scope.name = "q";
-            $scope.passwd = "q";
+            $scope.name = "admin";
+            $scope.passwd = "admin";
             $scope.loginfailed = false;
         }
 
