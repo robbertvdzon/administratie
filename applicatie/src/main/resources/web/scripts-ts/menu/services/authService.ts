@@ -23,6 +23,13 @@ module Application.Services {
             return !angular.isUndefined(this.authData.userData);
         };
 
+        public isAdmin() {
+            if (this.isAuthenticated()){
+                return this.authData.userData.huidigeGebruiker.admin;
+            }
+            return false;
+        };
+
         public logOff() {
             this.authData.userData = undefined;
             this.$http.get('/logout').success((data)=> {

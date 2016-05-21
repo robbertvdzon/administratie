@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vdzon.administratie.auth.AuthResource;
 import com.vdzon.administratie.contact.ContactResource;
+import com.vdzon.administratie.data.DataResource;
 import com.vdzon.administratie.factuur.FactuurResource;
 import com.vdzon.administratie.gebruiker.GebruikerResource;
 import com.vdzon.administratie.version.VersionResource;
@@ -50,6 +51,7 @@ public class App {
         Injector injector = Guice.createInjector(new AppInjector());
 
         // instanciate the objects that need injections
+        DataResource dataResource = injector.getInstance(DataResource.class);
         AuthResource authResource = injector.getInstance(AuthResource.class);
         VersionResource versionResource = injector.getInstance(VersionResource.class);
         FactuurResource factuurResource = injector.getInstance(FactuurResource.class);

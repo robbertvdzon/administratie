@@ -9,6 +9,10 @@ module Application.Controllers {
         }
 
 
+        isAdmin() {
+            return this.authService.isAdmin();
+        }
+
         isAuth() {
             return this.authService.isAuthenticated();
         }

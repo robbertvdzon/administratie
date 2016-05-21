@@ -11,6 +11,5 @@ public class AuthResource {
     public AuthResource(AuthService authService) {
         Spark.post("/login", authService::login, JsonUtil.json());
         Spark.get("/logout", authService::logout, JsonUtil.json());
-        Spark.get("/load", authService::getCurrentAdministratie, JsonUtil.json());
     }
 }
