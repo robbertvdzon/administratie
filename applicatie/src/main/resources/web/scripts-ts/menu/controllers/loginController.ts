@@ -23,7 +23,7 @@ module Application.Controllers {
         private login () {
             this.$http({
                 method: 'POST',
-                url: '/login',
+                url: '/log-in',
                 data: "username=" + encodeURIComponent(this.$scope.name) + "&password=" + encodeURIComponent(this.$scope.passwd),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success((data)=> {

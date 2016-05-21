@@ -9,7 +9,7 @@ public class AuthResource {
 
     @Inject
     public AuthResource(AuthService authService) {
-        Spark.post("/login", authService::login, JsonUtil.json());
+        Spark.post("/log-in", authService::login, JsonUtil.json());
         Spark.get("/logout", authService::logout, JsonUtil.json());
     }
 }
