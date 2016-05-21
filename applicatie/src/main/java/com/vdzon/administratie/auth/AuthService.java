@@ -16,16 +16,25 @@ public class AuthService {
     UserCrud userCrud;
 
     protected Object login(Request req, Response res) throws Exception {
-        String username = req.queryParams("username");
-        String password = req.queryParams("password");
-        Gebruiker gebruiker = userCrud.getGebruikerByUsername(username);
-        if (gebruiker == null || !gebruiker.authenticate(password)) {
-            res.status(401);
-            SessionHelper.removeAuthenticatedUserUuid(req);
-            return new SingleAnswer("not authorized");
+        try {
+            System.out.println("login 1");
+            String username = req.queryParams("username");
+            String password = req.queryParams("password");
+            Gebruiker gebruiker = userCrud.getGebruikerByUsername(username);
+            System.out.println("login 2 " + gebruiker);
+            if (gebruiker == null || !gebruiker.authenticate(password)) {
+                res.status(401);
+                SessionHelper.removeAuthenticatedUserUuid(req);
+                return new SingleAnswer("not authorized");
+            }
+            System.out.println("login 3");
+            SessionHelper.setAuthenticatedUserUuid(req, gebruiker.getUuid());
+            System.out.println("login 4");
         }
-        SessionHelper.setAuthenticatedUserUuid(req, gebruiker.getUuid());
-        return new SingleAnswer("ok");
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+            return new SingleAnswer("ok");
     }
 
     protected Object logout(Request req, Response res) throws Exception {
