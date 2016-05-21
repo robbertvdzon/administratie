@@ -10,7 +10,7 @@ import org.mongodb.morphia.query.Query;
 import java.util.List;
 
 public class Mongo {
-    public static final String DB_NAME = "administratie";
+    public static final String DB_NAME = "zzp-administratie";
     private static Mongo mongo = new Mongo();
 
     private Datastore datastore;
