@@ -1,6 +1,5 @@
 <div ng-cloak data-ng-controller="FactuurEditController as facturenEditcontroller">
     <br>
-
     <b>Factuur Details:</b>
     <table>
         <tr>
@@ -89,7 +88,7 @@
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.delete()">
         Verwijder Factuur
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.print()">
+    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.print(data.selectedfactuur.uuid)">
         Print
     </md-button>
 

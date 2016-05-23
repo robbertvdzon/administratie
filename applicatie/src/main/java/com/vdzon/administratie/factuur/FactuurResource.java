@@ -13,6 +13,7 @@ public class FactuurResource {
         Spark.put("/rest/factuur/", factuurService::putFactuur, JsonUtil.json());
         Spark.post("/rest/factuur/", factuurService::putFactuur, JsonUtil.json());
         Spark.delete("/rest/factuur/:uuid", factuurService::removeFactuur, JsonUtil.json());
+        Spark.get("/rest/factuur/pdf/:uuid", factuurService::getPdf, JsonUtil.json());
     }
 
 

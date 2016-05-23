@@ -50,6 +50,15 @@ public class Administratie {
         facturen.add(factuur);
     }
 
+    public Factuur getFactuur(String uuid) {
+        for (Factuur factuur : getFacturen()) {
+            if (factuurNummerMatchesUuid(uuid, factuur)) {
+                return factuur;
+            }
+        }
+        return null;
+    }
+
     public void removeFactuur(String uuid) {
         Factuur factuurToRemove = null;
         for (Factuur factuur : getFacturen()) {
