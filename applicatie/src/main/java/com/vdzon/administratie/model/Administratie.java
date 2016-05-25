@@ -12,30 +12,30 @@ public class Administratie {
 
     @Id
     private String uuid;
-    private String name;
+    private AdministratieGegevens administratieGegevens;
     private List<Factuur> facturen = new ArrayList<>();
     private List<Contact> adresboek = new ArrayList<>();
 
     public Administratie() {
     }
 
-    public Administratie(String uuid, String name, List<Factuur> facturen, List<Contact> adresboek) {
+    public Administratie(String uuid, List<Factuur> facturen, List<Contact> adresboek, AdministratieGegevens administratieGegevens) {
         this.uuid = uuid;
-        this.name = name;
         this.facturen = facturen;
         this.adresboek = adresboek;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.administratieGegevens = administratieGegevens;
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public AdministratieGegevens getAdministratieGegevens() {
+        return administratieGegevens;
+    }
+
+    public void setAdministratieGegevens(AdministratieGegevens administratieGegevens) {
+        this.administratieGegevens = administratieGegevens;
     }
 
     public List<Factuur> getFacturen() {

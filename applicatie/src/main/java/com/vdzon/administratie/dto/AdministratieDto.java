@@ -2,8 +2,8 @@ package com.vdzon.administratie.dto;
 
 
 import com.vdzon.administratie.model.Administratie;
-import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Contact;
+import com.vdzon.administratie.model.Factuur;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class AdministratieDto {
 
     private String uuid;
-    private String name;
+    private AdministratieGegevensDto administratieGegevensDto;
     private List<FactuurDto> facturen;
     private List<ContactDto> adresboek;
 
@@ -20,16 +20,17 @@ public class AdministratieDto {
 
     public AdministratieDto(Administratie administratie) {
         this.uuid = administratie.getUuid();
-        this.name = administratie.getName();
+        this.administratieGegevensDto = new AdministratieGegevensDto(administratie.getAdministratieGegevens());
         this.facturen = toFacturenDto(administratie.getFacturen());
         this.adresboek = toAdressenDto(administratie.getAdresboek());
+
     }
 
     private List<ContactDto> toAdressenDto(List<Contact> klanten) {
         return klanten
                 .stream()
                 .map(klant -> new ContactDto(klant))
-                .sorted((ContactDto1,ContactDto2)  -> ContactDto2.getKlantNummer().compareTo(ContactDto1.getKlantNummer()))
+                .sorted((ContactDto1, ContactDto2) -> ContactDto2.getKlantNummer().compareTo(ContactDto1.getKlantNummer()))
                 .collect(Collectors.toList());
     }
 
@@ -37,12 +38,12 @@ public class AdministratieDto {
         return facturen
                 .stream()
                 .map(factuur -> new FactuurDto(factuur))
-                .sorted((factuurDto1,factuurDto2)  -> factuurDto2.getFactuurNummer().compareTo(factuurDto1.getFactuurNummer()))
+                .sorted((factuurDto1, factuurDto2) -> factuurDto2.getFactuurNummer().compareTo(factuurDto1.getFactuurNummer()))
                 .collect(Collectors.toList());
     }
 
     public Administratie toAdministratie() {
-        return new Administratie(uuid, name, toFacturen(), toAdressen());
+        return new Administratie(uuid, toFacturen(), toAdressen(), administratieGegevensDto.toAdministratieGegevens());
     }
 
     private List<Factuur> toFacturen() {
@@ -63,10 +64,6 @@ public class AdministratieDto {
         this.uuid = uuid;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setFacturen(List<FactuurDto> facturen) {
         this.facturen = facturen;
     }
@@ -74,4 +71,5 @@ public class AdministratieDto {
     public void setAdresboek(List<ContactDto> adresboek) {
         this.adresboek = adresboek;
     }
+
 }

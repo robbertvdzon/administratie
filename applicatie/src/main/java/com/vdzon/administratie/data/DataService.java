@@ -22,15 +22,22 @@ public class DataService {
     UserCrud userCrud;
 
     protected Object loadData(Request req, Response res) throws Exception {
-        String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-        if (uuid == null) {
-            res.status(404);
-            return new SingleAnswer("not found");
+        GuiDataDto guiDataDto = null;
+        try {
+            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
+            if (uuid == null) {
+                res.status(404);
+                return new SingleAnswer("not found");
+            }
+            Gebruiker gebruiker = userCrud.getGebruiker(uuid);
+            List<GebruikerDto> gebruikers = gebruiker.isAdmin() ? userCrud.getAllGebruikers().stream().map((user) -> new GebruikerDto(user)).collect(Collectors.<GebruikerDto>toList()) : null;
+            AdministratieDto administratie = new AdministratieDto(userCrud.getGebruiker(uuid).getDefaultAdministratie());
+            guiDataDto = new GuiDataDto(gebruikers, administratie, new GebruikerDto(gebruiker));
         }
-        Gebruiker gebruiker = userCrud.getGebruiker(uuid);
-        List<GebruikerDto> gebruikers = gebruiker.isAdmin()?userCrud.getAllGebruikers().stream().map((user) -> new GebruikerDto(user)).collect(Collectors.<GebruikerDto>toList()): null;
-        AdministratieDto administratie = new AdministratieDto(userCrud.getGebruiker(uuid).getDefaultAdministratie());
-        return new GuiDataDto(gebruikers, administratie, new GebruikerDto(gebruiker));
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return guiDataDto;
 
     }
 

@@ -85,7 +85,7 @@ public class FactuurService {
             res.raw().setContentType("application/pdf");
             res.raw().setHeader("Content-Disposition","attachment; filename="+factuur.getFactuurNummer()+".pdf");
             try (BufferedOutputStream zipOutputStream = new BufferedOutputStream(res.raw().getOutputStream())) {
-                GenerateFactuur.buildPdf(factuur, zipOutputStream);
+                GenerateFactuur.buildPdf(gebruiker.getDefaultAdministratie(), factuur, zipOutputStream);
                 zipOutputStream.flush();
                 zipOutputStream.close();
             }

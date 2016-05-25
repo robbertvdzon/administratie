@@ -95,7 +95,7 @@ public class Gebruiker {
             administraties = new ArrayList<>();
         }
         if (administraties.size()==0){
-            administraties.add(new Administratie(getUuid(),"mijn admin",null,null));
+            administraties.add(new Administratie(getUuid(),null,null,new AdministratieGegevens(UUID.randomUUID().toString(),"mijn admin","","","","","","")));
         }
     }
 

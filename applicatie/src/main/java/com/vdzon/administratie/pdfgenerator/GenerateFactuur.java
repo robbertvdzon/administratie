@@ -1,5 +1,7 @@
 package com.vdzon.administratie.pdfgenerator;
 
+import com.vdzon.administratie.model.Administratie;
+import com.vdzon.administratie.model.AdministratieGegevens;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -15,19 +17,18 @@ import java.io.IOException;
 
 public class GenerateFactuur {
 
+    private static PDFont fontPlain = PDType1Font.HELVETICA;
+    private static PDFont fontBold = PDType1Font.HELVETICA_BOLD;
     private float pos = 0;
     private float pageHeight = 0;
     private float pageWidth = 0;
     private PDPageContentStream page;
 
-    private static PDFont fontPlain = PDType1Font.HELVETICA;
-    private static PDFont fontBold = PDType1Font.HELVETICA_BOLD;
-
-    public static void buildPdf(Factuur factuur, BufferedOutputStream outputStream) throws IOException {
-        new GenerateFactuur().start(factuur, outputStream);
+    public static void buildPdf(Administratie administratie, Factuur factuur, BufferedOutputStream outputStream) throws IOException {
+        new GenerateFactuur().start(administratie, factuur, outputStream);
     }
 
-    private void start(Factuur factuur, BufferedOutputStream outputStream) throws IOException {
+    private void start(Administratie administratie, Factuur factuur, BufferedOutputStream outputStream) throws IOException {
         PDDocument document = new PDDocument();
         PDPage page1 = new PDPage(PDRectangle.A4);
         PDRectangle rect = page1.getMediaBox();
@@ -45,33 +46,42 @@ public class GenerateFactuur {
         writeBoldText("Klant factuuradres");
         writeNormalText(factuur.getContact().getNaam());
         writeNormalText(factuur.getContact().getAdres());
-        writeNormalText(factuur.getContact().getPostcode()+" "+factuur.getContact().getWoonplaats());
+        writeNormalText(factuur.getContact().getPostcode() + " " + factuur.getContact().getWoonplaats());
         skipDown(25);
         writeTitle("Factuur");
         drawLine();
-        writeNormalText("Factuurnummer "+factuur.getFactuurNummer()+"    "+"Factuurdatum: "+factuur.getFactuurDate());
+        writeNormalText("Factuurnummer " + factuur.getFactuurNummer() + "    " + "Factuurdatum: " + factuur.getFactuurDate());
         drawLine();
         skipDown(10);
-        writeRegels(fontBold, "Aantal", "Omschrijving","Prijs","Btw","Totaal ex");
-        for (FactuurRegel factuurRegel : factuur.getFactuurRegels()){
-            writeRegels(fontPlain, ""+factuurRegel.getAantal(), ""+factuurRegel.getOmschrijving(), ""+factuurRegel.getStuksPrijs(), ""+factuurRegel.getBtwPercentage(), ""+factuurRegel.getStuksPrijs()*factuurRegel.getAantal());
+        writeRegels(fontBold, "Aantal", "Omschrijving", "Prijs", "Btw", "Totaal ex");
+        for (FactuurRegel factuurRegel : factuur.getFactuurRegels()) {
+            writeRegels(fontPlain, "" + factuurRegel.getAantal(), "" + factuurRegel.getOmschrijving(), "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + factuurRegel.getStuksPrijs() * factuurRegel.getAantal());
         }
         skipDown(10);
         drawLine();
         skipDown(10);
-        writeTabel(fontPlain, "Bedrag exclusief BTW", ""+String.format("%.2f", factuur.getBedragExBtw()));
-        writeTabel(fontPlain, "BTW", ""+factuur.getBtw());
-        writeTabel(fontPlain, "Bedrag inclusief BTW", ""+String.format("%.2f", factuur.getBedragIncBtw()));
+        writeTabel(fontPlain, "Bedrag exclusief BTW", "" + String.format("%.2f", factuur.getBedragExBtw()));
+        writeTabel(fontPlain, "BTW", "" + factuur.getBtw());
+        writeTabel(fontPlain, "Bedrag inclusief BTW", "" + String.format("%.2f", factuur.getBedragIncBtw()));
         skipDown(10);
         drawLine();
         skipDown(10);
         writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
         skipDown(10);
-        writeTabel(fontPlain, "ABN-Amro rekeningnummer", "NL88 ABNA 0532.7503.30");
-        writeTabel(fontPlain, "BTW-nr", "NL191082661B01");
-        writeTabel(fontPlain, "Handelsregister", "64609227");
-        writeTabel(fontPlain, "Adres", "Kerklaan 13a");
-        writeTabel(fontPlain, "", "1961GA Heemskerk");
+
+        AdministratieGegevens administratieGegevens = administratie.getAdministratieGegevens();
+        if (administratieGegevens != null) {
+            writeTabel(fontPlain, "ABN-Amro rekeningnummer", administratieGegevens.getRekeningNummer());
+            writeTabel(fontPlain, "BTW-nr", administratieGegevens.getBtwNummer());
+            writeTabel(fontPlain, "Handelsregister", administratieGegevens.getHandelsRegister());
+            writeTabel(fontPlain, "Adres", administratieGegevens.getAdres());
+            writeTabel(fontPlain, "", administratieGegevens.getPostcode() + " " + administratieGegevens.getWoonplaats());
+        }
+//        writeTabel(fontPlain, "ABN-Amro rekeningnummer", "NL88 ABNA 0532.7503.30");
+//        writeTabel(fontPlain, "BTW-nr", "NL191082661B01");
+//        writeTabel(fontPlain, "Handelsregister", "64609227");
+//        writeTabel(fontPlain, "Adres", "Kerklaan 13a");
+//        writeTabel(fontPlain, "", "1961GA Heemskerk");
 
         page.close();
 
@@ -83,8 +93,8 @@ public class GenerateFactuur {
         try {
             PDImageXObject ximage = PDImageXObject.createFromFile("robbertlogo.png", document);
             float scale = 0.5f; // alter this value to set the image size
-            skipDown(ximage.getHeight()*scale);
-            page.drawImage(ximage, 30, pos, ximage.getWidth()*scale, ximage.getHeight()*scale);
+            skipDown(ximage.getHeight() * scale);
+            page.drawImage(ximage, 30, pos, ximage.getWidth() * scale, ximage.getHeight() * scale);
         } catch (IOException ioex) {
             System.out.println("No image for you");
         }
@@ -110,6 +120,7 @@ public class GenerateFactuur {
     }
 
     private void writeText(float fontSize, float x, PDFont fontPlain, String text) throws IOException {
+        if (text == null) return;
         page.beginText();
         page.setFont(fontPlain, fontSize);
         page.newLineAtOffset(x, pos);
@@ -130,15 +141,13 @@ public class GenerateFactuur {
     private void writeTabel(PDFont font, String titel1, String titel2) throws IOException {
         skipDown(15);
         writeText(12, 30, font, titel1);
-        writeText(12, 190, font, titel1.length()==0 ? "":":");
+        writeText(12, 190, font, titel1 == null || titel1.length() == 0 ? "" : ":");
         writeText(12, 200, font, titel2);
     }
 
 
-
-
     private float skipDown(float amount) {
-        return pos-=amount;
+        return pos -= amount;
     }
 
     private void drawLine() throws IOException {

@@ -15,7 +15,7 @@ public class TestDataGenerator {
         System.out.println("Maak admin user");
         List<Contact> adresboek = new ArrayList<>();
         List<Factuur> facturen = new ArrayList<>();
-        Administratie administratie = new Administratie(getNewUuid(), name, facturen, adresboek);
+        Administratie administratie = new Administratie(getNewUuid(), facturen, adresboek, new AdministratieGegevens());
         List<Administratie> administraties = new ArrayList<>();
         administraties.add(administratie);
         Gebruiker gebruiker = new Gebruiker(getNewUuid(), name, username, passwd, admin, administraties);
