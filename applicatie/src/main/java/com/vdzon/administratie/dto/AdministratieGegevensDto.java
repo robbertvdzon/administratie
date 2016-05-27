@@ -15,6 +15,7 @@ public class AdministratieGegevensDto {
     private String adres;
     private String postcode;
     private String woonplaats;
+    private String logoUrl;
 
     public AdministratieGegevensDto() {
     }
@@ -30,6 +31,7 @@ public class AdministratieGegevensDto {
             this.adres = administratieGegegens.getAdres();
             this.postcode = administratieGegegens.getPostcode();
             this.woonplaats = administratieGegegens.getWoonplaats();
+            this.logoUrl = administratieGegegens.getLogoUrl();
         }
         else{
             this.uuid = UUID.randomUUID().toString();
@@ -37,7 +39,7 @@ public class AdministratieGegevensDto {
     }
 
     public AdministratieGegevens toAdministratieGegevens() {
-        return new AdministratieGegevens(uuid, name, rekeningNummer, btwNummer, handelsRegister, adres, postcode, woonplaats);
+        return new AdministratieGegevens(uuid, name, rekeningNummer, btwNummer, handelsRegister, adres, postcode, woonplaats, logoUrl);
     }
 
     public void setUuid(String uuid) {
@@ -94,5 +96,13 @@ public class AdministratieGegevensDto {
 
     public void setWoonplaats(String woonplaats) {
         this.woonplaats = woonplaats;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

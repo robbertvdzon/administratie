@@ -58,6 +58,7 @@ module Application.Model {
         adres:String;
         postcode:String;
         woonplaats:String;
+        logoUrl:String;
     }
 
 

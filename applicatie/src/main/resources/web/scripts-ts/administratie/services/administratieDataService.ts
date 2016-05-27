@@ -30,6 +30,7 @@ module Application.Services {
             administratieGegevensClone.adres = administratieGegevens.adres;
             administratieGegevensClone.postcode = administratieGegevens.postcode;
             administratieGegevensClone.woonplaats = administratieGegevens.woonplaats;
+            administratieGegevensClone.logoUrl = administratieGegevens.logoUrl;
             return administratieGegevensClone;
         }
 

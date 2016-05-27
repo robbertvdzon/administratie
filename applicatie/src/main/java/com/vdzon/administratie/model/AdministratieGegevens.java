@@ -19,11 +19,12 @@ public class AdministratieGegevens {
     private String adres;
     private String postcode;
     private String woonplaats;
+    private String logoUrl;
 
     public AdministratieGegevens() {
     }
 
-    public AdministratieGegevens(String uuid, String name, String rekeningNummer, String btwNummer, String handelsRegister, String adres, String postcode, String woonplaats) {
+    public AdministratieGegevens(String uuid, String name, String rekeningNummer, String btwNummer, String handelsRegister, String adres, String postcode, String woonplaats, String logoUrl) {
         this.uuid = uuid;
         this.name = name;
         this.rekeningNummer = rekeningNummer;
@@ -32,6 +33,7 @@ public class AdministratieGegevens {
         this.adres = adres;
         this.postcode = postcode;
         this.woonplaats = woonplaats;
+        this.logoUrl = logoUrl;
     }
 
     public String getName() {
@@ -92,6 +94,14 @@ public class AdministratieGegevens {
 
     public void setWoonplaats(String woonplaats) {
         this.woonplaats = woonplaats;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 
     private boolean factuurNummerMatchesUuid(String uuid, Factuur factuur) {
