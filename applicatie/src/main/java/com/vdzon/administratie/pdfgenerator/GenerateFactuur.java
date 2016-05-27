@@ -43,7 +43,10 @@ public class GenerateFactuur {
 
 
         skipDown(25);
-        addAnImage(document);
+        AdministratieGegevens administratieGegevens = administratie.getAdministratieGegevens();
+        if (administratieGegevens != null) {
+            addAnImage(document, administratieGegevens .getLogoUrl());
+        }
         skipDown(10);
         writeBoldText("Klant factuuradres");
         writeNormalText(factuur.getContact().getNaam());
@@ -71,7 +74,6 @@ public class GenerateFactuur {
         writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
         skipDown(10);
 
-        AdministratieGegevens administratieGegevens = administratie.getAdministratieGegevens();
         if (administratieGegevens != null) {
             writeTabel(fontPlain, "ABN-Amro rekeningnummer", administratieGegevens.getRekeningNummer());
             writeTabel(fontPlain, "BTW-nr", administratieGegevens.getBtwNummer());
@@ -86,9 +88,9 @@ public class GenerateFactuur {
         document.close();
     }
 
-    private void addAnImage(PDDocument document) {
+    private void addAnImage(PDDocument document, String logoUrl) {
         try {
-            URL url = new URL("http://www.vdzon.com/robbertlogo.png");
+            URL url = new URL(logoUrl);
             InputStream in = new BufferedInputStream(url.openStream());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
