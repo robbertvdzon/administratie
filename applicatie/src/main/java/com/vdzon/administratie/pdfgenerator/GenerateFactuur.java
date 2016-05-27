@@ -12,8 +12,10 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.*;
+import java.net.URL;
 
 public class GenerateFactuur {
 
@@ -77,11 +79,6 @@ public class GenerateFactuur {
             writeTabel(fontPlain, "Adres", administratieGegevens.getAdres());
             writeTabel(fontPlain, "", administratieGegevens.getPostcode() + " " + administratieGegevens.getWoonplaats());
         }
-//        writeTabel(fontPlain, "ABN-Amro rekeningnummer", "NL88 ABNA 0532.7503.30");
-//        writeTabel(fontPlain, "BTW-nr", "NL191082661B01");
-//        writeTabel(fontPlain, "Handelsregister", "64609227");
-//        writeTabel(fontPlain, "Adres", "Kerklaan 13a");
-//        writeTabel(fontPlain, "", "1961GA Heemskerk");
 
         page.close();
 
@@ -91,7 +88,23 @@ public class GenerateFactuur {
 
     private void addAnImage(PDDocument document) {
         try {
-            PDImageXObject ximage = PDImageXObject.createFromFile("robbertlogo.png", document);
+            URL url = new URL("http://www.vdzon.com/robbertlogo.png");
+            InputStream in = new BufferedInputStream(url.openStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while (-1!=(n=in.read(buf)))
+            {
+                out.write(buf, 0, n);
+            }
+            out.close();
+            in.close();
+            byte[] response = out.toByteArray();
+            FileOutputStream fos = new FileOutputStream("logo.png");
+            fos.write(response);
+            fos.close();
+
+            PDImageXObject ximage = PDImageXObject.createFromFile("logo.png", document);
             float scale = 0.5f; // alter this value to set the image size
             skipDown(ximage.getHeight() * scale);
             page.drawImage(ximage, 30, pos, ximage.getWidth() * scale, ximage.getHeight() * scale);
