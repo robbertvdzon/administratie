@@ -28,7 +28,7 @@ module Application.Services {
         constructor($rootScope, private dataService: MyDataservice) {
             this.gebruikerGui=new GebruikerGui();
 
-            $rootScope.$on('gebruikers-updated', (event, guiData:GuiData)=> {
+            $rootScope.$on('data-updated', (event, guiData:GuiData)=> {
                 this.reloadData(guiData.gebruikers);
             });
 

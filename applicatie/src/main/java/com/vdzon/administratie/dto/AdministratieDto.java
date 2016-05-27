@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class AdministratieDto {
 
     private String uuid;
-    private AdministratieGegevensDto administratieGegevensDto;
+    private AdministratieGegevensDto administratieGegevens;
     private List<FactuurDto> facturen;
     private List<ContactDto> adresboek;
 
@@ -20,7 +20,7 @@ public class AdministratieDto {
 
     public AdministratieDto(Administratie administratie) {
         this.uuid = administratie.getUuid();
-        this.administratieGegevensDto = new AdministratieGegevensDto(administratie.getAdministratieGegevens());
+        this.administratieGegevens = new AdministratieGegevensDto(administratie.getAdministratieGegevens());
         this.facturen = toFacturenDto(administratie.getFacturen());
         this.adresboek = toAdressenDto(administratie.getAdresboek());
 
@@ -43,7 +43,7 @@ public class AdministratieDto {
     }
 
     public Administratie toAdministratie() {
-        return new Administratie(uuid, toFacturen(), toAdressen(), administratieGegevensDto.toAdministratieGegevens());
+        return new Administratie(uuid, toFacturen(), toAdressen(), administratieGegevens.toAdministratieGegevens());
     }
 
     private List<Factuur> toFacturen() {

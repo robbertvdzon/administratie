@@ -54,6 +54,11 @@ angular
                 controller: 'GebruikersCtrl',
                 controllerAs: 'gebruikerscontroller'
             })
+            .when('/administratie', {
+                templateUrl: 'administratie/views/main.html',
+                controller: 'AdministratieEditController',
+                controllerAs: 'administratieEditController'
+            })
             .otherwise({
                 redirectTo: '/'
             });

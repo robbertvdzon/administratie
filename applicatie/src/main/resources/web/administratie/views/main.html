@@ -1,0 +1,42 @@
+<div ng-cloak >
+
+    <form name="administratieForm" ng-cloak >
+        <md-input-container flex>
+            <label>Administratie naam</label>
+            <input ng-model="data.administratieGegevensToEdit.name" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Rekeningnummer</label>
+            <input ng-model="data.administratieGegevensToEdit.rekeningNummer" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Btwnummer</label>
+            <input ng-model="data.administratieGegevensToEdit.btwNummer" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Handelsregister</label>
+            <input ng-model="data.administratieGegevensToEdit.handelsRegister" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Adres</label>
+            <input ng-model="data.administratieGegevensToEdit.adres" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Postcode</label>
+            <input ng-model="data.administratieGegevensToEdit.postcode" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Woonplaats</label>
+            <input ng-model="data.administratieGegevensToEdit.woonplaats" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+
+        <md-button class="md-raised md-primary" ng-click="administratieEditController.save()" ng-hide="administratieEditController.notDirty()">
+            Opslaan
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="administratieEditController.cancel()"  ng-hide="administratieEditController.notDirty()">
+            Annuleren
+        </md-button>
+    </form>
+
+</div>
+

@@ -43,12 +43,23 @@ module Application.Model {
     }
 
     export class Administratie {
-        name:String;
         uuid:String;
         facturen:FactuurData[];
         adresboek:ContactData[];
-
+        administratieGegevens:AdministratieGegevens;
     }
+
+    export class AdministratieGegevens {
+        uuid:String;
+        name:String;
+        rekeningNummer:String;
+        btwNummer:String;
+        handelsRegister:String;
+        adres:String;
+        postcode:String;
+        woonplaats:String;
+    }
+
 
 }
 

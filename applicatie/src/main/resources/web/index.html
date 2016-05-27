@@ -71,6 +71,11 @@
                 Gebruikers
             </md-button>
         </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/administratie" ng-show="menuController.isAuth()" class="md-primary" id="gebruikers_main_button">
+                Administratie
+            </md-button>
+        </md-list-item>
     </md-list>
 </md-sidenav>
 
@@ -167,6 +172,10 @@
 <script src="scripts/gebruikers/controllers/gebruikersListController.js"></script>
 <script src="scripts/gebruikers/controllers/gebruikerEditController.js"></script>
 <script src="scripts/gebruikers/controllers/gebruikerSetPasswordController.js"></script>
+
+<script src="scripts/administratie/services/administratieGuiService.js"></script>
+<script src="scripts/administratie/services/administratieDataService.js"></script>
+<script src="scripts/administratie/controllers/administratieEditController.js"></script>
 
 <!-- endbuild -->
 </body>
