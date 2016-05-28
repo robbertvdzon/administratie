@@ -67,13 +67,18 @@
             </md-button>
         </md-list-item>
         <md-list-item >
-            <md-button ng-href="#/gebruikers" ng-show="menuController.isAdmin()" class="md-primary" id="gebruikers_main_button">
-                Gebruikers
+            <md-button ng-href="#/administratie" ng-show="menuController.isAuth()" class="md-primary" id="gebruikers_main_button">
+                Administratie
             </md-button>
         </md-list-item>
         <md-list-item >
-            <md-button ng-href="#/administratie" ng-show="menuController.isAuth()" class="md-primary" id="gebruikers_main_button">
-                Administratie
+            <md-button ng-href="#/account" ng-show="menuController.isAuth()" class="md-primary" id="account_main_button">
+                Account
+            </md-button>
+        </md-list-item>
+        <md-list-item >
+            <md-button ng-href="#/gebruikers" ng-show="menuController.isAdmin()" class="md-primary" id="gebruikers_main_button">
+                Gebruikers
             </md-button>
         </md-list-item>
     </md-list>
@@ -176,6 +181,14 @@
 <script src="scripts/administratie/services/administratieGuiService.js"></script>
 <script src="scripts/administratie/services/administratieDataService.js"></script>
 <script src="scripts/administratie/controllers/administratieEditController.js"></script>
+
+<script src="scripts/account/AccountGuiConstants.js"></script>
+<script src="scripts/account/services/accountDataService.js"></script>
+<script src="scripts/account/services/accountGuiService.js"></script>
+<script src="scripts/account/controllers/accountController.js"></script>
+<script src="scripts/account/controllers/accountEditController.js"></script>
+<script src="scripts/account/controllers/accountSetPasswordController.js"></script>
+
 
 <!-- endbuild -->
 </body>

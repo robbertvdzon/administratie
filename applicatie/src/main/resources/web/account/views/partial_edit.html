@@ -1,0 +1,26 @@
+<div ng-cloak data-ng-controller="AccountEditController as accountEditcontroller">
+    <br>
+    <md-input-container flex>
+        <label>Naam</label>
+        <input ng-model="data.accountToEdit.name" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Username</label>
+        <input ng-model="data.accountToEdit.username" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <br>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="accountEditcontroller.save()" ng-hide="accountEditcontroller.notDirty()">
+        Opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="accountEditcontroller.cancel()" ng-hide="accountEditcontroller.notDirty()">
+        Annuleren
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="accountEditcontroller.setPassword()">
+        Wachtwoord instellen
+    </md-button>
+</div>

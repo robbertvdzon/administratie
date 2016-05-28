@@ -59,6 +59,11 @@ angular
                 controller: 'AdministratieEditController',
                 controllerAs: 'administratieEditController'
             })
+            .when('/account', {
+                templateUrl: 'account/views/main.html',
+                controller: 'AccountCtrl',
+                controllerAs: 'accountcontroller'
+            })
             .otherwise({
                 redirectTo: '/'
             });
