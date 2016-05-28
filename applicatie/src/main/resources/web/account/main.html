@@ -1,0 +1,28 @@
+<div ng-cloak >
+
+    <form name="accountForm" ng-cloak >
+
+        <md-input-container flex>
+            <label>Naam</label>
+            <input ng-model="data.selectedgebruiker.name" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+
+        <md-input-container flex>
+            <label>Username</label>
+            <input ng-model="data.selectedgebruiker.username" STYLE="background-color: #B2DFDB;">
+        </md-input-container>
+
+        <md-button class="md-raised md-primary" ng-click="accountEditController.save()" ng-hide="accountEditController.notDirty()">
+            Opslaan
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="accountEditController.cancel()"  ng-hide="accountEditController.notDirty()">
+            Annuleren
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="accountEditController.setPassword()" ng-hide="addMode">
+            Wachtwoord instellen
+        </md-button>
+
+    </form>
+
+</div>
+
