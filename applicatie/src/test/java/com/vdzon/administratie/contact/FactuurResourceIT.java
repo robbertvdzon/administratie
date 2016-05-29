@@ -42,7 +42,7 @@
 //        Assert.assertEquals(3,currentUser.getFacturen().size());
 //
 //        // remove all facturen except 2016003
-//        currentUser.getFacturen().stream().filter(factuur -> !factuur.getFactuurNummer().equals("2016003")).forEach(factuur -> removeFactuur(factuur.getFactuurNummer()));
+//        currentUser.getFacturen().stream().filter(factuur -> !factuur.getBestellingNummer().equals("2016003")).forEach(factuur -> removeFactuur(factuur.getBestellingNummer()));
 //
 //        currentUser = getCurrentUser();
 //        Assert.assertEquals(1,currentUser.getFacturen().size());

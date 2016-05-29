@@ -13,6 +13,7 @@ public class Administratie {
     @Id
     private String uuid;
     private AdministratieGegevens administratieGegevens;
+    private List<Bestelling> bestellingen = new ArrayList<>();
     private List<Factuur> facturen = new ArrayList<>();
     private List<Contact> adresboek = new ArrayList<>();
     private List<Rekening> rekeningen = new ArrayList<>();
@@ -22,8 +23,9 @@ public class Administratie {
     public Administratie() {
     }
 
-    public Administratie(String uuid, List<Factuur> facturen, List<Contact> adresboek, List<Rekening> rekeningen,  List<Afschrift> afschriften, List<Declaratie> declaraties, AdministratieGegevens administratieGegevens) {
+    public Administratie(String uuid, List<Bestelling> bestellingen, List<Factuur> facturen, List<Contact> adresboek, List<Rekening> rekeningen, List<Afschrift> afschriften, List<Declaratie> declaraties, AdministratieGegevens administratieGegevens) {
         this.uuid = uuid;
+        this.bestellingen = bestellingen;
         this.facturen = facturen;
         this.adresboek = adresboek;
         this.rekeningen = rekeningen;
@@ -42,6 +44,10 @@ public class Administratie {
 
     public void setAdministratieGegevens(AdministratieGegevens administratieGegevens) {
         this.administratieGegevens = administratieGegevens;
+    }
+
+    public List<Bestelling> getBestellingen() {
+        return Collections.unmodifiableList(new ArrayList<>(bestellingen));
     }
 
     public List<Factuur> getFacturen() {
@@ -92,6 +98,36 @@ public class Administratie {
     private boolean factuurNummerMatchesUuid(String uuid, Factuur factuur) {
         return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
     }
+
+    public void addBestelling(Bestelling bestelling) {
+        bestellingen.add(bestelling);
+    }
+
+    public Bestelling getBestelling(String uuid) {
+        for (Bestelling bestelling : getBestellingen()) {
+            if (bestellingNummerMatchesUuid(uuid, bestelling)) {
+                return bestelling;
+            }
+        }
+        return null;
+    }
+
+    public void removeBestelling(String uuid) {
+        Bestelling bestellingToRemove = null;
+        for (Bestelling bestelling : getBestellingen()) {
+            if (bestellingNummerMatchesUuid(uuid, bestelling)) {
+                bestellingToRemove = bestelling;
+            }
+        }
+        if (bestellingToRemove != null) {
+            facturen.remove(bestellingToRemove);
+        }
+    }
+
+    private boolean bestellingNummerMatchesUuid(String uuid, Bestelling bestelling) {
+        return uuid == null && bestelling.getUuid() == null || uuid != null && uuid.equals(bestelling.getUuid());
+    }
+
 
     public void addContact(Contact contact) {
         adresboek.add(contact);

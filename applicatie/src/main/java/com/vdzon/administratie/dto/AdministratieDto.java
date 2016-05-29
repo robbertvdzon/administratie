@@ -16,6 +16,7 @@ public class AdministratieDto {
     private List<RekeningDto> rekeningen;
     private List<AfschriftDto> afschriften;
     private List<DeclaratieDto> declaraties;
+    private List<BestellingDto> bestellingen;
 
 
     public AdministratieDto() {
@@ -29,7 +30,16 @@ public class AdministratieDto {
         this.rekeningen = toRekeningenDto(administratie.getRekeningen());
         this.afschriften = toAfschriftenDto(administratie.getAfschriften());
         this.declaraties = toDeclaratiesDto(administratie.getDeclaraties());
+        this.bestellingen = toBestellingenDto(administratie.getBestellingen());
 
+    }
+
+    private List<BestellingDto> toBestellingenDto(List<Bestelling> bestellingen) {
+        return bestellingen
+                .stream()
+                .map(bestelling -> new BestellingDto(bestelling))
+                .sorted((rekeningDto1, rekeningDto2) -> rekeningDto2.getBestellingNummer().compareTo(rekeningDto1.getBestellingNummer()))
+                .collect(Collectors.toList());
     }
 
     private List<RekeningDto> toRekeningenDto(List<Rekening> rekeningen) {
@@ -56,8 +66,6 @@ public class AdministratieDto {
                 .collect(Collectors.toList());
     }
 
-
-
     private List<ContactDto> toAdressenDto(List<Contact> klanten) {
         return klanten
                 .stream()
@@ -75,7 +83,14 @@ public class AdministratieDto {
     }
 
     public Administratie toAdministratie() {
-        return new Administratie(uuid, toFacturen(), toAdressen(), toRekeningen(), toAfschriften(), toDeclaraties(),  administratieGegevens.toAdministratieGegevens());
+        return new Administratie(uuid, toBestellingen(), toFacturen(), toAdressen(), toRekeningen(), toAfschriften(), toDeclaraties(),  administratieGegevens.toAdministratieGegevens());
+    }
+
+    private List<Bestelling> toBestellingen() {
+        return bestellingen
+                .stream()
+                .map(bestelling -> bestelling.toBestelling())
+                .collect(Collectors.toList());
     }
 
     private List<Factuur> toFacturen() {
@@ -113,16 +128,5 @@ public class AdministratieDto {
                 .collect(Collectors.toList());
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setFacturen(List<FactuurDto> facturen) {
-        this.facturen = facturen;
-    }
-
-    public void setAdresboek(List<ContactDto> adresboek) {
-        this.adresboek = adresboek;
-    }
 
 }
