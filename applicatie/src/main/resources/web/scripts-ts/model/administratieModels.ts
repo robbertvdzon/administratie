@@ -42,10 +42,22 @@ module Application.Model {
         land :String;
     }
 
+    export class RekeningData {
+        uuid:String;
+        rekeningNummer:String;
+        naam:String;
+        omschrijving:String;
+        rekeningDate:String;
+        bedragExBtw:String;
+        bedragIncBtw:String;
+        btw:String;
+    }
+
     export class Administratie {
         uuid:String;
         facturen:FactuurData[];
         adresboek:ContactData[];
+        rekeningen:RekeningData[];
         administratieGegevens:AdministratieGegevens;
     }
 

@@ -64,6 +64,11 @@ angular
                 controller: 'AccountCtrl',
                 controllerAs: 'accountcontroller'
             })
+            .when('/rekeningen', {
+                templateUrl: 'rekeningen/views/main.html',
+                controller: 'RekeningenCtrl',
+                controllerAs: 'rekeningencontroller'
+            })
             .otherwise({
                 redirectTo: '/'
             });

@@ -3,11 +3,14 @@ package com.vdzon.administratie;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vdzon.administratie.administratie.AdministratieResource;
+import com.vdzon.administratie.afschrift.AfschriftResource;
 import com.vdzon.administratie.auth.AuthResource;
 import com.vdzon.administratie.contact.ContactResource;
 import com.vdzon.administratie.data.DataResource;
+import com.vdzon.administratie.declaratie.DeclaratieResource;
 import com.vdzon.administratie.factuur.FactuurResource;
 import com.vdzon.administratie.gebruiker.GebruikerResource;
+import com.vdzon.administratie.rekening.RekeningResource;
 import com.vdzon.administratie.version.VersionResource;
 import spark.Spark;
 
@@ -58,6 +61,9 @@ public class App {
         FactuurResource factuurResource = injector.getInstance(FactuurResource.class);
         ContactResource contactResource = injector.getInstance(ContactResource.class);
         GebruikerResource gebruikerResource = injector.getInstance(GebruikerResource.class);
+        RekeningResource rekeningResource = injector.getInstance(RekeningResource.class);
+        DeclaratieResource declaratieResource = injector.getInstance(DeclaratieResource.class);
+        AfschriftResource afschriftResource = injector.getInstance(AfschriftResource.class);
         AdministratieResource administratieResource = injector.getInstance(AdministratieResource.class);
 
 

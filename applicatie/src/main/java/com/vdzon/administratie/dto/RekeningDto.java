@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Contact;
 import com.vdzon.administratie.model.Rekening;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @JsonIgnoreProperties
 public class RekeningDto {
@@ -13,31 +14,33 @@ public class RekeningDto {
     private String rekeningNummer;
     private String naam;
     private String omschrijving;
-    private LocalDate factuurDate;
+    private String rekeningDate;
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
 
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     public RekeningDto() {
     }
 
-    public RekeningDto(String uuid, String rekeningNummer, String naam, String omschrijving, LocalDate factuurDate, double bedragExBtw, double bedragIncBtw, double btw) {
+    public RekeningDto(String uuid, String rekeningNummer, String naam, String omschrijving, String rekeningDate, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.rekeningNummer = rekeningNummer;
         this.naam = naam;
         this.omschrijving = omschrijving;
-        this.factuurDate = factuurDate;
+        this.rekeningDate = rekeningDate;
         this.bedragExBtw = bedragExBtw;
         this.bedragIncBtw = bedragIncBtw;
         this.btw = btw;
     }
 
     public RekeningDto(Rekening rekening) {
-        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getFactuurDate(),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw() );
+        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw() );
     }
 
     public Rekening toRekening() {
-        return new Rekening(uuid, rekeningNummer, naam, omschrijving, factuurDate, bedragExBtw, bedragIncBtw, btw);
+        return new Rekening(uuid, rekeningNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw);
     }
 
     public String getUuid() {
@@ -72,12 +75,12 @@ public class RekeningDto {
         this.omschrijving = omschrijving;
     }
 
-    public LocalDate getFactuurDate() {
-        return factuurDate;
+    public String getRekeningDate() {
+        return rekeningDate;
     }
 
-    public void setFactuurDate(LocalDate factuurDate) {
-        this.factuurDate = factuurDate;
+    public void setRekeningDate(String rekeningDate) {
+        this.rekeningDate = rekeningDate;
     }
 
     public double getBedragExBtw() {
