@@ -15,14 +15,20 @@ public class Administratie {
     private AdministratieGegevens administratieGegevens;
     private List<Factuur> facturen = new ArrayList<>();
     private List<Contact> adresboek = new ArrayList<>();
+    private List<Rekening> rekeningen = new ArrayList<>();
+    private List<Afschrift> afschriften = new ArrayList<>();
+    private List<Declaratie> declaraties = new ArrayList<>();
 
     public Administratie() {
     }
 
-    public Administratie(String uuid, List<Factuur> facturen, List<Contact> adresboek, AdministratieGegevens administratieGegevens) {
+    public Administratie(String uuid, List<Factuur> facturen, List<Contact> adresboek, List<Rekening> rekeningen,  List<Afschrift> afschriften, List<Declaratie> declaraties, AdministratieGegevens administratieGegevens) {
         this.uuid = uuid;
         this.facturen = facturen;
         this.adresboek = adresboek;
+        this.rekeningen = rekeningen;
+        this.afschriften = afschriften;
+        this.declaraties = declaraties;
         this.administratieGegevens = administratieGegevens;
     }
 
@@ -44,6 +50,18 @@ public class Administratie {
 
     public List<Contact> getAdresboek() {
         return Collections.unmodifiableList(new ArrayList<>(adresboek));
+    }
+
+    public List<Rekening> getRekeningen() {
+        return Collections.unmodifiableList(new ArrayList<>(rekeningen));
+    }
+
+    public List<Afschrift> getAfschriften() {
+        return Collections.unmodifiableList(new ArrayList<>(afschriften));
+    }
+
+    public List<Declaratie> getDeclaraties() {
+        return Collections.unmodifiableList(new ArrayList<>(declaraties));
     }
 
     public void addFactuur(Factuur factuur) {
@@ -84,6 +102,45 @@ public class Administratie {
         for (Contact contact : adresboekClone) {
             if (contact.getUuid().equals(uuid)) {
                 this.adresboek.remove(contact);
+            }
+        }
+    }
+
+    public void addRekening(Rekening rekening) {
+        rekeningen.add(rekening);
+    }
+
+    public void removeRekening(String uuid) {
+        List<Rekening> rekeningenClone = getRekeningen();
+        for (Rekening rekening : rekeningenClone) {
+            if (rekening.getUuid().equals(uuid)) {
+                this.rekeningen.remove(rekening);
+            }
+        }
+    }
+
+    public void addDeclaratie(Declaratie declaratie) {
+        declaraties.add(declaratie);
+    }
+
+    public void removeDeclaratie(String uuid) {
+        List<Declaratie> declaratiesClone = getDeclaraties();
+        for (Declaratie declaratie : declaratiesClone) {
+            if (declaratie.getUuid().equals(uuid)) {
+                this.declaraties.remove(declaratie);
+            }
+        }
+    }
+
+    public void addAfschrift(Afschrift afschrift) {
+        afschriften.add(afschrift);
+    }
+
+    public void removeAfschrift(String uuid) {
+        List<Afschrift> afschriftenClone = getAfschriften();
+        for (Afschrift afschrift : afschriftenClone) {
+            if (afschrift.getUuid().equals(uuid)) {
+                this.afschriften.remove(afschrift);
             }
         }
     }

@@ -54,15 +54,15 @@
 //
 //        // check factuur for date
 //        Factuur factuur = currentUser.getFacturen().get(0);
-//        Assert.assertEquals(LocalDate.now(), factuur.getFactuurDate());
+//        Assert.assertEquals(LocalDate.now(), factuur.getDeclaratieDate());
 //
 //        // change date
-//        factuur.setFactuurDate(LocalDate.ofYearDay(2014,4));
+//        factuur.setDeclaratieDate(LocalDate.ofYearDay(2014,4));
 //        updateFactuur(factuur);
 //
 //        // check factuur for omschrijving
 //        factuur = currentUser.getFacturen().get(0);
-//        Assert.assertEquals(LocalDate.ofYearDay(2014,4), factuur.getFactuurDate());
+//        Assert.assertEquals(LocalDate.ofYearDay(2014,4), factuur.getDeclaratieDate());
 //
 //        // remove last factuur
 //        removeFactuur("2016003");

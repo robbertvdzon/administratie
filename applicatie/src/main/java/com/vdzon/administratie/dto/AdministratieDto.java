@@ -1,10 +1,9 @@
 package com.vdzon.administratie.dto;
 
 
-import com.vdzon.administratie.model.Administratie;
-import com.vdzon.administratie.model.Contact;
-import com.vdzon.administratie.model.Factuur;
+import com.vdzon.administratie.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,10 @@ public class AdministratieDto {
     private AdministratieGegevensDto administratieGegevens;
     private List<FactuurDto> facturen;
     private List<ContactDto> adresboek;
+    private List<RekeningDto> rekeningen;
+    private List<AfschriftDto> afschriften;
+    private List<DeclaratieDto> declaraties;
+
 
     public AdministratieDto() {
     }
@@ -23,8 +26,37 @@ public class AdministratieDto {
         this.administratieGegevens = new AdministratieGegevensDto(administratie.getAdministratieGegevens());
         this.facturen = toFacturenDto(administratie.getFacturen());
         this.adresboek = toAdressenDto(administratie.getAdresboek());
+        this.rekeningen = toRekeningenDto(administratie.getRekeningen());
+        this.afschriften = toAfschriftenDto(administratie.getAfschriften());
+        this.declaraties = toDeclaratiesDto(administratie.getDeclaraties());
 
     }
+
+    private List<RekeningDto> toRekeningenDto(List<Rekening> rekeningen) {
+        return rekeningen
+                .stream()
+                .map(rekening -> new RekeningDto(rekening))
+                .sorted((rekeningDto1, rekeningDto2) -> rekeningDto2.getRekeningNummer().compareTo(rekeningDto1.getRekeningNummer()))
+                .collect(Collectors.toList());
+    }
+
+    private List<AfschriftDto> toAfschriftenDto(List<Afschrift> afschriften) {
+        return afschriften
+                .stream()
+                .map(afschrift -> new AfschriftDto(afschrift))
+                .sorted((afschriftDto1, afschriftDto2) -> afschriftDto2.getBoekdatum().compareTo(afschriftDto1.getBoekdatum()))
+                .collect(Collectors.toList());
+    }
+
+    private List<DeclaratieDto> toDeclaratiesDto(List<Declaratie> declaraties) {
+        return declaraties
+                .stream()
+                .map(declaratie -> new DeclaratieDto(declaratie))
+                .sorted((declaratieDto1, declaratieDto2) -> declaratieDto2.getDeclaratieNummer().compareTo(declaratieDto1.getDeclaratieNummer()))
+                .collect(Collectors.toList());
+    }
+
+
 
     private List<ContactDto> toAdressenDto(List<Contact> klanten) {
         return klanten
@@ -43,7 +75,7 @@ public class AdministratieDto {
     }
 
     public Administratie toAdministratie() {
-        return new Administratie(uuid, toFacturen(), toAdressen(), administratieGegevens.toAdministratieGegevens());
+        return new Administratie(uuid, toFacturen(), toAdressen(), toRekeningen(), toAfschriften(), toDeclaraties(),  administratieGegevens.toAdministratieGegevens());
     }
 
     private List<Factuur> toFacturen() {
@@ -57,6 +89,27 @@ public class AdministratieDto {
         return adresboek
                 .stream()
                 .map(klant -> klant.toContact())
+                .collect(Collectors.toList());
+    }
+
+    private List<Rekening> toRekeningen() {
+        return rekeningen
+                .stream()
+                .map(rekening -> rekening.toRekening())
+                .collect(Collectors.toList());
+    }
+
+    private List<Declaratie> toDeclaraties() {
+        return declaraties
+                .stream()
+                .map(declaratie -> declaratie.toDeclaratie())
+                .collect(Collectors.toList());
+    }
+
+    private List<Afschrift> toAfschriften() {
+        return afschriften
+                .stream()
+                .map(afschrift -> afschrift.toAfschrift())
                 .collect(Collectors.toList());
     }
 
