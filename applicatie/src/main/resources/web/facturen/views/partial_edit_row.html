@@ -4,35 +4,35 @@
     <md-dialog-content style="max-width:800px;max-height:810px; ">
         <md-input-container>
             <label>Omschrijving:</label>
-            <input ng-model="data.selectedfactuurregel.omschrijving" required id="selectedfactuurregel_omschrijving">
+            <input ng-model="data.factuurregelToEdit.omschrijving" required id="selectedfactuurregel_omschrijving">
         </md-input-container>
         <md-input-container>
             <label>Aantal:</label>
-            <input ng-model="data.selectedfactuurregel.aantal" required id="selectedfactuurregel_aantal">
+            <input ng-model="data.factuurregelToEdit.aantal" required id="selectedfactuurregel_aantal">
         </md-input-container>
         <md-input-container>
             <label>Tarief:</label>
-            <input ng-model="data.selectedfactuurregel.stuksPrijs" required id="selectedfactuurregel_tarief">
+            <input ng-model="data.factuurregelToEdit.stuksPrijs" required id="selectedfactuurregel_tarief">
         </md-input-container>
         <md-input-container>
             <label>Btw:</label>
-            <input ng-model="data.selectedfactuurregel.btwPercentage" required id="selectedfactuurregel_btw">
+            <input ng-model="data.factuurregelToEdit.btwPercentage" required id="selectedfactuurregel_btw">
         </md-input-container>
     </md-dialog-content>
 
 </form>
 
 <br><br>
-<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveAddRegel()" ng-show="data.addRegelMode">
-    Add
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveAddRegel()" ng-show="factuurRegelEditController.showAddButton()">
+    Toevoegen
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveEditRegel()" ng-hide="data.addRegelMode">
-    Save
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.saveEditRegel()" ng-show="factuurRegelEditController.showSaveButton()">
+    Opslaan
 </md-button>
 <md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.cancelAddRegel()">
-    Cancel
+    Annuleren
 </md-button>
-<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.deleteRegel()">
-    Delete
+<md-button class="md-raised md-primary"  ng-click="factuurRegelEditController.deleteRegel()" ng-show="factuurRegelEditController.showDeleteButton()">
+    Verwijder regel
 </md-button>
 </div>

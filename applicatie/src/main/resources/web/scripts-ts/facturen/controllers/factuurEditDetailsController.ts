@@ -19,9 +19,13 @@ module Application.Controllers {
             this.$scope.data = factuurGuiService.getFactuurGui().data;
         }
 
+        notDirty(){
+            return angular.equals(this.$scope.data.factuurToEdit, this.$scope.data.selectedfactuur);
+        }
 
         saveDetails(){
             this.copyFactuurDetailsInto(this.$scope.data.factuurToEdit, this.$scope.data.selectedfactuur);
+            this.factuurDataService.saveFactuur();
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
         }
 

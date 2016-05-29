@@ -14,10 +14,10 @@
         <input type="checkbox" ng-model="data.factuurToEdit.betaald">
     </label><br/>
 
-    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.saveDetails()" ng-hide="addMode">
-        Ok
+    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.saveDetails()" ng-hide="facturenEditDetailscontroller.notDirty()">
+        Opslaan
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.cancelEditDetails()">
+    <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.cancelEditDetails()" ng-hide="facturenEditDetailscontroller.notDirty()">
         Annuleren
     </md-button>
 </div>

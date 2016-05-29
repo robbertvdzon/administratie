@@ -76,20 +76,11 @@
 
 
     <br><br>
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.add()" ng-show="addMode">
-        Factuur toevoegen
-    </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.save()" ng-hide="addMode">
-        Factuur opslaan
-    </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.cancel()">
-        Annuleren
-    </md-button>
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.delete()">
         Verwijder Factuur
     </md-button>
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.print(data.selectedfactuur.uuid)">
-        Print
+        Download pdf
     </md-button>
 
 </div>

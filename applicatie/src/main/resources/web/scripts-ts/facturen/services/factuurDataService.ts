@@ -32,10 +32,15 @@ module Application.Services {
 
         private setSelectedFactuurRegel(selectedfactuurregel:FactuurRegelData){
             this.factuurGuiService.getFactuurGui().data.selectedfactuurregel = selectedfactuurregel;
+            this.resetFactuurRegelToEdit();
         }
 
         public resetFactuurToEdit() {
             this.factuurGuiService.getFactuurGui().data.factuurToEdit = this.cloneFactuur(this.getSelectedFactuur());
+        }
+
+        public resetFactuurRegelToEdit() {
+            this.factuurGuiService.getFactuurGui().data.factuurregelToEdit = this.cloneFactuurRegel(this.getSelectedFactuurRegel());
         }
 
         public setFactuurAsSelected(uuid) {
@@ -75,6 +80,7 @@ module Application.Services {
 
         public addFactuurRegel(factuurregel:FactuurRegelData) {
             this.getSelectedFactuur().factuurRegels.push(factuurregel);
+            this.saveFactuur();
         }
 
         public updateFactuurRegel(factuurregel:FactuurRegelData) {
@@ -88,6 +94,7 @@ module Application.Services {
                     factuurRegel.uuid = factuurregel.uuid;
                 }
             }
+            this.saveFactuur();
         }
 
         public deleteFactuurRegel(factuurregel:FactuurRegelData) {
@@ -101,6 +108,7 @@ module Application.Services {
             if (selectedNumber >= 0) {
                 this.getSelectedFactuur().factuurRegels.splice(selectedNumber, 1);
             }
+            this.saveFactuur();
         }
 
         public loadExistingFactuurRegel(selectedfactuurregel : FactuurRegelData) {
@@ -110,12 +118,13 @@ module Application.Services {
         }
 
         public loadNewFactuurRegel() {
-            this.setSelectedFactuurRegel(new FactuurRegelData());
-            this.getSelectedFactuurRegel().omschrijving = "Werkzaamheden";
-            this.getSelectedFactuurRegel().aantal = 1;
-            this.getSelectedFactuurRegel().btwPercentage = 21;
-            this.getSelectedFactuurRegel().stuksPrijs = 72.5;
-            this.getSelectedFactuurRegel().uuid = this.createUuid();
+            var nieuweRegel = new FactuurRegelData();
+            nieuweRegel.omschrijving = "Werkzaamheden";
+            nieuweRegel.aantal = 1;
+            nieuweRegel.btwPercentage = 21;
+            nieuweRegel.stuksPrijs = 72.5;
+            nieuweRegel.uuid = this.createUuid();
+            this.setSelectedFactuurRegel(nieuweRegel);
             this.factuurGuiService.getFactuurGui().data.addRegelMode = true;
             this.factuurGuiService.showPage(SCREEN_FACTUUR_REGEL);
         }

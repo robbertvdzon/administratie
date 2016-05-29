@@ -25,10 +25,10 @@
     </label><br/>
 
 
-    <md-button class="md-raised md-primary" ng-click="facturenEditContactcontroller.saveContactDetails()" ng-hide="addMode">
-        Ok
+    <md-button class="md-raised md-primary" ng-click="facturenEditContactcontroller.saveContactDetails()"  ng-hide="facturenEditContactcontroller.notDirty()">
+        Opslaan
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="facturenEditContactcontroller.cancelEditDetails()">
+    <md-button class="md-raised md-primary" ng-click="facturenEditContactcontroller.cancelEditDetails()" ng-hide="facturenEditContactcontroller.notDirty()">
         Annuleren
     </md-button>
 

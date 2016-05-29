@@ -22,9 +22,10 @@ module Application.Services {
     export class FactuurGuiData{
         selectedfactuur : FactuurData;
         factuurToEdit : FactuurData;
+        selectedfactuurregel : FactuurRegelData;
+        factuurregelToEdit : FactuurRegelData;
         addMode : boolean;
         addToAdresboek : boolean;
-        selectedfactuurregel : FactuurRegelData;
         addRegelMode:boolean;
         administratie : Administratie;
 
