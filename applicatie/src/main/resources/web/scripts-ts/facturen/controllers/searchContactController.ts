@@ -23,6 +23,7 @@ module Application.Controllers {
 
         selectContact(uuid: String) {
             this.factuurDataService.updateContact(this.factuurDataService.getContactByUuid(uuid));
+            this.factuurDataService.saveFactuur();
             this.factuurGuiService.closePage(SCREEN_FACTUUR_CONTACT);
         }
 
