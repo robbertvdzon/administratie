@@ -16,6 +16,7 @@ module Application.Services {
 
     export class RekeningGuiData{
         selectedrekening : RekeningData;
+        rekeningToEdit : RekeningData;
         addMode : boolean;
         rekeningen:RekeningData[];
     }

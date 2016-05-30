@@ -2,52 +2,52 @@
     <br>
     <md-input-container flex>
         <label>Rekeningnummer</label>
-        <input ng-model="data.selectedrekening.rekeningNummer" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.rekeningNummer" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <md-input-container flex>
         <label>Klant</label>
-        <input ng-model="data.selectedrekening.naam" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.naam" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <md-input-container flex>
         <label>Omschrijving</label>
-        <input ng-model="data.selectedrekening.omschrijving" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.omschrijving" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <md-input-container flex>
         <label>factuurDate</label>
-        <input ng-model="data.selectedrekening.rekeningDate" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.rekeningDate" STYLE="background-color: #B2DFDB;">
     </md-input-container>
     <md-input-container flex>
         <label>bedragExBtw</label>
-        <input ng-model="data.selectedrekening.bedragExBtw" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.bedragExBtw" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <md-input-container flex>
         <label>bedragIncBtw</label>
-        <input ng-model="data.selectedrekening.bedragIncBtw" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.bedragIncBtw" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <md-input-container flex>
         <label>btw</label>
-        <input ng-model="data.selectedrekening.btw" STYLE="background-color: #B2DFDB;">
+        <input ng-model="data.rekeningToEdit.btw" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <br>
 
 
     <br><br>
-    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.add()" ng-show="addMode">
+    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.add()"  ng-show="rekeningenEditcontroller.showAddButton()">
         Rekening toevoegen
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.save()" ng-hide="addMode">
+    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.save()"  ng-show="rekeningenEditcontroller.showSaveButton()">
         Rekening opslaan
     </md-button>
     <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.cancel()">
         Annuleren
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.delete()">
+    <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.delete()" ng-show="rekeningenEditcontroller.showDeleteButton()">
         Verwijder
     </md-button>
 </div>

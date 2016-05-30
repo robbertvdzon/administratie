@@ -17,7 +17,22 @@ module Application.Controllers {
             this.$scope.data = rekeningGuiService.getRekeningGui().data;
         }
 
+        showAddButton(){
+            return this.$scope.data.addMode;
+        }
+
+        showSaveButton(){
+            return !this.$scope.data.addMode && !angular.equals(this.$scope.data.rekeningToEdit, this.$scope.data.selectedrekening);
+        }
+
+        showDeleteButton(){
+            return !this.$scope.data.addMode;
+        }
+
+
+
         save() {
+            this.rekeningDataService.copyInto(this.$scope.data.rekeningToEdit, this.$scope.data.selectedrekening);
             this.rekeningDataService.saveRekening().then((response) => {
                 this.rekeningGuiService.closePage(SCREEN_REKENING_EDIT);
             }).catch((response) => {
@@ -42,6 +57,7 @@ module Application.Controllers {
         }
 
         cancel() {
+            this.$scope.data.rekeningToEdit = this.rekeningDataService.cloneRekening(this.$scope.data.selectedrekening);
             this.rekeningGuiService.closePage(SCREEN_REKENING_EDIT);
         }
 

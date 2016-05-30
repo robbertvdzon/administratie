@@ -10,10 +10,16 @@ module Application.Services {
         constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private rekeningGuiService:RekeningGuiService, private $filter) {
         }
 
-        public setSelectedRekening(rekening:RekeningData) {
+        private setSelectedRekening(rekening:RekeningData) {
             this.rekeningGuiService.getRekeningGui().data.selectedrekening = rekening;
-            this.rekeningGuiService.getRekeningGui().data.addMode = rekening.uuid == null;
+            this.resetRekeningToEdit();
         }
+
+        public resetRekeningToEdit() {
+            this.rekeningGuiService.getRekeningGui().data.rekeningToEdit = this.cloneRekening(this.getSelectedRekening());
+        }
+
+
 
         private getSelectedRekening():RekeningData{
             return this.rekeningGuiService.getRekeningGui().data.selectedrekening;
@@ -24,6 +30,7 @@ module Application.Services {
             if (rekening != null) {
                 rekening = this.cloneRekening(rekening);
             }
+            this.rekeningGuiService.getRekeningGui().data.addMode = false;
             this.setSelectedRekening(rekening);
         }
 
@@ -33,6 +40,7 @@ module Application.Services {
             rekening.rekeningDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
             rekening.omschrijving = "Rekening omschrijving";
             rekening.uuid = this.createUuid();
+            this.rekeningGuiService.getRekeningGui().data.addMode = true;
             this.setSelectedRekening(rekening);
         }
 
@@ -59,6 +67,17 @@ module Application.Services {
             rekeningClone.bedragIncBtw = rekening.bedragIncBtw;
             rekeningClone.btw = rekening.btw;
             return rekeningClone;
+        }
+
+        public copyInto(rekeningFrom:RekeningData, rekeningTo:RekeningData) {
+            rekeningTo.naam = rekeningFrom.naam;
+            rekeningTo.uuid = rekeningFrom.uuid;
+            rekeningTo.rekeningNummer = rekeningFrom.rekeningNummer;
+            rekeningTo.omschrijving = rekeningFrom.omschrijving;
+            rekeningTo.rekeningDate = rekeningFrom.rekeningDate;
+            rekeningTo.bedragExBtw = rekeningFrom.bedragExBtw;
+            rekeningTo.bedragIncBtw = rekeningFrom.bedragIncBtw;
+            rekeningTo.btw = rekeningFrom.btw;
         }
 
         public saveRekening(): ng.IPromise<any> {
