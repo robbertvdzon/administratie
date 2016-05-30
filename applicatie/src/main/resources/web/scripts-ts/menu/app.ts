@@ -69,6 +69,16 @@ angular
                 controller: 'RekeningenCtrl',
                 controllerAs: 'rekeningencontroller'
             })
+            .when('/declaraties', {
+                templateUrl: 'declaraties/views/main.html',
+                controller: 'DeclaratiesCtrl',
+                controllerAs: 'declaratiescontroller'
+            })
+            .when('/afschriften', {
+                templateUrl: 'afschriften/views/main.html',
+                controller: 'AfschriftenCtrl',
+                controllerAs: 'afschriftencontroller'
+            })
             .otherwise({
                 redirectTo: '/'
             });

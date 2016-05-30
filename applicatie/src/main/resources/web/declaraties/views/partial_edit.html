@@ -1,0 +1,48 @@
+<div ng-cloak data-ng-controller="DeclaratieEditController as declaratiesEditcontroller">
+    <br>
+    <md-input-container flex>
+        <label>Declaratienummer</label>
+        <input ng-model="data.declaratieToEdit.declaratieNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Omschrijving</label>
+        <input ng-model="data.declaratieToEdit.omschrijving" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>factuurDate</label>
+        <input ng-model="data.declaratieToEdit.declaratieDate" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>bedragExBtw</label>
+        <input ng-model="data.declaratieToEdit.bedragExBtw" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>bedragIncBtw</label>
+        <input ng-model="data.declaratieToEdit.bedragIncBtw" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>btw</label>
+        <input ng-model="data.declaratieToEdit.btw" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <br>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="declaratiesEditcontroller.add()"  ng-show="declaratiesEditcontroller.showAddButton()">
+        Declaratie toevoegen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="declaratiesEditcontroller.save()"  ng-show="declaratiesEditcontroller.showSaveButton()">
+        Declaratie opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="declaratiesEditcontroller.cancel()">
+        Annuleren
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="declaratiesEditcontroller.delete()" ng-show="declaratiesEditcontroller.showDeleteButton()">
+        Verwijder
+    </md-button>
+</div>

@@ -1,0 +1,21 @@
+<div ng-cloak data-ng-controller="DeclaratiesListController as declaratiesListController">
+Declaraties
+
+<md-list >
+
+    <md-list-item ng-repeat="declaratie in data.declaraties" ng-click="declaratiesListController.edit(declaratie.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
+        <div md-ink-ripple style="width: 100%;"  >
+            <declaratie-row></declaratie-row>
+        </div>
+    </md-list-item>
+</md-list>
+
+<br>
+<br>
+
+<md-button class="md-raised md-primary" ng-click="declaratiesListController.newDeclaratie()"  >
+    Declaratie toevoegen
+</md-button>
+
+
+</div>

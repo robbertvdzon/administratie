@@ -53,11 +53,33 @@ module Application.Model {
         btw:String;
     }
 
+    export class DeclaratieData {
+        uuid:String;
+        declaratieNummer:String;
+        omschrijving:String;
+        declaratieDate:String;
+        bedragExBtw:String;
+        bedragIncBtw:String;
+        btw:String;
+    }
+
+    export class AfschriftData {
+        uuid:String;
+        rekening:String;
+        rekeningnaam:String;
+        relatienaam:String;
+        boekdatum:String;
+        bedragBij:String;
+        bedragAf:String;
+    }
+
     export class Administratie {
         uuid:String;
         facturen:FactuurData[];
         adresboek:ContactData[];
         rekeningen:RekeningData[];
+        declaraties:DeclaratieData[];
+        afschriften:AfschriftData[];
         administratieGegevens:AdministratieGegevens;
     }
 

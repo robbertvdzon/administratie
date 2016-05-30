@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.model.Declaratie;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @JsonIgnoreProperties
 public class AfschriftDto {
@@ -13,14 +14,16 @@ public class AfschriftDto {
     private String rekening;
     private String rekeningnaam;
     private String relatienaam;
-    private LocalDate boekdatum;
+    private String boekdatum;
     private double bedragBij = 0;
     private double bedragAf = 0;
+
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public AfschriftDto() {
     }
 
-    public AfschriftDto(String uuid, String rekening, String rekeningnaam, String relatienaam, LocalDate boekdatum, double bedragBij, double bedragAf) {
+    public AfschriftDto(String uuid, String rekening, String rekeningnaam, String relatienaam, String boekdatum, double bedragBij, double bedragAf) {
         this.uuid = uuid;
         this.rekening = rekening;
         this.rekeningnaam = rekeningnaam;
@@ -31,11 +34,11 @@ public class AfschriftDto {
     }
 
     public AfschriftDto(Afschrift afschrift) {
-        this(afschrift.getUuid(), afschrift.getRekening(), afschrift.getRekeningnaam(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedragBij(), afschrift.getBedragAf());
+        this(afschrift.getUuid(), afschrift.getRekening(), afschrift.getRekeningnaam(), afschrift.getRelatienaam(), afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER), afschrift.getBedragBij(), afschrift.getBedragAf());
     }
 
     public Afschrift toAfschrift() {
-        return new Afschrift(uuid, rekening, rekeningnaam, relatienaam, boekdatum, bedragBij, bedragAf);
+        return new Afschrift(uuid, rekening, rekeningnaam, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedragBij, bedragAf);
     }
 
     public String getUuid() {
@@ -70,11 +73,11 @@ public class AfschriftDto {
         this.relatienaam = relatienaam;
     }
 
-    public LocalDate getBoekdatum() {
+    public String getBoekdatum() {
         return boekdatum;
     }
 
-    public void setBoekdatum(LocalDate boekdatum) {
+    public void setBoekdatum(String boekdatum) {
         this.boekdatum = boekdatum;
     }
 

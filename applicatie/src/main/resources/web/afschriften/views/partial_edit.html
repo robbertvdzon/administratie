@@ -1,0 +1,48 @@
+<div ng-cloak data-ng-controller="AfschriftEditController as afschriftenEditcontroller">
+    <br>
+    <md-input-container flex>
+        <label>Rekening</label>
+        <input ng-model="data.afschriftToEdit.rekening" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>rekeningnaam</label>
+        <input ng-model="data.afschriftToEdit.rekeningnaam" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>relatienaam</label>
+        <input ng-model="data.afschriftToEdit.relatienaam" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>boekdatum</label>
+        <input ng-model="data.afschriftToEdit.boekdatum" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>bedragBij</label>
+        <input ng-model="data.afschriftToEdit.bedragBij" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>bedragAf</label>
+        <input ng-model="data.afschriftToEdit.bedragAf" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <br>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.add()"  ng-show="afschriftenEditcontroller.showAddButton()">
+        Afschrift toevoegen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.save()"  ng-show="afschriftenEditcontroller.showSaveButton()">
+        Afschrift opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.cancel()">
+        Annuleren
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.delete()" ng-show="afschriftenEditcontroller.showDeleteButton()">
+        Verwijder
+    </md-button>
+</div>
