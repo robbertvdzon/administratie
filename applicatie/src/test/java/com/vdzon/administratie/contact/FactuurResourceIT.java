@@ -42,13 +42,13 @@
 //        Assert.assertEquals(3,currentUser.getFacturen().size());
 //
 //        // remove all facturen except 2016003
-//        currentUser.getFacturen().stream().filter(factuur -> !factuur.getBestellingNummer().equals("2016003")).forEach(factuur -> removeFactuur(factuur.getBestellingNummer()));
+//        currentUser.getFacturen().stream().filter(factuur -> !factuur.getBestellingNummer().equals("2016003")).forEach(factuur -> removeBestelling(factuur.getBestellingNummer()));
 //
 //        currentUser = getCurrentUser();
 //        Assert.assertEquals(1,currentUser.getFacturen().size());
 //
 //        // remove non existing factuur
-//        removeFactuur("123123123123");
+//        removeBestelling("123123123123");
 //
 //        Assert.assertEquals(1,currentUser.getFacturen().size());
 //
@@ -65,7 +65,7 @@
 //        Assert.assertEquals(LocalDate.ofYearDay(2014,4), factuur.getDeclaratieDate());
 //
 //        // remove last factuur
-//        removeFactuur("2016003");
+//        removeBestelling("2016003");
 //        currentUser = getCurrentUser();
 //
 //        Assert.assertEquals(0,currentUser.getFacturen().size());
@@ -112,7 +112,7 @@
 //        return uuidSingleAnswer.getAnswer();
 //    }
 //
-//    private String removeFactuur(String factuurNummer) {
+//    private String removeBestelling(String factuurNummer) {
 //        Response response = given().
 //                filter(sessionFilter).
 //                when().
