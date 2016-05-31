@@ -42,6 +42,10 @@ module Application.Services {
                 this.reloadData(guiData.administratie);
             });
 
+            $rootScope.$on('facturen-main-button-pressed',()=>{
+                this.showPage(SCREEN_FACTUUR_LIJST);
+            });
+
             // load for the first time
             this.reloadData(this.dataService.getData().administratie);
 

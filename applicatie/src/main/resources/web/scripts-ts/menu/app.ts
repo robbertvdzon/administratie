@@ -79,6 +79,11 @@ angular
                 controller: 'AfschriftenCtrl',
                 controllerAs: 'afschriftencontroller'
             })
+            .when('/bestellingen', {
+                templateUrl: 'bestellingen/views/main.html',
+                controller: 'BestellingenCtrl',
+                controllerAs: 'bestellingencontroller'
+            })
             .otherwise({
                 redirectTo: '/'
             });

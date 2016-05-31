@@ -1,0 +1,13 @@
+<table width="100%">
+    <tr>
+        <td colspan="5"><b>{{ bestellingregel.omschrijving }}</b></td>
+    </tr>
+    <tr>
+        <td width="50px">{{ bestellingregel.aantal}}</td>
+        <td width="20px">x</td>
+        <td width="50px">&euro; {{ bestellingregel.stuksPrijs}}</td>
+        <td width="20px"><small>({{ bestellingregel.btwPercentage}}%)</small></td>
+        <td align="right" >&euro; {{ bestellingregel.aantal * bestellingregel.stuksPrijs}}</td>
+    </tr>
+
+</table>

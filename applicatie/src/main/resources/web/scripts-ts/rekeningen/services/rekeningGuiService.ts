@@ -32,6 +32,10 @@ module Application.Services {
                 this.reloadData(guiData.administratie.rekeningen);
             });
 
+            $rootScope.$on('rekeningen-main-button-pressed',()=>{
+                this.showPage(SCREEN_REKENING_LIJST );
+            });
+
             // load for the first time
             this.reloadData(this.dataService.getData().administratie.rekeningen);
         }

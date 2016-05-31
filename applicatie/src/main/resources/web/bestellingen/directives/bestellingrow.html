@@ -1,0 +1,8 @@
+
+<table><tr>
+    <td width="100">{{ bestelling.bestellingNummer }}</td>
+    <td width="100">{{ bestelling.klant.naam }}</td>
+    <td width="100">{{bestelling.bestellingDate}}</td>
+    <td width="100">&euro; {{ bestelling.bedragExBtw }}</td>
+    <td> <small>{{ bestelling.betaald?"":"(*)" }}</small> </td>
+</tr></table>

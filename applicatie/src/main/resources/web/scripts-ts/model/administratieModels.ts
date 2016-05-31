@@ -32,6 +32,23 @@ module Application.Model {
         klant:ContactData;
     }
 
+    export class BestellingRegelData {
+        uuid:String;
+        omschrijving:String;
+        aantal:number;
+        stuksPrijs:number;
+        btwPercentage:number;
+    }
+
+    export class BestellingData {
+        bestellingNummer:String;
+        bestellingRegels:FactuurRegelData[];
+        uuid:String;
+        betaald:boolean;
+        bestellingDate:String;
+        klant:ContactData;
+    }
+
     export class ContactData {
         naam:String;
         klantNummer:String;
@@ -80,6 +97,7 @@ module Application.Model {
         rekeningen:RekeningData[];
         declaraties:DeclaratieData[];
         afschriften:AfschriftData[];
+        bestellingen:BestellingData[];
         administratieGegevens:AdministratieGegevens;
     }
 

@@ -31,6 +31,10 @@ module Application.Services {
                 this.reloadData(guiData.administratie);
             });
 
+            $rootScope.$on('contacten-main-button-pressed',()=>{
+                this.showPage(SCREEN_CONTACT_LIJST);
+            });
+
             // load for the first time
             this.reloadData(this.dataService.getData().administratie);
         }

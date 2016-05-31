@@ -1,0 +1,86 @@
+<div ng-cloak data-ng-controller="BestellingEditController as bestellingenEditcontroller">
+    <br>
+    <b>Bestelling Details:</b>
+    <table>
+        <tr>
+            <td>BestellingNummer :</td>
+            <td>{{data.selectedbestelling.bestellingNummer}}</td>
+        </tr>
+        <tr>
+            <td>Datum :</td>
+            <td>{{data.selectedbestelling.bestellingDate}}</td>
+        </tr>
+        <tr>
+            <td>Betaald :</td>
+            <td>{{data.selectedbestelling.betaald}}</td>
+        </tr>
+    </table>
+
+
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.editDetails()">
+        Bewerk bestelling gegevens
+    </md-button>
+
+    <br>
+    <br>
+
+    <b>Klant Gegevens:</b>
+    <table>
+        <tr>
+            <td>Naam :</td>
+            <td>{{data.selectedbestelling.klant.naam}}</td>
+        </tr>
+        <tr>
+            <td>Adres :</td>
+            <td>{{data.selectedbestelling.klant.adres}}</td>
+        </tr>
+        <tr>
+            <td>Postcode :</td>
+            <td>{{data.selectedbestelling.klant.postcode}}</td>
+        </tr>
+        <tr>
+            <td>Woonplaats :</td>
+            <td>{{data.selectedbestelling.klant.woonplaats}}</td>
+        </tr>
+        <tr>
+            <td>Land :</td>
+            <td>{{data.selectedbestelling.klant.land}}</td>
+        </tr>
+    </table>
+
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.searchContact()">
+        Zoek contact
+    </md-button>
+
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.editContactDetails()">
+        Bewerk Contact
+    </md-button>
+
+
+
+    <br>
+    <br>
+    <b>Bestelling regels:</b>
+    <md-list ng-hide="data.selectedbestelling.editMode">
+        <md-list-item ng-repeat="bestellingregel in data.selectedbestelling.bestellingRegels" ng-class-odd="'odd'"
+                      ng-class-even="'even'">
+            <div md-ink-ripple ng-click="bestellingenEditcontroller.editRegel(bestellingregel.uuid)" style="width: 100%;">
+                <bestellingRegelRow></bestellingRegelRow>
+                <bestelling-regel-row></bestelling-regel-row>
+            </div>
+        </md-list-item>
+    </md-list>
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.addRegel()">
+        Nieuwe regel
+    </md-button>
+
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.back()">
+        Terug
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.delete()">
+        Verwijder Bestelling
+    </md-button>
+
+</div>

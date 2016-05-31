@@ -65,6 +65,7 @@ module Application.Services {
             factuur.klant = new ContactData();
             factuur.uuid = this.createUuid();
             this.setSelectedFactuur(factuur);
+            this.saveFactuur();
         }
 
         public getFactuurByUuid(uuid):FactuurData {

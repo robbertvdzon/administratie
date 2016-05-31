@@ -120,7 +120,7 @@ public class Administratie {
             }
         }
         if (bestellingToRemove != null) {
-            facturen.remove(bestellingToRemove);
+            bestellingen.remove(bestellingToRemove);
         }
     }
 

@@ -1,0 +1,23 @@
+<div ng-cloak data-ng-controller="BestellingEditDetailsController as bestellingenEditDetailscontroller">
+    <md-input-container flex>
+        <label>Nummer</label>
+        <input ng-model="data.bestellingToEdit.bestellingNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+
+    <md-input-container flex>
+        <label>Datum</label>
+        <input ng-model="data.bestellingToEdit.bestellingDate" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <label>Betaald:
+        <input type="checkbox" ng-model="data.bestellingToEdit.betaald">
+    </label><br/>
+
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditDetailscontroller.saveDetails()" ng-hide="bestellingenEditDetailscontroller.notDirty()">
+        Opslaan
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditDetailscontroller.cancelEditDetails()" >
+        Annuleren
+    </md-button>
+</div>

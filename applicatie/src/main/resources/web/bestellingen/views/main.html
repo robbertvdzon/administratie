@@ -1,0 +1,39 @@
+
+<div ng-cloak >
+
+
+    <md-tabs md-selected="bestellingGui.selectedIndex" md-dynamic-height md-swipe-content >
+        <md-tab label="tab1">
+            <md-content class="md-padding">
+                <ng-include src="'/bestellingen/views/partial_list.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab2" ng-disabled="bestellingGui.bestellingTabDisabled">
+            <md-content class="md-padding">
+                <ng-include src="'/bestellingen/views/partial_edit.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab3" ng-disabled="bestellingGui.bestellingRegelTabDisabled">
+            <md-content class="md-padding" >
+                <ng-include src="'/bestellingen/views/partial_edit_row.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab3" ng-disabled="bestellingGui.searchContactTabDisabled">
+            <md-content class="md-padding" >
+                <ng-include src="'/bestellingen/views/search_contacten.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab4" ng-disabled="bestellingGui.bestellingDetailTabDisabled">
+            <md-content class="md-padding" >
+                <ng-include src="'/bestellingen/views/partial_edit_detail.html'"></ng-include>
+            </md-content>
+        </md-tab>
+        <md-tab label="tab5" ng-disabled="bestellingGui.bestellingEditContactTabDisabled">
+            <md-content class="md-padding" >
+                <ng-include src="'/bestellingen/views/partial_edit_contact.html'"></ng-include>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+
+</div>
+

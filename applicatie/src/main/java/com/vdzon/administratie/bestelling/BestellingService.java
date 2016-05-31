@@ -34,7 +34,7 @@ public class BestellingService {
             ObjectMapper mapper = new ObjectMapper();
             BestellingDto bestellingDto = mapper.readValue(bestellingJson, BestellingDto.class);
             bestelling = bestellingDto.toBestelling();
-            gebruiker.getDefaultAdministratie().removeFactuur(bestelling.getUuid());
+            gebruiker.getDefaultAdministratie().removeBestelling(bestelling.getUuid());
             gebruiker.getDefaultAdministratie().addBestelling(bestelling);
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {

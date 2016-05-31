@@ -1,0 +1,21 @@
+<div ng-cloak data-ng-controller="BestellingenListController as bestellingenListController">
+Bestellingen
+
+<md-list >
+
+    <md-list-item ng-repeat="bestelling in data.administratie.bestellingen" ng-click="bestellingenListController.edit(bestelling.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
+        <div md-ink-ripple style="width: 100%;"  >
+            <bestelling-row></bestelling-row>
+        </div>
+    </md-list-item>
+</md-list>
+
+<br>
+<br>
+
+<md-button class="md-raised md-primary" ng-click="bestellingenListController.newBestelling()"  >
+    Bestelling toevoegen
+</md-button>
+
+
+</div>

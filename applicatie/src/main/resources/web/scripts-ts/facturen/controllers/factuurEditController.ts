@@ -46,7 +46,7 @@ module Application.Controllers {
             })
         }
 
-        cancel() {
+        back() {
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
         }
 

@@ -1,0 +1,38 @@
+<div ng-cloak data-ng-controller="BestellingRegelEditController as bestellingRegelEditController">
+
+<form>
+    <md-dialog-content style="max-width:800px;max-height:810px; ">
+        <md-input-container>
+            <label>Omschrijving:</label>
+            <input ng-model="data.bestellingregelToEdit.omschrijving" required id="selectedbestellingregel_omschrijving">
+        </md-input-container>
+        <md-input-container>
+            <label>Aantal:</label>
+            <input ng-model="data.bestellingregelToEdit.aantal" required id="selectedbestellingregel_aantal">
+        </md-input-container>
+        <md-input-container>
+            <label>Tarief:</label>
+            <input ng-model="data.bestellingregelToEdit.stuksPrijs" required id="selectedbestellingregel_tarief">
+        </md-input-container>
+        <md-input-container>
+            <label>Btw:</label>
+            <input ng-model="data.bestellingregelToEdit.btwPercentage" required id="selectedbestellingregel_btw">
+        </md-input-container>
+    </md-dialog-content>
+
+</form>
+
+<br><br>
+<md-button class="md-raised md-primary"  ng-click="bestellingRegelEditController.saveAddRegel()" ng-show="bestellingRegelEditController.showAddButton()">
+    Toevoegen
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="bestellingRegelEditController.saveEditRegel()" ng-show="bestellingRegelEditController.showSaveButton()">
+    Opslaan
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="bestellingRegelEditController.cancelAddRegel()">
+    Annuleren
+</md-button>
+<md-button class="md-raised md-primary"  ng-click="bestellingRegelEditController.deleteRegel()" ng-show="bestellingRegelEditController.showDeleteButton()">
+    Verwijder regel
+</md-button>
+</div>
