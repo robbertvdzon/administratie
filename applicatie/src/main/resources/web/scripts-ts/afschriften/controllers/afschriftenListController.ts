@@ -16,7 +16,7 @@ module Application.Controllers {
 
     export class AfschriftenListController {
 
-        constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private afschriftDataService:AfschriftDataService, private afschriftGuiService:AfschriftGuiService) {
+        constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private afschriftDataService:AfschriftDataService, private afschriftGuiService:AfschriftGuiService, private $http) {
             this.$scope.data = this.afschriftGuiService.getAfschriftGui().data;
         }
 
@@ -30,7 +30,30 @@ module Application.Controllers {
             this.afschriftDataService.createAndSelectNewAfschrift();
             this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
         }
+
+        uploadFile(files){
+            this.uploadFileToUrl(files.files[0],"/rest/afschrift/uploadabn");
+        }
+
+        uploadFileToUrl(file, uploadUrl) {
+            var fd = new FormData();
+            fd.append('file', file);
+
+            this.$http.post(uploadUrl, fd, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                })
+
+                .success(function () {
+                    this.dataService.reload();
+                })
+
+                .error(function () {
+                    alert("failed");
+                });
+        }
     }
+
 
 }
 

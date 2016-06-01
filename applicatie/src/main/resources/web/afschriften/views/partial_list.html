@@ -1,21 +1,26 @@
-<div ng-cloak data-ng-controller="AfschriftenListController as afschriftenListController">
-Afschriften
+<div id="afschriftenControllerId" ng-cloak data-ng-controller="AfschriftenListController as afschriftenListController">
+    Afschriften
 
-<md-list >
+    <input type="file"
+           onchange="angular.element(document.getElementById('afschriftenControllerId')).controller().uploadFile(this)"/>
 
-    <md-list-item ng-repeat="afschrift in data.afschriften" ng-click="afschriftenListController.edit(afschrift.uuid)" ng-class-odd="'odd'" ng-class-even="'even'">
-        <div md-ink-ripple style="width: 100%;"  >
-            <afschrift-row></afschrift-row>
-        </div>
-    </md-list-item>
-</md-list>
+    <md-list>
 
-<br>
-<br>
+        <md-list-item ng-repeat="afschrift in data.afschriften"
+                      ng-click="afschriftenListController.edit(afschrift.uuid)" ng-class-odd="'odd'"
+                      ng-class-even="'even'">
+            <div md-ink-ripple style="width: 100%;">
+                <afschrift-row></afschrift-row>
+            </div>
+        </md-list-item>
+    </md-list>
 
-<md-button class="md-raised md-primary" ng-click="afschriftenListController.newAfschrift()"  >
-    Afschrift toevoegen
-</md-button>
+    <br>
+    <br>
+
+    <md-button class="md-raised md-primary" ng-click="afschriftenListController.newAfschrift()">
+        Afschrift toevoegen
+    </md-button>
 
 
 </div>
