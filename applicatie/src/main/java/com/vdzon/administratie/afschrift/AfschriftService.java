@@ -162,7 +162,7 @@ public class AfschriftService {
             double bedragAf = getBedragAf(bedrag);
             LocalDate boekDatum = getBoekDatum(date);
             double bedragBij = getBedragBij(bedrag);;
-            return new Afschrift(uuid, rekeningNr, rekeningNr, "#1 "+omschrijving, boekDatum, bedragBij, bedragAf);
+            return new Afschrift(uuid, rekeningNr, rekeningNr, omschrijving, boekDatum, bedragBij, bedragAf);
         }
         else{
             System.out.println(parts.length);

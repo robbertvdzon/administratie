@@ -60,13 +60,13 @@ public class GenerateFactuur {
         skipDown(10);
         writeRegels(fontBold, "Aantal", "Omschrijving", "Prijs", "Btw", "Totaal ex");
         for (FactuurRegel factuurRegel : factuur.getFactuurRegels()) {
-            writeRegels(fontPlain, "" + factuurRegel.getAantal(), "" + factuurRegel.getOmschrijving(), "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + factuurRegel.getStuksPrijs() * factuurRegel.getAantal());
+            writeRegels(fontPlain, "" + factuurRegel.getAantal(), "" + factuurRegel.getOmschrijving(), "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs() * factuurRegel.getAantal()));
         }
         skipDown(10);
         drawLine();
         skipDown(10);
         writeTabel(fontPlain, "Bedrag exclusief BTW", "" + String.format("%.2f", factuur.getBedragExBtw()));
-        writeTabel(fontPlain, "BTW", "" + factuur.getBtw());
+        writeTabel(fontPlain, "BTW", "" + String.format("%.2f", factuur.getBtw()));
         writeTabel(fontPlain, "Bedrag inclusief BTW", "" + String.format("%.2f", factuur.getBedragIncBtw()));
         skipDown(10);
         drawLine();
