@@ -7,7 +7,7 @@ module Application.Services {
     import AfschriftGuiService = Application.Services.AfschriftGuiService;
 
     export class AfschriftDataService {
-        constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private afschriftGuiService:AfschriftGuiService, private $filter) {
+        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private afschriftGuiService:AfschriftGuiService, private $filter) {
         }
 
         private setSelectedAfschrift(afschrift:AfschriftData) {
@@ -20,8 +20,7 @@ module Application.Services {
         }
 
 
-
-        private getSelectedAfschrift():AfschriftData{
+        private getSelectedAfschrift():AfschriftData {
             return this.afschriftGuiService.getAfschriftGui().data.selectedafschrift;
         }
 
@@ -54,7 +53,7 @@ module Application.Services {
         }
 
         public cloneAfschrift(afschrift:AfschriftData):AfschriftData {
-            if (afschrift==null) return null;
+            if (afschrift == null) return null;
             var afschriftClone = new AfschriftData();
             afschriftClone.uuid = afschrift.uuid;
             afschriftClone.rekening = afschrift.rekening;
@@ -76,7 +75,7 @@ module Application.Services {
             afschriftTo.bedragAf = afschriftFrom.bedragAf;
         }
 
-        public saveAfschrift(): ng.IPromise<any> {
+        public saveAfschrift():ng.IPromise<any> {
             return this.$http({
                 url: "/rest/afschrift/",
                 method: "POST",
@@ -88,7 +87,7 @@ module Application.Services {
         };
 
 
-        public deleteAfschrift(): ng.IPromise<any> {
+        public deleteAfschrift():ng.IPromise<any> {
             return this.$http({
                 url: "/rest/afschrift/" + this.getSelectedAfschrift().uuid,
                 method: "DELETE"
@@ -97,7 +96,7 @@ module Application.Services {
             });
         };
 
-        public addNewAfschrift(afschrift:AfschriftData): ng.IPromise<any> {
+        public addNewAfschrift(afschrift:AfschriftData):ng.IPromise<any> {
             return this.$http({
                 url: "/rest/afschrift/",
                 method: "PUT",
@@ -108,9 +107,25 @@ module Application.Services {
             });
         };
 
-        public addAfschrift(): ng.IPromise<any> {
+        public addAfschrift():ng.IPromise<any> {
             return this.addNewAfschrift(this.getSelectedAfschrift());
         };
+
+
+        public uploadFileToUrl(file, uploadUrl) {
+            var fd = new FormData();
+            fd.append('file', file);
+
+            this.$http.post(uploadUrl, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then((response) => {
+                    this.dataService.reload();
+                })
+                .error(function () {
+                    alert("failed");
+                });
+        }
 
         public createUuid():String {
             var d = new Date().getTime();

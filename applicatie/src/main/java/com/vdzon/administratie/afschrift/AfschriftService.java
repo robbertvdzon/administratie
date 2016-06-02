@@ -79,6 +79,9 @@ public class AfschriftService {
     }
 
     protected Object uploadFile(Request request, Response response) {
+        /*
+        TODO: Onderstaande code moet heel erg opgeruimd worden!!!
+         */
         try {
             String uuid = SessionHelper.getAuthenticatedUserUuid(request);
             Gebruiker gebruiker = crudService.getGebruiker(uuid);
@@ -86,7 +89,6 @@ public class AfschriftService {
                 response.status(404);
                 return new SingleAnswer("not found");
             }
-            //
             String location = "image";          // the directory location where files will be stored
             long maxFileSize = 100000000;       // the maximum size allowed for uploaded files
             long maxRequestSize = 100000000;    // the maximum size allowed for multipart/form-data requests
@@ -97,16 +99,7 @@ public class AfschriftService {
             request.raw().setAttribute("org.eclipse.jetty.multipartConfig",
                     multipartConfigElement);
 
-            Collection<Part> parts = request.raw().getParts();
-            for (Part part : parts) {
-                System.out.println("Name: " + part.getName());
-                System.out.println("Size: " + part.getSize());
-                System.out.println("Filename: " + part.getSubmittedFileName());
-            }
-
             String fName = request.raw().getPart("file").getSubmittedFileName();
-            System.out.println("Title: " + request.raw().getParameter("title"));
-            System.out.println("File: " + fName);
 
             Part uploadedFile = request.raw().getPart("file");
             Path out = Paths.get(fName);
@@ -115,12 +108,6 @@ public class AfschriftService {
                 Files.copy(in, out);
                 uploadedFile.delete();
             }
-            multipartConfigElement = null;
-            parts = null;
-            uploadedFile = null;
-
-//
-            System.out.println("--------");
             List<Afschrift> afschriften = parseFile(out);
             System.out.println("count "+afschriften.size());
             for (Afschrift afschrift:afschriften) {
@@ -134,7 +121,6 @@ public class AfschriftService {
             ex.printStackTrace();
         }
         return "OK";
-
     }
 
 
