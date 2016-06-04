@@ -13,7 +13,6 @@ import spark.Response;
 import javax.inject.Inject;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -23,7 +22,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,14 +139,13 @@ public class AfschriftService {
         if (parts.length==8){
             String rekeningNr = parts[0];
             String date = parts[2];
-            String bedrag = parts[6];
+            String bedragStr = parts[6];
             String omschrijving = parts[7];
 
             String uuid=line;
-            double bedragAf = getBedragAf(bedrag);
+            double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
-            double bedragBij = getBedragBij(bedrag);;
-            return new Afschrift(uuid, rekeningNr, rekeningNr, omschrijving, boekDatum, bedragBij, bedragAf);
+            return new Afschrift(uuid, rekeningNr, rekeningNr, omschrijving, boekDatum, bedrag);
         }
         else{
             System.out.println(parts.length);
@@ -168,14 +165,8 @@ public class AfschriftService {
 
     }
 
-    private double getBedragBij(String bedrag) {
-        double doubleBedrag = new Double(bedrag.replace(",",".")).doubleValue();
-        return doubleBedrag>0?doubleBedrag:0;
-    }
-
-    private double getBedragAf(String bedrag) {
-        double doubleBedrag = new Double(bedrag.replace(",",".")).doubleValue();
-        return doubleBedrag<0?doubleBedrag*-1:0;
+    private double getBedrag(String bedrag) {
+        return new Double(bedrag.replace(",",".")).doubleValue();
     }
 
 

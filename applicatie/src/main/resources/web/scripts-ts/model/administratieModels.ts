@@ -87,8 +87,7 @@ module Application.Model {
         rekeningnaam:String;
         relatienaam:String;
         boekdatum:String;
-        bedragBij:String;
-        bedragAf:String;
+        bedrag:String;
     }
 
     export class Administratie {
