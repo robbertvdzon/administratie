@@ -10,9 +10,11 @@
         <input ng-model="data.bestellingToEdit.bestellingDate" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <label>Betaald:
-        <input type="checkbox" ng-model="data.bestellingToEdit.betaald">
-    </label><br/>
+    <md-input-container flex>
+        <label>Gekoppelde factuurnr</label>
+        <input ng-model="data.bestellingToEdit.gekoppeldFactuurNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
 
     <md-button class="md-raised md-primary" ng-click="bestellingenEditDetailscontroller.saveDetails()" ng-hide="bestellingenEditDetailscontroller.notDirty()">
         Opslaan

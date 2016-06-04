@@ -31,7 +31,7 @@ module Application.Controllers {
 
         copyBestellingDetailsInto(bestellingSrc:BestellingData, bestellingDst:BestellingData):void {
             bestellingDst.bestellingNummer = bestellingSrc.bestellingNummer;
-            bestellingDst.betaald = bestellingSrc.betaald;
+            bestellingDst.gekoppeldFactuurNummer = bestellingSrc.gekoppeldFactuurNummer;
             bestellingDst.bestellingDate = bestellingSrc.bestellingDate;
             bestellingDst.klant = this.contactDataService.cloneContact(bestellingSrc.klant);
         }

@@ -18,7 +18,7 @@ module Application.Controllers {
 
     export class FactuurEditController {
 
-        constructor(private $scope:MyScope, private factuurDataService:FactuurDataService, private factuurGuiService:FactuurGuiService, private $window) {
+        constructor(private $scope:MyScope, private factuurDataService:FactuurDataService,  private dataService:Application.Services.MyDataservice,private factuurGuiService:FactuurGuiService, private $window) {
             this.$scope.data = factuurGuiService.getFactuurGui().data;
         }
 
@@ -31,7 +31,8 @@ module Application.Controllers {
         }
 
         add() {
-            this.factuurDataService.addFactuur().then((response) => {
+            this.factuurDataService.addSelectedFactuur().then((response) => {
+                this.dataService.reload();
                 this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT);
             }).catch((response) => {
                 alert("Toevoegen mislukt");

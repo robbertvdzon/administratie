@@ -15,6 +15,7 @@ public class FactuurDto {
 
     private String uuid;
     private String factuurNummer;
+    private String gekoppeldeBestellingNummer;
     private String factuurDate;
     private ContactDto klant;
     private boolean betaald;
@@ -28,9 +29,10 @@ public class FactuurDto {
     public FactuurDto() {
     }
 
-    public FactuurDto(String uuid, String factuurNummer, String factuurDate, ContactDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public FactuurDto(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, String factuurDate, ContactDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
+        this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
         this.factuurDate = factuurDate;
         this.klant = klant;
         this.betaald = betaald;
@@ -41,7 +43,7 @@ public class FactuurDto {
     }
 
     public FactuurDto(Factuur factuur){
-        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getContact()==null ? null : new ContactDto(factuur.getContact()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw());
+        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getContact()==null ? null : new ContactDto(factuur.getContact()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw());
     }
 
     private static List<FactuurRegelDto> toFactuurRegelsDto(List<FactuurRegel> factuurRegels) {
@@ -52,7 +54,7 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return new Factuur(factuurNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid);
+        return new Factuur(factuurNummer, gekoppeldeBestellingNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid);
     }
 
     private List<FactuurRegel> toFactuurRegels() {
@@ -134,11 +136,11 @@ public class FactuurDto {
         this.btw = btw;
     }
 
-    public static DateTimeFormatter getDateFormatter() {
-        return DATE_FORMATTER;
+    public String getGekoppeldeBestellingNummer() {
+        return gekoppeldeBestellingNummer;
     }
 
-    public static void setDateFormatter(DateTimeFormatter dateFormatter) {
-        DATE_FORMATTER = dateFormatter;
+    public void setGekoppeldeBestellingNummer(String gekoppeldeBestellingNummer) {
+        this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
     }
 }

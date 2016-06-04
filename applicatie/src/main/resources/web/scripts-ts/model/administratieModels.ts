@@ -25,6 +25,7 @@ module Application.Model {
 
     export class FactuurData {
         factuurNummer:String;
+        gekoppeldeBestellingNummer:String;
         factuurRegels:FactuurRegelData[];
         uuid:String;
         betaald:boolean;
@@ -42,9 +43,9 @@ module Application.Model {
 
     export class BestellingData {
         bestellingNummer:String;
-        bestellingRegels:FactuurRegelData[];
+        gekoppeldFactuurNummer:String;
+        bestellingRegels:BestellingRegelData[];
         uuid:String;
-        betaald:boolean;
         bestellingDate:String;
         klant:ContactData;
     }

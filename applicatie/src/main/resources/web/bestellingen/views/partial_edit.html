@@ -14,6 +14,11 @@
             <td>Betaald :</td>
             <td>{{data.selectedbestelling.betaald}}</td>
         </tr>
+        <tr>
+            <td>Gekoppelde factuurnr :</td>
+            <td>{{data.selectedbestelling.gekoppeldFactuurNummer}}</td>
+        </tr>
+
     </table>
 
 
@@ -81,6 +86,9 @@
     </md-button>
     <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.delete()">
         Verwijder Bestelling
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="bestellingenEditcontroller.maakFactuur()" ng-show="bestellingenEditcontroller.maakFactuurButtonVisible()">
+        Maak factuur
     </md-button>
 
 </div>

@@ -17,6 +17,7 @@ public class BestellingDto {
 
     private String uuid;
     private String bestellingNummer;
+    private String gekoppeldFactuurNummer;
     private String bestellingDate;
     private ContactDto klant;
     private List<BestellingRegelDto> bestellingRegels;
@@ -29,9 +30,10 @@ public class BestellingDto {
     public BestellingDto() {
     }
 
-    public BestellingDto(String uuid, String bestellingNummer, String bestellingDate, ContactDto klant, List<BestellingRegelDto> bestellingRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public BestellingDto(String uuid, String bestellingNummer, String gekoppeldFactuurNummer, String bestellingDate, ContactDto klant, List<BestellingRegelDto> bestellingRegels, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.bestellingNummer = bestellingNummer;
+        this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
         this.bestellingDate = bestellingDate;
         this.klant = klant;
         this.bestellingRegels = bestellingRegels;
@@ -41,7 +43,7 @@ public class BestellingDto {
     }
 
     public BestellingDto(Bestelling bestelling){
-        this(bestelling.getUuid(), bestelling.getBestellingNummer(),bestelling.getBestellingDate()==null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER), bestelling.getContact()==null ? null : new ContactDto(bestelling.getContact()),toBestellingRegelsDto(bestelling.getBestellingRegels()), bestelling.getBedragExBtw(), bestelling.getBedragIncBtw(), bestelling.getBtw());
+        this(bestelling.getUuid(), bestelling.getBestellingNummer(),bestelling.getGekoppeldFactuurNummer(), bestelling.getBestellingDate()==null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER), bestelling.getContact()==null ? null : new ContactDto(bestelling.getContact()),toBestellingRegelsDto(bestelling.getBestellingRegels()), bestelling.getBedragExBtw(), bestelling.getBedragIncBtw(), bestelling.getBtw());
     }
 
     private static List<BestellingRegelDto> toBestellingRegelsDto(List<BestellingRegel> bestellingRegels) {
@@ -52,7 +54,7 @@ public class BestellingDto {
     }
 
     public Bestelling toBestelling() {
-        return new Bestelling(bestellingNummer, LocalDate.parse(bestellingDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), toBestellingRegels(), uuid);
+        return new Bestelling(bestellingNummer, gekoppeldFactuurNummer, LocalDate.parse(bestellingDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), toBestellingRegels(), uuid);
     }
 
     private List<BestellingRegel> toBestellingRegels() {
@@ -126,11 +128,11 @@ public class BestellingDto {
         this.btw = btw;
     }
 
-    public static DateTimeFormatter getDateFormatter() {
-        return DATE_FORMATTER;
+    public String getGekoppeldFactuurNummer() {
+        return gekoppeldFactuurNummer;
     }
 
-    public static void setDateFormatter(DateTimeFormatter dateFormatter) {
-        DATE_FORMATTER = dateFormatter;
+    public void setGekoppeldFactuurNummer(String gekoppeldFactuurNummer) {
+        this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
     }
 }

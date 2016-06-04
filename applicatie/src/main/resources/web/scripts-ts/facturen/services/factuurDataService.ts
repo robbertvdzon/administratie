@@ -3,6 +3,7 @@
 module Application.Services {
 
     import FactuurData = Application.Model.FactuurData;
+    import BestellingData = Application.Model.BestellingData;
     import ContactData = Application.Model.ContactData;
     import FactuurRegelData = Application.Model.FactuurRegelData;
     import Administratie = Application.Model.Administratie;
@@ -137,9 +138,24 @@ module Application.Services {
             factuurClone.factuurRegels = factuur.factuurRegels;
             factuurClone.betaald = factuur.betaald;
             factuurClone.factuurDate = factuur.factuurDate;
+            factuurClone.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer;
             factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
             return factuurClone;
         }
+
+        public addFactuurFromBestelling(bestelling:BestellingData):ng.IPromise<any> {
+            var factuur = new FactuurData();
+            factuur.uuid = bestelling.uuid;
+            factuur.factuurNummer = this.findNextFactuurnummer();
+            factuur.factuurRegels = bestelling.bestellingRegels;
+            factuur.betaald = false;
+            factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
+            factuur.gekoppeldeBestellingNummer = bestelling.bestellingNummer;
+            factuur.klant = this.contactDataService.cloneContact(bestelling.klant);
+            return this.addFactuur(factuur);
+        };
+
+
 
         public saveFactuur():ng.IPromise<any> {
             return this.$http({
@@ -161,14 +177,17 @@ module Application.Services {
             });
         };
 
-        public addFactuur():ng.IPromise<any> {
+
+        public addSelectedFactuur():ng.IPromise<any> {
+            return this.addFactuur(this.getSelectedFactuur());
+        };
+
+        public addFactuur(factuur:FactuurData):ng.IPromise<any> {
             return this.$http({
                 url: "/rest/factuur/",
                 method: "PUT",
-                data: this.getSelectedFactuur(),
+                data: factuur,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then((response) => {
-                this.dataService.reload();
             });
         };
 

@@ -18,8 +18,12 @@ module Application.Controllers {
 
     export class BestellingEditController {
 
-        constructor(private $scope:MyScope, private bestellingDataService:BestellingDataService, private bestellingGuiService:BestellingGuiService, private $window) {
+        constructor(private $scope:MyScope, private bestellingDataService:BestellingDataService, private bestellingGuiService:BestellingGuiService) {
             this.$scope.data = bestellingGuiService.getBestellingGui().data;
+        }
+
+        maakFactuurButtonVisible(){
+            return this.$scope.data.selectedbestelling!=null && (this.$scope.data.selectedbestelling.gekoppeldFactuurNummer==null || this.$scope.data.selectedbestelling.gekoppeldFactuurNummer=='');
         }
 
         save() {
@@ -72,6 +76,10 @@ module Application.Controllers {
             this.bestellingDataService.resetBestellingToEdit();
             this.$scope.data.addToAdresboek = false;
             this.bestellingGuiService.showPage(SCREEN_BESTELLING_EDIT_CONTACT);
+        }
+
+        maakFactuur(){
+            this.bestellingDataService.maakFactuurVanBestelling();
         }
     }
 }

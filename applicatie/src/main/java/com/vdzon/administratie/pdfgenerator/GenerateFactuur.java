@@ -71,7 +71,12 @@ public class GenerateFactuur {
         skipDown(10);
         drawLine();
         skipDown(10);
-        writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
+        if (factuur.isBetaald()){
+            writeNormalText("Factuur is reeds betaald.");
+        }
+        else{
+            writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
+        }
         skipDown(10);
 
         if (administratieGegevens != null) {

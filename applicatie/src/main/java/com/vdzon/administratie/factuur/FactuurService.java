@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.FactuurDto;
+import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.pdfgenerator.GenerateFactuur;
@@ -12,10 +13,7 @@ import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 
 public class FactuurService {
 
@@ -35,8 +33,13 @@ public class FactuurService {
             ObjectMapper mapper = new ObjectMapper();
             FactuurDto factuurDto = mapper.readValue(factuurJson, FactuurDto.class);
             factuur = factuurDto.toFactuur();
-            gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
-            gebruiker.getDefaultAdministratie().addFactuur(factuur);
+
+            removeFactuur(gebruiker, factuur.getUuid());
+            addFactuur(gebruiker, factuur);
+
+
+//            gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
+//            gebruiker.getDefaultAdministratie().addFactuur(factuur);
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -66,6 +69,46 @@ public class FactuurService {
         }
 
     }
+
+
+    private void addFactuur(Gebruiker gebruiker, Factuur factuur) {
+        String nieuwBestellingNummer = factuur.getGekoppeldeBestellingNummer();
+        Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(nieuwBestellingNummer);
+        if (gekoppelBestelling!=null){
+            Bestelling updatedBestelling = new Bestelling(
+                    gekoppelBestelling.getBestellingNummer(),
+                    factuur.getFactuurNummer(),
+                    gekoppelBestelling.getBestellingDate(),
+                    gekoppelBestelling.getContact(),
+                    gekoppelBestelling.getBestellingRegels(),
+                    gekoppelBestelling.getUuid()
+            );
+            gebruiker.getDefaultAdministratie().removeBestelling(gekoppelBestelling.getUuid());
+            gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
+        }
+        gebruiker.getDefaultAdministratie().addFactuur(factuur);
+    }
+
+    private void removeFactuur(Gebruiker gebruiker, String uuid) {
+        Factuur factuur = gebruiker.getDefaultAdministratie().getFactuur(uuid);
+        String bestellingNummerOudeFactuur = factuur == null ? null : factuur.getGekoppeldeBestellingNummer();
+        Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(bestellingNummerOudeFactuur);
+        if (gekoppelBestelling!=null){
+            Bestelling updatedBestelling = new Bestelling(
+                    gekoppelBestelling.getBestellingNummer(),
+                    null,
+                    gekoppelBestelling.getBestellingDate(),
+                    gekoppelBestelling.getContact(),
+                    gekoppelBestelling.getBestellingRegels(),
+                    gekoppelBestelling.getUuid()
+            );
+            gebruiker.getDefaultAdministratie().removeBestelling(gekoppelBestelling.getUuid());
+            gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
+        }
+        gebruiker.getDefaultAdministratie().removeFactuur(uuid);
+    }
+
+
 
     protected Object getPdf(Request req, Response res) throws Exception {
         try {

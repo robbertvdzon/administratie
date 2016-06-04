@@ -14,6 +14,7 @@ public class Bestelling {
     @Id
     private String uuid;
     private String bestellingNummer;
+    private String gekoppeldFactuurNummer;
     private LocalDate bestellingDate;
     private Contact contact;
     private List<BestellingRegel> bestellingRegels = new ArrayList<>();
@@ -24,8 +25,9 @@ public class Bestelling {
     public Bestelling() {
     }
 
-    public Bestelling(String bestellingNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, String uuid) {
+    public Bestelling(String bestellingNummer, String gekoppeldFactuurNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, String uuid) {
         this.bestellingNummer = bestellingNummer;
+        this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
         this.bestellingDate = bestellingDate;
         this.contact = contact;
         this.bestellingRegels = bestellingRegels;
@@ -37,25 +39,25 @@ public class Bestelling {
         return bestellingNummer;
     }
 
-    public void setBestellingNummer(String bestellingNummer) {
-        this.bestellingNummer = bestellingNummer;
-    }
+//    public void setBestellingNummer(String bestellingNummer) {
+//        this.bestellingNummer = bestellingNummer;
+//    }
 
     public LocalDate getBestellingDate() {
         return bestellingDate;
     }
 
-    public void setBestellingDate(LocalDate bestellingDate) {
-        this.bestellingDate = bestellingDate;
-    }
+//    public void setBestellingDate(LocalDate bestellingDate) {
+//        this.bestellingDate = bestellingDate;
+//    }
 
     public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
+//    public void setContact(Contact contact) {
+//        this.contact = contact;
+//    }
 
     public String getUuid() {
         return uuid;
@@ -65,20 +67,20 @@ public class Bestelling {
         return Collections.unmodifiableList(new ArrayList<>(bestellingRegels));
     }
 
-    public void removeAllFactuurRegels() {
-        bestellingRegels.clear();
-        calculate();
-    }
-
-    public void addBestellingRegel(BestellingRegel bestellingRegel) {
-        bestellingRegels.add(bestellingRegel);
-        calculate();
-    }
-
-    public void addFactuurRegels(List<BestellingRegel> bestellingRegels) {
-        bestellingRegels.addAll(bestellingRegels);
-        calculate();
-    }
+//    public void removeAllFactuurRegels() {
+//        bestellingRegels.clear();
+//        calculate();
+//    }
+//
+//    public void addBestellingRegel(BestellingRegel bestellingRegel) {
+//        bestellingRegels.add(bestellingRegel);
+//        calculate();
+//    }
+//
+//    public void addFactuurRegels(List<BestellingRegel> bestellingRegels) {
+//        bestellingRegels.addAll(bestellingRegels);
+//        calculate();
+//    }
 
     public double getBedragExBtw() {
         return bedragExBtw;
@@ -90,6 +92,10 @@ public class Bestelling {
 
     public double getBtw() {
         return btw;
+    }
+
+    public String getGekoppeldFactuurNummer() {
+        return gekoppeldFactuurNummer;
     }
 
     private void calculate() {

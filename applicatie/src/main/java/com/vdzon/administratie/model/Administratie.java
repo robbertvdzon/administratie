@@ -76,7 +76,16 @@ public class Administratie {
 
     public Factuur getFactuur(String uuid) {
         for (Factuur factuur : getFacturen()) {
-            if (factuurNummerMatchesUuid(uuid, factuur)) {
+            if (factuurUuidMatchesUuid(uuid, factuur)) {
+                return factuur;
+            }
+        }
+        return null;
+    }
+
+    public Factuur getFactuurByFactuurNummer(String factuurNummer) {
+        for (Factuur factuur : getFacturen()) {
+            if (factuurNummerMatchesFactuurNummer(factuurNummer, factuur)) {
                 return factuur;
             }
         }
@@ -86,7 +95,7 @@ public class Administratie {
     public void removeFactuur(String uuid) {
         Factuur factuurToRemove = null;
         for (Factuur factuur : getFacturen()) {
-            if (factuurNummerMatchesUuid(uuid, factuur)) {
+            if (factuurUuidMatchesUuid(uuid, factuur)) {
                 factuurToRemove = factuur;
             }
         }
@@ -95,8 +104,12 @@ public class Administratie {
         }
     }
 
-    private boolean factuurNummerMatchesUuid(String uuid, Factuur factuur) {
+    private boolean factuurUuidMatchesUuid(String uuid, Factuur factuur) {
         return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
+    }
+
+    private boolean factuurNummerMatchesFactuurNummer(String factuurNummer, Factuur factuur) {
+        return factuurNummer == null && factuur.getFactuurNummer() == null || factuurNummer != null && factuurNummer.equals(factuur.getFactuurNummer());
     }
 
     public void addBestelling(Bestelling bestelling) {
@@ -112,6 +125,17 @@ public class Administratie {
         return null;
     }
 
+    public Bestelling getBestellingByBestellingNummer(String bestellingNummer) {
+        for (Bestelling bestelling : getBestellingen()) {
+            if (bestellingNummerMatchesBestellingNummer(bestellingNummer, bestelling)) {
+                return bestelling;
+            }
+        }
+        return null;
+    }
+
+
+
     public void removeBestelling(String uuid) {
         Bestelling bestellingToRemove = null;
         for (Bestelling bestelling : getBestellingen()) {
@@ -126,6 +150,10 @@ public class Administratie {
 
     private boolean bestellingNummerMatchesUuid(String uuid, Bestelling bestelling) {
         return uuid == null && bestelling.getUuid() == null || uuid != null && uuid.equals(bestelling.getUuid());
+    }
+
+    private boolean bestellingNummerMatchesBestellingNummer(String bestellingNummer, Bestelling bestelling) {
+        return bestellingNummer == null && bestelling.getBestellingNummer() == null || bestellingNummer != null && bestellingNummer.equals(bestelling.getBestellingNummer());
     }
 
 

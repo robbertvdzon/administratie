@@ -14,6 +14,7 @@ public class Factuur {
     @Id
     private String uuid;
     private String factuurNummer;
+    private String gekoppeldeBestellingNummer;
     private LocalDate factuurDate;
     private Contact contact;
     private boolean betaald;
@@ -25,8 +26,9 @@ public class Factuur {
     public Factuur() {
     }
 
-    public Factuur(String factuurNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
+    public Factuur(String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
         this.factuurNummer = factuurNummer;
+        this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
         this.factuurDate = factuurDate;
         this.contact = contact;
         this.betaald = betaald;
@@ -39,33 +41,33 @@ public class Factuur {
         return factuurNummer;
     }
 
-    public void setFactuurNummer(String factuurNummer) {
-        this.factuurNummer = factuurNummer;
-    }
+//    public void setFactuurNummer(String factuurNummer) {
+//        this.factuurNummer = factuurNummer;
+//    }
 
     public LocalDate getFactuurDate() {
         return factuurDate;
     }
 
-    public void setFactuurDate(LocalDate factuurDate) {
-        this.factuurDate = factuurDate;
-    }
+//    public void setFactuurDate(LocalDate factuurDate) {
+//        this.factuurDate = factuurDate;
+//    }
 
     public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
+//    public void setContact(Contact contact) {
+//        this.contact = contact;
+//    }
 
     public boolean isBetaald() {
         return betaald;
     }
 
-    public void setBetaald(boolean betaald) {
-        this.betaald = betaald;
-    }
+//    public void setBetaald(boolean betaald) {
+//        this.betaald = betaald;
+//    }
 
     public String getUuid() {
         return uuid;
@@ -75,20 +77,20 @@ public class Factuur {
         return Collections.unmodifiableList(new ArrayList<>(factuurRegels));
     }
 
-    public void removeAllFactuurRegels() {
-        factuurRegels.clear();
-        calculate();
-    }
-
-    public void addFactuurRegel(FactuurRegel factuurRegel) {
-        factuurRegels.add(factuurRegel);
-        calculate();
-    }
-
-    public void addFactuurRegels(List<FactuurRegel> factuurRegels) {
-        factuurRegels.addAll(factuurRegels);
-        calculate();
-    }
+//    public void removeAllFactuurRegels() {
+//        factuurRegels.clear();
+//        calculate();
+//    }
+//
+//    public void addFactuurRegel(FactuurRegel factuurRegel) {
+//        factuurRegels.add(factuurRegel);
+//        calculate();
+//    }
+//
+//    public void addFactuurRegels(List<FactuurRegel> factuurRegels) {
+//        factuurRegels.addAll(factuurRegels);
+//        calculate();
+//    }
 
     public double getBedragExBtw() {
         return bedragExBtw;
@@ -100,6 +102,10 @@ public class Factuur {
 
     public double getBtw() {
         return btw;
+    }
+
+    public String getGekoppeldeBestellingNummer() {
+        return gekoppeldeBestellingNummer;
     }
 
     private void calculate() {

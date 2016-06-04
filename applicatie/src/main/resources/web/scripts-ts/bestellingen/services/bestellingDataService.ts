@@ -10,10 +10,9 @@ module Application.Services {
     import BestellingGuiService = Application.Services.BestellingGuiService;
 
 
-
     export class BestellingDataService {
 
-        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter, private bestellingGuiService:BestellingGuiService) {
+        constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private contactDataService:ContactDataService, private $filter, private bestellingGuiService:BestellingGuiService, private factuurDataService:FactuurDataService) {
         }
 
         public setSelectedBestelling(bestelling:BestellingData) {
@@ -22,15 +21,15 @@ module Application.Services {
             this.resetBestellingToEdit();
         }
 
-        private getSelectedBestelling():BestellingData{
+        private getSelectedBestelling():BestellingData {
             return this.bestellingGuiService.getBestellingGui().data.selectedbestelling;
         }
 
-        private getSelectedBestellingRegel():BestellingRegelData{
+        private getSelectedBestellingRegel():BestellingRegelData {
             return this.bestellingGuiService.getBestellingGui().data.selectedbestellingregel;
         }
 
-        private setSelectedBestellingRegel(selectedbestellingregel:BestellingRegelData){
+        private setSelectedBestellingRegel(selectedbestellingregel:BestellingRegelData) {
             this.bestellingGuiService.getBestellingGui().data.selectedbestellingregel = selectedbestellingregel;
             this.resetBestellingRegelToEdit();
         }
@@ -55,6 +54,14 @@ module Application.Services {
             var contactClone = this.contactDataService.cloneContact(contact);
             contactClone.uuid = this.createUuid()
             this.getSelectedBestelling().klant = contactClone;
+        }
+
+        public maakFactuurVanBestelling() {
+            this.factuurDataService.addFactuurFromBestelling(this.getSelectedBestelling()).then((response) => {
+                this.dataService.reload().then((response2) => {
+                    this.reloadBestelling();
+                });
+            });
         }
 
         public createAndSelectNewBestelling() {
@@ -112,7 +119,7 @@ module Application.Services {
             this.saveBestelling();
         }
 
-        public loadExistingBestellingRegel(selectedbestellingregel : BestellingRegelData) {
+        public loadExistingBestellingRegel(selectedbestellingregel:BestellingRegelData) {
             this.setSelectedBestellingRegel(selectedbestellingregel);
             this.bestellingGuiService.getBestellingGui().data.addRegelMode = false;
             this.bestellingGuiService.showPage(SCREEN_BESTELLING_REGEL);
@@ -135,7 +142,7 @@ module Application.Services {
             bestellingClone.uuid = bestelling.uuid;
             bestellingClone.bestellingNummer = bestelling.bestellingNummer;
             bestellingClone.bestellingRegels = bestelling.bestellingRegels;
-            bestellingClone.betaald = bestelling.betaald;
+            bestellingClone.gekoppeldFactuurNummer = bestelling.gekoppeldFactuurNummer;
             bestellingClone.bestellingDate = bestelling.bestellingDate;
             bestellingClone.klant = this.contactDataService.cloneContact(bestelling.klant);
             return bestellingClone;
@@ -219,10 +226,10 @@ module Application.Services {
             return null;
         }
 
-        public copyContactFromSelectedBestellingToAdresboek(){
+        public copyContactFromSelectedBestellingToAdresboek() {
             var nextNr = this.contactDataService.findNextKlantnummer();
             this.getSelectedBestelling().klant.klantNummer = nextNr;
-            this.getSelectedBestelling().klant.uuid= this.createUuid();
+            this.getSelectedBestelling().klant.uuid = this.createUuid();
             this.contactDataService.addNewContact(this.getSelectedBestelling().klant);
         }
 
@@ -235,6 +242,10 @@ module Application.Services {
             });
             return uuid;
         };
+
+        private reloadBestelling():void {
+            this.setBestellingAsSelected(this.getSelectedBestelling().uuid);
+        }
     }
 }
 

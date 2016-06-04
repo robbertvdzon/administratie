@@ -34,14 +34,35 @@ public class BestellingService {
             ObjectMapper mapper = new ObjectMapper();
             BestellingDto bestellingDto = mapper.readValue(bestellingJson, BestellingDto.class);
             bestelling = bestellingDto.toBestelling();
-            gebruiker.getDefaultAdministratie().removeBestelling(bestelling.getUuid());
-            gebruiker.getDefaultAdministratie().addBestelling(bestelling);
+
+            removeBestelling(gebruiker, bestelling.getUuid());
+            addBestelling(gebruiker, bestelling);
+
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
         return new SingleAnswer("ok");
+    }
+
+    private void addBestelling(Gebruiker gebruiker, Bestelling bestelling) {
+        String niewFactuurNummer = bestelling.getGekoppeldFactuurNummer();
+        Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(niewFactuurNummer);
+        if (gekoppelFactuur!=null){
+            Factuur updatedFactuur = new Factuur(
+                    gekoppelFactuur.getFactuurNummer(),
+                    bestelling.getBestellingNummer(),
+                    gekoppelFactuur.getFactuurDate(),
+                    gekoppelFactuur.getContact(),
+                    gekoppelFactuur.isBetaald(),
+                    gekoppelFactuur.getFactuurRegels(),
+                    gekoppelFactuur.getUuid()
+            );
+            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
+            gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
+        }
+        gebruiker.getDefaultAdministratie().addBestelling(bestelling);
     }
 
     protected Object removeBestelling(Request req, Response res) throws Exception {
@@ -56,7 +77,7 @@ public class BestellingService {
             if ("undefined".equals(bestellingUuid)) {
                 bestellingUuid = null;
             }
-            gebruiker.getDefaultAdministratie().removeBestelling(bestellingUuid);
+            removeBestelling(gebruiker, bestellingUuid);
             crudService.updateGebruiker(gebruiker);
             return new SingleAnswer("ok");
         } catch (Exception ex) {
@@ -66,5 +87,24 @@ public class BestellingService {
 
     }
 
+    private void removeBestelling(Gebruiker gebruiker, String uuid) {
+        Bestelling bestelling = gebruiker.getDefaultAdministratie().getBestelling(uuid);
+        String factuurNummerOudeBestelling = bestelling==null ? null : bestelling.getGekoppeldFactuurNummer();
+        Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(factuurNummerOudeBestelling);
+        if (gekoppelFactuur!=null){
+            Factuur updatedFactuur = new Factuur(
+                    gekoppelFactuur.getFactuurNummer(),
+                    null,
+                    gekoppelFactuur.getFactuurDate(),
+                    gekoppelFactuur.getContact(),
+                    gekoppelFactuur.isBetaald(),
+                    gekoppelFactuur.getFactuurRegels(),
+                    gekoppelFactuur.getUuid()
+            );
+            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
+            gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
+        }
+        gebruiker.getDefaultAdministratie().removeBestelling(uuid);
+    }
 
 }
