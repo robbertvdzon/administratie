@@ -118,6 +118,16 @@ module Application.Model {
         logoUrl:String;
     }
 
+    export class RubriceerRegels {
+        rubriceerRegelList:RubriceerRegel[];
+    }
+
+    export class RubriceerRegel {
+        rubriceerAction:String;
+        afschiftUuid:String;
+        rekeningNummer:String;
+        faktuurNummer:String;
+    }
 
 }
 

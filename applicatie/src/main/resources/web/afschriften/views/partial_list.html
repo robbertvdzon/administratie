@@ -4,6 +4,10 @@
     <input type="file"
            onchange="angular.element(document.getElementById('afschriftenControllerId')).controller().uploadFile(this)"/>
 
+    <md-button class="md-raised md-primary" ng-click="afschriftenListController.getRubriceerRegels()">
+        Rubriceer
+    </md-button>
+
     <md-list>
 
         <md-list-item ng-repeat="afschrift in data.afschriften"
@@ -15,12 +19,6 @@
         </md-list-item>
     </md-list>
 
-    <br>
-    <br>
-
-    <md-button class="md-raised md-primary" ng-click="afschriftenListController.newAfschrift()">
-        Afschrift toevoegen
-    </md-button>
 
 
 </div>

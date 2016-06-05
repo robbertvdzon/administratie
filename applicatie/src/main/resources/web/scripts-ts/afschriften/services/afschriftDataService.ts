@@ -33,14 +33,6 @@ module Application.Services {
             this.setSelectedAfschrift(afschrift);
         }
 
-        public createAndSelectNewAfschrift() {
-            var afschrift:AfschriftData = new AfschriftData();
-            afschrift.boekdatum = this.$filter('date')(new Date(), 'dd-MM-yyyy');
-            afschrift.uuid = this.createUuid();
-            this.afschriftGuiService.getAfschriftGui().data.addMode = true;
-            this.setSelectedAfschrift(afschrift);
-        }
-
         public getAfschriftByUuid(uuid):AfschriftData {
             var afschriften:AfschriftData[] = this.dataService.getData().administratie.afschriften;
             for (var i = 0; i < afschriften.length; i++) {
@@ -78,6 +70,10 @@ module Application.Services {
             afschriftTo.factuurNummer = afschriftFrom.factuurNummer;
             afschriftTo.rekeningNummer = afschriftFrom.rekeningNummer;
 
+        }
+
+        public getRubriceerRegels() {
+            return this.$http.get('/rest/rebriceerregels/');
         }
 
         public saveAfschrift():ng.IPromise<any> {

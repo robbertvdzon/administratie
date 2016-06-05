@@ -9,6 +9,7 @@ module Application.Controllers {
     import MyDataservice = Application.Services.MyDataservice;
     import AfschriftDataService = Application.Services.AfschriftDataService;
     import SCREEN_AFSCHRIFT_EDIT = Application.SCREEN_AFSCHRIFT_EDIT;
+    import RubriceerRegels = Application.Model.RubriceerRegels;
 
     interface MyScope extends ng.IScope {
         data : AfschriftGuiData;
@@ -26,9 +27,14 @@ module Application.Controllers {
         }
 
 
-        newAfschrift() {
-            this.afschriftDataService.createAndSelectNewAfschrift();
-            this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
+        getRubriceerRegels() {
+            this.afschriftDataService.getRubriceerRegels().success((data)=> {
+                var rubriceerRegels:RubriceerRegels;
+                rubriceerRegels = data;
+                //this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
+            }).error(()=> {
+                alert("failed");
+            });
         }
 
         uploadFile(files){
