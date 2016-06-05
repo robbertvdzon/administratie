@@ -4,17 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.BestellingDto;
-import com.vdzon.administratie.dto.FactuurDto;
 import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
-import com.vdzon.administratie.pdfgenerator.GenerateFactuur;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import java.io.BufferedOutputStream;
 
 public class BestellingService {
 
@@ -57,8 +54,8 @@ public class BestellingService {
                     gekoppelFactuur.getContact(),
                     gekoppelFactuur.isBetaald(),
                     gekoppelFactuur.getFactuurRegels(),
-                    gekoppelFactuur.getUuid()
-            );
+                    gekoppelFactuur.getUuid(),
+                    gekoppelFactuur.getGekoppeldAfschrift());
             gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }
@@ -99,8 +96,8 @@ public class BestellingService {
                     gekoppelFactuur.getContact(),
                     gekoppelFactuur.isBetaald(),
                     gekoppelFactuur.getFactuurRegels(),
-                    gekoppelFactuur.getUuid()
-            );
+                    gekoppelFactuur.getUuid(),
+                    gekoppelFactuur.getGekoppeldAfschrift());
             gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }

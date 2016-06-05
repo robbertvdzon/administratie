@@ -140,6 +140,7 @@ module Application.Services {
             factuurClone.factuurDate = factuur.factuurDate;
             factuurClone.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer;
             factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
+            factuurClone.gekoppeldAfschrift = factuur.gekoppeldAfschrift;
             return factuurClone;
         }
 

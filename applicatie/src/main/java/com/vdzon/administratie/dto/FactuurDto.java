@@ -23,13 +23,14 @@ public class FactuurDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private String gekoppeldAfschrift;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public FactuurDto() {
     }
 
-    public FactuurDto(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, String factuurDate, ContactDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public FactuurDto(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, String factuurDate, ContactDto klant, boolean betaald, List<FactuurRegelDto> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
         this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
@@ -40,10 +41,11 @@ public class FactuurDto {
         this.bedragExBtw = bedragExBtw;
         this.bedragIncBtw = bedragIncBtw;
         this.btw = btw;
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
     }
 
     public FactuurDto(Factuur factuur){
-        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getContact()==null ? null : new ContactDto(factuur.getContact()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw());
+        this(factuur.getUuid(), factuur.getFactuurNummer(),factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER), factuur.getContact()==null ? null : new ContactDto(factuur.getContact()),factuur.isBetaald(),toFactuurRegelsDto(factuur.getFactuurRegels()), factuur.getBedragExBtw(), factuur.getBedragIncBtw(), factuur.getBtw(), factuur.getGekoppeldAfschrift());
     }
 
     private static List<FactuurRegelDto> toFactuurRegelsDto(List<FactuurRegel> factuurRegels) {
@@ -54,7 +56,7 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return new Factuur(factuurNummer, gekoppeldeBestellingNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid);
+        return new Factuur(factuurNummer, gekoppeldeBestellingNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid, gekoppeldAfschrift);
     }
 
     private List<FactuurRegel> toFactuurRegels() {
@@ -142,5 +144,13 @@ public class FactuurDto {
 
     public void setGekoppeldeBestellingNummer(String gekoppeldeBestellingNummer) {
         this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
+    }
+
+    public String getGekoppeldAfschrift() {
+        return gekoppeldAfschrift;
+    }
+
+    public void setGekoppeldAfschrift(String gekoppeldAfschrift) {
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
     }
 }

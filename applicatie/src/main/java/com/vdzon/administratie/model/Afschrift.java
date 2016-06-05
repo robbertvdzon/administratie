@@ -15,18 +15,23 @@ public class Afschrift {
     private String relatienaam;
     private LocalDate boekdatum;
     private double bedrag = 0;
-
+    private BoekingType boekingType;
+    private String factuurNummer;
+    private String rekeningNummer;
 
     public Afschrift() {
     }
 
-    public Afschrift(String uuid, String rekening, String omschrijving, String relatienaam, LocalDate boekdatum, double bedrag) {
+    public Afschrift(String uuid, String rekening, String omschrijving, String relatienaam, LocalDate boekdatum, double bedrag, BoekingType boekingType, String factuurNummer, String rekeningNummer) {
         this.uuid = uuid;
         this.rekening = rekening;
         this.omschrijving = omschrijving;
         this.relatienaam = relatienaam;
         this.boekdatum = boekdatum;
         this.bedrag = bedrag;
+        this.boekingType = boekingType;
+        this.factuurNummer = factuurNummer;
+        this.rekeningNummer = rekeningNummer;
     }
 
     public String getUuid() {
@@ -53,4 +58,15 @@ public class Afschrift {
         return bedrag;
     }
 
+    public BoekingType getBoekingType() {
+        return boekingType;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public String getRekeningNummer() {
+        return rekeningNummer;
+    }
 }

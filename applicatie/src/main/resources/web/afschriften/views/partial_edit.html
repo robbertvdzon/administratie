@@ -25,12 +25,21 @@
     </md-input-container>
 
     <md-input-container flex>
-        <label>bedragAf</label>
-        <input ng-model="data.afschriftToEdit.bedragAf" STYLE="background-color: #B2DFDB;">
+        <label>boekingType</label>
+        <input ng-model="data.afschriftToEdit.boekingType" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>factuurNummer</label>
+        <input ng-model="data.afschriftToEdit.factuurNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>rekeningNummer</label>
+        <input ng-model="data.afschriftToEdit.rekeningNummer" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
     <br>
-
 
     <br><br>
     <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.add()"  ng-show="afschriftenEditcontroller.showAddButton()">

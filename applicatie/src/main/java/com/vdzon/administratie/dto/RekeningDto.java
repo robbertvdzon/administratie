@@ -1,7 +1,6 @@
 package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vdzon.administratie.model.Contact;
 import com.vdzon.administratie.model.Rekening;
 
 import java.time.LocalDate;
@@ -18,13 +17,14 @@ public class RekeningDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private String gekoppeldAfschrift;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public RekeningDto() {
     }
 
-    public RekeningDto(String uuid, String rekeningNummer, String naam, String omschrijving, String rekeningDate, double bedragExBtw, double bedragIncBtw, double btw) {
+    public RekeningDto(String uuid, String rekeningNummer, String naam, String omschrijving, String rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
         this.uuid = uuid;
         this.rekeningNummer = rekeningNummer;
         this.naam = naam;
@@ -33,14 +33,15 @@ public class RekeningDto {
         this.bedragExBtw = bedragExBtw;
         this.bedragIncBtw = bedragIncBtw;
         this.btw = btw;
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
     }
 
     public RekeningDto(Rekening rekening) {
-        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw() );
+        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw(), rekening.getGekoppeldAfschrift());
     }
 
     public Rekening toRekening() {
-        return new Rekening(uuid, rekeningNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw);
+        return new Rekening(uuid, rekeningNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw, gekoppeldAfschrift);
     }
 
     public String getUuid() {
@@ -105,5 +106,13 @@ public class RekeningDto {
 
     public void setBtw(double btw) {
         this.btw = btw;
+    }
+
+    public String getGekoppeldAfschrift() {
+        return gekoppeldAfschrift;
+    }
+
+    public void setGekoppeldAfschrift(String gekoppeldAfschrift) {
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
     }
 }

@@ -22,11 +22,12 @@ public class Factuur {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private String gekoppeldAfschrift;
 
     public Factuur() {
     }
 
-    public Factuur(String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, String uuid) {
+    public Factuur(String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, String uuid, String gekoppeldAfschrift) {
         this.factuurNummer = factuurNummer;
         this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
         this.factuurDate = factuurDate;
@@ -34,6 +35,7 @@ public class Factuur {
         this.betaald = betaald;
         this.factuurRegels = factuurRegels;
         this.uuid = uuid;
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
         calculate();
     }
 
@@ -106,6 +108,10 @@ public class Factuur {
 
     public String getGekoppeldeBestellingNummer() {
         return gekoppeldeBestellingNummer;
+    }
+
+    public String getGekoppeldAfschrift() {
+        return gekoppeldAfschrift;
     }
 
     private void calculate() {

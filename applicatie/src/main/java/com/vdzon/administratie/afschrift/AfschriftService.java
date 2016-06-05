@@ -5,6 +5,7 @@ import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
+import com.vdzon.administratie.model.BoekingType;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
@@ -147,7 +148,7 @@ public class AfschriftService {
             String uuid=line;
             double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
-            return new Afschrift(uuid, rekeningNr, oms, naam, boekDatum, bedrag);
+            return new Afschrift(uuid, rekeningNr, oms, naam, boekDatum, bedrag, BoekingType.NONE, "","");
         }
         else{
             return null;

@@ -61,6 +61,9 @@ module Application.Services {
             afschriftClone.relatienaam = afschrift.relatienaam;
             afschriftClone.boekdatum = afschrift.boekdatum;
             afschriftClone.bedrag = afschrift.bedrag;
+            afschriftClone.boekingType = afschrift.boekingType;
+            afschriftClone.factuurNummer = afschrift.factuurNummer;
+            afschriftClone.rekeningNummer = afschrift.rekeningNummer;
             return afschriftClone;
         }
 
@@ -71,6 +74,10 @@ module Application.Services {
             afschriftTo.relatienaam = afschriftFrom.relatienaam;
             afschriftTo.boekdatum = afschriftFrom.boekdatum;
             afschriftTo.bedrag = afschriftFrom.bedrag;
+            afschriftTo.boekingType = afschriftFrom.boekingType;
+            afschriftTo.factuurNummer = afschriftFrom.factuurNummer;
+            afschriftTo.rekeningNummer = afschriftFrom.rekeningNummer;
+
         }
 
         public saveAfschrift():ng.IPromise<any> {

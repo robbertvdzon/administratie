@@ -4,8 +4,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity("rekening")
 public class Rekening {
@@ -19,11 +17,12 @@ public class Rekening {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private String gekoppeldAfschrift;
 
     public Rekening() {
     }
 
-    public Rekening(String uuid, String rekeningNummer, String naam, String omschrijving, LocalDate rekeningDate, double bedragExBtw, double bedragIncBtw, double btw) {
+    public Rekening(String uuid, String rekeningNummer, String naam, String omschrijving, LocalDate rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
         this.uuid = uuid;
         this.rekeningNummer = rekeningNummer;
         this.naam = naam;
@@ -32,6 +31,7 @@ public class Rekening {
         this.bedragExBtw = bedragExBtw;
         this.bedragIncBtw = bedragIncBtw;
         this.btw = btw;
+        this.gekoppeldAfschrift = gekoppeldAfschrift;
     }
 
     public String getUuid() {
@@ -64,5 +64,9 @@ public class Rekening {
 
     public String getOmschrijving() {
         return omschrijving;
+    }
+
+    public String getGekoppeldAfschrift() {
+        return gekoppeldAfschrift;
     }
 }

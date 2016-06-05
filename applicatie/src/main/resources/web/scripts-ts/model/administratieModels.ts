@@ -31,6 +31,7 @@ module Application.Model {
         betaald:boolean;
         factuurDate:String;
         klant:ContactData;
+        gekoppeldAfschrift:String;
     }
 
     export class BestellingRegelData {
@@ -69,6 +70,7 @@ module Application.Model {
         bedragExBtw:String;
         bedragIncBtw:String;
         btw:String;
+        gekoppeldAfschrift:String;
     }
 
     export class DeclaratieData {
@@ -88,6 +90,9 @@ module Application.Model {
         relatienaam:String;
         boekdatum:String;
         bedrag:String;
+        boekingType:String;
+        factuurNummer:String;
+        rekeningNummer:String;
     }
 
     export class Administratie {
