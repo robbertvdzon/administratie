@@ -4,10 +4,12 @@ module Application.Services {
     import Administratie = Application.Model.Administratie;
     import AfschriftData = Application.Model.AfschriftData;
     import GuiData = Application.Model.GuiData;
+    import RubriceerRegels = Application.Model.RubriceerRegels;
 
     export class AfschriftGui{
         // velden voor afschrift edit schermen
         afschriftTabDisabled:boolean = true;
+        rubriceerTabDisabled:boolean = true;
         selectedIndex : number = 0;
 
         data : AfschriftGuiData = new AfschriftGuiData();
@@ -19,6 +21,7 @@ module Application.Services {
         afschriftToEdit : AfschriftData;
         addMode : boolean;
         afschriften:AfschriftData[];
+        rubriceerRegels:RubriceerRegels;
     }
 
 
@@ -47,6 +50,7 @@ module Application.Services {
 
         showPage(page:String) {
             this.afschriftGui.afschriftTabDisabled=true;
+            this.afschriftGui.rubriceerTabDisabled=true;
 
             if (page == SCREEN_AFSCHRIFT_LIJST) {
                 this.afschriftGui.selectedIndex=0;
@@ -55,12 +59,19 @@ module Application.Services {
                 this.afschriftGui.selectedIndex=1;
                 this.afschriftGui.afschriftTabDisabled=false;
             }
+            if (page == SCREEN_AFSCHRIFT_RUBRICEER_REGELS) {
+                this.afschriftGui.selectedIndex=2;
+                this.afschriftGui.rubriceerTabDisabled=false;
+            }
         }
 
         closePage(page:String) {
             if (page == SCREEN_AFSCHRIFT_LIJST) {
             }
             if (page == SCREEN_AFSCHRIFT_EDIT) {
+                this.showPage(SCREEN_AFSCHRIFT_LIJST);
+            }
+            if (page == SCREEN_AFSCHRIFT_RUBRICEER_REGELS) {
                 this.showPage(SCREEN_AFSCHRIFT_LIJST);
             }
         }

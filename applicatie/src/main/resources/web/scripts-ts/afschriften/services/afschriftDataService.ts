@@ -5,10 +5,20 @@ module Application.Services {
     import AfschriftData = Application.Model.AfschriftData;
     import Administratie = Application.Model.Administratie;
     import AfschriftGuiService = Application.Services.AfschriftGuiService;
+    import RubriceerRegels = Application.Model.RubriceerRegels;
 
     export class AfschriftDataService {
         constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private afschriftGuiService:AfschriftGuiService, private $filter) {
         }
+
+        public setRubriceerRegelLijst(rubriceerRegels:RubriceerRegels){
+            this.afschriftGuiService.getAfschriftGui().data.rubriceerRegels = rubriceerRegels;
+        }
+
+        public getRubriceerRegelLijst():RubriceerRegels{
+            return this.afschriftGuiService.getAfschriftGui().data.rubriceerRegels;
+        }
+
 
         private setSelectedAfschrift(afschrift:AfschriftData) {
             this.afschriftGuiService.getAfschriftGui().data.selectedafschrift = afschrift;

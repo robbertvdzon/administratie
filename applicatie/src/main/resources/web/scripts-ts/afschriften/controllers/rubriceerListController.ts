@@ -15,30 +15,12 @@ module Application.Controllers {
         data : AfschriftGuiData;
     }
 
-    export class AfschriftenListController {
+    export class RubriceerListController {
 
         constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private afschriftDataService:AfschriftDataService, private afschriftGuiService:AfschriftGuiService) {
             this.$scope.data = this.afschriftGuiService.getAfschriftGui().data;
         }
 
-        edit(uuid:String) {
-            this.afschriftDataService.setAfschriftAsSelected(uuid);
-            this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
-        }
-
-
-        getRubriceerRegels() {
-            this.afschriftDataService.getRubriceerRegels().success((data)=> {
-                this.afschriftDataService.setRubriceerRegelLijst(data);
-                this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_RUBRICEER_REGELS);
-            }).error(()=> {
-                alert("failed");
-            });
-        }
-
-        uploadFile(files){
-            this.afschriftDataService.uploadFileToUrl(files.files[0],"/rest/afschrift/uploadabn");
-        }
 
     }
 
@@ -46,6 +28,6 @@ module Application.Controllers {
 }
 
 
-angular.module('mswFrontendApp').controller('AfschriftenListController', Application.Controllers.AfschriftenListController);
+angular.module('mswFrontendApp').controller('RubriceerListController', Application.Controllers.RubriceerListController);
 
 
