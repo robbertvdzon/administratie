@@ -11,7 +11,7 @@ public class AfschriftDto {
 
     private String uuid;
     private String rekening;
-    private String rekeningnaam;
+    private String omschrijving;
     private String relatienaam;
     private String boekdatum;
     private double bedrag = 0;
@@ -21,21 +21,21 @@ public class AfschriftDto {
     public AfschriftDto() {
     }
 
-    public AfschriftDto(String uuid, String rekening, String rekeningnaam, String relatienaam, String boekdatum, double bedrag) {
+    public AfschriftDto(String uuid, String rekening, String omschrijving, String relatienaam, String boekdatum, double bedrag) {
         this.uuid = uuid;
         this.rekening = rekening;
-        this.rekeningnaam = rekeningnaam;
+        this.omschrijving = omschrijving;
         this.relatienaam = relatienaam;
         this.boekdatum = boekdatum;
         this.bedrag = bedrag;
     }
 
     public AfschriftDto(Afschrift afschrift) {
-        this(afschrift.getUuid(), afschrift.getRekening(), afschrift.getRekeningnaam(), afschrift.getRelatienaam(), afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER), afschrift.getBedrag());
+        this(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER), afschrift.getBedrag());
     }
 
     public Afschrift toAfschrift() {
-        return new Afschrift(uuid, rekening, rekeningnaam, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag);
+        return new Afschrift(uuid, rekening, omschrijving, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag);
     }
 
     public String getUuid() {
@@ -54,12 +54,12 @@ public class AfschriftDto {
         this.rekening = rekening;
     }
 
-    public String getRekeningnaam() {
-        return rekeningnaam;
+    public String getOmschrijving() {
+        return omschrijving;
     }
 
-    public void setRekeningnaam(String rekeningnaam) {
-        this.rekeningnaam = rekeningnaam;
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
     }
 
     public String getRelatienaam() {

@@ -11,7 +11,7 @@ public class Afschrift {
     @Id
     private String uuid;
     private String rekening;
-    private String rekeningnaam;
+    private String omschrijving;
     private String relatienaam;
     private LocalDate boekdatum;
     private double bedrag = 0;
@@ -20,10 +20,10 @@ public class Afschrift {
     public Afschrift() {
     }
 
-    public Afschrift(String uuid, String rekening, String rekeningnaam, String relatienaam, LocalDate boekdatum, double bedrag) {
+    public Afschrift(String uuid, String rekening, String omschrijving, String relatienaam, LocalDate boekdatum, double bedrag) {
         this.uuid = uuid;
         this.rekening = rekening;
-        this.rekeningnaam = rekeningnaam;
+        this.omschrijving = omschrijving;
         this.relatienaam = relatienaam;
         this.boekdatum = boekdatum;
         this.bedrag = bedrag;
@@ -37,8 +37,8 @@ public class Afschrift {
         return rekening;
     }
 
-    public String getRekeningnaam() {
-        return rekeningnaam;
+    public String getOmschrijving() {
+        return omschrijving;
     }
 
     public String getRelatienaam() {

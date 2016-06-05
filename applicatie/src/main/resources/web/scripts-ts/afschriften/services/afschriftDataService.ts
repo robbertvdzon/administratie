@@ -57,7 +57,7 @@ module Application.Services {
             var afschriftClone = new AfschriftData();
             afschriftClone.uuid = afschrift.uuid;
             afschriftClone.rekening = afschrift.rekening;
-            afschriftClone.rekeningnaam = afschrift.rekeningnaam;
+            afschriftClone.omschrijving = afschrift.omschrijving;
             afschriftClone.relatienaam = afschrift.relatienaam;
             afschriftClone.boekdatum = afschrift.boekdatum;
             afschriftClone.bedrag = afschrift.bedrag;
@@ -67,7 +67,7 @@ module Application.Services {
         public copyInto(afschriftFrom:AfschriftData, afschriftTo:AfschriftData) {
             afschriftTo.uuid = afschriftFrom.uuid;
             afschriftTo.rekening = afschriftFrom.rekening;
-            afschriftTo.rekeningnaam = afschriftFrom.rekeningnaam;
+            afschriftTo.omschrijving = afschriftFrom.omschrijving;
             afschriftTo.relatienaam = afschriftFrom.relatienaam;
             afschriftTo.boekdatum = afschriftFrom.boekdatum;
             afschriftTo.bedrag = afschriftFrom.bedrag;

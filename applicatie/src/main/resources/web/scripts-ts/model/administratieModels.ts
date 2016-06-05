@@ -84,7 +84,7 @@ module Application.Model {
     export class AfschriftData {
         uuid:String;
         rekening:String;
-        rekeningnaam:String;
+        omschrijving:String;
         relatienaam:String;
         boekdatum:String;
         bedrag:String;

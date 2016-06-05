@@ -141,16 +141,81 @@ public class AfschriftService {
             String date = parts[2];
             String bedragStr = parts[6];
             String omschrijving = parts[7];
+            String naam = extractNaam(omschrijving);
+            String oms = extractOmschrijving(omschrijving);
 
             String uuid=line;
             double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
-            return new Afschrift(uuid, rekeningNr, rekeningNr, omschrijving, boekDatum, bedrag);
+            return new Afschrift(uuid, rekeningNr, oms, naam, boekDatum, bedrag);
         }
         else{
-            System.out.println(parts.length);
             return null;
         }
+    }
+
+    private String extractNaam(String omschrijving) {
+//        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
+//        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
+        if (omschrijving.startsWith("/TRTP")){
+            String[] split = omschrijving.split("/");
+            for (int i = 0; i<split.length; i++){
+                if (split[i].equals("NAME")){
+                    return split[i+1];
+                }
+            }
+        }
+        if (omschrijving.startsWith("SEPA")){
+            int pos = omschrijving.indexOf("Naam:");
+            int posStart = pos + "Naam:".length();
+            if (pos>0) {
+                String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
+                int posEnd = posStart+omschrijving.substring(posStart).indexOf(nextKeyword);
+                if (nextKeyword == null) {
+                    return omschrijving.substring(posStart);
+                } else {
+                    return omschrijving.substring(posStart,posEnd-1);
+                }
+            }
+        }
+        return "Onbekend";
+    }
+
+    private String extractOmschrijving(String omschrijving) {
+//        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
+//        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
+        if (omschrijving.startsWith("/TRTP")){
+            String[] split = omschrijving.split("/");
+            for (int i = 0; i<split.length; i++){
+                if (split[i].equals("REMI")){
+                    return split[i+1];
+                }
+            }
+        }
+        if (omschrijving.startsWith("SEPA")){
+            int pos = omschrijving.indexOf("Omschrijving:");
+            int posStart = pos + "Omschrijving:".length();
+            if (pos>0) {
+                String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
+                int posEnd = posStart+omschrijving.substring(posStart).indexOf(nextKeyword);
+                if (nextKeyword == null) {
+                    return omschrijving.substring(posStart);
+                } else {
+                    return omschrijving.substring(posStart,posEnd-1);
+                }
+            }
+        }
+        return omschrijving;
+    }
+
+    private String findNextKeyword(String s){
+        String[] words = s.split(" ");
+        for (String word:words){
+            if (word.endsWith(":")){
+                return word;
+            }
+        }
+        return null;
     }
 
     private LocalDate getBoekDatum(String date) {
