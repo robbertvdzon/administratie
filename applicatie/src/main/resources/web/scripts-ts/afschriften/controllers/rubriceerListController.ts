@@ -10,6 +10,7 @@ module Application.Controllers {
     import AfschriftDataService = Application.Services.AfschriftDataService;
     import SCREEN_AFSCHRIFT_EDIT = Application.SCREEN_AFSCHRIFT_EDIT;
     import RubriceerRegels = Application.Model.RubriceerRegels;
+    import RubriceerRegel = Application.Model.RubriceerRegel;
 
     interface MyScope extends ng.IScope {
         data : AfschriftGuiData;
@@ -19,6 +20,21 @@ module Application.Controllers {
 
         constructor(private $scope:MyScope, private $rootScope, private dataService:MyDataservice, private afschriftDataService:AfschriftDataService, private afschriftGuiService:AfschriftGuiService) {
             this.$scope.data = this.afschriftGuiService.getAfschriftGui().data;
+        }
+
+        public setRubriceerRegelToNone(regel:RubriceerRegel){
+            regel.rubriceerAction = "NONE";
+        }
+
+        public setRubriceerRegelToPriveBoeking(regel:RubriceerRegel){
+            regel.rubriceerAction = "PRIVE";
+        }
+
+        public startRubriceer(){
+            this.afschriftDataService.startRubriceer().then((response) => {
+                this.dataService.reload();
+                this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_LIJST);
+            });
         }
 
 

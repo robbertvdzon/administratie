@@ -1,7 +1,7 @@
 <div id="afschriftenControllerId" ng-cloak data-ng-controller="RubriceerListController as rubriceerListController">
     Rubriceer regels
 
-    <md-button class="md-raised md-primary" ng-click="afschriftenListController.getRubriceerRegels()">
+    <md-button class="md-raised md-primary" ng-click="rubriceerListController.startRubriceer()">
         Rubriceer
     </md-button>
 
@@ -10,8 +10,8 @@
                       ng-class-odd="'odd'"
                       ng-class-even="'even'">
             <div md-ink-ripple style="width: 100%;">
-                {{regel.afschiftUuid}}
-                <!--<afschrift-row></afschrift-row>-->
+                <!--{{regel.afschiftUuid}}-->
+                <rubriceer-row></rubriceer-row>
             </div>
         </md-list-item>
     </md-list>

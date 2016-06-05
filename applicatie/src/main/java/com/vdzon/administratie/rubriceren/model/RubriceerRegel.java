@@ -6,6 +6,9 @@ public class RubriceerRegel {
     private String rekeningNummer;
     private String faktuurNummer;
 
+    public RubriceerRegel() {
+    }
+
     public RubriceerRegel(RubriceerAction rubriceerAction, String afschiftUuid, String rekeningNummer, String faktuurNummer) {
         this.rubriceerAction = rubriceerAction;
         this.afschiftUuid = afschiftUuid;
@@ -27,5 +30,15 @@ public class RubriceerRegel {
 
     public String getFaktuurNummer() {
         return faktuurNummer;
+    }
+
+    @Override
+    public String toString() {
+        return "RubriceerRegel{" +
+                "rubriceerAction=" + rubriceerAction +
+                ", afschiftUuid='" + afschiftUuid + '\'' +
+                ", rekeningNummer='" + rekeningNummer + '\'' +
+                ", faktuurNummer='" + faktuurNummer + '\'' +
+                '}';
     }
 }

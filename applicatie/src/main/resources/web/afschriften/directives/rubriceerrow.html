@@ -1,0 +1,15 @@
+<table width="100%">
+    <tr>
+        <td width="400">{{ regel.rubriceerAction}}</td>
+        <td width="100">{{ regel.rekeningNummer }}</td>
+        <td width="100">{{ regel.faktuurNummer }}</td>
+        <td width="*">
+            <md-button class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToNone(regel)">
+                Geen actie
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToPriveBoeking(regel)">
+                Prive boeking
+            </md-button>
+        </td>
+    </tr>
+</table>

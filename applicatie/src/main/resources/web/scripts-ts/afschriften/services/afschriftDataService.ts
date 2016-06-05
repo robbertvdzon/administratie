@@ -148,6 +148,15 @@ module Application.Services {
             return uuid;
         };
 
+        public startRubriceer():void {
+            return this.$http({
+                url: "/rest/rubriceer/",
+                method: "POST",
+                data: this.getRubriceerRegelLijst(),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+
+        }
     }
 }
 
