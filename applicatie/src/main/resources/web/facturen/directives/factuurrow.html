@@ -4,6 +4,6 @@
     <td width="100">{{ factuur.klant.naam }}</td>
     <td width="100">{{factuur.factuurDate}}</td>
     <td width="100">&euro; {{ factuur.bedragExBtw }}</td>
-    <td> <small>{{ factuur.betaald?"":"(*)" }}</small> </td>
-    <td width="100">{{ factuur.gekoppeldAfschrift }}</td>
+    <td width="100">&euro; {{ factuur.bedragIncBtw }}</td>
+    <td width="100">{{ factuur.gekoppeldAfschrift!=undefined?"Geboekt": factuur.betaald?"Betaald":"Niet betaald"}}</td>
 </tr></table>

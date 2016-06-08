@@ -148,7 +148,7 @@ module Application.Services {
             return uuid;
         };
 
-        public startRubriceer():void {
+        public startRubriceer() {
             return this.$http({
                 url: "/rest/rubriceer/",
                 method: "POST",

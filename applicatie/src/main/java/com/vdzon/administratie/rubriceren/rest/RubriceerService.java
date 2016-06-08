@@ -3,6 +3,7 @@ package com.vdzon.administratie.rubriceren.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.dto.BestellingDto;
 import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
@@ -53,7 +54,7 @@ public class RubriceerService {
                             factuurNummer = factuur.getFactuurNummer();
                         }
                     }
-                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction,afschrift.getUuid(),rekeningNummer, factuurNummer);
+                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction,rekeningNummer, factuurNummer,new AfschriftDto(afschrift));
                     regels.add(rubriceerRegel);
                 }
                 if (afschrift.getBedrag()<0){
@@ -63,10 +64,10 @@ public class RubriceerService {
                     for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()){
                         if ((rekening.getBedragIncBtw()==afschrift.getBedrag()) && (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))){
                             rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
-                            factuurNummer = rekening.getRekeningNummer();
+                            rekeningNummer = rekening.getRekeningNummer();
                         }
                     }
-                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction,afschrift.getUuid(),rekeningNummer, factuurNummer);
+                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction,rekeningNummer, factuurNummer,new AfschriftDto(afschrift));
                     regels.add(rubriceerRegel);
                 }
             }
@@ -98,14 +99,32 @@ public class RubriceerService {
     }
 
     private void processRegel(RubriceerRegel regel, Gebruiker gebruiker){
+        Afschrift afschrift = regel.getAfschrift().toAfschrift();
         switch (regel.getRubriceerAction()){
             case CONNECT_EXISTING_FACTUUR:
+                for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()){
+                    if (regel.getFaktuurNummer().equals(factuur.getFactuurNummer())){
+                        Factuur newFactuur = new Factuur(factuur.getFactuurNummer(), factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate(), factuur.getContact(), true, factuur.getFactuurRegels(), factuur.getUuid(), afschrift.getUuid());
+                        gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
+                        gebruiker.getDefaultAdministratie().addFactuur(newFactuur);
+                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
+                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.FACTUUR, factuur.getFactuurNummer(),""));
+                    }
+                }
                 break;
             case CONNECT_EXISTING_REKENING:
+                for (Rekening rekening: gebruiker.getDefaultAdministratie().getRekeningen()){
+                    if (regel.getRekeningNummer().equals(rekening.getRekeningNummer())){
+                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getUuid());
+                        gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
+                        gebruiker.getDefaultAdministratie().addRekening(newRekening);
+                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
+                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "", rekening.getRekeningNummer()));
+                    }
+                }
                 break;
             case CREATE_REKENING:
-                Afschrift afschrift = findAfschrift(regel.getAfschiftUuid(), gebruiker);
-                Rekening rekening = new Rekening(UUID.randomUUID().toString(), findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag(), afschrift.getBedrag(), 0, regel.getAfschiftUuid());
+                Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag(), afschrift.getBedrag(), 0, regel.getAfschrift().getUuid());
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
                 gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
                 gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "",rekening.getRekeningNummer()));
@@ -113,6 +132,8 @@ public class RubriceerService {
             case NONE:
                 break;
             case PRIVE:
+                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
+                gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.PRIVE, "",""));
                 break;
         }
     }
@@ -121,8 +142,8 @@ public class RubriceerService {
         return gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
-    private String findNextRekeningNummer(Gebruiker gebruiker){
-        return ""+gebruiker.getDefaultAdministratie().getRekeningen().stream().map(rekening->Integer.parseInt(rekening.getRekeningNummer())).max(Comparator.naturalOrder()).get();
+    private int findNextRekeningNummer(Gebruiker gebruiker){
+        return 1+gebruiker.getDefaultAdministratie().getRekeningen().stream().map(rekening->Integer.parseInt(rekening.getRekeningNummer())).max(Comparator.naturalOrder()).orElse(1000);
     }
 
 

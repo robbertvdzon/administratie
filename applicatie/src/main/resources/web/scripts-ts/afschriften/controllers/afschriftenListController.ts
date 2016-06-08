@@ -40,6 +40,14 @@ module Application.Controllers {
             this.afschriftDataService.uploadFileToUrl(files.files[0],"/rest/afschrift/uploadabn");
         }
 
+        getStatus(boekingsType:String){
+            if (boekingsType=="NONE") return "Niet verwerkt!";
+            if (boekingsType=="PRIVE") return "Prive";
+            if (boekingsType=="FACTUUR") return "Geboekt";
+            if (boekingsType=="REKENING") return "Geboekt";
+            return "ok";
+        }
+
     }
 
 

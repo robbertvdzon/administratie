@@ -1,27 +1,26 @@
 package com.vdzon.administratie.rubriceren.model;
 
+import com.vdzon.administratie.dto.AfschriftDto;
+import com.vdzon.administratie.model.Afschrift;
+
 public class RubriceerRegel {
     private RubriceerAction rubriceerAction;
-    private String afschiftUuid;
     private String rekeningNummer;
     private String faktuurNummer;
+    private AfschriftDto afschrift;
 
     public RubriceerRegel() {
     }
 
-    public RubriceerRegel(RubriceerAction rubriceerAction, String afschiftUuid, String rekeningNummer, String faktuurNummer) {
+    public RubriceerRegel(RubriceerAction rubriceerAction, String rekeningNummer, String faktuurNummer, AfschriftDto afschrift) {
         this.rubriceerAction = rubriceerAction;
-        this.afschiftUuid = afschiftUuid;
         this.rekeningNummer = rekeningNummer;
         this.faktuurNummer = faktuurNummer;
+        this.afschrift = afschrift;
     }
 
     public RubriceerAction getRubriceerAction() {
         return rubriceerAction;
-    }
-
-    public String getAfschiftUuid() {
-        return afschiftUuid;
     }
 
     public String getRekeningNummer() {
@@ -32,13 +31,17 @@ public class RubriceerRegel {
         return faktuurNummer;
     }
 
+    public AfschriftDto getAfschrift() {
+        return afschrift;
+    }
+
     @Override
     public String toString() {
         return "RubriceerRegel{" +
                 "rubriceerAction=" + rubriceerAction +
-                ", afschiftUuid='" + afschiftUuid + '\'' +
                 ", rekeningNummer='" + rekeningNummer + '\'' +
                 ", faktuurNummer='" + faktuurNummer + '\'' +
+                ", afschrift=" + afschrift +
                 '}';
     }
 }

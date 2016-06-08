@@ -145,7 +145,7 @@ public class AfschriftService {
             String naam = extractNaam(omschrijving);
             String oms = extractOmschrijving(omschrijving);
 
-            String uuid=line;
+            String uuid=rekeningNr.trim()+date.trim()+bedragStr+omschrijving.trim()+naam.trim()+oms.trim();
             double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
             return new Afschrift(uuid, rekeningNr, oms, naam, boekDatum, bedrag, BoekingType.NONE, "","");

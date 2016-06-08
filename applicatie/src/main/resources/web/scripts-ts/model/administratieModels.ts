@@ -124,7 +124,7 @@ module Application.Model {
 
     export class RubriceerRegel {
         rubriceerAction:String;
-        afschiftUuid:String;
+        afschift:AfschriftData;
         rekeningNummer:String;
         faktuurNummer:String;
     }
