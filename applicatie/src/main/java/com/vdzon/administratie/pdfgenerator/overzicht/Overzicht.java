@@ -26,7 +26,6 @@ public class Overzicht {
     public double betaaldeFacturen = 0;
     public double onbetaaldeFacturen = 0;
     public double betaaldeRekeningen = 0;
-    public double betaaldeDeclaraties = 0;
     public double verwachtTotaalOpRekeningBij = 0;
 
     public double werkelijkOpBankBij = 0;

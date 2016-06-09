@@ -37,7 +37,7 @@ public class RubriceerRegel {
 
     @Override
     public String toString() {
-        return "RubriceerRegel{" +
+        return "CheckAndFixRegel{" +
                 "rubriceerAction=" + rubriceerAction +
                 ", rekeningNummer='" + rekeningNummer + '\'' +
                 ", faktuurNummer='" + faktuurNummer + '\'' +

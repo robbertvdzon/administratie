@@ -61,6 +61,7 @@ module Application.Services {
             rekeningClone.naam = rekening.naam;
             rekeningClone.uuid = rekening.uuid;
             rekeningClone.rekeningNummer = rekening.rekeningNummer;
+            rekeningClone.factuurNummer = rekening.factuurNummer;
             rekeningClone.omschrijving = rekening.omschrijving;
             rekeningClone.rekeningDate = rekening.rekeningDate;
             rekeningClone.bedragExBtw = rekening.bedragExBtw;
@@ -74,6 +75,7 @@ module Application.Services {
             rekeningTo.naam = rekeningFrom.naam;
             rekeningTo.uuid = rekeningFrom.uuid;
             rekeningTo.rekeningNummer = rekeningFrom.rekeningNummer;
+            rekeningTo.factuurNummer = rekeningFrom.factuurNummer;
             rekeningTo.omschrijving = rekeningFrom.omschrijving;
             rekeningTo.rekeningDate = rekeningFrom.rekeningDate;
             rekeningTo.bedragExBtw = rekeningFrom.bedragExBtw;

@@ -1,0 +1,20 @@
+<div id="checkAndFixControllerId" ng-cloak data-ng-controller="CheckAndFixListController as checkAndFixListController">
+    Check and fix regels
+
+    <md-button class="md-raised md-primary" ng-click="checkAndFixListController.startFix()">
+        Fix
+    </md-button>
+
+    <md-list>
+        <md-list-item ng-repeat="regel in data.checkAndFixRegels.checkAndFixRegels"
+                      ng-class-odd="'odd'"
+                      ng-class-even="'even'">
+            <div md-ink-ripple style="width: 100%;">
+                <checkandfix-row></checkandfix-row>
+            </div>
+        </md-list-item>
+    </md-list>
+
+
+
+</div>

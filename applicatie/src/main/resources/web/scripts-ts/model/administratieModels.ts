@@ -64,6 +64,7 @@ module Application.Model {
     export class RekeningData {
         uuid:String;
         rekeningNummer:String;
+        factuurNummer:String;
         naam:String;
         omschrijving:String;
         rekeningDate:String;
@@ -128,6 +129,16 @@ module Application.Model {
         afschift:AfschriftData;
         rekeningNummer:String;
         faktuurNummer:String;
+    }
+
+    export class CheckAndFixRegels {
+        checkAndFixRegelList:CheckAndFixRegel[];
+    }
+
+    export class CheckAndFixRegel {
+        rubriceerAction:String;
+        checkType:String;
+        afschift:AfschriftData;
     }
 
 }

@@ -11,6 +11,7 @@ public class RekeningDto {
 
     private String uuid;
     private String rekeningNummer;
+    private String factuurNummer;
     private String naam;
     private String omschrijving;
     private String rekeningDate;
@@ -24,9 +25,10 @@ public class RekeningDto {
     public RekeningDto() {
     }
 
-    public RekeningDto(String uuid, String rekeningNummer, String naam, String omschrijving, String rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
+    public RekeningDto(String uuid, String rekeningNummer, String factuurNummer, String naam, String omschrijving, String rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
         this.uuid = uuid;
         this.rekeningNummer = rekeningNummer;
+        this.factuurNummer = factuurNummer;
         this.naam = naam;
         this.omschrijving = omschrijving;
         this.rekeningDate = rekeningDate;
@@ -37,11 +39,11 @@ public class RekeningDto {
     }
 
     public RekeningDto(Rekening rekening) {
-        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw(), rekening.getGekoppeldAfschrift());
+        this(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getFactuurNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER),rekening.getBedragExBtw(),rekening.getBedragIncBtw(),rekening.getBtw(), rekening.getGekoppeldAfschrift());
     }
 
     public Rekening toRekening() {
-        return new Rekening(uuid, rekeningNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw, gekoppeldAfschrift);
+        return new Rekening(uuid, rekeningNummer,factuurNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw, gekoppeldAfschrift);
     }
 
     public String getUuid() {
@@ -114,5 +116,13 @@ public class RekeningDto {
 
     public void setGekoppeldAfschrift(String gekoppeldAfschrift) {
         this.gekoppeldAfschrift = gekoppeldAfschrift;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public void setFactuurNummer(String factuurNummer) {
+        this.factuurNummer = factuurNummer;
     }
 }

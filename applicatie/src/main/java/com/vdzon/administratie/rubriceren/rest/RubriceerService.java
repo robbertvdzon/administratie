@@ -115,7 +115,7 @@ public class RubriceerService {
             case CONNECT_EXISTING_REKENING:
                 for (Rekening rekening: gebruiker.getDefaultAdministratie().getRekeningen()){
                     if (regel.getRekeningNummer().equals(rekening.getRekeningNummer())){
-                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getNummer());
+                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getFactuurNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getNummer());
                         gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
                         gebruiker.getDefaultAdministratie().addRekening(newRekening);
                         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
@@ -124,7 +124,7 @@ public class RubriceerService {
                 }
                 break;
             case CREATE_REKENING:
-                Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag()*-1, afschrift.getBedrag()*-1, 0, regel.getAfschrift().getNummer());
+                Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), "", afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag()*-1, afschrift.getBedrag()*-1, 0, regel.getAfschrift().getNummer());
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
                 gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
                 gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(),afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "",rekening.getRekeningNummer()));

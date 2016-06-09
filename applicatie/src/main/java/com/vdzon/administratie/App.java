@@ -6,6 +6,7 @@ import com.vdzon.administratie.administratie.AdministratieResource;
 import com.vdzon.administratie.afschrift.AfschriftResource;
 import com.vdzon.administratie.auth.AuthResource;
 import com.vdzon.administratie.bestelling.BestellingResource;
+import com.vdzon.administratie.checkandfix.rest.CheckAndFixResource;
 import com.vdzon.administratie.contact.ContactResource;
 import com.vdzon.administratie.data.DataResource;
 import com.vdzon.administratie.declaratie.DeclaratieResource;
@@ -71,6 +72,7 @@ public class App {
         BestellingResource bestellingResource = injector.getInstance(BestellingResource.class);
         RubriceerResource rubriceerResource  = injector.getInstance(RubriceerResource.class);
         OverzichtResource overzichtResource = injector.getInstance(OverzichtResource.class);
+        CheckAndFixResource checkAndFixResource = injector.getInstance(CheckAndFixResource.class);
     }
 
     private static void loadVersion() {

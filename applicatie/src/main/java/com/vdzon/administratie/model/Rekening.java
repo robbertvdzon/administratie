@@ -11,6 +11,7 @@ public class Rekening {
     @Id
     private String uuid;
     private String rekeningNummer;
+    private String factuurNummer;
     private String naam;
     private String omschrijving;
     private LocalDate rekeningDate;
@@ -22,9 +23,14 @@ public class Rekening {
     public Rekening() {
     }
 
-    public Rekening(String uuid, String rekeningNummer, String naam, String omschrijving, LocalDate rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public Rekening(String uuid, String rekeningNummer, String factuurNummer, String naam, String omschrijving, LocalDate rekeningDate, double bedragExBtw, double bedragIncBtw, double btw, String gekoppeldAfschrift) {
         this.uuid = uuid;
         this.rekeningNummer = rekeningNummer;
+        this.factuurNummer = factuurNummer;
         this.naam = naam;
         this.omschrijving = omschrijving;
         this.rekeningDate = rekeningDate;

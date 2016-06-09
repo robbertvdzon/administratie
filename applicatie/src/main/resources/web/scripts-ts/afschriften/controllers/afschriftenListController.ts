@@ -26,6 +26,15 @@ module Application.Controllers {
             this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
         }
 
+        getCheckAndFixRegels() {
+            this.afschriftDataService.getCheckAndFixRegels().success((data)=> {
+                this.afschriftDataService.setCheckAndFixRegelLijst(data);
+                this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_CHECK_AND_FIX_REGELS);
+            }).error(()=> {
+                alert("failed");
+            });
+        }
+
 
         getRubriceerRegels() {
             this.afschriftDataService.getRubriceerRegels().success((data)=> {

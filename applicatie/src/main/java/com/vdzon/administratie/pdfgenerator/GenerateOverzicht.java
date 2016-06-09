@@ -54,18 +54,17 @@ public class GenerateOverzicht {
 
         writeTitle("Inkomsten");
         writeRegelsBetaaldOntvangenRegel(fontBold, "", "Prijs excl.", "Btw", "Prijs incl.");
-        writeRegelsBetaaldOntvangenRegel(fontPlain, "Uitgeschreven facturen", overzicht.facturenTotaalExBtw, overzicht.facturenTotaalBtw, overzicht.belastbaarInkomenIncBtw);
+        writeRegelsBetaaldOntvangenRegel(fontPlain, "Uitgeschreven facturen", overzicht.facturenTotaalExBtw, overzicht.facturenTotaalBtw, overzicht.facturenTotaalIncBtw);
         skipDown(30);
         writeTitle("Uitgaven");
         writeRegelsBetaaldOntvangenRegel(fontBold, "", "Prijs excl.", "Btw", "Prijs incl.");
         writeRegelsBetaaldOntvangenRegel(fontPlain, "Betaalde rekeningen", overzicht.rekeningenTotaalExBtw, overzicht.rekeningenTotaalBtw, overzicht.rekeningenTotaalIncBtw);
         writeRegelsBetaaldOntvangenRegel(fontPlain, "Declaraties", overzicht.declaratiesTotaalExBtw, overzicht.declaratiesTotaalBtw, overzicht.declaratiesTotaalIncBtw);
         skipDown(30);
-        writeTitle("Controle");
+        writeTitle("Bankrekening controle");
         writeFieldValue(fontPlain, "Betaalde facturen", overzicht.betaaldeFacturen);
         writeFieldValue(fontPlain, "Onbetaalde facturen", overzicht.onbetaaldeFacturen);
         writeFieldValue(fontPlain, "Betaalde rekeningen", overzicht.betaaldeRekeningen);
-        writeFieldValue(fontPlain, "Betaalde declaraties", overzicht.betaaldeDeclaraties);
         writeFieldValue(fontPlain, "Verwacht totaal op rekening bij", overzicht.verwachtTotaalOpRekeningBij);
         skipDown(10);
         writeFieldValue(fontPlain, "Werkelijk op bank bijgeschreven", overzicht.werkelijkOpBankBij);

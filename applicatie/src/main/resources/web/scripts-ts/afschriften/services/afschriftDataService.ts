@@ -6,6 +6,7 @@ module Application.Services {
     import Administratie = Application.Model.Administratie;
     import AfschriftGuiService = Application.Services.AfschriftGuiService;
     import RubriceerRegels = Application.Model.RubriceerRegels;
+    import CheckAndFixRegels = Application.Model.CheckAndFixRegels;
 
     export class AfschriftDataService {
         constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private afschriftGuiService:AfschriftGuiService, private $filter) {
@@ -17,6 +18,14 @@ module Application.Services {
 
         public getRubriceerRegelLijst():RubriceerRegels{
             return this.afschriftGuiService.getAfschriftGui().data.rubriceerRegels;
+        }
+
+        public setCheckAndFixRegelLijst(checkAndFixRegels:CheckAndFixRegels){
+            this.afschriftGuiService.getAfschriftGui().data.checkAndFixRegels = checkAndFixRegels;
+        }
+
+        public getCheckAndFixRegelLijst():CheckAndFixRegels{
+            return this.afschriftGuiService.getAfschriftGui().data.checkAndFixRegels;
         }
 
 
@@ -82,6 +91,10 @@ module Application.Services {
             afschriftTo.factuurNummer = afschriftFrom.factuurNummer;
             afschriftTo.rekeningNummer = afschriftFrom.rekeningNummer;
 
+        }
+
+        public getCheckAndFixRegels() {
+            return this.$http.get('/rest/checkandfixregels/');
         }
 
         public getRubriceerRegels() {

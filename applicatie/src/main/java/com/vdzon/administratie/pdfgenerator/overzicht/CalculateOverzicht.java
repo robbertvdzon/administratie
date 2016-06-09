@@ -37,8 +37,7 @@ public class CalculateOverzicht {
         overzicht.betaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.onbetaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->!factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.betaaldeRekeningen = overzicht.rekeningenTotaalIncBtw;
-        overzicht.betaaldeDeclaraties = overzicht.declaratiesTotaalIncBtw;
-        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeRekeningen-overzicht.betaaldeDeclaraties;
+        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeRekeningen;
 
         overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag()).sum();
         overzicht.priveOpBankBij = overzicht.filteredAfschriften.stream().filter(afschrift->afschrift.getBoekingType()==BoekingType.PRIVE).mapToDouble(afschrift -> afschrift.getBedrag()).sum();

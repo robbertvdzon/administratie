@@ -5,11 +5,13 @@ module Application.Services {
     import AfschriftData = Application.Model.AfschriftData;
     import GuiData = Application.Model.GuiData;
     import RubriceerRegels = Application.Model.RubriceerRegels;
+    import CheckAndFixRegels  = Application.Model.CheckAndFixRegels;
 
     export class AfschriftGui{
         // velden voor afschrift edit schermen
         afschriftTabDisabled:boolean = true;
         rubriceerTabDisabled:boolean = true;
+        checkAndFixTabDisabled:boolean = true;
         selectedIndex : number = 0;
 
         data : AfschriftGuiData = new AfschriftGuiData();
@@ -22,6 +24,7 @@ module Application.Services {
         addMode : boolean;
         afschriften:AfschriftData[];
         rubriceerRegels:RubriceerRegels;
+        checkAndFixRegels:CheckAndFixRegels;
     }
 
 
@@ -51,6 +54,7 @@ module Application.Services {
         showPage(page:String) {
             this.afschriftGui.afschriftTabDisabled=true;
             this.afschriftGui.rubriceerTabDisabled=true;
+            this.afschriftGui.checkAndFixTabDisabled=true;
 
             if (page == SCREEN_AFSCHRIFT_LIJST) {
                 this.afschriftGui.selectedIndex=0;
@@ -63,6 +67,11 @@ module Application.Services {
                 this.afschriftGui.selectedIndex=2;
                 this.afschriftGui.rubriceerTabDisabled=false;
             }
+            if (page == SCREEN_AFSCHRIFT_CHECK_AND_FIX_REGELS) {
+                this.afschriftGui.selectedIndex=3;
+                this.afschriftGui.checkAndFixTabDisabled=false;
+            }
+
         }
 
         closePage(page:String) {
@@ -72,6 +81,9 @@ module Application.Services {
                 this.showPage(SCREEN_AFSCHRIFT_LIJST);
             }
             if (page == SCREEN_AFSCHRIFT_RUBRICEER_REGELS) {
+                this.showPage(SCREEN_AFSCHRIFT_LIJST);
+            }
+            if (page == SCREEN_AFSCHRIFT_CHECK_AND_FIX_REGELS) {
                 this.showPage(SCREEN_AFSCHRIFT_LIJST);
             }
         }
