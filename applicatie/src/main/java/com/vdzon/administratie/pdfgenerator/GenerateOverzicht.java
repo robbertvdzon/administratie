@@ -1,7 +1,6 @@
 package com.vdzon.administratie.pdfgenerator;
 
-import com.vdzon.administratie.model.Administratie;
-import com.vdzon.administratie.model.AdministratieGegevens;
+import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.pdfgenerator.overzicht.CalculateOverzicht;
 import com.vdzon.administratie.pdfgenerator.overzicht.Overzicht;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -23,17 +22,19 @@ public class GenerateOverzicht {
     private float pageHeight = 0;
     private float pageWidth = 0;
     private PDPageContentStream page;
+    private PDDocument document = null;
+    private PDPage pdfPage = null;
 
     public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
         new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream);
     }
 
     private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
-        PDDocument document = new PDDocument();
-        PDPage page1 = new PDPage(PDRectangle.A4);
-        PDRectangle rect = page1.getMediaBox();
-        document.addPage(page1);
-        page = new PDPageContentStream(document, page1);
+        document = new PDDocument();
+        pdfPage = new PDPage(PDRectangle.A4);
+        PDRectangle rect = pdfPage.getMediaBox();
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
 
         pageHeight = rect.getHeight();
         pageWidth = rect.getWidth();
@@ -78,21 +79,295 @@ public class GenerateOverzicht {
         writeFieldValue(fontPlain, "BTW", overzicht.belastbaarInkomenBtw);
         writeFieldValue(fontPlain, "Totaal Inclusief BTW", overzicht.belastbaarInkomenIncBtw);
 
+        page.close();
 
+/*
+********************** FACTUREN PAGINA
+ */
+        pos = pageHeight;
+
+
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        writeTitle("Alle facturen");
+        skipDown(10);
+        listFactuurHeader();
+        overzicht.filteredFacturen.stream().forEach(factuur -> listFactuur(factuur));
 
         page.close();
 
-        PDPage page2 = new PDPage(PDRectangle.A4);
-        document.addPage(page2);
-        page = new PDPageContentStream(document, page2);
+/*
+********************** REKENINGEN PAGINA
+ */
+        pos = pageHeight;
 
-        writeTitle("Pagina2");
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        writeTitle("Alle rekeningen");
+        skipDown(10);
+        listRekeningHeader();
+        overzicht.filteredRekeningen.stream().forEach(rekening -> listRekening(rekening));
+
         page.close();
+/*
+********************** DECLARATIES PAGINA
+ */
+        pos = pageHeight;
+
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        writeTitle("Alle declaraties");
+        skipDown(10);
+        listDeclaratiesHeader();
+        overzicht.filteredDeclaraties.stream().forEach(declaratie-> listDeclaraties(declaratie));
+
+        page.close();
+/*
+********************** AFSCHRIFTEN PAGINA
+ */
+        pos = pageHeight;
+
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        writeTitle("Alle afschriften");
+        skipDown(10);
+        listAfschriftHeader();
+        overzicht.filteredAfschriften.stream().forEach(afschrift-> listAfschrift(afschrift));
+
+        page.close();
+/*
+********************** CLOSE
+ */
+
 
         document.save(outputStream);
         document.close();
     }
 
+    private static int LIJST_FONT_SIZE = 10;
+
+    private void listFactuurHeader()  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Klant");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Status");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listFactuur(Factuur factuur)  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurNummer());
+            y+=50;
+            Contact contact = factuur.getContact();
+            writeText(LIJST_FONT_SIZE, y, fontPlain, contact == null ? "" : contact.getNaam());
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurDate().toString());
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragExBtw()));
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBtw()));
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
+            y+=80;
+            String status = "";
+            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()!=null){
+                status = "Geboekt";
+            }
+            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()==null){
+                status = "Betaald";
+            }
+            if (!factuur.isBetaald()){
+                status = "Niet betaald";
+            }
+            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    private void listRekeningHeader()  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Status");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listRekening(Rekening rekening)  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningNummer());
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningDate().toString());
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragExBtw()));
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBtw()));
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
+            y+=80;
+            String status = "Niet geboekt";
+            if (rekening.getGekoppeldAfschrift()!=null){
+                status = "Geboekt";
+            }
+            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
+
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.getNaam().toString());
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.getOmschrijving().toString());
+            skipDown(5);
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+
+    private void listDeclaratiesHeader()  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Omschrijving");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listDeclaraties(Declaratie declaratie)  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getDeclaratieNummer());
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getDeclaratieDate().toString());
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBedragExBtw()));
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBtw()));
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBedragIncBtw()));
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getOmschrijving().toString());
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+
+    private void listAfschriftHeader()  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Type");
+            y+=100;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Naam");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listAfschrift(Afschrift afschrift)  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getNummer());
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getBoekdatum().toString());
+            y+=60;
+            String status = "";
+            switch (afschrift.getBoekingType()){
+                case NONE:
+                    status = "Niet gekoppeld";
+                    break;
+                case FACTUUR:
+                    status = "Factuur "+afschrift.getFactuurNummer();
+                    break;
+                case REKENING:
+                    status = "Rekening "+afschrift.getRekeningNummer();
+                    break;
+                case PRIVE:
+                    status = "Prive boeking";
+                    break;
+            }
+            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
+            y+=100;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getRelatienaam());
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, afschrift.getOmschrijving());
+            skipDown(5);
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
     private void addAnImage(PDDocument document, String logoUrl) {
         try {
             URL url = new URL(logoUrl);
@@ -138,6 +413,7 @@ public class GenerateOverzicht {
     private void writeText(float fontSize, PDFont fontPlain, String text) throws IOException {
         writeText(fontSize, 30, fontPlain, text);
     }
+    
 
     private void writeText(float fontSize, float x, PDFont fontPlain, String text) throws IOException {
         if (text == null) return;
@@ -172,9 +448,19 @@ public class GenerateOverzicht {
         writeText(12, 305, font, titel3);
     }
 
-    private float skipDown(float amount) {
-        return pos -= amount;
+    private float skipDown(float amount) throws IOException {
+        pos -= amount;
+        if (pos<30) {
+            page.close();
+            pos = pageHeight-30;
+            pdfPage = new PDPage(PDRectangle.A4);
+            document.addPage(pdfPage);
+            page = new PDPageContentStream(document, pdfPage);
+        }
+        return pos;
+
     }
+
 
     private void drawLine() throws IOException {
         skipDown(5);

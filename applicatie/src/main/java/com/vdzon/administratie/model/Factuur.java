@@ -114,6 +114,7 @@ public class Factuur {
         return gekoppeldAfschrift;
     }
 
+
     private void calculate() {
         bedragExBtw = 0;
         bedragIncBtw = 0;
@@ -124,5 +125,6 @@ public class Factuur {
             bedragIncBtw += bedragExBtw + btw;
         }
     }
+
 
 }

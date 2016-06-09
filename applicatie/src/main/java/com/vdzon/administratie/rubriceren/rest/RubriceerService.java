@@ -62,7 +62,7 @@ public class RubriceerService {
                     String factuurNummer = null;
                     String rekeningNummer = null;
                     for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()){
-                        if ((rekening.getBedragIncBtw()==afschrift.getBedrag()) && (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))){
+                        if ((rekening.getBedragIncBtw()==afschrift.getBedrag()*-1) && (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))){
                             rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
                             rekeningNummer = rekening.getRekeningNummer();
                         }
@@ -104,7 +104,7 @@ public class RubriceerService {
             case CONNECT_EXISTING_FACTUUR:
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()){
                     if (regel.getFaktuurNummer().equals(factuur.getFactuurNummer())){
-                        Factuur newFactuur = new Factuur(factuur.getFactuurNummer(), factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate(), factuur.getContact(), true, factuur.getFactuurRegels(), factuur.getUuid(), afschrift.getUuid());
+                        Factuur newFactuur = new Factuur(factuur.getFactuurNummer(), factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate(), factuur.getContact(), true, factuur.getFactuurRegels(), factuur.getUuid(), afschrift.getNummer());
                         gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
                         gebruiker.getDefaultAdministratie().addFactuur(newFactuur);
                         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
@@ -115,7 +115,7 @@ public class RubriceerService {
             case CONNECT_EXISTING_REKENING:
                 for (Rekening rekening: gebruiker.getDefaultAdministratie().getRekeningen()){
                     if (regel.getRekeningNummer().equals(rekening.getRekeningNummer())){
-                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getUuid());
+                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getNummer());
                         gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
                         gebruiker.getDefaultAdministratie().addRekening(newRekening);
                         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
@@ -124,7 +124,7 @@ public class RubriceerService {
                 }
                 break;
             case CREATE_REKENING:
-                Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag(), afschrift.getBedrag(), 0, regel.getAfschrift().getUuid());
+                Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag()*-1, afschrift.getBedrag()*-1, 0, regel.getAfschrift().getNummer());
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
                 gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
                 gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(),afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "",rekening.getRekeningNummer()));
