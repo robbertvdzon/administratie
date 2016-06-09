@@ -84,6 +84,14 @@ angular
                 controller: 'BestellingenCtrl',
                 controllerAs: 'bestellingencontroller'
             })
+            .when('/overzichten', {
+                templateUrl: 'overzichten/views/main.html',
+                controller: 'OverzichtController',
+                controllerAs: 'OverzichtController'
+            })
+
+
+
             .otherwise({
                 redirectTo: '/'
             });

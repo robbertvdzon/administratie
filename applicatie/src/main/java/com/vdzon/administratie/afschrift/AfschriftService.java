@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,7 +47,7 @@ public class AfschriftService {
             AfschriftDto afschriftDto = mapper.readValue(afschriftJson, AfschriftDto.class);
             afschrift = afschriftDto.toAfschrift();
 
-            gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
+            gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
             gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {
@@ -64,11 +65,11 @@ public class AfschriftService {
                 res.status(404);
                 return new SingleAnswer("not found");
             }
-            String afschriftUuid = req.params(":uuid");
-            if ("undefined".equals(afschriftUuid)) {
-                afschriftUuid = null;
+            String nummer = req.params(":nummer");
+            if ("undefined".equals(nummer)) {
+                nummer = null;
             }
-            gebruiker.getDefaultAdministratie().removeAfschrift(afschriftUuid);
+            gebruiker.getDefaultAdministratie().removeAfschrift(nummer);
             crudService.updateGebruiker(gebruiker);
             return new SingleAnswer("ok");
         } catch (Exception ex) {
@@ -107,11 +108,13 @@ public class AfschriftService {
                 Files.copy(in, out);
                 uploadedFile.delete();
             }
-            List<Afschrift> afschriften = parseFile(out);
+            List<Afschrift> afschriften = parseFile(out, gebruiker);
             System.out.println("count "+afschriften.size());
             for (Afschrift afschrift:afschriften) {
-                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
-                gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
+                if (afschrift != null) {
+                    gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                    gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
+                }
             }
             crudService.updateGebruiker(gebruiker);
 
@@ -122,10 +125,18 @@ public class AfschriftService {
         return "OK";
     }
 
+    private class NextNummerHolder{
+        public NextNummerHolder(int nextNummer) {
+            this.nextNummer = nextNummer;
+        }
 
-    private List<Afschrift> parseFile(Path out) {
+        int nextNummer;
+    }
+
+    private List<Afschrift> parseFile(Path out, Gebruiker gebruiker) {
+        NextNummerHolder nextNummerHolder = new NextNummerHolder(findNextAfschriftNummer(gebruiker));
         try (Stream<String> stream = Files.lines(out)) {
-            return stream.map(line->parseLine(line)).collect(Collectors.toList());
+            return stream.map(line->parseLine(line, gebruiker, nextNummerHolder)).collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -133,7 +144,7 @@ public class AfschriftService {
 
     }
 
-    private Afschrift parseLine(String line){
+    private Afschrift parseLine(String line, Gebruiker gebruiker, NextNummerHolder nextNummerHolder){
         //514675950	EUR	20160125	-2,27	-3,02	20160125	-0,75	ABN AMRO Bank N.V.               Betaalpas                   0,75
 
         String[] parts = line.split("\t");
@@ -146,14 +157,27 @@ public class AfschriftService {
             String oms = extractOmschrijving(omschrijving);
 
             String uuid=rekeningNr.trim()+date.trim()+bedragStr+omschrijving.trim()+naam.trim()+oms.trim();
+
+            Afschrift bestaandAfschrift = gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.getUuid().equals(uuid)).findFirst().orElse(null);
+            if (bestaandAfschrift != null) {
+                // afschrift bestaat al
+                return null;
+            }
+
             double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
-            return new Afschrift(uuid, rekeningNr, oms, naam, boekDatum, bedrag, BoekingType.NONE, "","");
+            int nextAfschriftNummer = nextNummerHolder.nextNummer++;
+            return new Afschrift(uuid, ""+ nextAfschriftNummer, rekeningNr, oms, naam, boekDatum, bedrag, BoekingType.NONE, "","");
         }
         else{
             return null;
         }
     }
+
+    private int findNextAfschriftNummer(Gebruiker gebruiker){
+        return 1+gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift->Integer.parseInt(afschrift.getNummer())).max(Comparator.naturalOrder()).orElse(1000);
+    }
+
 
     private String extractNaam(String omschrijving) {
 //        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED

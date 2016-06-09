@@ -107,8 +107,8 @@ public class RubriceerService {
                         Factuur newFactuur = new Factuur(factuur.getFactuurNummer(), factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate(), factuur.getContact(), true, factuur.getFactuurRegels(), factuur.getUuid(), afschrift.getUuid());
                         gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
                         gebruiker.getDefaultAdministratie().addFactuur(newFactuur);
-                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
-                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.FACTUUR, factuur.getFactuurNummer(),""));
+                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(),afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.FACTUUR, factuur.getFactuurNummer(),""));
                     }
                 }
                 break;
@@ -118,22 +118,22 @@ public class RubriceerService {
                         Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getUuid());
                         gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
                         gebruiker.getDefaultAdministratie().addRekening(newRekening);
-                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
-                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "", rekening.getRekeningNummer()));
+                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(),afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "", rekening.getRekeningNummer()));
                     }
                 }
                 break;
             case CREATE_REKENING:
                 Rekening rekening = new Rekening(UUID.randomUUID().toString(), ""+findNextRekeningNummer(gebruiker), afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag(), afschrift.getBedrag(), 0, regel.getAfschrift().getUuid());
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
-                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
-                gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "",rekening.getRekeningNummer()));
+                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(),afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.REKENING, "",rekening.getRekeningNummer()));
                 break;
             case NONE:
                 break;
             case PRIVE:
-                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getUuid());
-                gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.PRIVE, "",""));
+                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(), afschrift.getNummer(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum(), afschrift.getBedrag(), BoekingType.PRIVE, "",""));
                 break;
         }
     }

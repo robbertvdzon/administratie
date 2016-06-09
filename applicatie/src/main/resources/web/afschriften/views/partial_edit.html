@@ -1,6 +1,11 @@
 <div ng-cloak data-ng-controller="AfschriftEditController as afschriftenEditcontroller">
     <br>
     <md-input-container flex>
+        <label>Nummer</label>
+        <input ng-model="data.afschriftToEdit.nummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <md-input-container flex>
         <label>Rekening</label>
         <input ng-model="data.afschriftToEdit.rekening" STYLE="background-color: #B2DFDB;">
     </md-input-container>

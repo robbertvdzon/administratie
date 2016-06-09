@@ -200,10 +200,10 @@ public class Administratie {
         afschriften.add(afschrift);
     }
 
-    public void removeAfschrift(String uuid) {
+    public void removeAfschrift(String nummer) {
         List<Afschrift> afschriftenClone = getAfschriften();
         for (Afschrift afschrift : afschriftenClone) {
-            if (afschrift.getUuid().equals(uuid)) {
+            if (afschrift.getNummer().equals(nummer)) {
                 this.afschriften.remove(afschrift);
             }
         }

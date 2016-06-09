@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class AfschriftDto {
 
     private String uuid;
+    private String nummer;
     private String rekening;
     private String omschrijving;
     private String relatienaam;
@@ -25,8 +26,9 @@ public class AfschriftDto {
     public AfschriftDto() {
     }
 
-    public AfschriftDto(String uuid, String rekening, String omschrijving, String relatienaam, String boekdatum, double bedrag, BoekingType boekingType, String factuurNummer, String rekeningNummer) {
+    public AfschriftDto(String uuid, String nummer, String rekening, String omschrijving, String relatienaam, String boekdatum, double bedrag, BoekingType boekingType, String factuurNummer, String rekeningNummer) {
         this.uuid = uuid;
+        this.nummer = nummer;
         this.rekening = rekening;
         this.omschrijving = omschrijving;
         this.relatienaam = relatienaam;
@@ -38,11 +40,11 @@ public class AfschriftDto {
     }
 
     public AfschriftDto(Afschrift afschrift) {
-        this(afschrift.getUuid(), afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER), afschrift.getBedrag(), afschrift.getBoekingType(), afschrift.getFactuurNummer(), afschrift.getRekeningNummer());
+        this(afschrift.getUuid(), afschrift.getNummer(),  afschrift.getRekening(), afschrift.getOmschrijving(), afschrift.getRelatienaam(), afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER), afschrift.getBedrag(), afschrift.getBoekingType(), afschrift.getFactuurNummer(), afschrift.getRekeningNummer());
     }
 
     public Afschrift toAfschrift() {
-        return new Afschrift(uuid, rekening, omschrijving, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag, boekingType, factuurNummer, rekeningNummer);
+        return new Afschrift(uuid, nummer, rekening, omschrijving, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag, boekingType, factuurNummer, rekeningNummer);
     }
 
     public String getUuid() {
@@ -115,5 +117,13 @@ public class AfschriftDto {
 
     public void setRekeningNummer(String rekeningNummer) {
         this.rekeningNummer = rekeningNummer;
+    }
+
+    public String getNummer() {
+        return nummer;
+    }
+
+    public void setNummer(String nummer) {
+        this.nummer = nummer;
     }
 }

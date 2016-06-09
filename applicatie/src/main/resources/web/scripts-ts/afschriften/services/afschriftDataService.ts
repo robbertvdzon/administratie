@@ -58,6 +58,7 @@ module Application.Services {
             if (afschrift == null) return null;
             var afschriftClone = new AfschriftData();
             afschriftClone.uuid = afschrift.uuid;
+            afschriftClone.nummer = afschrift.nummer;
             afschriftClone.rekening = afschrift.rekening;
             afschriftClone.omschrijving = afschrift.omschrijving;
             afschriftClone.relatienaam = afschrift.relatienaam;
@@ -71,6 +72,7 @@ module Application.Services {
 
         public copyInto(afschriftFrom:AfschriftData, afschriftTo:AfschriftData) {
             afschriftTo.uuid = afschriftFrom.uuid;
+            afschriftTo.nummer = afschriftFrom.nummer;
             afschriftTo.rekening = afschriftFrom.rekening;
             afschriftTo.omschrijving = afschriftFrom.omschrijving;
             afschriftTo.relatienaam = afschriftFrom.relatienaam;
@@ -100,7 +102,7 @@ module Application.Services {
 
         public deleteAfschrift():ng.IPromise<any> {
             return this.$http({
-                url: "/rest/afschrift/" + this.getSelectedAfschrift().uuid,
+                url: "/rest/afschrift/" + this.getSelectedAfschrift().nummer,
                 method: "DELETE"
             }).then((response) => {
                 this.dataService.reload();
