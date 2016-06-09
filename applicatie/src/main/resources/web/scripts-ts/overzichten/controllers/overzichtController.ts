@@ -8,18 +8,20 @@ module Application.Controllers {
     import AdministratieGuiData = Application.Services.AdministratieGuiData;
 
     interface MyScope extends ng.IScope {
-        jaar:String;
+        beginDate:String;
+        endDate:String;
     }
 
     export class OverzichtController {
 
-        constructor(private $scope:MyScope, private $http) {
-        $scope.jaar= "2016";
+        constructor(private $scope:MyScope, private $http, private $filter, private $window) {
+            $scope.beginDate= "01-01-"+this.$filter('date')(new Date(), 'yyyy');
+            $scope.endDate= "31-12-"+this.$filter('date')(new Date(), 'yyyy');
         }
 
 
         public dowload(){
-            alert("download "+this.$scope.jaar);
+            this.$window.open('/rest/overzicht/pdf/'+this.$scope.beginDate+"/"+this.$scope.endDate, '_blank');
         }
 
 

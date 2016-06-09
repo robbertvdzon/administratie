@@ -11,6 +11,7 @@ import com.vdzon.administratie.data.DataResource;
 import com.vdzon.administratie.declaratie.DeclaratieResource;
 import com.vdzon.administratie.factuur.FactuurResource;
 import com.vdzon.administratie.gebruiker.GebruikerResource;
+import com.vdzon.administratie.overzicht.OverzichtResource;
 import com.vdzon.administratie.rekening.RekeningResource;
 import com.vdzon.administratie.rubriceren.rest.RubriceerResource;
 import com.vdzon.administratie.version.VersionResource;
@@ -69,6 +70,7 @@ public class App {
         AdministratieResource administratieResource = injector.getInstance(AdministratieResource.class);
         BestellingResource bestellingResource = injector.getInstance(BestellingResource.class);
         RubriceerResource rubriceerResource  = injector.getInstance(RubriceerResource.class);
+        OverzichtResource overzichtResource = injector.getInstance(OverzichtResource.class);
     }
 
     private static void loadVersion() {
