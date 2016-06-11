@@ -10,7 +10,7 @@ module Application.Directives {
     class CheckandfixRow implements ng.IDirective {
 
         static instance() : ng.IDirective {
-            return new CheckAndFixRegel;
+            return new CheckandfixRow;
         }
 
         restrict = 'E';

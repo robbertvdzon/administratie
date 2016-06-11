@@ -172,6 +172,17 @@ module Application.Services {
             });
 
         }
+
+        public startFix() {
+            return this.$http({
+                url: "/rest/fix/",
+                method: "POST",
+                data: "",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+
+        }
+
     }
 }
 

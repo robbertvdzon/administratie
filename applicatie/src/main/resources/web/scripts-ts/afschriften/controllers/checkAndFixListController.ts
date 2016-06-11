@@ -22,10 +22,10 @@ module Application.Controllers {
 
         public startFix(){
             alert("start fix");
-            //this.afschriftDataService.startRubriceer().then((response) => {
-            //    this.dataService.reload();
-            //    this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_LIJST);
-            //});
+            this.afschriftDataService.startFix().then((response) => {
+                this.dataService.reload();
+                this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_LIJST);
+            });
         }
 
 

@@ -139,6 +139,8 @@ module Application.Model {
         rubriceerAction:String;
         checkType:String;
         afschift:AfschriftData;
+        omschrijving:String;
+        data:String;
     }
 
 }
