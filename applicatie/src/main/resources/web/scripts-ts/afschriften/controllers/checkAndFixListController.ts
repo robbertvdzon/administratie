@@ -21,11 +21,18 @@ module Application.Controllers {
         }
 
         public startFix(){
-            alert("start fix");
             this.afschriftDataService.startFix().then((response) => {
                 this.dataService.reload();
                 this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_LIJST);
             });
+        }
+
+        getActie(actie:String){
+            if (actie=="NONE") return "Geen actie";
+            if (actie=="REMOVE_REF_FROM_FACTUUR") return "Repareer de factuur";
+            if (actie=="REMOVE_REF_FROM_REKENING") return "Repareer de rekening";
+            if (actie=="REMOVE_REF_FROM_AFSCHRIFT") return "Repareer het afschrift";
+            return "Geen actie";
         }
 
 

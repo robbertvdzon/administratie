@@ -54,7 +54,7 @@ public class AdministratieDto {
         return afschriften
                 .stream()
                 .map(afschrift -> new AfschriftDto(afschrift))
-                .sorted((afschriftDto1, afschriftDto2) -> afschriftDto2.getBoekdatum().compareTo(afschriftDto1.getBoekdatum()))
+                .sorted((afschriftDto1, afschriftDto2) -> afschriftDto2.getNummer().compareTo(afschriftDto1.getNummer()))
                 .collect(Collectors.toList());
     }
 

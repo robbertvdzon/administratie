@@ -123,8 +123,8 @@ public class CheckAndFixService {
         return data.alleRekeningen
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
-                .filter(rekening -> rekening.getRekeningNummer() != getRekeningNummer(rekening, data))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Inconsistentie tussen rekening " + rekening.getRekeningNummer() + " en afschrift "+getRekeningNummer(rekening, data), ""))
+                .filter(rekening -> !rekening.getRekeningNummer().equals(getRekeningNummer(rekening, data)))
+                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Inconsistentie tussen rekening " + rekening.getRekeningNummer() + " en afschrift "+getAfschriftDto(rekening, data).getNummer()+"(heeft nr "+getRekeningNummer(rekening, data)+")", ""))
                 .collect(Collectors.toList());
     }
 
@@ -132,8 +132,8 @@ public class CheckAndFixService {
         return data.alleFacturen
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
-                .filter(factuur -> factuur.getFactuurNummer() != getFactuurNummer(factuur, data))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Inconsistentie tussen rekening " + factuur.getFactuurNummer() + " en afschrift "+getFactuurNummer(factuur, data), ""))
+                .filter(factuur -> !factuur.getFactuurNummer().equals(getFactuurNummer(factuur, data)))
+                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Inconsistentie tussen factuur " + factuur.getFactuurNummer() + " en afschrift "+getAfschriftDto(factuur, data).getNummer()+"(heeft nr "+getFactuurNummer(factuur, data), ""))
                 .collect(Collectors.toList());
     }
 
@@ -250,19 +250,73 @@ public class CheckAndFixService {
                 res.status(404);
                 return new SingleAnswer("not found");
             }
-            String regelsJson = req.body();
-            ObjectMapper mapper = new ObjectMapper();
-//            CheckAndFixRegels rubriceerRegels = mapper.readValue(regelsJson, CheckAndFixRegels.class);
 
-//            System.out.println("rubriceer:");
-//            rubriceerRegels.getCheckAndFixRegels().stream().forEach(regel-> processRegel(regel, gebruiker));
-//            crudService.updateGebruiker(gebruiker);
+            List<CheckAndFixRegel> regelsToFix = getCheckAndFixRegels(gebruiker).stream().filter(regel->regel.getCheckType()==CheckType.FIX_NEEDED).collect(Collectors.toList());
+            List<CheckAndFixRegel> afschriftenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_AFSCHRIFT).collect(Collectors.toList());
+            List<CheckAndFixRegel> rekeningenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_REKENING).collect(Collectors.toList());
+            List<CheckAndFixRegel> facturenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_FACTUUR).collect(Collectors.toList());
+
+
+            afschriftenToFix.forEach(regel->fixAfschrift(regel, gebruiker));
+            rekeningenToFix.forEach(regel->fixRekening(regel, gebruiker));
+            facturenToFix.forEach(regel->fixFactuur(regel, gebruiker));
+
+            crudService.updateGebruiker(gebruiker);
 
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
         return new SingleAnswer("ok");
+    }
+    private void fixRekening(CheckAndFixRegel regel, Gebruiker gebruiker) {
+        Rekening rekening = gebruiker.getDefaultAdministratie().getRekeningen().stream().filter(rek -> rek.getRekeningNummer().equals(regel.getData())).findFirst().orElse(null);
+        if (rekening==null) return;
+        gebruiker.getDefaultAdministratie().removeRekening((rekening.getUuid()));
+        gebruiker.getDefaultAdministratie().addRekening(new Rekening(
+                rekening.getUuid(),
+                rekening.getRekeningNummer(),
+                rekening.getFactuurNummer(),
+                rekening.getNaam(),
+                rekening.getOmschrijving(),
+                rekening.getRekeningDate(),
+                rekening.getBedragExBtw(),
+                rekening.getBedragIncBtw(),
+                rekening.getBtw(),
+                ""
+        ));
+    }
+
+    private void fixFactuur(CheckAndFixRegel regel, Gebruiker gebruiker) {
+        Factuur factuur  = gebruiker.getDefaultAdministratie().getFacturen().stream().filter(fak -> fak.getFactuurNummer().equals(regel.getData())).findFirst().orElse(null);
+        if (factuur ==null) return;
+        gebruiker.getDefaultAdministratie().removeFactuur(factuur .getUuid());
+        gebruiker.getDefaultAdministratie().addFactuur(new Factuur(
+                factuur.getFactuurNummer(),
+                factuur.getGekoppeldeBestellingNummer(),
+                factuur.getFactuurDate(),
+                factuur.getContact(),
+                factuur.isBetaald(),
+                factuur.getFactuurRegels(),
+                factuur.getUuid(),
+                ""
+        ));
+    }
+
+    private void fixAfschrift(CheckAndFixRegel regel, Gebruiker gebruiker) {
+        Afschrift afschrift = regel.getAfschrift().toAfschrift();
+        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(),
+                afschrift.getNummer(),
+                afschrift.getRekening(),
+                afschrift.getOmschrijving(),
+                afschrift.getRelatienaam(),
+                afschrift.getBoekdatum(),
+                afschrift.getBedrag(),
+                BoekingType.NONE,
+                "",
+                ""
+                ));
     }
 
     private Afschrift findAfschrift(String uuid, Gebruiker gebruiker) {
