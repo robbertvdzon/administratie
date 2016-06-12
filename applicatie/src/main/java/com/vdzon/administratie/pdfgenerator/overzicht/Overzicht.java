@@ -44,4 +44,6 @@ public class Overzicht {
     public List<Declaratie> filteredDeclaraties = null;
     public List<Afschrift> filteredAfschriften = null;
 
+    public double betaaldeFacturenBuitenGeselecteerdePeriode;
+    public double betaaldeRekeningenBuitenGeselecteerdePeriode;
 }

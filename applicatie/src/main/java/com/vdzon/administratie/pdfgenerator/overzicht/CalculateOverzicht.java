@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CalculateOverzicht {
@@ -13,6 +15,8 @@ public class CalculateOverzicht {
     
     public static Overzicht calculateOverzicht(Administratie administratie, String beginDateStr, String endDateStr){
         Overzicht overzicht = new Overzicht();
+
+        Map<String, Afschrift> afschriftenMap = administratie.getAfschriften().stream().collect(Collectors.toMap(Afschrift::getNummer, Function.identity()));
 
         overzicht.beginDate = LocalDate.parse(beginDateStr, DATE_FORMATTER);
         overzicht.endDate = LocalDate.parse(endDateStr, DATE_FORMATTER);
@@ -35,9 +39,22 @@ public class CalculateOverzicht {
         overzicht.declaratiesTotaalBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBtw()).sum();
 
         overzicht.betaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+        overzicht.betaaldeFacturenBuitenGeselecteerdePeriode =
+                overzicht.filteredFacturen
+                        .stream()
+                        .filter(factuur->factuur.isBetaald())
+                        .filter(factuur->afschriftenMap.get(factuur.getGekoppeldAfschrift())!=null)
+                        .filter(factuur->!betweenOrAtDates(afschriftenMap.get(factuur.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
+                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.onbetaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->!factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.betaaldeRekeningen = overzicht.rekeningenTotaalIncBtw;
-        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeRekeningen;
+        overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode =
+                overzicht.filteredRekeningen
+                        .stream()
+                        .filter(rekening->afschriftenMap.get(rekening.getGekoppeldAfschrift())!=null)
+                        .filter(rekening->!betweenOrAtDates(afschriftenMap.get(rekening.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
+                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeFacturenBuitenGeselecteerdePeriode-overzicht.betaaldeRekeningen+overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode;
 
         overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag()).sum();
         overzicht.priveOpBankBij = overzicht.filteredAfschriften.stream().filter(afschrift->afschrift.getBoekingType()==BoekingType.PRIVE).mapToDouble(afschrift -> afschrift.getBedrag()).sum();

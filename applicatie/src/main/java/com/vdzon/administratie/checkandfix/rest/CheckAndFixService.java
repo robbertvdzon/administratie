@@ -80,7 +80,7 @@ public class CheckAndFixService {
         return data.alleFacturen
                 .stream()
                 .filter(factuur -> !hasGekoppeldAfschrift(factuur))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Factuur " + factuur.getFactuurNummer() + " is niet geboekt", ""))
+                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Factuur " + factuur.getFactuurNummer() + " is niet geboekt", "", factuur.getFactuurDate()))
                 .collect(Collectors.toList());
     }
 
@@ -88,7 +88,7 @@ public class CheckAndFixService {
         return data.alleRekeningen
                 .stream()
                 .filter(rekening -> !hasGekoppeldAfschrift(rekening))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Rekening " + rekening.getRekeningNummer() + " is niet geboekt", ""))
+                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Rekening " + rekening.getRekeningNummer() + " is niet geboekt", "", rekening.getRekeningDate()))
                 .collect(Collectors.toList());
     }
 
@@ -96,7 +96,7 @@ public class CheckAndFixService {
         return data.alleAfschriften
                 .stream()
                 .filter(afschrift -> afschrift.getBoekingType() == BoekingType.NONE)
-                .map(afschrift -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is niet verwerkt", ""))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is niet verwerkt", "", afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +105,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
                 .filter(factuur -> factuur.getBedragIncBtw() != getAfschiftBedrag(factuur, data))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Factuurbedrag van factuur " + factuur.getFactuurNummer() + " komt niet overeen met bedrag afschift "+factuur.getGekoppeldAfschrift()+"", " ("+factuur.getBedragIncBtw()+"!="+getAfschiftBedrag(factuur, data)+")"))
+                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Factuurbedrag van factuur " + factuur.getFactuurNummer() + " komt niet overeen met bedrag afschift "+factuur.getGekoppeldAfschrift()+"", " ("+factuur.getBedragIncBtw()+"!="+getAfschiftBedrag(factuur, data)+")", factuur.getFactuurDate()))
                 .collect(Collectors.toList());
     }
 
@@ -114,7 +114,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
                 .filter(rekening -> rekening.getBedragIncBtw()*-1 != getAfschiftBedrag(rekening, data))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Rekeningbedrag van rekening " + rekening.getRekeningNummer() + " komt niet overeen met bedrag afschift "+rekening.getGekoppeldAfschrift()+"", " ("+rekening.getBedragIncBtw()+"!="+getAfschiftBedrag(rekening, data)+")"))
+                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Rekeningbedrag van rekening " + rekening.getRekeningNummer() + " komt niet overeen met bedrag afschift "+rekening.getGekoppeldAfschrift()+", ("+rekening.getBedragIncBtw()+"!="+getAfschiftBedrag(rekening, data)+")","", rekening.getRekeningDate()))
                 .collect(Collectors.toList());
     }
 
@@ -123,7 +123,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
                 .filter(rekening -> !rekening.getRekeningNummer().equals(getRekeningNummer(rekening, data)))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Inconsistentie tussen rekening " + rekening.getRekeningNummer() + " en afschrift "+getAfschriftDto(rekening, data).getNummer()+"(heeft nr "+getRekeningNummer(rekening, data)+")", ""))
+                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Inconsistentie tussen rekening " + rekening.getRekeningNummer() + " en afschrift "+getAfschriftDto(rekening, data).getNummer()+"(heeft nr "+getRekeningNummer(rekening, data)+")", "", rekening.getRekeningDate()))
                 .collect(Collectors.toList());
     }
 
@@ -132,7 +132,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
                 .filter(factuur -> !factuur.getFactuurNummer().equals(getFactuurNummer(factuur, data)))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Inconsistentie tussen factuur " + factuur.getFactuurNummer() + " en afschrift "+getAfschriftDto(factuur, data).getNummer()+"(heeft nr "+getFactuurNummer(factuur, data), ""))
+                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Inconsistentie tussen factuur " + factuur.getFactuurNummer() + " en afschrift "+getAfschriftDto(factuur, data).getNummer()+"(heeft nr "+getFactuurNummer(factuur, data), "", factuur.getFactuurDate()))
                 .collect(Collectors.toList());
     }
 
@@ -142,7 +142,7 @@ public class CheckAndFixService {
                 .filter(afschrift -> afschrift.getBoekingType()==BoekingType.REKENING)
                 .filter(afschrift -> data.rekeningMap.get(afschrift.getRekeningNummer())!=null)
                 .filter(afschrift -> !data.rekeningMap.get(afschrift.getRekeningNummer()).getGekoppeldAfschrift().equals(afschrift.getNummer()))
-                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en rekening "+afschrift.getRekeningNummer(), afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en rekening "+afschrift.getRekeningNummer(), afschrift.getNummer(), afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -152,7 +152,7 @@ public class CheckAndFixService {
                 .filter(afschrift -> afschrift.getBoekingType()==BoekingType.FACTUUR)
                 .filter(afschrift -> data.factuurMap.get(afschrift.getFactuurNummer())!=null)
                 .filter(afschrift -> !data.factuurMap.get(afschrift.getFactuurNummer()).getGekoppeldAfschrift().equals(afschrift.getNummer()))
-                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en factuur "+afschrift.getFactuurNummer(), afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en factuur "+afschrift.getFactuurNummer(), afschrift.getNummer(), afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -161,7 +161,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(afschrift -> afschrift.getBoekingType() == BoekingType.REKENING)
                 .filter(afschrift -> data.rekeningMap.get(afschrift.getRekeningNummer())==null)
-                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is gekoppeld aan niet bestaande rekening "+afschrift.getRekeningNummer(),afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is gekoppeld aan niet bestaande rekening "+afschrift.getRekeningNummer(),afschrift.getNummer(), afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -170,7 +170,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(afschrift -> afschrift.getBoekingType() == BoekingType.FACTUUR)
                 .filter(afschrift -> data.factuurMap.get(afschrift.getFactuurNummer())==null)
-                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is gekoppeld aan niet bestaande factuur "+afschrift.getFactuurNummer(),afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is gekoppeld aan niet bestaande factuur "+afschrift.getFactuurNummer(),afschrift.getNummer(), afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -179,7 +179,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
                 .filter(rekening -> data.afschriftMap.get(rekening.getGekoppeldAfschrift())==null)
-                .map(rekening -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_REKENING, CheckType.FIX_NEEDED, getAfschriftDto(rekening, data), "Rekening " + rekening.getRekeningNummer() + " is geboekt aan niet bestaande afschrift "+rekening.getGekoppeldAfschrift(),rekening.getRekeningNummer()))
+                .map(rekening -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_REKENING, CheckType.FIX_NEEDED, getAfschriftDto(rekening, data), "Rekening " + rekening.getRekeningNummer() + " is geboekt aan niet bestaande afschrift "+rekening.getGekoppeldAfschrift(),rekening.getRekeningNummer(), rekening.getRekeningDate()))
                 .collect(Collectors.toList());
     }
 
@@ -188,7 +188,7 @@ public class CheckAndFixService {
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
                 .filter(factuur -> data.afschriftMap.get(factuur.getGekoppeldAfschrift())==null)
-                .map(factuur -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_FACTUUR, CheckType.FIX_NEEDED, getAfschriftDto(factuur, data), "Factuur " + factuur.getFactuurNummer() + " is geboekt aan niet bestaande afschrift "+factuur.getGekoppeldAfschrift(),factuur.getFactuurNummer()))
+                .map(factuur -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_FACTUUR, CheckType.FIX_NEEDED, getAfschriftDto(factuur, data), "Factuur " + factuur.getFactuurNummer() + " is geboekt aan niet bestaande afschrift "+factuur.getGekoppeldAfschrift(),factuur.getFactuurNummer(), factuur.getFactuurDate()))
                 .collect(Collectors.toList());
     }
 
@@ -196,7 +196,7 @@ public class CheckAndFixService {
         return data.alleAfschriften
                 .stream()
                 .filter(afschrift -> data.afschriftMap.get(afschrift.getNummer())!=afschrift)
-                .map(afschrift -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " bestaat meerdere keren",""))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " bestaat meerdere keren","", afschrift.getBoekdatum()))
                 .collect(Collectors.toList());
     }
 
@@ -204,7 +204,7 @@ public class CheckAndFixService {
         return data.alleRekeningen
                 .stream()
                 .filter(rekening -> data.rekeningMap.get(rekening.getRekeningNummer())!=rekening)
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Rekening " + rekening.getRekeningNummer() + " bestaat meerdere keren",""))
+                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Rekening " + rekening.getRekeningNummer() + " bestaat meerdere keren","", rekening.getRekeningDate()))
                 .collect(Collectors.toList());
     }
 
@@ -212,7 +212,7 @@ public class CheckAndFixService {
         return data.alleFacturen
                 .stream()
                 .filter(factuur -> data.factuurMap.get(factuur.getFactuurNummer())!=factuur)
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Factuur " + factuur.getFactuurNummer() + " bestaat meerdere keren",""))
+                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Factuur " + factuur.getFactuurNummer() + " bestaat meerdere keren","", factuur.getFactuurDate()))
                 .collect(Collectors.toList());
     }
 

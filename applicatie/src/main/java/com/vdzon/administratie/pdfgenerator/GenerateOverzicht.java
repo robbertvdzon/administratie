@@ -16,6 +16,9 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import javax.inject.Inject;
 import java.io.*;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GenerateOverzicht {
 
@@ -66,10 +69,17 @@ public class GenerateOverzicht {
         writeRegelsBetaaldOntvangenRegel(fontPlain, "Betaalde rekeningen", overzicht.rekeningenTotaalExBtw, overzicht.rekeningenTotaalBtw, overzicht.rekeningenTotaalIncBtw);
         writeRegelsBetaaldOntvangenRegel(fontPlain, "Declaraties", overzicht.declaratiesTotaalExBtw, overzicht.declaratiesTotaalBtw, overzicht.declaratiesTotaalIncBtw);
         skipDown(30);
+        writeTitle("Totaal belastbaar inkomen");
+        writeFieldValue(fontPlain, "Totaal Exclusief BTW", overzicht.belastbaarInkomenExBtw);
+        writeFieldValue(fontPlain, "BTW", overzicht.belastbaarInkomenBtw);
+        writeFieldValue(fontPlain, "Totaal Inclusief BTW", overzicht.belastbaarInkomenIncBtw);
+        skipDown(30);
         writeTitle("Bankrekening controle");
         writeFieldValue(fontPlain, "Betaalde facturen", overzicht.betaaldeFacturen);
         writeFieldValue(fontPlain, "Onbetaalde facturen", overzicht.onbetaaldeFacturen);
         writeFieldValue(fontPlain, "Betaalde rekeningen", overzicht.betaaldeRekeningen);
+        writeFieldValue(fontPlain, "Betaalde facturen buiten geselecteerde periode", overzicht.betaaldeFacturenBuitenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Betaalde rekeningen buiten geselecteerde periode", overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode);
         writeFieldValue(fontPlain, "Verwacht totaal op rekening bij", overzicht.verwachtTotaalOpRekeningBij);
         skipDown(10);
         writeFieldValue(fontPlain, "Werkelijk op bank bijgeschreven", overzicht.werkelijkOpBankBij);
@@ -77,11 +87,6 @@ public class GenerateOverzicht {
         writeFieldValue(fontPlain, "Werkelijk totaal voor administratie", overzicht.werkelijkOpBankBijVoorAdministratie);
         skipDown(10);
         writeFieldValue(fontPlain, "Verschil tussen verwacht en werkelijk ontvangen", overzicht.verschilTussenVerwachtEnWerkelijk);
-        skipDown(30);
-        writeTitle("Totaal belastbaar inkomen");
-        writeFieldValue(fontPlain, "Totaal Exclusief BTW", overzicht.belastbaarInkomenExBtw);
-        writeFieldValue(fontPlain, "BTW", overzicht.belastbaarInkomenBtw);
-        writeFieldValue(fontPlain, "Totaal Inclusief BTW", overzicht.belastbaarInkomenIncBtw);
 
         page.close();
 
@@ -99,7 +104,11 @@ public class GenerateOverzicht {
         writeTitle("Alle facturen");
         skipDown(10);
         listFactuurHeader();
-        overzicht.filteredFacturen.stream().forEach(factuur -> listFactuur(factuur));
+        overzicht
+                .filteredFacturen
+                .stream()
+                .sorted((fak1, fak2) -> fak2.getFactuurNummer().compareTo(fak1.getFactuurNummer()))
+                .forEach(factuur -> listFactuur(factuur));
 
         page.close();
 
@@ -116,7 +125,11 @@ public class GenerateOverzicht {
         writeTitle("Alle rekeningen");
         skipDown(10);
         listRekeningHeader();
-        overzicht.filteredRekeningen.stream().forEach(rekening -> listRekening(rekening));
+        overzicht
+                .filteredRekeningen
+                .stream()
+                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
+                .forEach(rekening -> listRekening(rekening));
 
         page.close();
 /*
@@ -132,7 +145,10 @@ public class GenerateOverzicht {
         writeTitle("Alle declaraties");
         skipDown(10);
         listDeclaratiesHeader();
-        overzicht.filteredDeclaraties.stream().forEach(declaratie-> listDeclaraties(declaratie));
+        overzicht.filteredDeclaraties
+                .stream()
+                .sorted((decl1, decl2) -> decl2.getDeclaratieNummer().compareTo(decl1.getDeclaratieNummer()))
+                .forEach(declaratie-> listDeclaraties(declaratie));
 
         page.close();
 /*
@@ -148,7 +164,11 @@ public class GenerateOverzicht {
         writeTitle("Alle afschriften");
         skipDown(10);
         listAfschriftHeader();
-        overzicht.filteredAfschriften.stream().forEach(afschrift-> listAfschrift(afschrift));
+        overzicht
+                .filteredAfschriften
+                .stream()
+                .sorted((afschrift1, afschrift2) -> afschrift2.getNummer().compareTo(afschrift1.getNummer()))
+                .forEach(afschrift-> listAfschrift(afschrift));
 
         page.close();
 
@@ -162,12 +182,13 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        if (checkAndFixService.getCheckAndFixRegels(administratie).isEmpty()){
+        List<CheckAndFixRegel> checkAndFixRegels = checkAndFixService.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        if (checkAndFixRegels.isEmpty()){
             writeTitle("Geen waarschuwingen gevonden");
         }
         else{
             writeTitle("Alle waarschuwingen");
-            checkAndFixService.getCheckAndFixRegels(administratie).stream().forEach(regel->listWaarschuwing(regel));
+            checkAndFixRegels.stream().forEach(regel->listWaarschuwing(regel));
         }
 
         page.close();
@@ -178,6 +199,14 @@ public class GenerateOverzicht {
 
         document.save(outputStream);
         document.close();
+    }
+
+    private static boolean betweenOrAtDates(LocalDate date, LocalDate beginDate, LocalDate endData){
+        return date.equals(beginDate) || date.equals(endData) || betweenDates(date, beginDate, endData);
+    }
+
+    private static boolean betweenDates(LocalDate date, LocalDate beginDate, LocalDate endData){
+        return date.isAfter(beginDate) && date.isBefore(endData);
     }
 
     private void listWaarschuwing(CheckAndFixRegel regel) {
@@ -358,6 +387,8 @@ public class GenerateOverzicht {
             y+=50;
             writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
             y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag");
+            y+=60;
             writeText(LIJST_FONT_SIZE, y, fontBold, "Type");
             y+=100;
             writeText(LIJST_FONT_SIZE, y, fontBold, "Naam");
@@ -374,6 +405,8 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getNummer());
             y+=50;
             writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getBoekdatum().toString());
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontPlain, ""+afschrift.getBedrag());
             y+=60;
             String status = "";
             switch (afschrift.getBoekingType()){
