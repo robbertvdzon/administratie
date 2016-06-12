@@ -1,5 +1,7 @@
 package com.vdzon.administratie.pdfgenerator;
 
+import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
+import com.vdzon.administratie.checkandfix.rest.CheckAndFixService;
 import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.pdfgenerator.overzicht.CalculateOverzicht;
 import com.vdzon.administratie.pdfgenerator.overzicht.Overzicht;
@@ -11,10 +13,13 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.net.URL;
 
 public class GenerateOverzicht {
+
+
 
     private static PDFont fontPlain = PDType1Font.HELVETICA;
     private static PDFont fontBold = PDType1Font.HELVETICA_BOLD;
@@ -25,11 +30,11 @@ public class GenerateOverzicht {
     private PDDocument document = null;
     private PDPage pdfPage = null;
 
-    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
-        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream);
+    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckAndFixService checkAndFixService) throws IOException {
+        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream, checkAndFixService);
     }
 
-    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
+    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckAndFixService checkAndFixService) throws IOException {
         document = new PDDocument();
         pdfPage = new PDPage(PDRectangle.A4);
         PDRectangle rect = pdfPage.getMediaBox();
@@ -146,6 +151,26 @@ public class GenerateOverzicht {
         overzicht.filteredAfschriften.stream().forEach(afschrift-> listAfschrift(afschrift));
 
         page.close();
+
+/*
+********************** WAARSCHUWINGEN PAGINA
+ */
+        pos = pageHeight;
+
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        if (checkAndFixService.getCheckAndFixRegels(administratie).isEmpty()){
+            writeTitle("Geen waarschuwingen gevonden");
+        }
+        else{
+            writeTitle("Alle waarschuwingen");
+            checkAndFixService.getCheckAndFixRegels(administratie).stream().forEach(regel->listWaarschuwing(regel));
+        }
+
+        page.close();
 /*
 ********************** CLOSE
  */
@@ -153,6 +178,16 @@ public class GenerateOverzicht {
 
         document.save(outputStream);
         document.close();
+    }
+
+    private void listWaarschuwing(CheckAndFixRegel regel) {
+        try {
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, regel.getOmschrijving());
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     private static int LIJST_FONT_SIZE = 10;

@@ -246,10 +246,11 @@ public class AfschriftService {
     private LocalDate getBoekDatum(String date) {
         try {
             DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("yyyymmdd");
+                    DateTimeFormatter.ofPattern("yyyyMMdd");
             return LocalDate.parse(date, formatter);
         }
         catch (DateTimeParseException exc) {
+            exc.printStackTrace();
         }
         return LocalDate.now();
 

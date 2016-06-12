@@ -1,6 +1,5 @@
 package com.vdzon.administratie.checkandfix.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegels;
@@ -17,14 +16,13 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CheckAndFixService {
 
     @Inject
     UserCrud crudService;
 
-    protected Object getCheckAndFixRegels(Request req, Response res) throws Exception {
+    public  Object getCheckAndFixRegels(Request req, Response res) throws Exception {
         try {
             String uuid = SessionHelper.getAuthenticatedUserUuid(req);
             Gebruiker gebruiker = crudService.getGebruiker(uuid);
@@ -33,7 +31,7 @@ public class CheckAndFixService {
                 return new SingleAnswer("not found");
             }
 
-            List<CheckAndFixRegel> regels = getCheckAndFixRegels(gebruiker);
+            List<CheckAndFixRegel> regels = getCheckAndFixRegels(gebruiker.getDefaultAdministratie());
             return new CheckAndFixRegels(regels);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -41,10 +39,9 @@ public class CheckAndFixService {
         }
     }
 
-    private List<CheckAndFixRegel> getCheckAndFixRegels(Gebruiker gebruiker) {
+    public List<CheckAndFixRegel> getCheckAndFixRegels(Administratie administratie) {
         CheckAndFixData checkAndFixData = new CheckAndFixData();
 
-        Administratie administratie = gebruiker.getDefaultAdministratie();
         checkAndFixData.alleAfschriften = administratie.getAfschriften();
         checkAndFixData.alleRekeningen = administratie.getRekeningen();
         checkAndFixData.alleFacturen = administratie.getFacturen();
@@ -53,7 +50,6 @@ public class CheckAndFixService {
         checkAndFixData.factuurMap = checkAndFixData.alleFacturen.stream().collect(Collectors.toMap(Factuur::getFactuurNummer, Function.identity()));
 
         List<CheckAndFixRegel> regels = new ArrayList();
-        List<Afschrift> afschriften = gebruiker.getDefaultAdministratie().getAfschriften();
 
         regels.addAll(checkFacturenZonderAfschift(checkAndFixData));
         regels.addAll(checkRekeningenZonderAfschift(checkAndFixData));
@@ -68,8 +64,11 @@ public class CheckAndFixService {
         regels.addAll(checkAfschriftenOfFacturenWelBestaan(checkAndFixData));
         regels.addAll(checkAfschriftenOfRekeningenWelBestaan(checkAndFixData));
 
-        regels.addAll(checkConsistencyTussenAfschriftenEnRekeningen(checkAndFixData));
-        regels.addAll(checkConsistencyTussenAfschriftenEnFacturen(checkAndFixData));
+        regels.addAll(checkConsistencyTussenRekeningEnAfschriften(checkAndFixData));
+        regels.addAll(checkConsistencyTussenFacturenEnAfschriften(checkAndFixData));
+
+        regels.addAll(checkConsistencyTussenAfschiftenEnRekeningen(checkAndFixData));
+        regels.addAll(checkConsistencyTussenAfschiftenEnFacturen(checkAndFixData));
 
         regels.addAll(vergelijkBedragTussenRekeningenEnAfschriften(checkAndFixData));
         regels.addAll(vergelijkBedragTussenFacturenEnAfschriften(checkAndFixData));
@@ -119,7 +118,7 @@ public class CheckAndFixService {
                 .collect(Collectors.toList());
     }
 
-    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenAfschriftenEnRekeningen(CheckAndFixData data) {
+    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenRekeningEnAfschriften(CheckAndFixData data) {
         return data.alleRekeningen
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
@@ -128,12 +127,32 @@ public class CheckAndFixService {
                 .collect(Collectors.toList());
     }
 
-    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenAfschriftenEnFacturen(CheckAndFixData data) {
+    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenFacturenEnAfschriften(CheckAndFixData data) {
         return data.alleFacturen
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
                 .filter(factuur -> !factuur.getFactuurNummer().equals(getFactuurNummer(factuur, data)))
                 .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Inconsistentie tussen factuur " + factuur.getFactuurNummer() + " en afschrift "+getAfschriftDto(factuur, data).getNummer()+"(heeft nr "+getFactuurNummer(factuur, data), ""))
+                .collect(Collectors.toList());
+    }
+
+    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenAfschiftenEnRekeningen(CheckAndFixData data) {
+        return data.alleAfschriften
+                .stream()
+                .filter(afschrift -> afschrift.getBoekingType()==BoekingType.REKENING)
+                .filter(afschrift -> data.rekeningMap.get(afschrift.getRekeningNummer())!=null)
+                .filter(afschrift -> !data.rekeningMap.get(afschrift.getRekeningNummer()).getGekoppeldAfschrift().equals(afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en rekening "+afschrift.getRekeningNummer(), afschrift.getNummer()))
+                .collect(Collectors.toList());
+    }
+
+    private Collection<? extends CheckAndFixRegel> checkConsistencyTussenAfschiftenEnFacturen(CheckAndFixData data) {
+        return data.alleAfschriften
+                .stream()
+                .filter(afschrift -> afschrift.getBoekingType()==BoekingType.FACTUUR)
+                .filter(afschrift -> data.factuurMap.get(afschrift.getFactuurNummer())!=null)
+                .filter(afschrift -> !data.factuurMap.get(afschrift.getFactuurNummer()).getGekoppeldAfschrift().equals(afschrift.getNummer()))
+                .map(afschrift -> new CheckAndFixRegel(FixAction.REMOVE_REF_FROM_AFSCHRIFT, CheckType.FIX_NEEDED, getAfschriftDto(afschrift), "Inconsistentie tussen afschrift " + afschrift.getNummer() + " en factuur "+afschrift.getFactuurNummer(), afschrift.getNummer()))
                 .collect(Collectors.toList());
     }
 
@@ -251,7 +270,7 @@ public class CheckAndFixService {
                 return new SingleAnswer("not found");
             }
 
-            List<CheckAndFixRegel> regelsToFix = getCheckAndFixRegels(gebruiker).stream().filter(regel->regel.getCheckType()==CheckType.FIX_NEEDED).collect(Collectors.toList());
+            List<CheckAndFixRegel> regelsToFix = getCheckAndFixRegels(gebruiker.getDefaultAdministratie()).stream().filter(regel->regel.getCheckType()==CheckType.FIX_NEEDED).collect(Collectors.toList());
             List<CheckAndFixRegel> afschriftenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_AFSCHRIFT).collect(Collectors.toList());
             List<CheckAndFixRegel> rekeningenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_REKENING).collect(Collectors.toList());
             List<CheckAndFixRegel> facturenToFix = regelsToFix.stream().filter(regel -> regel.getRubriceerAction() == FixAction.REMOVE_REF_FROM_FACTUUR).collect(Collectors.toList());

@@ -1,13 +1,9 @@
 package com.vdzon.administratie.overzicht;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
+import com.vdzon.administratie.checkandfix.rest.CheckAndFixService;
 import com.vdzon.administratie.crud.UserCrud;
-import com.vdzon.administratie.dto.FactuurDto;
-import com.vdzon.administratie.model.Bestelling;
-import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
-import com.vdzon.administratie.pdfgenerator.GenerateFactuur;
 import com.vdzon.administratie.pdfgenerator.GenerateOverzicht;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
@@ -20,6 +16,9 @@ public class OverzichtService {
 
     @Inject
     UserCrud crudService;
+
+    @Inject
+    CheckAndFixService checkAndFixService;
 
     protected Object getPdf(Request req, Response res) throws Exception {
         try {
@@ -43,7 +42,7 @@ public class OverzichtService {
             res.raw().setContentType("application/pdf");
             res.raw().setHeader("Content-Disposition","attachment; filename=overzicht_"+beginDate+"_"+endDate+".pdf");
             try (BufferedOutputStream zipOutputStream = new BufferedOutputStream(res.raw().getOutputStream())) {
-                GenerateOverzicht.buildPdf(gebruiker.getDefaultAdministratie(), beginDate, endDate, zipOutputStream);
+                GenerateOverzicht.buildPdf(gebruiker.getDefaultAdministratie(), beginDate, endDate, zipOutputStream, checkAndFixService);
                 zipOutputStream.flush();
                 zipOutputStream.close();
             }

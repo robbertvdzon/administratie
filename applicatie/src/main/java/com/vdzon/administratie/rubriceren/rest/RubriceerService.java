@@ -62,7 +62,13 @@ public class RubriceerService {
                     String factuurNummer = null;
                     String rekeningNummer = null;
                     for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()){
-                        if ((rekening.getBedragIncBtw()==afschrift.getBedrag()*-1) && (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))){
+                        if ((rekening.getBedragIncBtw()==afschrift.getBedrag()*-1) &&
+                                (
+                                        (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))) ||
+                                        (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
+                                )
+
+                        {
                             rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
                             rekeningNummer = rekening.getRekeningNummer();
                         }

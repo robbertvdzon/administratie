@@ -57,6 +57,6 @@ public class CalculateOverzicht {
     }
 
     private static boolean betweenDates(LocalDate date, LocalDate beginDate, LocalDate endData){
-        return date.isAfter(beginDate) || date.isBefore(endData);
+        return date.isAfter(beginDate) && date.isBefore(endData);
     }
 }
