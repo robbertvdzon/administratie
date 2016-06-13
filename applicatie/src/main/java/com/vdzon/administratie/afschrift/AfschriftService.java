@@ -109,8 +109,8 @@ public class AfschriftService {
                 uploadedFile.delete();
             }
             List<Afschrift> afschriften = parseFile(out, gebruiker);
-            System.out.println("count "+afschriften.size());
-            for (Afschrift afschrift:afschriften) {
+            System.out.println("count " + afschriften.size());
+            for (Afschrift afschrift : afschriften) {
                 if (afschrift != null) {
                     gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
                     gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
@@ -125,18 +125,10 @@ public class AfschriftService {
         return "OK";
     }
 
-    private class NextNummerHolder{
-        public NextNummerHolder(int nextNummer) {
-            this.nextNummer = nextNummer;
-        }
-
-        int nextNummer;
-    }
-
     private List<Afschrift> parseFile(Path out, Gebruiker gebruiker) {
         NextNummerHolder nextNummerHolder = new NextNummerHolder(findNextAfschriftNummer(gebruiker));
         try (Stream<String> stream = Files.lines(out)) {
-            return stream.map(line->parseLine(line, gebruiker, nextNummerHolder)).collect(Collectors.toList());
+            return stream.map(line -> parseLine(line, gebruiker, nextNummerHolder)).collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -144,11 +136,11 @@ public class AfschriftService {
 
     }
 
-    private Afschrift parseLine(String line, Gebruiker gebruiker, NextNummerHolder nextNummerHolder){
+    private Afschrift parseLine(String line, Gebruiker gebruiker, NextNummerHolder nextNummerHolder) {
         //514675950	EUR	20160125	-2,27	-3,02	20160125	-0,75	ABN AMRO Bank N.V.               Betaalpas                   0,75
 
         String[] parts = line.split("\t");
-        if (parts.length==8){
+        if (parts.length == 8) {
             String rekeningNr = parts[0];
             String date = parts[2];
             String bedragStr = parts[6];
@@ -156,7 +148,7 @@ public class AfschriftService {
             String naam = extractNaam(omschrijving);
             String oms = extractOmschrijving(omschrijving);
 
-            String uuid=rekeningNr.trim()+date.trim()+bedragStr+omschrijving.trim()+naam.trim()+oms.trim();
+            String uuid = rekeningNr.trim() + date.trim() + bedragStr + omschrijving.trim() + naam.trim() + oms.trim();
 
             Afschrift bestaandAfschrift = gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.getUuid().equals(uuid)).findFirst().orElse(null);
             if (bestaandAfschrift != null) {
@@ -167,39 +159,48 @@ public class AfschriftService {
             double bedrag = getBedrag(bedragStr);
             LocalDate boekDatum = getBoekDatum(date);
             int nextAfschriftNummer = nextNummerHolder.nextNummer++;
-            return new Afschrift(uuid, ""+ nextAfschriftNummer, rekeningNr, oms, naam, boekDatum, bedrag, BoekingType.NONE, "","");
-        }
-        else{
+            return Afschrift.builder()
+                    .uuid(uuid)
+                    .nummer("" + nextAfschriftNummer)
+                    .rekeningNummer(rekeningNr)
+                    .omschrijving(oms)
+                    .relatienaam(naam)
+                    .boekdatum(boekDatum)
+                    .bedrag(bedrag)
+                    .boekingType(BoekingType.NONE)
+                    .factuurNummer("")
+                    .rekeningNummer("")
+                    .build();
+        } else {
             return null;
         }
     }
 
-    private int findNextAfschriftNummer(Gebruiker gebruiker){
-        return 1+gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift->Integer.parseInt(afschrift.getNummer())).max(Comparator.naturalOrder()).orElse(1000);
+    private int findNextAfschriftNummer(Gebruiker gebruiker) {
+        return 1 + gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift -> Integer.parseInt(afschrift.getNummer())).max(Comparator.naturalOrder()).orElse(1000);
     }
-
 
     private String extractNaam(String omschrijving) {
 //        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
 //        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
-        if (omschrijving.startsWith("/TRTP")){
+        if (omschrijving.startsWith("/TRTP")) {
             String[] split = omschrijving.split("/");
-            for (int i = 0; i<split.length; i++){
-                if (split[i].equals("NAME")){
-                    return split[i+1];
+            for (int i = 0; i < split.length; i++) {
+                if (split[i].equals("NAME")) {
+                    return split[i + 1];
                 }
             }
         }
-        if (omschrijving.startsWith("SEPA")){
+        if (omschrijving.startsWith("SEPA")) {
             int pos = omschrijving.indexOf("Naam:");
             int posStart = pos + "Naam:".length();
-            if (pos>0) {
+            if (pos > 0) {
                 String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
-                int posEnd = posStart+omschrijving.substring(posStart).indexOf(nextKeyword);
+                int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
                 if (nextKeyword == null) {
                     return omschrijving.substring(posStart);
                 } else {
-                    return omschrijving.substring(posStart,posEnd-1);
+                    return omschrijving.substring(posStart, posEnd - 1);
                 }
             }
         }
@@ -209,34 +210,34 @@ public class AfschriftService {
     private String extractOmschrijving(String omschrijving) {
 //        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
 //        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
-        if (omschrijving.startsWith("/TRTP")){
+        if (omschrijving.startsWith("/TRTP")) {
             String[] split = omschrijving.split("/");
-            for (int i = 0; i<split.length; i++){
-                if (split[i].equals("REMI")){
-                    return split[i+1];
+            for (int i = 0; i < split.length; i++) {
+                if (split[i].equals("REMI")) {
+                    return split[i + 1];
                 }
             }
         }
-        if (omschrijving.startsWith("SEPA")){
+        if (omschrijving.startsWith("SEPA")) {
             int pos = omschrijving.indexOf("Omschrijving:");
             int posStart = pos + "Omschrijving:".length();
-            if (pos>0) {
+            if (pos > 0) {
                 String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
-                int posEnd = posStart+omschrijving.substring(posStart).indexOf(nextKeyword);
+                int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
                 if (nextKeyword == null) {
                     return omschrijving.substring(posStart);
                 } else {
-                    return omschrijving.substring(posStart,posEnd-1);
+                    return omschrijving.substring(posStart, posEnd - 1);
                 }
             }
         }
         return omschrijving;
     }
 
-    private String findNextKeyword(String s){
+    private String findNextKeyword(String s) {
         String[] words = s.split(" ");
-        for (String word:words){
-            if (word.endsWith(":")){
+        for (String word : words) {
+            if (word.endsWith(":")) {
                 return word;
             }
         }
@@ -248,8 +249,7 @@ public class AfschriftService {
             DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("yyyyMMdd");
             return LocalDate.parse(date, formatter);
-        }
-        catch (DateTimeParseException exc) {
+        } catch (DateTimeParseException exc) {
             exc.printStackTrace();
         }
         return LocalDate.now();
@@ -257,7 +257,15 @@ public class AfschriftService {
     }
 
     private double getBedrag(String bedrag) {
-        return new Double(bedrag.replace(",",".")).doubleValue();
+        return new Double(bedrag.replace(",", ".")).doubleValue();
+    }
+
+    private class NextNummerHolder {
+        int nextNummer;
+
+        public NextNummerHolder(int nextNummer) {
+            this.nextNummer = nextNummer;
+        }
     }
 
 

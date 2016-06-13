@@ -25,6 +25,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mongeez</groupId>
             <artifactId>mongeez</artifactId>
             <version>0.9.6</version>

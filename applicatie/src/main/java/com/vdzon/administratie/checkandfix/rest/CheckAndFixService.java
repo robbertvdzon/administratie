@@ -325,17 +325,12 @@ public class CheckAndFixService {
     private void fixAfschrift(CheckAndFixRegel regel, Gebruiker gebruiker) {
         Afschrift afschrift = regel.getAfschrift().toAfschrift();
         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
-        gebruiker.getDefaultAdministratie().addAfschrift(new Afschrift(afschrift.getUuid(),
-                afschrift.getNummer(),
-                afschrift.getRekening(),
-                afschrift.getOmschrijving(),
-                afschrift.getRelatienaam(),
-                afschrift.getBoekdatum(),
-                afschrift.getBedrag(),
-                BoekingType.NONE,
-                "",
-                ""
-                ));
+        Afschrift modifiedAfschrift = afschrift.toBuilder()
+                .boekingType(BoekingType.NONE)
+                .factuurNummer("")
+                .rekeningNummer("")
+                .build();
+        gebruiker.getDefaultAdministratie().addAfschrift(modifiedAfschrift);
     }
 
     private Afschrift findAfschrift(String uuid, Gebruiker gebruiker) {

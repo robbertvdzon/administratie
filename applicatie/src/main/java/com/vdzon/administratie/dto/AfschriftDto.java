@@ -44,7 +44,18 @@ public class AfschriftDto {
     }
 
     public Afschrift toAfschrift() {
-        return new Afschrift(uuid, nummer, rekening, omschrijving, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag, boekingType, factuurNummer, rekeningNummer);
+        return Afschrift.builder()
+                .uuid(uuid)
+                .nummer(nummer)
+                .rekening(rekening)
+                .omschrijving(omschrijving)
+                .relatienaam(relatienaam)
+                .boekdatum(LocalDate.parse(boekdatum,DATE_FORMATTER))
+                .bedrag(bedrag)
+                .boekingType(boekingType)
+                .factuurNummer(factuurNummer)
+                .rekeningNummer(rekeningNummer)
+                .build();
     }
 
     public String getUuid() {
