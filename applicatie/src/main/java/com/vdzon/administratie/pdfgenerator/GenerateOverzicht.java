@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class GenerateOverzicht {
 
-
+//Todo: deze class opruimen
 
     private static PDFont fontPlain = PDType1Font.HELVETICA;
     private static PDFont fontBold = PDType1Font.HELVETICA_BOLD;

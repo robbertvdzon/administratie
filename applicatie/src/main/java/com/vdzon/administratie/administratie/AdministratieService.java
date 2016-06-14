@@ -34,10 +34,9 @@ public class AdministratieService {
             Gebruiker gebruiker = userCrud.getGebruiker(uuid);
 
             String administratieGegevensJson = req.body();
-            AdministratieGegevens administratieGegevens = null;
             ObjectMapper mapper = new ObjectMapper();
             AdministratieGegevensDto administratieGegevensDto = mapper.readValue(administratieGegevensJson, AdministratieGegevensDto.class);
-            administratieGegevens = administratieGegevensDto.toAdministratieGegevens();
+            AdministratieGegevens administratieGegevens = administratieGegevensDto.toAdministratieGegevens();
 
             Administratie administratie = gebruiker.getDefaultAdministratie().toBuilder().administratieGegevens(administratieGegevens).build();
             ArrayList<Administratie> administraties = new ArrayList<>();

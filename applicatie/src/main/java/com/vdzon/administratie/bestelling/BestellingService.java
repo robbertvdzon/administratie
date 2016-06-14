@@ -27,10 +27,9 @@ public class BestellingService {
                 return new SingleAnswer("not found");
             }
             String bestellingJson = req.body();
-            Bestelling bestelling = null;
             ObjectMapper mapper = new ObjectMapper();
             BestellingDto bestellingDto = mapper.readValue(bestellingJson, BestellingDto.class);
-            bestelling = bestellingDto.toBestelling();
+            Bestelling bestelling = bestellingDto.toBestelling();
 
             removeBestelling(gebruiker, bestelling.getUuid());
             addBestelling(gebruiker, bestelling);

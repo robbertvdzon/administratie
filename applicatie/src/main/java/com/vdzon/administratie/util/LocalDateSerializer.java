@@ -10,10 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateSerializer extends JsonSerializer<LocalDate> {
+    //TODO : kan deze class weg?
     @Override
     public void serialize(LocalDate arg0, JsonGenerator arg1, SerializerProvider arg2) throws IOException, JsonProcessingException {
-        System.out.println(arg0.toString());
-        System.out.println(arg0.format(DateTimeFormatter.ISO_DATE));
         arg1.writeString(arg0.format(DateTimeFormatter.ISO_DATE));
     }
 }

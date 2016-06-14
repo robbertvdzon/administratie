@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class RubriceerService {
 
+    //TODO: deze code opruimen
+
     @Inject
     UserCrud crudService;
 
@@ -33,7 +35,7 @@ public class RubriceerService {
             }
 
             List<RubriceerRegel> regels = getRubriceerRegels(gebruiker);
-            return new RubriceerRegels(regels);
+            return RubriceerRegels.builder().rubriceerRegelList(regels).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -56,7 +58,7 @@ public class RubriceerService {
                             factuurNummer = factuur.getFactuurNummer();
                         }
                     }
-                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction, rekeningNummer, factuurNummer, new AfschriftDto(afschrift));
+                    RubriceerRegel rubriceerRegel = RubriceerRegel.builder().rubriceerAction(rubriceerAction).rekeningNummer(rekeningNummer).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift)).build();
                     regels.add(rubriceerRegel);
                 }
                 if (afschrift.getBedrag() < 0) {
@@ -75,7 +77,7 @@ public class RubriceerService {
                             rekeningNummer = rekening.getRekeningNummer();
                         }
                     }
-                    RubriceerRegel rubriceerRegel = new RubriceerRegel(rubriceerAction, rekeningNummer, factuurNummer, new AfschriftDto(afschrift));
+                    RubriceerRegel rubriceerRegel = RubriceerRegel.builder().rubriceerAction(rubriceerAction).rekeningNummer(rekeningNummer).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift)).build();
                     regels.add(rubriceerRegel);
                 }
             }

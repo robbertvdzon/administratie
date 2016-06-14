@@ -42,10 +42,9 @@ public class AfschriftService {
                 return new SingleAnswer("not found");
             }
             String afschriftJson = req.body();
-            Afschrift afschrift = null;
             ObjectMapper mapper = new ObjectMapper();
             AfschriftDto afschriftDto = mapper.readValue(afschriftJson, AfschriftDto.class);
-            afschrift = afschriftDto.toAfschrift();
+            Afschrift afschrift = afschriftDto.toAfschrift();
 
             gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
             gebruiker.getDefaultAdministratie().addAfschrift(afschrift);

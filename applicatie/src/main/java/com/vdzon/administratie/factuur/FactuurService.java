@@ -37,9 +37,6 @@ public class FactuurService {
             removeFactuur(gebruiker, factuur.getUuid());
             addFactuur(gebruiker, factuur);
 
-
-//            gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
-//            gebruiker.getDefaultAdministratie().addFactuur(factuur);
             crudService.updateGebruiker(gebruiker);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -93,8 +90,6 @@ public class FactuurService {
         }
         gebruiker.getDefaultAdministratie().removeFactuur(uuid);
     }
-
-
 
     protected Object getPdf(Request req, Response res) throws Exception {
         try {

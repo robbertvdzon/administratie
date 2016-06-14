@@ -1,9 +1,11 @@
 package com.vdzon.administratie.checkandfix.model;
 
 import com.vdzon.administratie.dto.AfschriftDto;
+import lombok.*;
 
 import java.time.LocalDate;
 
+// TODO: gebruik lombok met builder
 public class CheckAndFixRegel {
     private FixAction rubriceerAction;
     private String omschrijving;
@@ -11,9 +13,6 @@ public class CheckAndFixRegel {
     private CheckType checkType;
     private AfschriftDto afschrift;
     private LocalDate date;
-
-    public CheckAndFixRegel() {
-    }
 
     public CheckAndFixRegel(FixAction rubriceerAction, CheckType checkType, AfschriftDto afschrift, String omschrijving, String data, LocalDate date) {
         this.rubriceerAction = rubriceerAction;

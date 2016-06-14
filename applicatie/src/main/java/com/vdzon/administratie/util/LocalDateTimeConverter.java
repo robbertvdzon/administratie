@@ -12,9 +12,6 @@ import java.util.Date;
 public class LocalDateTimeConverter extends TypeConverter implements SimpleValueConverter {
 
     public LocalDateTimeConverter() {
-        // TODO: Add other date/time supported classes here
-        // Other java.time classes: LocalDate.class, LocalTime.class
-        // Arrays: LocalDateTime[].class, etc
         super(LocalDate.class);
     }
 
@@ -32,8 +29,6 @@ public class LocalDateTimeConverter extends TypeConverter implements SimpleValue
             return fromDBObject;
         }
 
-        // TODO: decode other types
-
         throw new IllegalArgumentException(String.format("Cannot decode object of class: %s", fromDBObject.getClass().getName()));
     }
 
@@ -49,15 +44,8 @@ public class LocalDateTimeConverter extends TypeConverter implements SimpleValue
 
         if (value instanceof LocalDate) {
             LocalDate localDate = (LocalDate) value;
-//            return Date.from(localDate.atStartOfDay().toInstant());
-
-//            LocalDate localDate = (LocalDate)value;
-//            ZonedDateTime zoned = ((LocalDate) value).atZone(ZoneOffset.systemDefault());
             return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//            return Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.systemDefault());
         }
-
-        // TODO: encode other types
 
         throw new IllegalArgumentException(String.format("Cannot encode object of class: %s", value.getClass().getName()));
     }

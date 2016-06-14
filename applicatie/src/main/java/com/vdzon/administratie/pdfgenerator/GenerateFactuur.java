@@ -19,6 +19,8 @@ import java.net.URL;
 
 public class GenerateFactuur {
 
+    //TODO : deze class opruimen
+
     private static PDFont fontPlain = PDType1Font.HELVETICA;
     private static PDFont fontBold = PDType1Font.HELVETICA_BOLD;
     private float pos = 0;

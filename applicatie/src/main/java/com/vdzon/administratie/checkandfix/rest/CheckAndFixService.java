@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 public class CheckAndFixService {
 
+    //TODO: Deze classe opruimen
+
     @Inject
     UserCrud crudService;
 
@@ -32,7 +34,7 @@ public class CheckAndFixService {
             }
 
             List<CheckAndFixRegel> regels = getCheckAndFixRegels(gebruiker.getDefaultAdministratie());
-            return new CheckAndFixRegels(regels);
+            return CheckAndFixRegels.builder().checkAndFixRegels(regels).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
