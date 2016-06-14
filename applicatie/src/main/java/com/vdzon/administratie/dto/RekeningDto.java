@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 @JsonIgnoreProperties
 public class RekeningDto {
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private String uuid;
     private String rekeningNummer;
     private String factuurNummer;
@@ -27,15 +28,13 @@ public class RekeningDto {
     private double btw = 0;
     private String gekoppeldAfschrift;
 
-    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
     public RekeningDto(Rekening rekening) {
         this.uuid = rekening.getUuid();
         this.rekeningNummer = rekening.getRekeningNummer();
         this.factuurNummer = rekening.getFactuurNummer();
         this.naam = rekening.getNaam();
         this.omschrijving = rekening.getOmschrijving();
-        this.rekeningDate = rekening.getRekeningDate()==null ? null : rekening.getRekeningDate().format(DATE_FORMATTER);
+        this.rekeningDate = rekening.getRekeningDate() == null ? null : rekening.getRekeningDate().format(DATE_FORMATTER);
         this.bedragExBtw = rekening.getBedragExBtw();
         this.bedragIncBtw = rekening.getBedragIncBtw();
         this.btw = rekening.getBtw();
@@ -43,7 +42,18 @@ public class RekeningDto {
     }
 
     public Rekening toRekening() {
-        return new Rekening(uuid, rekeningNummer,factuurNummer, naam, omschrijving, LocalDate.parse(rekeningDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw, gekoppeldAfschrift);
+        return Rekening.builder()
+                .uuid(uuid)
+                .rekeningNummer(rekeningNummer)
+                .factuurNummer(factuurNummer)
+                .naam(naam)
+                .omschrijving(omschrijving)
+                .rekeningDate(LocalDate.parse(rekeningDate, DATE_FORMATTER))
+                .bedragExBtw(bedragExBtw)
+                .bedragIncBtw(bedragIncBtw)
+                .btw(btw)
+                .gekoppeldAfschrift(gekoppeldAfschrift)
+                .build();
     }
 
 }

@@ -28,6 +28,13 @@ public class FactuurRegelDto {
     }
 
     public FactuurRegel toFactuurRegel() {
-        return new FactuurRegel(omschrijving, aantal, stuksPrijs, btwPercentage, uuid);
+        return FactuurRegel
+                .builder()
+                .omschrijving(omschrijving)
+                .aantal(aantal)
+                .stuksPrijs(stuksPrijs)
+                .btwPercentage(btwPercentage)
+                .uuid(uuid)
+                .build();
     }
 }

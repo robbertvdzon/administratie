@@ -19,10 +19,11 @@ public class TestDataGenerator {
         List<Rekening> rekeningen = new ArrayList<>();
         List<Afschrift> afschriften = new ArrayList<>();
         List<Declaratie> declaraties = new ArrayList<>();
-        Administratie administratie = new Administratie(getNewUuid(), bestellingen, facturen, adresboek, rekeningen, afschriften, declaraties, new AdministratieGegevens());
+        Administratie administratie = Administratie.builder().uuid(getNewUuid()).bestellingen(bestellingen).facturen(facturen).adresboek(adresboek).rekeningen(rekeningen).afschriften(afschriften)
+                .declaraties(declaraties).administratieGegevens(new AdministratieGegevens()).build();
         List<Administratie> administraties = new ArrayList<>();
         administraties.add(administratie);
-        Gebruiker gebruiker = new Gebruiker(getNewUuid(), name, username, passwd, admin, administraties);
+        Gebruiker gebruiker = Gebruiker.builder().uuid(getNewUuid()).name(name).username(username).password(passwd).admin(admin).administraties(administraties).build();
         datastore.save(gebruiker);
     }
 

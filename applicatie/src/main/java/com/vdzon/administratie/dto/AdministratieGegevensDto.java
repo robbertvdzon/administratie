@@ -38,14 +38,23 @@ public class AdministratieGegevensDto {
             this.postcode = administratieGegegens.getPostcode();
             this.woonplaats = administratieGegegens.getWoonplaats();
             this.logoUrl = administratieGegegens.getLogoUrl();
-        }
-        else{
+        } else {
             this.uuid = UUID.randomUUID().toString();
         }
     }
 
     public AdministratieGegevens toAdministratieGegevens() {
-        return new AdministratieGegevens(uuid, name, rekeningNummer, btwNummer, handelsRegister, adres, postcode, woonplaats, logoUrl);
+        return AdministratieGegevens.builder()
+                .uuid(uuid)
+                .name(name)
+                .rekeningNummer(rekeningNummer)
+                .btwNummer(btwNummer)
+                .handelsRegister(handelsRegister)
+                .adres(adres)
+                .postcode(postcode)
+                .woonplaats(woonplaats)
+                .logoUrl(logoUrl)
+                .build();
     }
 
 }

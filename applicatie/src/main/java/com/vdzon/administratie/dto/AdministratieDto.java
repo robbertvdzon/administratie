@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +88,15 @@ public class AdministratieDto {
     }
 
     public Administratie toAdministratie() {
-        return new Administratie(uuid, toBestellingen(), toFacturen(), toAdressen(), toRekeningen(), toAfschriften(), toDeclaraties(),  administratieGegevens.toAdministratieGegevens());
+        return Administratie.builder()
+                .uuid(uuid)
+                .bestellingen(toBestellingen())
+                .facturen(toFacturen())
+                .adresboek(toAdressen())
+                .rekeningen(toRekeningen())
+                .afschriften(toAfschriften())
+                .declaraties(toDeclaraties())
+                .administratieGegevens(administratieGegevens.toAdministratieGegevens()).build();
     }
 
     private List<Bestelling> toBestellingen() {

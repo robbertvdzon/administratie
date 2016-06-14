@@ -37,6 +37,15 @@ public class DeclaratieDto {
     }
 
     public Declaratie toDeclaratie() {
-        return new Declaratie(uuid, declaratieNummer, omschrijving, LocalDate.parse(declaratieDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw);
+        return Declaratie
+                .builder()
+                .uuid(uuid)
+                .declaratieNummer(declaratieNummer)
+                .omschrijving(omschrijving)
+                .declaratieDate(LocalDate.parse(declaratieDate,DATE_FORMATTER))
+                .bedragExBtw(bedragExBtw)
+                .bedragIncBtw(bedragIncBtw)
+                .btw(btw)
+                .build();
     }
 }

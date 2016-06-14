@@ -1,5 +1,6 @@
 package com.vdzon.administratie.model;
 
+import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -8,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+//@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 @Entity("factuur")
 public class Bestelling {
 
@@ -22,81 +28,27 @@ public class Bestelling {
     private double bedragIncBtw = 0;
     private double btw = 0;
 
-    public Bestelling() {
+    public List<BestellingRegel> getBestellingRegels() {
+        return Collections.unmodifiableList(new ArrayList<>(bestellingRegels));
     }
 
-    public Bestelling(String bestellingNummer, String gekoppeldFactuurNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, String uuid) {
+    /*
+     * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
+     */
+    @Builder(toBuilder = true)
+    Bestelling(String uuid, String bestellingNummer, String gekoppeldFactuurNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+        this.uuid = uuid;
         this.bestellingNummer = bestellingNummer;
         this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
         this.bestellingDate = bestellingDate;
         this.contact = contact;
         this.bestellingRegels = bestellingRegels;
-        this.uuid = uuid;
+        this.bedragExBtw = bedragExBtw;
+        this.bedragIncBtw = bedragIncBtw;
+        this.btw = btw;
         calculate();
     }
 
-    public String getBestellingNummer() {
-        return bestellingNummer;
-    }
-
-//    public void setBestellingNummer(String bestellingNummer) {
-//        this.bestellingNummer = bestellingNummer;
-//    }
-
-    public LocalDate getBestellingDate() {
-        return bestellingDate;
-    }
-
-//    public void setBestellingDate(LocalDate bestellingDate) {
-//        this.bestellingDate = bestellingDate;
-//    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-//    public void setContact(Contact contact) {
-//        this.contact = contact;
-//    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public List<BestellingRegel> getBestellingRegels() {
-        return Collections.unmodifiableList(new ArrayList<>(bestellingRegels));
-    }
-
-//    public void removeAllFactuurRegels() {
-//        bestellingRegels.clear();
-//        calculate();
-//    }
-//
-//    public void addBestellingRegel(BestellingRegel bestellingRegel) {
-//        bestellingRegels.add(bestellingRegel);
-//        calculate();
-//    }
-//
-//    public void addFactuurRegels(List<BestellingRegel> bestellingRegels) {
-//        bestellingRegels.addAll(bestellingRegels);
-//        calculate();
-//    }
-
-    public double getBedragExBtw() {
-        return bedragExBtw;
-    }
-
-    public double getBedragIncBtw() {
-        return bedragIncBtw;
-    }
-
-    public double getBtw() {
-        return btw;
-    }
-
-    public String getGekoppeldFactuurNummer() {
-        return gekoppeldFactuurNummer;
-    }
 
     private void calculate() {
         bedragExBtw = 0;

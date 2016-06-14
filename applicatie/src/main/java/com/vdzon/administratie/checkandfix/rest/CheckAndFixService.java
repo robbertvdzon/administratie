@@ -292,34 +292,14 @@ public class CheckAndFixService {
         Rekening rekening = gebruiker.getDefaultAdministratie().getRekeningen().stream().filter(rek -> rek.getRekeningNummer().equals(regel.getData())).findFirst().orElse(null);
         if (rekening==null) return;
         gebruiker.getDefaultAdministratie().removeRekening((rekening.getUuid()));
-        gebruiker.getDefaultAdministratie().addRekening(new Rekening(
-                rekening.getUuid(),
-                rekening.getRekeningNummer(),
-                rekening.getFactuurNummer(),
-                rekening.getNaam(),
-                rekening.getOmschrijving(),
-                rekening.getRekeningDate(),
-                rekening.getBedragExBtw(),
-                rekening.getBedragIncBtw(),
-                rekening.getBtw(),
-                ""
-        ));
+        gebruiker.getDefaultAdministratie().addRekening(rekening.toBuilder().gekoppeldAfschrift("").build());
     }
 
     private void fixFactuur(CheckAndFixRegel regel, Gebruiker gebruiker) {
         Factuur factuur  = gebruiker.getDefaultAdministratie().getFacturen().stream().filter(fak -> fak.getFactuurNummer().equals(regel.getData())).findFirst().orElse(null);
         if (factuur ==null) return;
-        gebruiker.getDefaultAdministratie().removeFactuur(factuur .getUuid());
-        gebruiker.getDefaultAdministratie().addFactuur(new Factuur(
-                factuur.getFactuurNummer(),
-                factuur.getGekoppeldeBestellingNummer(),
-                factuur.getFactuurDate(),
-                factuur.getContact(),
-                factuur.isBetaald(),
-                factuur.getFactuurRegels(),
-                factuur.getUuid(),
-                ""
-        ));
+        gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
+        gebruiker.getDefaultAdministratie().addFactuur(factuur.toBuilder().gekoppeldAfschrift(null).build());
     }
 
     private void fixAfschrift(CheckAndFixRegel regel, Gebruiker gebruiker) {

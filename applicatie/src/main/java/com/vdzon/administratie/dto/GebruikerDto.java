@@ -25,12 +25,13 @@ public class GebruikerDto {
         this.admin = gebruiker.isAdmin();
     }
 
-    public Gebruiker cloneGebruikerAndCopyDtoFields(Gebruiker gebruiker) {
-        Gebruiker newGebruiker = new Gebruiker(gebruiker);
-        newGebruiker.setUsername(username);
-        newGebruiker.setName(name);
-        newGebruiker.setUuid(uuid);
-        newGebruiker.setAdmin(admin);
+    public Gebruiker cloneGebruikerWithDtoFields(Gebruiker gebruiker) {
+        Gebruiker newGebruiker = gebruiker
+                .toBuilder()
+                .username(username)
+                .name(name)
+                .uuid(uuid)
+                .admin(admin).build();
         return newGebruiker;
     }
 

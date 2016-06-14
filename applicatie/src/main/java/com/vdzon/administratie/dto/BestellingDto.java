@@ -3,8 +3,6 @@ package com.vdzon.administratie.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.BestellingRegel;
-import com.vdzon.administratie.model.Factuur;
-import com.vdzon.administratie.model.FactuurRegel;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties
 public class BestellingDto {
 
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private String uuid;
     private String bestellingNummer;
     private String gekoppeldFactuurNummer;
@@ -32,14 +31,12 @@ public class BestellingDto {
     private double bedragIncBtw = 0;
     private double btw = 0;
 
-    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-    public BestellingDto(Bestelling bestelling){
+    public BestellingDto(Bestelling bestelling) {
         this.uuid = bestelling.getUuid();
         this.bestellingNummer = bestelling.getBestellingNummer();
         this.gekoppeldFactuurNummer = bestelling.getGekoppeldFactuurNummer();
-        this.bestellingDate = bestelling.getBestellingDate()==null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER);
-        this.klant = bestelling.getContact()==null ? null : new ContactDto(bestelling.getContact());
+        this.bestellingDate = bestelling.getBestellingDate() == null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER);
+        this.klant = bestelling.getContact() == null ? null : new ContactDto(bestelling.getContact());
         this.bestellingRegels = toBestellingRegelsDto(bestelling.getBestellingRegels());
         this.bedragExBtw = bestelling.getBedragExBtw();
         this.bedragIncBtw = bestelling.getBedragIncBtw();
@@ -54,7 +51,13 @@ public class BestellingDto {
     }
 
     public Bestelling toBestelling() {
-        return new Bestelling(bestellingNummer, gekoppeldFactuurNummer, LocalDate.parse(bestellingDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), toBestellingRegels(), uuid);
+        return Bestelling.builder()
+                .bestellingNummer(bestellingNummer)
+                .gekoppeldFactuurNummer(gekoppeldFactuurNummer)
+                .bestellingDate(LocalDate.parse(bestellingDate, DATE_FORMATTER))
+                .contact(klant == null ? null : klant.toContact())
+                .bestellingRegels(toBestellingRegels())
+                .uuid(uuid).build();
     }
 
     private List<BestellingRegel> toBestellingRegels() {

@@ -29,12 +29,13 @@ public class AuthService {
             return new SingleAnswer("username bestaat al");
         }
 
-        gebruiker  = new Gebruiker();
-        gebruiker.setAdmin(false);
-        gebruiker.setName(name);
-        gebruiker.setPassword(password);
-        gebruiker.setUsername(username);
-        gebruiker.setUuid(UUID.randomUUID().toString());
+        gebruiker = Gebruiker
+                .builder()
+                .admin(false)
+                .name(name)
+                .password(password)
+                .username(username)
+                .uuid(UUID.randomUUID().toString()).build();
         gebruiker.initDefaultAdministratie();
         try {
             userCrud.updateGebruiker(gebruiker);

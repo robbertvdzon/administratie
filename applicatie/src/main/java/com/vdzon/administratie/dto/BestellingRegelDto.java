@@ -30,6 +30,6 @@ public class BestellingRegelDto {
     }
 
     public BestellingRegel toBestellingRegel() {
-        return new BestellingRegel(omschrijving, aantal, stuksPrijs, btwPercentage, uuid);
+        return BestellingRegel.builder().omschrijving(omschrijving).aantal(aantal).stuksPrijs(stuksPrijs).btwPercentage(btwPercentage).uuid(uuid).build();
     }
 }

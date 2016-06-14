@@ -3,18 +3,13 @@ package com.vdzon.administratie.gebruiker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
-import com.vdzon.administratie.dto.FactuurDto;
 import com.vdzon.administratie.dto.GebruikerDto;
-import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class GebruikerService {
 
@@ -36,7 +31,7 @@ public class GebruikerService {
             if (originalGebruiker == null){
                 originalGebruiker = new Gebruiker();
             }
-            Gebruiker updatedGebruiker  = nieuweGebruikerDto.cloneGebruikerAndCopyDtoFields(originalGebruiker);
+            Gebruiker updatedGebruiker  = nieuweGebruikerDto.cloneGebruikerWithDtoFields(originalGebruiker);
             crudService.updateGebruiker(updatedGebruiker );
             return new SingleAnswer("ok");
         } catch (Exception e) {
@@ -70,8 +65,8 @@ public class GebruikerService {
         String gebruikerUuid = req.params(":uuid");
         String newPassword = req.params(":newPassword");
         Gebruiker gebruikerToChange = crudService.getGebruiker(gebruikerUuid);
-        gebruikerToChange.setPassword(newPassword);
-        crudService.updateGebruiker(gebruikerToChange);
+        Gebruiker changedGebruiker = gebruikerToChange.toBuilder().password(newPassword).build();
+        crudService.updateGebruiker(changedGebruiker);
         return new SingleAnswer("ok");
     }
 

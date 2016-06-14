@@ -1,5 +1,6 @@
 package com.vdzon.administratie.model;
 
+import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -7,6 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 @Entity("administratie")
 public class Administratie {
 
@@ -19,32 +26,6 @@ public class Administratie {
     private List<Rekening> rekeningen = new ArrayList<>();
     private List<Afschrift> afschriften = new ArrayList<>();
     private List<Declaratie> declaraties = new ArrayList<>();
-
-    public Administratie() {
-    }
-
-    public Administratie(String uuid, List<Bestelling> bestellingen, List<Factuur> facturen, List<Contact> adresboek, List<Rekening> rekeningen, List<Afschrift> afschriften, List<Declaratie> declaraties, AdministratieGegevens administratieGegevens) {
-        this.uuid = uuid;
-        this.bestellingen = bestellingen;
-        this.facturen = facturen;
-        this.adresboek = adresboek;
-        this.rekeningen = rekeningen;
-        this.afschriften = afschriften;
-        this.declaraties = declaraties;
-        this.administratieGegevens = administratieGegevens;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public AdministratieGegevens getAdministratieGegevens() {
-        return administratieGegevens;
-    }
-
-    public void setAdministratieGegevens(AdministratieGegevens administratieGegevens) {
-        this.administratieGegevens = administratieGegevens;
-    }
 
     public List<Bestelling> getBestellingen() {
         return Collections.unmodifiableList(new ArrayList<>(bestellingen));

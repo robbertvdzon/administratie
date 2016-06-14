@@ -75,14 +75,7 @@ public class FactuurService {
         String nieuwBestellingNummer = factuur.getGekoppeldeBestellingNummer();
         Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(nieuwBestellingNummer);
         if (gekoppelBestelling!=null){
-            Bestelling updatedBestelling = new Bestelling(
-                    gekoppelBestelling.getBestellingNummer(),
-                    factuur.getFactuurNummer(),
-                    gekoppelBestelling.getBestellingDate(),
-                    gekoppelBestelling.getContact(),
-                    gekoppelBestelling.getBestellingRegels(),
-                    gekoppelBestelling.getUuid()
-            );
+            Bestelling updatedBestelling = gekoppelBestelling.toBuilder().gekoppeldFactuurNummer(factuur.getFactuurNummer()).build();
             gebruiker.getDefaultAdministratie().removeBestelling(gekoppelBestelling.getUuid());
             gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
         }
@@ -94,14 +87,7 @@ public class FactuurService {
         String bestellingNummerOudeFactuur = factuur == null ? null : factuur.getGekoppeldeBestellingNummer();
         Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(bestellingNummerOudeFactuur);
         if (gekoppelBestelling!=null){
-            Bestelling updatedBestelling = new Bestelling(
-                    gekoppelBestelling.getBestellingNummer(),
-                    null,
-                    gekoppelBestelling.getBestellingDate(),
-                    gekoppelBestelling.getContact(),
-                    gekoppelBestelling.getBestellingRegels(),
-                    gekoppelBestelling.getUuid()
-            );
+            Bestelling updatedBestelling = gekoppelBestelling.toBuilder().gekoppeldFactuurNummer(null).build();
             gebruiker.getDefaultAdministratie().removeBestelling(gekoppelBestelling.getUuid());
             gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
         }

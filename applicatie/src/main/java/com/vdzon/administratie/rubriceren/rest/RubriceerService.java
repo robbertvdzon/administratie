@@ -112,7 +112,7 @@ public class RubriceerService {
             case CONNECT_EXISTING_FACTUUR:
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
                     if (regel.getFaktuurNummer().equals(factuur.getFactuurNummer())) {
-                        Factuur newFactuur = new Factuur(factuur.getFactuurNummer(), factuur.getGekoppeldeBestellingNummer(), factuur.getFactuurDate(), factuur.getContact(), true, factuur.getFactuurRegels(), factuur.getUuid(), afschrift.getNummer());
+                        Factuur newFactuur = factuur.toBuilder().betaald(true).gekoppeldAfschrift(afschrift.getNummer()).build();
                         gebruiker.getDefaultAdministratie().removeFactuur(factuur.getUuid());
                         gebruiker.getDefaultAdministratie().addFactuur(newFactuur);
                         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
@@ -130,7 +130,7 @@ public class RubriceerService {
             case CONNECT_EXISTING_REKENING:
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
                     if (regel.getRekeningNummer().equals(rekening.getRekeningNummer())) {
-                        Rekening newRekening = new Rekening(rekening.getUuid(), rekening.getRekeningNummer(), rekening.getFactuurNummer(), rekening.getNaam(), rekening.getOmschrijving(), rekening.getRekeningDate(), rekening.getBedragExBtw(), rekening.getBedragIncBtw(), rekening.getBtw(), afschrift.getNummer());
+                        Rekening newRekening = rekening.toBuilder().gekoppeldAfschrift(afschrift.getNummer()).build();
                         gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
                         gebruiker.getDefaultAdministratie().addRekening(newRekening);
                         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
@@ -146,7 +146,20 @@ public class RubriceerService {
                 }
                 break;
             case CREATE_REKENING:
-                Rekening rekening = new Rekening(UUID.randomUUID().toString(), "" + findNextRekeningNummer(gebruiker), "", afschrift.getRelatienaam(), afschrift.getOmschrijving(), afschrift.getBoekdatum(), afschrift.getBedrag() * -1, afschrift.getBedrag() * -1, 0, regel.getAfschrift().getNummer());
+                Rekening rekening = Rekening
+                        .builder()
+                        .uuid(UUID.randomUUID().toString())
+                        .rekeningNummer("" + findNextRekeningNummer(gebruiker)
+                        ).naam(afschrift.getRelatienaam())
+                        .omschrijving(afschrift.getOmschrijving())
+                        .rekeningDate(afschrift.getBoekdatum())
+                        .bedragExBtw(afschrift.getBedrag() * -1)
+                        .bedragIncBtw(afschrift.getBedrag() * -1)
+                        .btw(0)
+                        .gekoppeldAfschrift(regel.getAfschrift().getNummer())
+                        .build();
+
+
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
                 gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
                 gebruiker.getDefaultAdministratie().addAfschrift(

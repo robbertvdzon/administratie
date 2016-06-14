@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Getter
 @Builder(toBuilder = true)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 
 @Entity("afschrift")

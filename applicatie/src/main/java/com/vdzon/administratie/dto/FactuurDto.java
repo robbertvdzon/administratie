@@ -55,7 +55,17 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return new Factuur(factuurNummer, gekoppeldeBestellingNummer, LocalDate.parse(factuurDate,DATE_FORMATTER), klant == null ? null : klant.toContact(), betaald, toFactuurRegels(), uuid, gekoppeldAfschrift);
+        return Factuur
+                .builder()
+                .factuurNummer(factuurNummer)
+                .gekoppeldeBestellingNummer(gekoppeldeBestellingNummer)
+                .factuurDate(LocalDate.parse(factuurDate,DATE_FORMATTER))
+                .contact(klant == null ? null : klant.toContact())
+                .betaald(betaald)
+                .factuurRegels(toFactuurRegels())
+                .uuid(uuid)
+                .gekoppeldAfschrift(gekoppeldAfschrift)
+                .build();
     }
 
     private List<FactuurRegel> toFactuurRegels() {

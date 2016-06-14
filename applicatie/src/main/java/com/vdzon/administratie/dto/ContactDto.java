@@ -32,7 +32,15 @@ public class ContactDto {
     }
 
     public Contact toContact() {
-        return new Contact(uuid, klantNummer, naam, woonplaats, adres, postcode, land);
+        return Contact.builder()
+                .uuid(uuid)
+                .klantNummer(klantNummer)
+                .naam(naam)
+                .woonplaats(woonplaats)
+                .adres(adres)
+                .postcode(postcode)
+                .land(land)
+                .build();
 
     }
 }

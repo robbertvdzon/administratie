@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.*;
+import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.AdministratieGegevens;
 import com.vdzon.administratie.model.Contact;
 import com.vdzon.administratie.model.Gebruiker;
@@ -13,6 +14,7 @@ import spark.Response;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,8 +39,11 @@ public class AdministratieService {
             AdministratieGegevensDto administratieGegevensDto = mapper.readValue(administratieGegevensJson, AdministratieGegevensDto.class);
             administratieGegevens = administratieGegevensDto.toAdministratieGegevens();
 
-            gebruiker.getDefaultAdministratie().setAdministratieGegevens(administratieGegevens);
-            userCrud.updateGebruiker(gebruiker);
+            Administratie administratie = gebruiker.getDefaultAdministratie().toBuilder().administratieGegevens(administratieGegevens).build();
+            ArrayList<Administratie> administraties = new ArrayList<>();
+            administraties.add(administratie);
+            Gebruiker gebruikerToUpdate = gebruiker.toBuilder().administraties(administraties).build();
+            userCrud.updateGebruiker(gebruikerToUpdate);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
