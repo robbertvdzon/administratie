@@ -2,10 +2,17 @@ package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.Declaratie;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties
 public class DeclaratieDto {
 
@@ -19,80 +26,17 @@ public class DeclaratieDto {
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public DeclaratieDto() {
-    }
-
-    public DeclaratieDto(String uuid, String declaratieNummer, String omschrijving, String declaratieDate, double bedragExBtw, double bedragIncBtw, double btw) {
-        this.uuid = uuid;
-        this.declaratieNummer = declaratieNummer;
-        this.omschrijving = omschrijving;
-        this.declaratieDate = declaratieDate;
-        this.bedragExBtw = bedragExBtw;
-        this.bedragIncBtw = bedragIncBtw;
-        this.btw = btw;
-    }
-
     public DeclaratieDto(Declaratie declaratie) {
-        this(declaratie.getUuid(), declaratie.getDeclaratieNummer(), declaratie.getOmschrijving(), declaratie.getDeclaratieDate()==null ? null : declaratie.getDeclaratieDate().format(DATE_FORMATTER), declaratie.getBedragExBtw(), declaratie.getBedragIncBtw(), declaratie.getBtw());
+        this.uuid = declaratie.getUuid();
+        this.declaratieNummer = declaratie.getDeclaratieNummer();
+        this.omschrijving = declaratie.getOmschrijving();
+        this.declaratieDate = declaratie.getDeclaratieDate()==null ? null : declaratie.getDeclaratieDate().format(DATE_FORMATTER);
+        this.bedragExBtw = declaratie.getBedragExBtw();
+        this.bedragIncBtw = declaratie.getBedragIncBtw();
+        this.btw = declaratie.getBtw();
     }
 
     public Declaratie toDeclaratie() {
         return new Declaratie(uuid, declaratieNummer, omschrijving, LocalDate.parse(declaratieDate,DATE_FORMATTER), bedragExBtw, bedragIncBtw, btw);
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getDeclaratieNummer() {
-        return declaratieNummer;
-    }
-
-    public void setDeclaratieNummer(String declaratieNummer) {
-        this.declaratieNummer = declaratieNummer;
-    }
-
-    public String getOmschrijving() {
-        return omschrijving;
-    }
-
-    public void setOmschrijving(String omschrijving) {
-        this.omschrijving = omschrijving;
-    }
-
-    public String getDeclaratieDate() {
-        return declaratieDate;
-    }
-
-    public void setDeclaratieDate(String declaratieDate) {
-        this.declaratieDate = declaratieDate;
-    }
-
-    public double getBedragExBtw() {
-        return bedragExBtw;
-    }
-
-    public void setBedragExBtw(double bedragExBtw) {
-        this.bedragExBtw = bedragExBtw;
-    }
-
-    public double getBedragIncBtw() {
-        return bedragIncBtw;
-    }
-
-    public void setBedragIncBtw(double bedragIncBtw) {
-        this.bedragIncBtw = bedragIncBtw;
-    }
-
-    public double getBtw() {
-        return btw;
-    }
-
-    public void setBtw(double btw) {
-        this.btw = btw;
     }
 }

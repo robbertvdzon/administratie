@@ -1,12 +1,21 @@
 package com.vdzon.administratie.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties
 public class AdministratieDto {
 
     private String uuid;
@@ -18,9 +27,6 @@ public class AdministratieDto {
     private List<DeclaratieDto> declaraties;
     private List<BestellingDto> bestellingen;
 
-
-    public AdministratieDto() {
-    }
 
     public AdministratieDto(Administratie administratie) {
         this.uuid = administratie.getUuid();

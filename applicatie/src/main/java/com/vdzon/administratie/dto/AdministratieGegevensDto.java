@@ -1,10 +1,19 @@
 package com.vdzon.administratie.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.AdministratieGegevens;
+import lombok.*;
 
 import java.util.UUID;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties
 public class AdministratieGegevensDto {
 
     private String uuid;
@@ -16,9 +25,6 @@ public class AdministratieGegevensDto {
     private String postcode;
     private String woonplaats;
     private String logoUrl;
-
-    public AdministratieGegevensDto() {
-    }
 
     public AdministratieGegevensDto(AdministratieGegevens administratieGegegens) {
         if (administratieGegegens != null) {
@@ -42,67 +48,4 @@ public class AdministratieGegevensDto {
         return new AdministratieGegevens(uuid, name, rekeningNummer, btwNummer, handelsRegister, adres, postcode, woonplaats, logoUrl);
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRekeningNummer() {
-        return rekeningNummer;
-    }
-
-    public void setRekeningNummer(String rekeningNummer) {
-        this.rekeningNummer = rekeningNummer;
-    }
-
-    public String getBtwNummer() {
-        return btwNummer;
-    }
-
-    public void setBtwNummer(String btwNummer) {
-        this.btwNummer = btwNummer;
-    }
-
-    public String getHandelsRegister() {
-        return handelsRegister;
-    }
-
-    public void setHandelsRegister(String handelsRegister) {
-        this.handelsRegister = handelsRegister;
-    }
-
-    public String getAdres() {
-        return adres;
-    }
-
-    public void setAdres(String adres) {
-        this.adres = adres;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public String getWoonplaats() {
-        return woonplaats;
-    }
-
-    public void setWoonplaats(String woonplaats) {
-        this.woonplaats = woonplaats;
-    }
-
-    public String getLogoUrl() {
-        return logoUrl;
-    }
-
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
 }

@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.BestellingRegel;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties
 public class BestellingDto {
 
     private String uuid;
@@ -27,23 +34,16 @@ public class BestellingDto {
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public BestellingDto() {
-    }
-
-    public BestellingDto(String uuid, String bestellingNummer, String gekoppeldFactuurNummer, String bestellingDate, ContactDto klant, List<BestellingRegelDto> bestellingRegels, double bedragExBtw, double bedragIncBtw, double btw) {
-        this.uuid = uuid;
-        this.bestellingNummer = bestellingNummer;
-        this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
-        this.bestellingDate = bestellingDate;
-        this.klant = klant;
-        this.bestellingRegels = bestellingRegels;
-        this.bedragExBtw = bedragExBtw;
-        this.bedragIncBtw = bedragIncBtw;
-        this.btw = btw;
-    }
-
     public BestellingDto(Bestelling bestelling){
-        this(bestelling.getUuid(), bestelling.getBestellingNummer(),bestelling.getGekoppeldFactuurNummer(), bestelling.getBestellingDate()==null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER), bestelling.getContact()==null ? null : new ContactDto(bestelling.getContact()),toBestellingRegelsDto(bestelling.getBestellingRegels()), bestelling.getBedragExBtw(), bestelling.getBedragIncBtw(), bestelling.getBtw());
+        this.uuid = bestelling.getUuid();
+        this.bestellingNummer = bestelling.getBestellingNummer();
+        this.gekoppeldFactuurNummer = bestelling.getGekoppeldFactuurNummer();
+        this.bestellingDate = bestelling.getBestellingDate()==null ? null : bestelling.getBestellingDate().format(DATE_FORMATTER);
+        this.klant = bestelling.getContact()==null ? null : new ContactDto(bestelling.getContact());
+        this.bestellingRegels = toBestellingRegelsDto(bestelling.getBestellingRegels());
+        this.bedragExBtw = bestelling.getBedragExBtw();
+        this.bedragIncBtw = bestelling.getBedragIncBtw();
+        this.btw = bestelling.getBtw();
     }
 
     private static List<BestellingRegelDto> toBestellingRegelsDto(List<BestellingRegel> bestellingRegels) {
@@ -64,75 +64,4 @@ public class BestellingDto {
                 .collect(Collectors.toList());
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getBestellingNummer() {
-        return bestellingNummer;
-    }
-
-    public void setBestellingNummer(String bestellingNummer) {
-        this.bestellingNummer = bestellingNummer;
-    }
-
-    public String getBestellingDate() {
-        return bestellingDate;
-    }
-
-    public void setBestellingDate(String bestellingDate) {
-        this.bestellingDate = bestellingDate;
-    }
-
-    public ContactDto getKlant() {
-        return klant;
-    }
-
-    public void setKlant(ContactDto klant) {
-        this.klant = klant;
-    }
-
-    public List<BestellingRegelDto> getBestellingRegels() {
-        return bestellingRegels;
-    }
-
-    public void setBestellingRegels(List<BestellingRegelDto> bestellingRegels) {
-        this.bestellingRegels = bestellingRegels;
-    }
-
-    public double getBedragExBtw() {
-        return bedragExBtw;
-    }
-
-    public void setBedragExBtw(double bedragExBtw) {
-        this.bedragExBtw = bedragExBtw;
-    }
-
-    public double getBedragIncBtw() {
-        return bedragIncBtw;
-    }
-
-    public void setBedragIncBtw(double bedragIncBtw) {
-        this.bedragIncBtw = bedragIncBtw;
-    }
-
-    public double getBtw() {
-        return btw;
-    }
-
-    public void setBtw(double btw) {
-        this.btw = btw;
-    }
-
-    public String getGekoppeldFactuurNummer() {
-        return gekoppeldFactuurNummer;
-    }
-
-    public void setGekoppeldFactuurNummer(String gekoppeldFactuurNummer) {
-        this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
-    }
 }

@@ -1,21 +1,22 @@
 package com.vdzon.administratie.dto;
 
 
-import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.Gebruiker;
+import lombok.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class GebruikerDto {
 
     private String uuid;
     private String name;
     private String username;
     private boolean admin;
-
-    public GebruikerDto() {
-    }
 
     public GebruikerDto(Gebruiker gebruiker) {
         this.uuid = gebruiker.getUuid();
@@ -33,35 +34,4 @@ public class GebruikerDto {
         return newGebruiker;
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
 }

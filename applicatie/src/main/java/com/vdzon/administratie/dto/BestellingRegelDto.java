@@ -4,7 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.BestellingRegel;
 import com.vdzon.administratie.model.FactuurRegel;
+import lombok.*;
 
+@ToString
+@EqualsAndHashCode
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties
 public class BestellingRegelDto {
 
@@ -14,47 +21,15 @@ public class BestellingRegelDto {
     private double stuksPrijs;
     private double btwPercentage;
 
-    public BestellingRegelDto() {
-    }
-
-    public BestellingRegelDto(String uuid, String omschrijving, double aantal, double stuksPrijs, double btwPercentage) {
-        this.uuid = uuid;
-        this.omschrijving = omschrijving;
-        this.aantal = aantal;
-        this.stuksPrijs = stuksPrijs;
-        this.btwPercentage = btwPercentage;
-    }
-
     public BestellingRegelDto(BestellingRegel bestellingRegel) {
-        this(bestellingRegel.getUuid(), bestellingRegel.getOmschrijving(), bestellingRegel.getAantal(), bestellingRegel.getStuksPrijs(), bestellingRegel.getBtwPercentage());
+        this.uuid = bestellingRegel.getUuid();
+        this.omschrijving = bestellingRegel.getOmschrijving();
+        this.aantal = bestellingRegel.getAantal();
+        this.stuksPrijs = bestellingRegel.getStuksPrijs();
+        this.btwPercentage = bestellingRegel.getBtwPercentage();
     }
-
 
     public BestellingRegel toBestellingRegel() {
         return new BestellingRegel(omschrijving, aantal, stuksPrijs, btwPercentage, uuid);
-    }
-
-    private boolean emptyUuid(String uuid) {
-        return uuid == null || uuid.length() == 0;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setOmschrijving(String omschrijving) {
-        this.omschrijving = omschrijving;
-    }
-
-    public void setAantal(double aantal) {
-        this.aantal = aantal;
-    }
-
-    public void setStuksPrijs(double stuksPrijs) {
-        this.stuksPrijs = stuksPrijs;
-    }
-
-    public void setBtwPercentage(double btwPercentage) {
-        this.btwPercentage = btwPercentage;
     }
 }
