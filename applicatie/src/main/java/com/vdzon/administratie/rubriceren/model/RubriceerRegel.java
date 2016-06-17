@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class RubriceerRegel {
     private RubriceerAction rubriceerAction;
     private String rekeningNummer;

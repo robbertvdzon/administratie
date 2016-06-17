@@ -46,13 +46,6 @@ public class CheckAndFixService {
         return new SingleAnswer("ok");
     }
 
-    private void fixAllRegels(Gebruiker gebruiker, List<CheckAndFixRegel> regelsToFix) {
-        Reflections reflections = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieFix.class);
-        methodsAnnotatedWith.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
-        crudService.updateGebruiker(gebruiker);
-    }
-
     public List<CheckAndFixRegel> getCheckAndFixRegels(Administratie administratie) {
         CheckAndFixData checkAndFixData = populateCheckAndFixData(administratie);
         Reflections reflections = new Reflections(CHECK_PACKAGE, new MethodAnnotationsScanner());
@@ -60,6 +53,13 @@ public class CheckAndFixService {
         List<CheckAndFixRegel> regels = new ArrayList();
         methodsAnnotatedWith.stream().forEach(method -> callCheckAction(method, checkAndFixData, regels));
         return regels;
+    }
+
+    private void fixAllRegels(Gebruiker gebruiker, List<CheckAndFixRegel> regelsToFix) {
+        Reflections reflections = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
+        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieFix.class);
+        methodsAnnotatedWith.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
+        crudService.updateGebruiker(gebruiker);
     }
 
     private CheckAndFixData populateCheckAndFixData(Administratie administratie) {

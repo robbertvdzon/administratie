@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class RubriceerRegels {
     private List<RubriceerRegel> rubriceerRegelList;
 }
