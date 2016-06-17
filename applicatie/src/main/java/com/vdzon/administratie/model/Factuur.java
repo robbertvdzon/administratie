@@ -53,9 +53,13 @@ public class Factuur {
         bedragIncBtw = 0;
         btw = 0;
         for (FactuurRegel factuurRegel : factuurRegels) {
-            bedragExBtw += factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
-            btw += bedragExBtw * (factuurRegel.getBtwPercentage() / 100);
-            bedragIncBtw += bedragExBtw + btw;
+            double regelBedragEx = factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
+            double regelBedragBtw = regelBedragEx * (factuurRegel.getBtwPercentage() / 100);
+            double regelBedragInc = regelBedragEx + regelBedragBtw;
+
+            bedragExBtw += regelBedragEx;
+            btw += regelBedragBtw;
+            bedragIncBtw += regelBedragInc;
         }
     }
 
