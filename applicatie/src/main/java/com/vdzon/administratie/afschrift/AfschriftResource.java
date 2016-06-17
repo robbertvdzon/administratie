@@ -13,7 +13,7 @@ public class AfschriftResource {
         Spark.put("/rest/afschrift/", afschriftService::putAfschrift, JsonUtil.json());
         Spark.post("/rest/afschrift/", afschriftService::putAfschrift, JsonUtil.json());
         Spark.delete("/rest/afschrift/:nummer", afschriftService::removeAfschrift, JsonUtil.json());
-        Spark.post("/rest/afschrift/uploadabn", "multipart/form-data", afschriftService::uploadFile, JsonUtil.json());
+        Spark.post("/rest/afschrift/uploadabn", "multipart/form-data", afschriftService::uploadabn, JsonUtil.json());
     }
 
 

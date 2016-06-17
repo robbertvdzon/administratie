@@ -5,28 +5,14 @@ import com.vdzon.administratie.auth.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.model.BoekingType;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.Part;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AfschriftService {
 
@@ -57,188 +43,22 @@ public class AfschriftService {
         return new SingleAnswer("ok");
     }
 
-    protected Object uploadFile(Request request, Response response) {
-        /*
-        TODO: Onderstaande code moet heel erg opgeruimd worden!!!
-         */
-        try {
-            Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(request, crudService);
-            String location = "image";          // the directory location where files will be stored
-            long maxFileSize = 100000000;       // the maximum size allowed for uploaded files
-            long maxRequestSize = 100000000;    // the maximum size allowed for multipart/form-data requests
-            int fileSizeThreshold = 1024;       // the size threshold after which files will be written to disk
-
-            MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
-                    location, maxFileSize, maxRequestSize, fileSizeThreshold);
-            request.raw().setAttribute("org.eclipse.jetty.multipartConfig",
-                    multipartConfigElement);
-
-            String fName = request.raw().getPart("file").getSubmittedFileName();
-
-            Part uploadedFile = request.raw().getPart("file");
-            Path out = Paths.get(fName);
-            out.toFile().delete();
-            try (final InputStream in = uploadedFile.getInputStream()) {
-                Files.copy(in, out);
-                uploadedFile.delete();
-            }
-            List<Afschrift> afschriften = parseFile(out, gebruiker);
-            System.out.println("count " + afschriften.size());
-            for (Afschrift afschrift : afschriften) {
-                if (afschrift != null) {
-                    gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
-                    gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
-                }
-            }
-            crudService.updateGebruiker(gebruiker);
-
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    protected Object uploadabn(Request request, Response response) {
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(request, crudService);
+        Path uploadedFile = SessionHelper.getUploadedFile(request);
+        List<Afschrift> afschriften = new ImportFromAbnAmro().parseFile(uploadedFile, gebruiker);
+        updateAfschriftenVanGebruiker(gebruiker, afschriften);
+        crudService.updateGebruiker(gebruiker);
         return "OK";
     }
 
-    private List<Afschrift> parseFile(Path out, Gebruiker gebruiker) {
-        NextNummerHolder nextNummerHolder = new NextNummerHolder(findNextAfschriftNummer(gebruiker));
-        try (Stream<String> stream = Files.lines(out)) {
-            return stream.map(line -> parseLine(line, gebruiker, nextNummerHolder)).collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
 
-    }
-
-    private Afschrift parseLine(String line, Gebruiker gebruiker, NextNummerHolder nextNummerHolder) {
-        //514675950	EUR	20160125	-2,27	-3,02	20160125	-0,75	ABN AMRO Bank N.V.               Betaalpas                   0,75
-
-        String[] parts = line.split("\t");
-        if (parts.length == 8) {
-            String rekeningNr = parts[0];
-            String date = parts[2];
-            String bedragStr = parts[6];
-            String omschrijving = parts[7];
-            String naam = extractNaam(omschrijving);
-            String oms = extractOmschrijving(omschrijving);
-
-            String uuid = rekeningNr.trim() + date.trim() + bedragStr + omschrijving.trim() + naam.trim() + oms.trim();
-
-            Afschrift bestaandAfschrift = gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.getUuid().equals(uuid)).findFirst().orElse(null);
-            if (bestaandAfschrift != null) {
-                // afschrift bestaat al
-                return null;
+    private void updateAfschriftenVanGebruiker(Gebruiker gebruiker, List<Afschrift> afschriften) {
+        for (Afschrift afschrift : afschriften) {
+            if (afschrift != null) {
+                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
             }
-
-            double bedrag = getBedrag(bedragStr);
-            LocalDate boekDatum = getBoekDatum(date);
-            int nextAfschriftNummer = nextNummerHolder.nextNummer++;
-            return Afschrift.builder()
-                    .uuid(uuid)
-                    .nummer("" + nextAfschriftNummer)
-                    .rekeningNummer(rekeningNr)
-                    .omschrijving(oms)
-                    .relatienaam(naam)
-                    .boekdatum(boekDatum)
-                    .bedrag(bedrag)
-                    .boekingType(BoekingType.NONE)
-                    .factuurNummer("")
-                    .rekeningNummer("")
-                    .build();
-        } else {
-            return null;
-        }
-    }
-
-    private int findNextAfschriftNummer(Gebruiker gebruiker) {
-        return 1 + gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift -> Integer.parseInt(afschrift.getNummer())).max(Comparator.naturalOrder()).orElse(1000);
-    }
-
-    private String extractNaam(String omschrijving) {
-//        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
-//        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
-        if (omschrijving.startsWith("/TRTP")) {
-            String[] split = omschrijving.split("/");
-            for (int i = 0; i < split.length; i++) {
-                if (split[i].equals("NAME")) {
-                    return split[i + 1];
-                }
-            }
-        }
-        if (omschrijving.startsWith("SEPA")) {
-            int pos = omschrijving.indexOf("Naam:");
-            int posStart = pos + "Naam:".length();
-            if (pos > 0) {
-                String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
-                int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
-                if (nextKeyword == null) {
-                    return omschrijving.substring(posStart);
-                } else {
-                    return omschrijving.substring(posStart, posEnd - 1);
-                }
-            }
-        }
-        return "Onbekend";
-    }
-
-    private String extractOmschrijving(String omschrijving) {
-//        /TRTP/SEPA OVERBOEKING/IBAN/NL44ABNA0541739336/BIC/ABNANL2A/NAME/RC VAN DER ZON CJ/REMI/overboeking/EREF/NOTPROVIDED
-//        SEPA Overboeking                 IBAN: NL82RABO0326286209        BIC: RABONL2U                    Naam: Sibilla                   Omschrijving:
-        if (omschrijving.startsWith("/TRTP")) {
-            String[] split = omschrijving.split("/");
-            for (int i = 0; i < split.length; i++) {
-                if (split[i].equals("REMI")) {
-                    return split[i + 1];
-                }
-            }
-        }
-        if (omschrijving.startsWith("SEPA")) {
-            int pos = omschrijving.indexOf("Omschrijving:");
-            int posStart = pos + "Omschrijving:".length();
-            if (pos > 0) {
-                String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
-                int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
-                if (nextKeyword == null) {
-                    return omschrijving.substring(posStart);
-                } else {
-                    return omschrijving.substring(posStart, posEnd - 1);
-                }
-            }
-        }
-        return omschrijving;
-    }
-
-    private String findNextKeyword(String s) {
-        String[] words = s.split(" ");
-        for (String word : words) {
-            if (word.endsWith(":")) {
-                return word;
-            }
-        }
-        return null;
-    }
-
-    private LocalDate getBoekDatum(String date) {
-        try {
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("yyyyMMdd");
-            return LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException exc) {
-            exc.printStackTrace();
-        }
-        return LocalDate.now();
-
-    }
-
-    private double getBedrag(String bedrag) {
-        return new Double(bedrag.replace(",", ".")).doubleValue();
-    }
-
-    private class NextNummerHolder {
-        int nextNummer;
-
-        public NextNummerHolder(int nextNummer) {
-            this.nextNummer = nextNummer;
         }
     }
 
