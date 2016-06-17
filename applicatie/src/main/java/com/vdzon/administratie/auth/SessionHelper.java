@@ -1,5 +1,8 @@
 package com.vdzon.administratie.auth;
 
+import com.vdzon.administratie.checkandfix.rest.ForbiddenException;
+import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.model.Gebruiker;
 import spark.Request;
 import spark.Session;
 
@@ -23,5 +26,13 @@ public class SessionHelper {
         session.removeAttribute(AUTHENTICATED_USER_UUID);
     }
 
+    public static Gebruiker getGebruikerOrThowForbiddenExceptin(Request req, UserCrud crudService) {
+        String uuid = getAuthenticatedUserUuid(req);
+        Gebruiker gebruiker = crudService.getGebruiker(uuid);
+        if (gebruiker == null) {
+            throw new ForbiddenException();
+        }
+        return gebruiker;
 
+    }
 }

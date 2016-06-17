@@ -26,20 +26,9 @@ public class RubriceerService {
     UserCrud crudService;
 
     protected Object getRubriceerRegels(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-
-            List<RubriceerRegel> regels = getRubriceerRegels(gebruiker);
-            return RubriceerRegels.builder().rubriceerRegelList(regels).build();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        List<RubriceerRegel> regels = getRubriceerRegels(gebruiker);
+        return RubriceerRegels.builder().rubriceerRegelList(regels).build();
     }
 
     private List<RubriceerRegel> getRubriceerRegels(Gebruiker gebruiker) {
@@ -86,25 +75,14 @@ public class RubriceerService {
     }
 
     protected Object rubriceerRegels(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-            String regelsJson = req.body();
-            ObjectMapper mapper = new ObjectMapper();
-            RubriceerRegels rubriceerRegels = mapper.readValue(regelsJson, RubriceerRegels.class);
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        String regelsJson = req.body();
+        ObjectMapper mapper = new ObjectMapper();
+        RubriceerRegels rubriceerRegels = mapper.readValue(regelsJson, RubriceerRegels.class);
 
-            System.out.println("rubriceer:");
-            rubriceerRegels.getRubriceerRegelList().stream().forEach(regel -> processRegel(regel, gebruiker));
-            crudService.updateGebruiker(gebruiker);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        System.out.println("rubriceer:");
+        rubriceerRegels.getRubriceerRegelList().stream().forEach(regel -> processRegel(regel, gebruiker));
+        crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }
 

@@ -34,47 +34,27 @@ public class AfschriftService {
     UserCrud crudService;
 
     protected Object putAfschrift(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-            String afschriftJson = req.body();
-            ObjectMapper mapper = new ObjectMapper();
-            AfschriftDto afschriftDto = mapper.readValue(afschriftJson, AfschriftDto.class);
-            Afschrift afschrift = afschriftDto.toAfschrift();
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        String afschriftJson = req.body();
+        ObjectMapper mapper = new ObjectMapper();
+        AfschriftDto afschriftDto = mapper.readValue(afschriftJson, AfschriftDto.class);
+        Afschrift afschrift = afschriftDto.toAfschrift();
 
-            gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
-            gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
-            crudService.updateGebruiker(gebruiker);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+        gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
+        crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }
 
     protected Object removeAfschrift(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-            String nummer = req.params(":nummer");
-            if ("undefined".equals(nummer)) {
-                nummer = null;
-            }
-            gebruiker.getDefaultAdministratie().removeAfschrift(nummer);
-            crudService.updateGebruiker(gebruiker);
-            return new SingleAnswer("ok");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        String nummer = req.params(":nummer");
+        if ("undefined".equals(nummer)) {
+            nummer = null;
         }
+        gebruiker.getDefaultAdministratie().removeAfschrift(nummer);
+        crudService.updateGebruiker(gebruiker);
+        return new SingleAnswer("ok");
     }
 
     protected Object uploadFile(Request request, Response response) {
@@ -82,12 +62,7 @@ public class AfschriftService {
         TODO: Onderstaande code moet heel erg opgeruimd worden!!!
          */
         try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(request);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                response.status(404);
-                return new SingleAnswer("not found");
-            }
+            Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(request, crudService);
             String location = "image";          // the directory location where files will be stored
             long maxFileSize = 100000000;       // the maximum size allowed for uploaded files
             long maxRequestSize = 100000000;    // the maximum size allowed for multipart/form-data requests

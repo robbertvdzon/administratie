@@ -18,49 +18,28 @@ public class ContactService {
     UserCrud crudService;
 
     protected Object putContact(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-            String contactJson = req.body();
-            Contact contact = null;
-            ObjectMapper mapper = new ObjectMapper();
-            ContactDto contactDto = mapper.readValue(contactJson, ContactDto.class);
-            contact = contactDto.toContact();
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        String contactJson = req.body();
+        Contact contact = null;
+        ObjectMapper mapper = new ObjectMapper();
+        ContactDto contactDto = mapper.readValue(contactJson, ContactDto.class);
+        contact = contactDto.toContact();
 
-            gebruiker.getDefaultAdministratie().removeContact(contact.getUuid());
-            gebruiker.getDefaultAdministratie().addContact(contact);
-            crudService.updateGebruiker(gebruiker);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        gebruiker.getDefaultAdministratie().removeContact(contact.getUuid());
+        gebruiker.getDefaultAdministratie().addContact(contact);
+        crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }
 
     protected Object removeContact(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
-            String contactUuid = req.params(":uuid");
-            if ("undefined".equals(contactUuid)) {
-                contactUuid = null;
-            }
-            gebruiker.getDefaultAdministratie().removeContact(contactUuid);
-            crudService.updateGebruiker(gebruiker);
-            return new SingleAnswer("ok");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
+        String contactUuid = req.params(":uuid");
+        if ("undefined".equals(contactUuid)) {
+            contactUuid = null;
         }
-
+        gebruiker.getDefaultAdministratie().removeContact(contactUuid);
+        crudService.updateGebruiker(gebruiker);
+        return new SingleAnswer("ok");
     }
 
 }

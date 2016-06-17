@@ -7,6 +7,7 @@ import com.vdzon.administratie.afschrift.AfschriftResource;
 import com.vdzon.administratie.auth.AuthResource;
 import com.vdzon.administratie.bestelling.BestellingResource;
 import com.vdzon.administratie.checkandfix.rest.CheckAndFixResource;
+import com.vdzon.administratie.checkandfix.rest.ForbiddenException;
 import com.vdzon.administratie.contact.ContactResource;
 import com.vdzon.administratie.data.DataResource;
 import com.vdzon.administratie.declaratie.DeclaratieResource;
@@ -41,6 +42,18 @@ public class App {
         else{
             Spark.staticFileLocation("/web");
         }
+
+        // Handle exceptions
+        Spark.exception(ForbiddenException.class, (exception, request, response) -> {
+            response.status(403);
+            response.body(exception.getMessage());
+        });
+        Spark.exception(Exception.class, (exception, request, response) -> {
+            exception.printStackTrace();
+            response.status(500);
+            response.body(exception.getMessage());
+        });
+
 
         // change port if needed
         if (args.length > 0) {

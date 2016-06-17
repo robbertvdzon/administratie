@@ -17,13 +17,7 @@ public class GebruikerService {
     UserCrud crudService;
 
     protected Object postGebruiker(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
             String nieuweGebruikerJson = req.body();
             ObjectMapper mapper = new ObjectMapper();
             GebruikerDto nieuweGebruikerDto = mapper.readValue(nieuweGebruikerJson, GebruikerDto.class);
@@ -34,19 +28,10 @@ public class GebruikerService {
             Gebruiker updatedGebruiker  = nieuweGebruikerDto.cloneGebruikerWithDtoFields(originalGebruiker);
             crudService.updateGebruiker(updatedGebruiker );
             return new SingleAnswer("ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
     }
 
     protected Object removeGebruiker(Request req, Response res) throws Exception {
-        String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-        Gebruiker gebruiker = crudService.getGebruiker(uuid);
-        if (gebruiker == null) {
-            res.status(404);
-            return new SingleAnswer("not found");
-        }
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
         String gebruikerUuid = req.params(":uuid");
         if ("undefined".equals(gebruikerUuid)) {
             gebruikerUuid = null;
@@ -56,12 +41,7 @@ public class GebruikerService {
     }
 
     protected Object updatePassword(Request req, Response res) throws Exception {
-        String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-        Gebruiker gebruiker = crudService.getGebruiker(uuid);
-        if (gebruiker == null) {
-            res.status(404);
-            return new SingleAnswer("not found");
-        }
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
         String gebruikerUuid = req.params(":uuid");
         String newPassword = req.params(":newPassword");
         Gebruiker gebruikerToChange = crudService.getGebruiker(gebruikerUuid);

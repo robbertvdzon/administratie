@@ -21,13 +21,7 @@ public class OverzichtService {
     CheckAndFixService checkAndFixService;
 
     protected Object getPdf(Request req, Response res) throws Exception {
-        try {
-            String uuid = SessionHelper.getAuthenticatedUserUuid(req);
-            Gebruiker gebruiker = crudService.getGebruiker(uuid);
-            if (gebruiker == null) {
-                res.status(404);
-                return new SingleAnswer("not found");
-            }
+        Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
             String beginDate = req.params(":beginDate");
             String endDate = req.params(":endDate");
             if ("endDate".equals(endDate)) {
@@ -48,11 +42,6 @@ public class OverzichtService {
             }
 
             return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-
     }
 
 }

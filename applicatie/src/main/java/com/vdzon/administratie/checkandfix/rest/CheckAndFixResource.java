@@ -13,6 +13,4 @@ public class CheckAndFixResource {
         Spark.get("/rest/checkandfixregels/", rubricecheckAndFixServicerService::getCheckAndFixRegels, JsonUtil.json());
         Spark.post("/rest/fix/", rubricecheckAndFixServicerService::fix, JsonUtil.json());
     }
-
-
 }
