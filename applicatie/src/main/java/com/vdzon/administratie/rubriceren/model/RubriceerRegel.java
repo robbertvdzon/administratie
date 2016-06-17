@@ -1,7 +1,6 @@
 package com.vdzon.administratie.rubriceren.model;
 
 import com.vdzon.administratie.dto.AfschriftDto;
-import com.vdzon.administratie.model.Afschrift;
 import lombok.*;
 
 @ToString

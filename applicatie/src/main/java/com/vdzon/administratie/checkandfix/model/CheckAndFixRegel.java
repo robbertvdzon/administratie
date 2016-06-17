@@ -1,7 +1,6 @@
 package com.vdzon.administratie.checkandfix.model;
 
 import com.vdzon.administratie.dto.AfschriftDto;
-import lombok.*;
 
 import java.time.LocalDate;
 

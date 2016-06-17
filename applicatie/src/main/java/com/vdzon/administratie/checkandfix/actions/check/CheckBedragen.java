@@ -3,7 +3,7 @@ package com.vdzon.administratie.checkandfix.actions.check;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.checkandfix.model.CheckType;
 import com.vdzon.administratie.checkandfix.model.FixAction;
-import com.vdzon.administratie.checkandfix.rest.CheckAndFixData;
+import com.vdzon.administratie.checkandfix.CheckAndFixData;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package com.vdzon.administratie.data;
 
-import com.vdzon.administratie.auth.SessionHelper;
+import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.AdministratieDto;
 import com.vdzon.administratie.dto.GebruikerDto;

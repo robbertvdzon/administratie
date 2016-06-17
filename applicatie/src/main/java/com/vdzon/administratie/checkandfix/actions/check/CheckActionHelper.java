@@ -1,6 +1,6 @@
 package com.vdzon.administratie.checkandfix.actions.check;
 
-import com.vdzon.administratie.checkandfix.rest.CheckAndFixData;
+import com.vdzon.administratie.checkandfix.CheckAndFixData;
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.model.Factuur;
