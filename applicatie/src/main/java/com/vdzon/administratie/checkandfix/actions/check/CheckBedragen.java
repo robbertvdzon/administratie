@@ -1,9 +1,9 @@
 package com.vdzon.administratie.checkandfix.actions.check;
 
+import com.vdzon.administratie.checkandfix.CheckAndFixData;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.checkandfix.model.CheckType;
 import com.vdzon.administratie.checkandfix.model.FixAction;
-import com.vdzon.administratie.checkandfix.CheckAndFixData;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,7 +17,16 @@ public class CheckBedragen extends CheckActionHelper {
                 .stream()
                 .filter(factuur -> hasGekoppeldAfschrift(factuur))
                 .filter(factuur -> factuur.getBedragIncBtw() != getAfschiftBedrag(factuur, data))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(factuur, data), "Factuurbedrag van factuur " + factuur.getFactuurNummer() + " komt niet overeen met bedrag afschift " + factuur.getGekoppeldAfschrift() + "", " (" + factuur.getBedragIncBtw() + "!=" + getAfschiftBedrag(factuur, data) + ")", factuur.getFactuurDate()))
+                .map(factuur -> CheckAndFixRegel
+                        .builder()
+                        .rubriceerAction(FixAction.NONE)
+                        .checkType(CheckType.WARNING)
+                        .afschrift(getAfschriftDto(factuur, data))
+                        .omschrijving("Factuurbedrag van factuur " + factuur.getFactuurNummer() + " komt niet overeen met bedrag afschift " + factuur.getGekoppeldAfschrift() + "," + "(" + +factuur.getBedragIncBtw() + "!=" + getAfschiftBedrag(factuur, data) + ")")
+                        .data("")
+                        .date(factuur.getFactuurDate())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 
@@ -27,7 +36,16 @@ public class CheckBedragen extends CheckActionHelper {
                 .stream()
                 .filter(rekening -> hasGekoppeldAfschrift(rekening))
                 .filter(rekening -> rekening.getBedragIncBtw() * -1 != getAfschiftBedrag(rekening, data))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(rekening, data), "Rekeningbedrag van rekening " + rekening.getRekeningNummer() + " komt niet overeen met bedrag afschift " + rekening.getGekoppeldAfschrift() + ", (" + rekening.getBedragIncBtw() + "!=" + getAfschiftBedrag(rekening, data) + ")", "", rekening.getRekeningDate()))
+                .map(rekening -> CheckAndFixRegel
+                        .builder()
+                        .rubriceerAction(FixAction.NONE)
+                        .checkType(CheckType.WARNING)
+                        .afschrift(getAfschriftDto(rekening, data))
+                        .omschrijving("Rekeningbedrag van rekening " + rekening.getRekeningNummer() + " komt niet overeen met bedrag afschift " + rekening.getGekoppeldAfschrift() + ", (" + rekening.getBedragIncBtw() + "!=" + getAfschiftBedrag(rekening, data) + ")")
+                        .data("")
+                        .date(rekening.getRekeningDate())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 }

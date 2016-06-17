@@ -1,6 +1,6 @@
 package com.vdzon.administratie.util;
 
-import com.vdzon.administratie.checkandfix.ForbiddenException;
+import com.vdzon.administratie.exceptions.ForbiddenException;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.model.Gebruiker;
 import spark.Request;

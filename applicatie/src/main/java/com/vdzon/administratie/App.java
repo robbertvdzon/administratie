@@ -7,7 +7,7 @@ import com.vdzon.administratie.rest.afschrift.AfschriftResource;
 import com.vdzon.administratie.rest.auth.AuthResource;
 import com.vdzon.administratie.rest.bestelling.BestellingResource;
 import com.vdzon.administratie.rest.checkandfix.CheckAndFixResource;
-import com.vdzon.administratie.checkandfix.ForbiddenException;
+import com.vdzon.administratie.exceptions.ForbiddenException;
 import com.vdzon.administratie.rest.contact.ContactResource;
 import com.vdzon.administratie.data.DataResource;
 import com.vdzon.administratie.rest.declaratie.DeclaratieResource;

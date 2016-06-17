@@ -1,9 +1,9 @@
 package com.vdzon.administratie.checkandfix.actions.check;
 
+import com.vdzon.administratie.checkandfix.CheckAndFixData;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.checkandfix.model.CheckType;
 import com.vdzon.administratie.checkandfix.model.FixAction;
-import com.vdzon.administratie.checkandfix.CheckAndFixData;
 import com.vdzon.administratie.model.BoekingType;
 
 import java.util.Collection;
@@ -16,7 +16,16 @@ public class CheckOnverwerkt extends CheckActionHelper {
         return data.alleFacturen
                 .stream()
                 .filter(factuur -> !hasGekoppeldAfschrift(factuur))
-                .map(factuur -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Factuur " + factuur.getFactuurNummer() + " is niet geboekt", "", factuur.getFactuurDate()))
+                .map(factuur -> CheckAndFixRegel
+                        .builder()
+                        .rubriceerAction(FixAction.NONE)
+                        .checkType(CheckType.WARNING)
+                        .afschrift(null)
+                        .omschrijving("Factuur " + factuur.getFactuurNummer() + " is niet geboekt")
+                        .data("")
+                        .date(factuur.getFactuurDate())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 
@@ -25,7 +34,16 @@ public class CheckOnverwerkt extends CheckActionHelper {
         return data.alleRekeningen
                 .stream()
                 .filter(rekening -> !hasGekoppeldAfschrift(rekening))
-                .map(rekening -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, null, "Rekening " + rekening.getRekeningNummer() + " is niet geboekt", "", rekening.getRekeningDate()))
+                .map(rekening -> CheckAndFixRegel
+                        .builder()
+                        .rubriceerAction(FixAction.NONE)
+                        .checkType(CheckType.WARNING)
+                        .afschrift(null)
+                        .omschrijving("Rekening " + rekening.getRekeningNummer() + " is niet geboekt")
+                        .data("")
+                        .date(rekening.getRekeningDate())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 
@@ -34,7 +52,16 @@ public class CheckOnverwerkt extends CheckActionHelper {
         return data.alleAfschriften
                 .stream()
                 .filter(afschrift -> afschrift.getBoekingType() == BoekingType.NONE)
-                .map(afschrift -> new CheckAndFixRegel(FixAction.NONE, CheckType.WARNING, getAfschriftDto(afschrift), "Afschift " + afschrift.getNummer() + " is niet verwerkt", "", afschrift.getBoekdatum()))
+                .map(afschrift -> CheckAndFixRegel
+                        .builder()
+                        .rubriceerAction(FixAction.NONE)
+                        .checkType(CheckType.WARNING)
+                        .afschrift(getAfschriftDto(afschrift))
+                        .omschrijving("Afschift " + afschrift.getNummer() + " is niet verwerkt")
+                        .data("")
+                        .date(afschrift.getBoekdatum())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 }

@@ -1,4 +1,4 @@
-package com.vdzon.administratie.checkandfix;
+package com.vdzon.administratie.exceptions;
 
 public class ForbiddenException extends RuntimeException{
 }
