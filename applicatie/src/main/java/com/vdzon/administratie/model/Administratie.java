@@ -26,6 +26,7 @@ public class Administratie {
     private List<Rekening> rekeningen = new ArrayList<>();
     private List<Afschrift> afschriften = new ArrayList<>();
     private List<Declaratie> declaraties = new ArrayList<>();
+    private List<Boeking> boekingen = new ArrayList<>();
 
     public List<Bestelling> getBestellingen() {
         return Collections.unmodifiableList(new ArrayList<>(bestellingen));
@@ -50,6 +51,11 @@ public class Administratie {
     public List<Declaratie> getDeclaraties() {
         return Collections.unmodifiableList(new ArrayList<>(declaraties));
     }
+
+    public List<Boeking> getBoekingen() {
+        return Collections.unmodifiableList(new ArrayList<>(boekingen));
+    }
+
 
     public void addFactuur(Factuur factuur) {
         facturen.add(factuur);
@@ -186,6 +192,19 @@ public class Administratie {
         for (Afschrift afschrift : afschriftenClone) {
             if (afschrift.getNummer().equals(nummer)) {
                 this.afschriften.remove(afschrift);
+            }
+        }
+    }
+
+    public void addBoeking(Boeking boeking) {
+        boekingen.add(boeking);
+    }
+
+    public void removeBoeking(String uuid) {
+        List<Boeking> boekingenClone = getBoekingen();
+        for (Boeking boeking: boekingenClone) {
+            if (boeking.getUuid().equals(uuid)) {
+                this.boekingen.remove(boeking);
             }
         }
     }

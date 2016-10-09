@@ -50,6 +50,13 @@ public class Gebruiker {
                             .builder()
                             .uuid(getUuid())
                             .administratieGegevens(administratieGegevens)
+                            .bestellingen(new ArrayList<>())
+                            .facturen(new ArrayList<>())
+                            .adresboek(new ArrayList<>())
+                            .rekeningen(new ArrayList<>())
+                            .afschriften(new ArrayList<>())
+                            .boekingen(new ArrayList<>())
+                            .declaraties(new ArrayList<>())
                             .build());
         }
     }
