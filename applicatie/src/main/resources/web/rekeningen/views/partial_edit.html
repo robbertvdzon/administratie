@@ -39,10 +39,9 @@
         <input ng-model="data.rekeningToEdit.btw" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <md-input-container flex>
-        <label>gekoppeld afschrift</label>
-        <input ng-model="data.rekeningToEdit.gekoppeldAfschrift" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
+
+    <b>Gekoppelde afschriften:</b><br>
+    <span ng-repeat="boeking in data.rekeningToEdit.boekingen"> {{boeking.afschriftNummer}} {{$last ? '' : ', '}}  </span>
 
     <br>
 

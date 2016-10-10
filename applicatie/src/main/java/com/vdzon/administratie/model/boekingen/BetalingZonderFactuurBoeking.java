@@ -1,8 +1,6 @@
 package com.vdzon.administratie.model.boekingen;
 
-import com.vdzon.administratie.model.Boeking;
-import com.vdzon.administratie.model.boekingen.relaties.HasAfschrift;
-import com.vdzon.administratie.model.boekingen.relaties.HasDeclaratie;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import lombok.*;
 import org.mongodb.morphia.annotations.Id;
 
@@ -12,13 +10,18 @@ import org.mongodb.morphia.annotations.Id;
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-public class BetalingZonderFactuurBoeking extends Boeking implements HasAfschrift{
-    String afschriftUuid;
+public class BetalingZonderFactuurBoeking extends Boeking implements BoekingMetAfschrift {
+    String afschriftNummer;
     @Id
     private String uuid;
 
     @Override
-    public String getAfschriftUuid() {
-        return afschriftUuid;
+    public String getAfschriftNummer() {
+        return afschriftNummer;
+    }
+
+    @Override
+    public String getOmschrijving() {
+        return "Betaling";
     }
 }

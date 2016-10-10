@@ -2,9 +2,13 @@ package com.vdzon.administratie.rubriceren.rubriceerRegels;
 
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.model.BoekingType;
+import com.vdzon.administratie.dto.BoekingType;
+import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.Rekening;
+import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
+import com.vdzon.administratie.model.boekingen.OnverwerktAfschiftBoeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 
@@ -16,8 +20,9 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
     //TODO: deze class kan nog steeds mooier
 
     @RubriceerRule
-    public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift) {
-        if (afschrift.getBoekingType() == null || afschrift.getBoekingType() == BoekingType.NONE) {
+    public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
+        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
+        if (hasNoBoekingen(boekingenVanAfschrift)) {
             if (afschrift.getBedrag() < 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.CREATE_REKENING;
                 String factuurNummer = null;
@@ -34,60 +39,53 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         rekeningNummer = rekening.getRekeningNummer();
                     }
                 }
-                RubriceerRegel rubriceerRegel = RubriceerRegel.builder().rubriceerAction(rubriceerAction).rekeningNummer(rekeningNummer).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift)).build();
+                RubriceerRegel rubriceerRegel = RubriceerRegel.builder()
+                        .rubriceerAction(rubriceerAction)
+                        .rekeningNummer(rekeningNummer)
+                        .faktuurNummer(factuurNummer)
+                        .afschrift(new AfschriftDto(afschrift, boekingenCache))
+                        .build();
                 regels.add(rubriceerRegel);
             }
         }
     }
 
+    private boolean hasNoBoekingen(List<BoekingMetAfschrift> boekingenVanAfschrift) {
+        if (boekingenVanAfschrift.isEmpty()) return true;
+        return boekingenVanAfschrift.stream().filter(boeking -> !(boeking instanceof OnverwerktAfschiftBoeking)).count() == 0;
+    }
+
     @RubriceerRuleCommit
     public void processRegel(RubriceerRegel regel, Gebruiker gebruiker) {
         Afschrift afschrift = regel.getAfschrift().toAfschrift();
+        BetaaldeRekeningBoeking betaaldeRekeningBoeking;
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_REKENING:
-                for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
-                    if (regel.getRekeningNummer().equals(rekening.getRekeningNummer())) {
-                        Rekening newRekening = rekening.toBuilder().gekoppeldAfschrift(afschrift.getNummer()).build();
-                        gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
-                        gebruiker.getDefaultAdministratie().addRekening(newRekening);
-                        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
-                        gebruiker.getDefaultAdministratie().addAfschrift(
-                                afschrift
-                                        .toBuilder()
-                                        .boekingType(BoekingType.REKENING)
-                                        .factuurNummer("")
-                                        .rekeningNummer(rekening.getRekeningNummer())
-                                        .build()
-                        );
-                    }
-                }
+                betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                        .afschriftNummer(regel.getAfschrift().getNummer())
+                        .rekeningNummer(regel.getRekeningNummer())
+                        .build();
+                gebruiker.getDefaultAdministratie().addBoeking(betaaldeRekeningBoeking);
                 break;
             case CREATE_REKENING:
                 Rekening rekening = Rekening
                         .builder()
                         .uuid(UUID.randomUUID().toString())
-                        .rekeningNummer("" + findNextRekeningNummer(gebruiker)
-                        ).naam(afschrift.getRelatienaam())
+                        .rekeningNummer("" + findNextRekeningNummer(gebruiker))
+                        .naam(afschrift.getRelatienaam())
                         .omschrijving(afschrift.getOmschrijving())
                         .rekeningDate(afschrift.getBoekdatum())
                         .bedragExBtw(afschrift.getBedrag() * -1)
                         .bedragIncBtw(afschrift.getBedrag() * -1)
                         .btw(0)
-                        .gekoppeldAfschrift(regel.getAfschrift().getNummer())
                         .build();
-
-
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
-                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
-                gebruiker.getDefaultAdministratie().addAfschrift(
-                        afschrift
-                                .toBuilder()
-                                .boekingType(BoekingType.REKENING)
-                                .factuurNummer("")
-                                .rekeningNummer(rekening.getRekeningNummer())
-                                .build()
-                );
 
+                betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                        .afschriftNummer(regel.getAfschrift().getNummer())
+                        .rekeningNummer(rekening.getRekeningNummer())
+                        .build();
+                gebruiker.getDefaultAdministratie().addBoeking(betaaldeRekeningBoeking);
                 break;
         }
     }

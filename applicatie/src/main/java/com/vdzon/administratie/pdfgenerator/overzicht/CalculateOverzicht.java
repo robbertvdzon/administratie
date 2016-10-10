@@ -1,11 +1,10 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
+import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,25 +38,25 @@ public class CalculateOverzicht {
         overzicht.declaratiesTotaalBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBtw()).sum();
 
         overzicht.betaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
-        overzicht.betaaldeFacturenBuitenGeselecteerdePeriode =
-                overzicht.filteredFacturen
-                        .stream()
-                        .filter(factuur->factuur.isBetaald())
-                        .filter(factuur->afschriftenMap.get(factuur.getGekoppeldAfschrift())!=null)
-                        .filter(factuur->!betweenOrAtDates(afschriftenMap.get(factuur.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
-                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+//        overzicht.betaaldeFacturenBuitenGeselecteerdePeriode =
+//                overzicht.filteredFacturen
+//                        .stream()
+//                        .filter(factuur->factuur.isBetaald())
+//                        .filter(factuur->afschriftenMap.get(factuur.getGekoppeldAfschrift())!=null)
+//                        .filter(factuur->!betweenOrAtDates(afschriftenMap.get(factuur.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
+//                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.onbetaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->!factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.betaaldeRekeningen = overzicht.rekeningenTotaalIncBtw;
-        overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode =
-                overzicht.filteredRekeningen
-                        .stream()
-                        .filter(rekening->afschriftenMap.get(rekening.getGekoppeldAfschrift())!=null)
-                        .filter(rekening->!betweenOrAtDates(afschriftenMap.get(rekening.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
-                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
-        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeFacturenBuitenGeselecteerdePeriode-overzicht.betaaldeRekeningen+overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode;
+//        overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode =
+//                overzicht.filteredRekeningen
+//                        .stream()
+//                        .filter(rekening->afschriftenMap.get(rekening.getGekoppeldAfschrift())!=null)
+//                        .filter(rekening->!betweenOrAtDates(afschriftenMap.get(rekening.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
+//                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+//        overzicht.verwachtTotaalOpRekeningBij = overzicht.betaaldeFacturen-overzicht.betaaldeFacturenBuitenGeselecteerdePeriode-overzicht.betaaldeRekeningen+overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode;
 
         overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag()).sum();
-        overzicht.priveOpBankBij = overzicht.filteredAfschriften.stream().filter(afschrift->afschrift.getBoekingType()==BoekingType.PRIVE).mapToDouble(afschrift -> afschrift.getBedrag()).sum();
+//        overzicht.priveOpBankBij = overzicht.filteredAfschriften.stream().filter(afschrift->afschrift.getBoekingType()== BoekingType.PRIVE).mapToDouble(afschrift -> afschrift.getBedrag()).sum();
         overzicht.werkelijkOpBankBijVoorAdministratie = overzicht.werkelijkOpBankBij - overzicht.priveOpBankBij;
         overzicht.verschilTussenVerwachtEnWerkelijk = overzicht.verwachtTotaalOpRekeningBij - overzicht.werkelijkOpBankBijVoorAdministratie;
 

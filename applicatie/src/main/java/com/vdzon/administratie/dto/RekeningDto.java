@@ -1,11 +1,15 @@
 package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Rekening;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @ToString
 @EqualsAndHashCode
@@ -26,9 +30,9 @@ public class RekeningDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
-    private String gekoppeldAfschrift;
+    private List<BoekingMetRekening> boekingen;
 
-    public RekeningDto(Rekening rekening) {
+    public RekeningDto(Rekening rekening, BoekingenCache boekingenCache) {
         this.uuid = rekening.getUuid();
         this.rekeningNummer = rekening.getRekeningNummer();
         this.factuurNummer = rekening.getFactuurNummer();
@@ -38,7 +42,7 @@ public class RekeningDto {
         this.bedragExBtw = rekening.getBedragExBtw();
         this.bedragIncBtw = rekening.getBedragIncBtw();
         this.btw = rekening.getBtw();
-        this.gekoppeldAfschrift = rekening.getGekoppeldAfschrift();
+        this.boekingen = boekingenCache.getBoekingenVanRekening(rekeningNummer);
     }
 
     public Rekening toRekening() {
@@ -52,7 +56,6 @@ public class RekeningDto {
                 .bedragExBtw(bedragExBtw)
                 .bedragIncBtw(bedragIncBtw)
                 .btw(btw)
-                .gekoppeldAfschrift(gekoppeldAfschrift)
                 .build();
     }
 

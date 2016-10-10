@@ -1,5 +1,6 @@
 package com.vdzon.administratie.model;
 
+import com.vdzon.administratie.model.boekingen.Boeking;
 import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -122,7 +123,6 @@ public class Administratie {
     }
 
 
-
     public void removeBestelling(String uuid) {
         Bestelling bestellingToRemove = null;
         for (Bestelling bestelling : getBestellingen()) {
@@ -202,7 +202,7 @@ public class Administratie {
 
     public void removeBoeking(String uuid) {
         List<Boeking> boekingenClone = getBoekingen();
-        for (Boeking boeking: boekingenClone) {
+        for (Boeking boeking : boekingenClone) {
             if (boeking.getUuid().equals(uuid)) {
                 this.boekingen.remove(boeking);
             }

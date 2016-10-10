@@ -2,7 +2,7 @@ package com.vdzon.administratie.bankimport;
 
 
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.model.BoekingType;
+import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.Gebruiker;
 
 import java.time.LocalDate;
@@ -22,14 +22,11 @@ public class ImportFromAbnAmroHelper {
         return Afschrift.builder()
                 .uuid(afschriftData.uuid)
                 .nummer("" + nextAfschriftNummer)
-                .rekeningNummer(afschriftData.rekeningNr)
+                .rekening(afschriftData.rekeningNr)
                 .omschrijving(afschriftData.oms)
                 .relatienaam(afschriftData.naam)
                 .boekdatum(boekDatum)
                 .bedrag(bedrag)
-                .boekingType(BoekingType.NONE)
-                .factuurNummer("")
-                .rekeningNummer("")
                 .build();
     }
 

@@ -2,7 +2,7 @@ package com.vdzon.administratie.rest.afschrift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.bankimport.ImportFromAbnAmro;
-import com.vdzon.administratie.model.Boeking;
+import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.OnverwerktAfschiftBoeking;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
@@ -15,9 +15,6 @@ import spark.Response;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AfschriftService {
@@ -70,7 +67,7 @@ public class AfschriftService {
     }
 
     private Boeking buildBoeking(Afschrift afschrift) {
-        return OnverwerktAfschiftBoeking.builder().afschriftUuid(afschrift.getUuid()).build();
+        return OnverwerktAfschiftBoeking.builder().afschriftNummer(afschrift.getNummer()).build();
     }
 
 

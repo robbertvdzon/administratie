@@ -259,12 +259,12 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
             y+=80;
             String status = "";
-            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()!=null){
-                status = "Geboekt";
-            }
-            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()==null){
-                status = "Betaald";
-            }
+//            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()!=null){
+//                status = "Geboekt";
+//            }
+//            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()==null){
+//                status = "Betaald";
+//            }
             if (!factuur.isBetaald()){
                 status = "Niet betaald";
             }
@@ -312,9 +312,9 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
             y+=80;
             String status = "Niet geboekt";
-            if (rekening.getGekoppeldAfschrift()!=null){
-                status = "Geboekt";
-            }
+//            if (rekening.getGekoppeldAfschrift()!=null){
+//                status = "Geboekt";
+//            }
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
 
             skipDown(15);
@@ -406,20 +406,20 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, y, fontPlain, ""+afschrift.getBedrag());
             y+=60;
             String status = "";
-            switch (afschrift.getBoekingType()){
-                case NONE:
-                    status = "Niet gekoppeld";
-                    break;
-                case FACTUUR:
-                    status = "Factuur "+afschrift.getFactuurNummer();
-                    break;
-                case REKENING:
-                    status = "Rekening "+afschrift.getRekeningNummer();
-                    break;
-                case PRIVE:
-                    status = "Prive boeking";
-                    break;
-            }
+//            switch (afschrift.getBoekingType()){
+//                case NONE:
+//                    status = "Niet gekoppeld";
+//                    break;
+//                case FACTUUR:
+//                    status = "Factuur "+afschrift.getFactuurNummer();
+//                    break;
+//                case REKENING:
+//                    status = "Rekening "+afschrift.getRekeningNummer();
+//                    break;
+//                case PRIVE:
+//                    status = "Prive boeking";
+//                    break;
+//            }
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
             y+=100;
             writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getRelatienaam());

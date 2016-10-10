@@ -31,8 +31,19 @@ public class CheckAndFixService {
 
     public static final String FIX_PACKAGE = "com.vdzon.administratie.checkandfix.actions.fix";
     public static final String CHECK_PACKAGE = "com.vdzon.administratie.checkandfix.actions.check";
+    private Set<Method> methodsAnnotatedWithCheck;
+    private Set<Method> methodsAnnotatedWithFix;
     @Inject
     UserCrud crudService;
+
+    public CheckAndFixService() {
+        Reflections reflectionsCheck = new Reflections(CHECK_PACKAGE, new MethodAnnotationsScanner());
+        Reflections reflectionsFix = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
+
+        methodsAnnotatedWithCheck = reflectionsCheck.getMethodsAnnotatedWith(AdministratieCheckRule.class);
+        methodsAnnotatedWithFix = reflectionsFix.getMethodsAnnotatedWith(AdministratieFix.class);
+
+    }
 
     public Object getCheckAndFixRegels(Request req, Response res) {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
@@ -49,17 +60,15 @@ public class CheckAndFixService {
 
     public List<CheckAndFixRegel> getCheckAndFixRegels(Administratie administratie) {
         CheckAndFixData checkAndFixData = populateCheckAndFixData(administratie);
-        Reflections reflections = new Reflections(CHECK_PACKAGE, new MethodAnnotationsScanner());
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieCheckRule.class);
         List<CheckAndFixRegel> regels = new ArrayList();
-        methodsAnnotatedWith.stream().forEach(method -> callCheckAction(method, checkAndFixData, regels));
+        methodsAnnotatedWithCheck.stream().forEach(method -> callCheckAction(method, checkAndFixData, regels));
         return regels;
     }
 
     private void fixAllRegels(Gebruiker gebruiker, List<CheckAndFixRegel> regelsToFix) {
-        Reflections reflections = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieFix.class);
-        methodsAnnotatedWith.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
+//        Reflections reflections = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
+//        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieFix.class);
+        methodsAnnotatedWithFix.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
         crudService.updateGebruiker(gebruiker);
     }
 

@@ -28,13 +28,14 @@ public class AdministratieDto {
 
 
     public AdministratieDto(Administratie administratie) {
+        BoekingenCache boekingenCache = new BoekingenCache(administratie.getBoekingen());
         this.uuid = administratie.getUuid();
         this.administratieGegevens = new AdministratieGegevensDto(administratie.getAdministratieGegevens());
-        this.facturen = toFacturenDto(administratie.getFacturen());
         this.adresboek = toAdressenDto(administratie.getAdresboek());
-        this.rekeningen = toRekeningenDto(administratie.getRekeningen());
-        this.afschriften = toAfschriftenDto(administratie.getAfschriften());
-        this.declaraties = toDeclaratiesDto(administratie.getDeclaraties());
+        this.facturen = toFacturenDto(administratie.getFacturen(), boekingenCache);
+        this.rekeningen = toRekeningenDto(administratie.getRekeningen(), boekingenCache);
+        this.afschriften = toAfschriftenDto(administratie.getAfschriften(), boekingenCache);
+        this.declaraties = toDeclaratiesDto(administratie.getDeclaraties(), boekingenCache);
         this.bestellingen = toBestellingenDto(administratie.getBestellingen());
 
     }
@@ -47,26 +48,26 @@ public class AdministratieDto {
                 .collect(Collectors.toList());
     }
 
-    private List<RekeningDto> toRekeningenDto(List<Rekening> rekeningen) {
+    private List<RekeningDto> toRekeningenDto(List<Rekening> rekeningen, BoekingenCache boekingenCache) {
         return rekeningen
                 .stream()
-                .map(rekening -> new RekeningDto(rekening))
+                .map(rekening -> new RekeningDto(rekening, boekingenCache))
                 .sorted((rekeningDto1, rekeningDto2) -> rekeningDto2.getRekeningNummer().compareTo(rekeningDto1.getRekeningNummer()))
                 .collect(Collectors.toList());
     }
 
-    private List<AfschriftDto> toAfschriftenDto(List<Afschrift> afschriften) {
+    private List<AfschriftDto> toAfschriftenDto(List<Afschrift> afschriften, BoekingenCache boekingenCache) {
         return afschriften
                 .stream()
-                .map(afschrift -> new AfschriftDto(afschrift))
+                .map(afschrift -> new AfschriftDto(afschrift, boekingenCache))
                 .sorted((afschriftDto1, afschriftDto2) -> afschriftDto2.getNummer().compareTo(afschriftDto1.getNummer()))
                 .collect(Collectors.toList());
     }
 
-    private List<DeclaratieDto> toDeclaratiesDto(List<Declaratie> declaraties) {
+    private List<DeclaratieDto> toDeclaratiesDto(List<Declaratie> declaraties, BoekingenCache boekingenCache) {
         return declaraties
                 .stream()
-                .map(declaratie -> new DeclaratieDto(declaratie))
+                .map(declaratie -> new DeclaratieDto(declaratie, boekingenCache))
                 .sorted((declaratieDto1, declaratieDto2) -> declaratieDto2.getDeclaratieNummer().compareTo(declaratieDto1.getDeclaratieNummer()))
                 .collect(Collectors.toList());
     }
@@ -79,10 +80,10 @@ public class AdministratieDto {
                 .collect(Collectors.toList());
     }
 
-    private List<FactuurDto> toFacturenDto(List<Factuur> facturen) {
+    private List<FactuurDto> toFacturenDto(List<Factuur> facturen, BoekingenCache boekingenCache) {
         return facturen
                 .stream()
-                .map(factuur -> new FactuurDto(factuur))
+                .map(factuur -> new FactuurDto(factuur, boekingenCache))
                 .sorted((factuurDto1, factuurDto2) -> factuurDto2.getFactuurNummer().compareTo(factuurDto1.getFactuurNummer()))
                 .collect(Collectors.toList());
     }

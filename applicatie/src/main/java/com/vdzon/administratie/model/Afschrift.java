@@ -25,9 +25,9 @@ public class Afschrift {
     private String relatienaam;
     private LocalDate boekdatum;
     private double bedrag;
-    private BoekingType boekingType;
-    private String factuurNummer;
-    private String rekeningNummer;
+//    private BoekingType boekingType;
+//    private String factuurNummer;
+//    private String rekeningNummer;
 
 
 }

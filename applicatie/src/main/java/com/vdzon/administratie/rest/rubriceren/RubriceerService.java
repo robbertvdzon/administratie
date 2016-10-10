@@ -1,13 +1,15 @@
 package com.vdzon.administratie.rest.rubriceren;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
-import com.vdzon.administratie.model.*;
+import com.vdzon.administratie.model.Afschrift;
+import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegels;
 import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRule;
 import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRuleCommit;
+import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.util.SingleAnswer;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -16,16 +18,26 @@ import spark.Response;
 
 import javax.inject.Inject;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static com.vdzon.administratie.util.ReflectionUtils.callMethod;
 import static com.vdzon.administratie.util.ReflectionUtils.getInstance;
 
 public class RubriceerService {
     private static final String RUBRICEER_PACKAGE = "com.vdzon.administratie.rubriceren.rubriceerRegels";
-
     @Inject
     UserCrud crudService;
+    private Set<Method> methodsAnnotatedWithRule;
+    private Set<Method> methodsAnnotatedWithCommit;
+
+    public RubriceerService() {
+        Reflections reflections = new Reflections(RUBRICEER_PACKAGE, new MethodAnnotationsScanner());
+        methodsAnnotatedWithRule = reflections.getMethodsAnnotatedWith(RubriceerRule.class);
+        methodsAnnotatedWithCommit = reflections.getMethodsAnnotatedWith(RubriceerRuleCommit.class);
+
+    }
 
     protected Object getRubriceerRegels(Request req, Response res) throws Exception {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
@@ -42,9 +54,7 @@ public class RubriceerService {
     }
 
     private void processRubriceerRegels(Gebruiker gebruiker, RubriceerRegels rubriceerRegels) {
-        Reflections reflections = new Reflections(RUBRICEER_PACKAGE, new MethodAnnotationsScanner());
-        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RubriceerRuleCommit.class);
-        methodsAnnotatedWith.stream().forEach(method -> callRubriceerCommitAction(method, gebruiker, rubriceerRegels));
+        methodsAnnotatedWithCommit.stream().forEach(method -> callRubriceerCommitAction(method, gebruiker, rubriceerRegels));
     }
 
     private RubriceerRegels getRubriceerRegels(Request req) throws java.io.IOException {
@@ -62,14 +72,13 @@ public class RubriceerService {
     }
 
     private void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift) {
-            Reflections reflections = new Reflections(RUBRICEER_PACKAGE, new MethodAnnotationsScanner());
-            Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(RubriceerRule.class);
-            methodsAnnotatedWith.stream().forEach(method -> callRubriceerAction(method, gebruiker, regels, afschrift));
+        methodsAnnotatedWithRule.stream().forEach(method -> callRubriceerAction(method, gebruiker, regels, afschrift));
     }
 
     private void callRubriceerAction(Method method, Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift) {
         Object o = getInstance(method.getDeclaringClass());
-        callMethod(method, o, gebruiker, regels, afschrift);
+        BoekingenCache boekingenCache = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen());
+        callMethod(method, o, gebruiker, regels, afschrift, boekingenCache);
     }
 
     private void callRubriceerCommitAction(Method method, Gebruiker gebruiker, RubriceerRegels rubriceerRegels) {

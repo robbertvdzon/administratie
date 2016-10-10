@@ -48,7 +48,7 @@ public class Gebruiker {
             administraties.add(
                     Administratie
                             .builder()
-                            .uuid(getUuid())
+                            .uuid(UUID.randomUUID().toString())
                             .administratieGegevens(administratieGegevens)
                             .bestellingen(new ArrayList<>())
                             .facturen(new ArrayList<>())

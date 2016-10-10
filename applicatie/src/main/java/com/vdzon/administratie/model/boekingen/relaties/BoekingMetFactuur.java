@@ -4,6 +4,6 @@ import com.vdzon.administratie.model.Factuur;
 
 import java.util.List;
 
-public interface HasFactuur {
-    String getFactuurUuid();
+public interface BoekingMetFactuur {
+    String getFactuurNummer();
 }

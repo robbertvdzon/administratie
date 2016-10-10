@@ -71,7 +71,15 @@ module Application.Model {
         bedragExBtw:String;
         bedragIncBtw:String;
         btw:String;
-        gekoppeldAfschrift:String;
+        boekingen:Boeking[];
+    }
+
+    export class Boeking {
+        omschrijving:String;
+        factuurNummer:String;
+        rekeningNummer:String;
+        afschriftNummer:String;
+        declaratieNummer:String;
     }
 
     export class DeclaratieData {

@@ -1,8 +1,11 @@
 package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -29,11 +32,11 @@ public class FactuurDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
-    private String gekoppeldAfschrift;
+    private List<BoekingMetFactuur> boekingen;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public FactuurDto(Factuur factuur){
+    public FactuurDto(Factuur factuur, BoekingenCache boekingenCache){
         this.uuid = factuur.getUuid();
         this.factuurNummer = factuur.getFactuurNummer();
         this.gekoppeldeBestellingNummer = factuur.getGekoppeldeBestellingNummer();
@@ -44,7 +47,7 @@ public class FactuurDto {
         this.bedragExBtw = factuur.getBedragExBtw();
         this.bedragIncBtw = factuur.getBedragIncBtw();
         this.btw = factuur.getBtw();
-        this.gekoppeldAfschrift = factuur.getGekoppeldAfschrift();
+        this.boekingen = boekingenCache.getBoekingenVanFactuur(factuurNummer);
     }
 
     private static List<FactuurRegelDto> toFactuurRegelsDto(List<FactuurRegel> factuurRegels) {
@@ -64,7 +67,7 @@ public class FactuurDto {
                 .betaald(betaald)
                 .factuurRegels(toFactuurRegels())
                 .uuid(uuid)
-                .gekoppeldAfschrift(gekoppeldAfschrift)
+//                .gekoppeldAfschrift(gekoppeldAfschrift)
                 .build();
     }
 

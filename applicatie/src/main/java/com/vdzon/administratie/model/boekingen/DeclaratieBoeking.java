@@ -1,8 +1,6 @@
 package com.vdzon.administratie.model.boekingen;
 
-import com.vdzon.administratie.model.Boeking;
-import com.vdzon.administratie.model.boekingen.relaties.HasDeclaratie;
-import com.vdzon.administratie.model.boekingen.relaties.HasFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetDeclaratie;
 import lombok.*;
 import org.mongodb.morphia.annotations.Id;
 
@@ -12,13 +10,18 @@ import org.mongodb.morphia.annotations.Id;
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-public class DeclaratieBoeking extends Boeking implements HasDeclaratie {
-    String declaratieUuid;
+public class DeclaratieBoeking extends Boeking implements BoekingMetDeclaratie {
+    String declaratieNummer;
     @Id
     private String uuid;
 
     @Override
-    public String getDeclaratieUuid() {
-        return declaratieUuid;
+    public String getDeclaratieNummer() {
+        return declaratieNummer;
+    }
+
+    @Override
+    public String getOmschrijving() {
+        return "Declaratie";
     }
 }

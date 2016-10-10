@@ -66,8 +66,8 @@ module Application.Services {
             rekeningClone.rekeningDate = rekening.rekeningDate;
             rekeningClone.bedragExBtw = rekening.bedragExBtw;
             rekeningClone.bedragIncBtw = rekening.bedragIncBtw;
-            rekeningClone.gekoppeldAfschrift = rekening.gekoppeldAfschrift;
             rekeningClone.btw = rekening.btw;
+            rekeningClone.boekingen = rekening.boekingen;
             return rekeningClone;
         }
 
@@ -81,7 +81,7 @@ module Application.Services {
             rekeningTo.bedragExBtw = rekeningFrom.bedragExBtw;
             rekeningTo.bedragIncBtw = rekeningFrom.bedragIncBtw;
             rekeningTo.btw = rekeningFrom.btw;
-            rekeningTo.gekoppeldAfschrift = rekeningFrom.gekoppeldAfschrift;
+            rekeningTo.boekingen = rekeningFrom.boekingen;
         }
 
         public saveRekening(): ng.IPromise<any> {

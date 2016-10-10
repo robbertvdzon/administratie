@@ -1,11 +1,15 @@
 package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Declaratie;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetDeclaratie;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @ToString
 @EqualsAndHashCode
@@ -23,10 +27,11 @@ public class DeclaratieDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private List<BoekingMetDeclaratie> boekingen;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public DeclaratieDto(Declaratie declaratie) {
+    public DeclaratieDto(Declaratie declaratie, BoekingenCache boekingenCache) {
         this.uuid = declaratie.getUuid();
         this.declaratieNummer = declaratie.getDeclaratieNummer();
         this.omschrijving = declaratie.getOmschrijving();
@@ -34,6 +39,7 @@ public class DeclaratieDto {
         this.bedragExBtw = declaratie.getBedragExBtw();
         this.bedragIncBtw = declaratie.getBedragIncBtw();
         this.btw = declaratie.getBtw();
+        this.boekingen = boekingenCache.getBoekingenVanDeclaratie(declaratieNummer);
     }
 
     public Declaratie toDeclaratie() {

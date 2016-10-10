@@ -1,4 +1,4 @@
-package com.vdzon.administratie.model;
+package com.vdzon.administratie.dto;
 
 public enum BoekingType {
     REKENING(0), FACTUUR(1), PRIVE(2), NONE(3);
