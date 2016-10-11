@@ -18,6 +18,7 @@ import lombok.*;
 @JsonIgnoreProperties
 public class BoekingDto {
 
+    private String uuid;
     private String omschrijving;
     private String factuurNummer;
     private String rekeningNummer;
@@ -26,6 +27,7 @@ public class BoekingDto {
 
     public BoekingDto(Boeking boeking) {
         this.omschrijving = boeking.getOmschrijving();
+        this.uuid= boeking.getUuid();
         if (boeking instanceof BoekingMetAfschrift){
             this.afschriftNummer = ((BoekingMetAfschrift) boeking).getAfschriftNummer();
         }

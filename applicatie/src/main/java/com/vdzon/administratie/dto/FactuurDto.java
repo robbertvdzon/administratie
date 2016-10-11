@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
+import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
@@ -32,7 +34,7 @@ public class FactuurDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
-    private List<BoekingMetFactuur> boekingen;
+    private List<BoekingDto> boekingen;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -47,7 +49,14 @@ public class FactuurDto {
         this.bedragExBtw = factuur.getBedragExBtw();
         this.bedragIncBtw = factuur.getBedragIncBtw();
         this.btw = factuur.getBtw();
-        this.boekingen = boekingenCache.getBoekingenVanFactuur(factuurNummer);
+        boekingen = toBoekingenDto(boekingenCache.getBoekingenVanFactuur(factuurNummer), boekingenCache);
+    }
+
+    private List<BoekingDto> toBoekingenDto(List<BoekingMetFactuur> boekingen, BoekingenCache boekingenCache) {
+        return boekingen == null ? null : boekingen
+                .stream()
+                .map(boeking -> new BoekingDto((Boeking)boeking))
+                .collect(Collectors.toList());
     }
 
     private static List<FactuurRegelDto> toFactuurRegelsDto(List<FactuurRegel> factuurRegels) {

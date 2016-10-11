@@ -5,6 +5,7 @@ module Application.Services {
     import RekeningData = Application.Model.RekeningData;
     import Administratie = Application.Model.Administratie;
     import RekeningGuiService = Application.Services.RekeningGuiService;
+    import BoekingData = Application.Model.BoekingData;
 
     export class RekeningDataService {
         constructor(private $rootScope,private $http, private dataService:Application.Services.MyDataservice, private rekeningGuiService:RekeningGuiService, private $filter) {
@@ -67,8 +68,24 @@ module Application.Services {
             rekeningClone.bedragExBtw = rekening.bedragExBtw;
             rekeningClone.bedragIncBtw = rekening.bedragIncBtw;
             rekeningClone.btw = rekening.btw;
-            rekeningClone.boekingen = rekening.boekingen;
+            rekeningClone.boekingen = [];
+            for (var i = 0; i < rekening.boekingen.length; i++) {
+                var boeking:BoekingData = rekening.boekingen[i];
+                rekeningClone.boekingen.push(this.cloneBoeking(boeking));
+            }
             return rekeningClone;
+        }
+
+        public cloneBoeking(boeking:BoekingData):BoekingData{
+            if (boeking==null) return null;
+            var boekingClone = new BoekingData();
+            boekingClone.uuid = boeking.uuid;
+            boekingClone.afschriftNummer = boeking.afschriftNummer;
+            boekingClone.declaratieNummer = boeking.declaratieNummer;
+            boekingClone.factuurNummer = boeking.factuurNummer;
+            boekingClone.omschrijving = boeking.omschrijving;
+            boekingClone.rekeningNummer = boeking.rekeningNummer;
+            return boekingClone;
         }
 
         public copyInto(rekeningFrom:RekeningData, rekeningTo:RekeningData) {

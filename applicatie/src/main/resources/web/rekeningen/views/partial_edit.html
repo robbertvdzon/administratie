@@ -41,7 +41,13 @@
 
 
     <b>Gekoppelde afschriften:</b><br>
-    <span ng-repeat="boeking in data.rekeningToEdit.boekingen"> {{boeking.afschriftNummer}} {{$last ? '' : ', '}}  </span>
+    <span ng-repeat="boeking in data.rekeningToEdit.boekingen">
+        {{boeking.afschriftNummer}}
+        <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.disconnectAfschrift(boeking.afschriftNummer)"  >
+            Ontkoppel
+        </md-button>
+    </span>
+
 
     <br>
 

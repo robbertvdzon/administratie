@@ -6,14 +6,18 @@ import org.mongodb.morphia.annotations.Id;
 
 @ToString
 @EqualsAndHashCode
-@Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 public class OnbetaaldeRekeningBoeking extends Boeking implements BoekingMetRekening {
-    String rekeningNummer;
+    private String rekeningNummer;
     @Id
     private String uuid;
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
     @Override
     public String getRekeningNummer() {

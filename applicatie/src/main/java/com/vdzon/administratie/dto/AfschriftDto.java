@@ -45,7 +45,7 @@ public class AfschriftDto {
     }
 
     private List<BoekingDto> toBoekingenDto(List<BoekingMetAfschrift> boekingen, BoekingenCache boekingenCache) {
-        return boekingen
+        return boekingen == null ? null : boekingen
                 .stream()
                 .map(boeking -> new BoekingDto((Boeking)boeking))
                 .collect(Collectors.toList());

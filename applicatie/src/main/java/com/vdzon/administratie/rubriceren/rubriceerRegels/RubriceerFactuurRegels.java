@@ -13,6 +13,7 @@ import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 
 import java.util.List;
+import java.util.UUID;
 
 public class RubriceerFactuurRegels extends RubriceerHelper {
 
@@ -21,7 +22,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
     @RubriceerRule
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
-        if (boekingenVanAfschrift.isEmpty()) {
+        if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) {
             if (afschrift.getBedrag() > 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.NONE;
                 String factuurNummer = null;
@@ -44,6 +45,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_FACTUUR:
                 BetaaldeFactuurBoeking betaaldeFactuurBoeking = BetaaldeFactuurBoeking.builder()
+                        .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .factuurNummer(regel.getFaktuurNummer())
                         .build();

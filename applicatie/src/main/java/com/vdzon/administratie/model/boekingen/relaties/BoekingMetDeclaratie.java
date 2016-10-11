@@ -5,5 +5,6 @@ import com.vdzon.administratie.model.Declaratie;
 import java.util.List;
 
 public interface BoekingMetDeclaratie {
+    String getUuid();
     String getDeclaratieNummer();
 }

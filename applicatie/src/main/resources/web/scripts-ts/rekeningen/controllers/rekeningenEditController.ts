@@ -6,6 +6,7 @@ module Application.Controllers {
     import RekeningDataService = Application.Services.RekeningDataService;
     import RekeningGuiService = Application.Services.RekeningGuiService;
     import RekeningGuiData = Application.Services.RekeningGuiData;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data:RekeningGuiData;
@@ -59,6 +60,15 @@ module Application.Controllers {
         cancel() {
             this.$scope.data.rekeningToEdit = this.rekeningDataService.cloneRekening(this.$scope.data.selectedrekening);
             this.rekeningGuiService.closePage(SCREEN_REKENING_EDIT);
+        }
+
+        disconnectAfschrift(id){
+            var boekingen:BoekingData[] = this.$scope.data.rekeningToEdit.boekingen;
+            for (var i = boekingen.length - 1; i >= 0; i--) {
+                if (boekingen[i].afschriftNummer == id) {
+                    boekingen.splice(i, 1);
+                }
+            }
         }
 
     }

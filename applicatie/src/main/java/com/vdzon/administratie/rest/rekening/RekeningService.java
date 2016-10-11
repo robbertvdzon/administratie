@@ -1,6 +1,10 @@
 package com.vdzon.administratie.rest.rekening;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vdzon.administratie.dto.BoekingDto;
+import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.RekeningDto;
@@ -11,6 +15,7 @@ import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class RekeningService {
 
@@ -27,6 +32,19 @@ public class RekeningService {
 
         gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
         gebruiker.getDefaultAdministratie().addRekening(rekening);
+        List<BoekingMetRekening> boekingenVanRekening = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanRekening(rekening.getRekeningNummer());
+        for (BoekingMetRekening boeking : boekingenVanRekening ){
+            boolean found = false;
+            for (BoekingDto boekingDto : rekeningDto.getBoekingen()){
+                if (boekingDto.getUuid().equals(boeking.getUuid())){
+                    found = true;
+                }
+            }
+            if (!found){
+                gebruiker.getDefaultAdministratie().removeBoeking(boeking.getUuid());
+            }
+        }
+
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }

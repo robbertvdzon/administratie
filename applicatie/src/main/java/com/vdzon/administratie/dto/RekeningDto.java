@@ -3,6 +3,7 @@ package com.vdzon.administratie.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Rekening;
+import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
@@ -10,6 +11,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ToString
 @EqualsAndHashCode
@@ -30,7 +32,7 @@ public class RekeningDto {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
-    private List<BoekingMetRekening> boekingen;
+    private List<BoekingDto> boekingen;
 
     public RekeningDto(Rekening rekening, BoekingenCache boekingenCache) {
         this.uuid = rekening.getUuid();
@@ -42,7 +44,14 @@ public class RekeningDto {
         this.bedragExBtw = rekening.getBedragExBtw();
         this.bedragIncBtw = rekening.getBedragIncBtw();
         this.btw = rekening.getBtw();
-        this.boekingen = boekingenCache.getBoekingenVanRekening(rekeningNummer);
+        this.boekingen = toBoekingenDto(boekingenCache.getBoekingenVanRekening(rekeningNummer), boekingenCache);
+    }
+
+    private List<BoekingDto> toBoekingenDto(List<BoekingMetRekening> boekingen, BoekingenCache boekingenCache) {
+        return boekingen == null ? null : boekingen
+                .stream()
+                .map(boeking -> new BoekingDto((Boeking)boeking))
+                .collect(Collectors.toList());
     }
 
     public Rekening toRekening() {

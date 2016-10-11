@@ -51,7 +51,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
     }
 
     private boolean hasNoBoekingen(List<BoekingMetAfschrift> boekingenVanAfschrift) {
-        if (boekingenVanAfschrift.isEmpty()) return true;
+        if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) return true;
         return boekingenVanAfschrift.stream().filter(boeking -> !(boeking instanceof OnverwerktAfschiftBoeking)).count() == 0;
     }
 
@@ -62,6 +62,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_REKENING:
                 betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                        .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(regel.getRekeningNummer())
                         .build();
@@ -82,6 +83,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
                 betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                        .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(rekening.getRekeningNummer())
                         .build();

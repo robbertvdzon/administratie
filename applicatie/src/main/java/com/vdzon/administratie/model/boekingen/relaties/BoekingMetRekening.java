@@ -5,5 +5,6 @@ import com.vdzon.administratie.model.Rekening;
 import java.util.List;
 
 public interface BoekingMetRekening {
+    String getUuid();
     String getRekeningNummer();
 }

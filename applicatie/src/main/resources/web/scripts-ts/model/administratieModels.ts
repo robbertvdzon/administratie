@@ -71,10 +71,11 @@ module Application.Model {
         bedragExBtw:String;
         bedragIncBtw:String;
         btw:String;
-        boekingen:Boeking[];
+        boekingen:BoekingData[];
     }
 
-    export class Boeking {
+    export class BoekingData {
+        uuid:String
         omschrijving:String;
         factuurNummer:String;
         rekeningNummer:String;
