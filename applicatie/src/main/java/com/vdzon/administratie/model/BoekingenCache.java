@@ -8,6 +8,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,19 +46,23 @@ public class BoekingenCache {
     }
 
     public List<BoekingMetFactuur> getBoekingenVanFactuur(String factuurUuid) {
-        return alleFactuurBoekingen.get(factuurUuid);
+        List<BoekingMetFactuur> boekingMetFactuurs = alleFactuurBoekingen.get(factuurUuid);
+        return boekingMetFactuurs == null ? new ArrayList<>() : boekingMetFactuurs;
     }
 
     public List<BoekingMetRekening> getBoekingenVanRekening(String factuurUuid) {
-        return alleRekeningBoekingen.get(factuurUuid);
+        List<BoekingMetRekening> boekingMetRekenings = alleRekeningBoekingen.get(factuurUuid);
+        return boekingMetRekenings == null ? new ArrayList<>() : boekingMetRekenings;
     }
 
     public List<BoekingMetDeclaratie> getBoekingenVanDeclaratie(String factuurUuid) {
-        return alleDeclaratieBoekingen.get(factuurUuid);
+        List<BoekingMetDeclaratie> boekingMetDeclaraties = alleDeclaratieBoekingen.get(factuurUuid);
+        return boekingMetDeclaraties == null ? new ArrayList<>() : boekingMetDeclaraties;
     }
 
     public List<BoekingMetAfschrift> getBoekingenVanAfschrift(String factuurUuid) {
-        return alleAfschriftBoekingen.get(factuurUuid);
+        List<BoekingMetAfschrift> boekingMetAfschrifts = alleAfschriftBoekingen.get(factuurUuid);
+        return boekingMetAfschrifts == null ? new ArrayList<>() : boekingMetAfschrifts;
     }
 
 }

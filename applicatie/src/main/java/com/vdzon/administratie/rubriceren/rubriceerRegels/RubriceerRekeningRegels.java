@@ -2,7 +2,6 @@ package com.vdzon.administratie.rubriceren.rubriceerRegels;
 
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.Rekening;
@@ -27,12 +26,27 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 RubriceerAction rubriceerAction = RubriceerAction.CREATE_REKENING;
                 String factuurNummer = null;
                 String rekeningNummer = null;
+                if (afschrift.getBedrag() > -1) {
+                    System.out.println("");
+                }
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
-                    if ((rekening.getBedragIncBtw() == afschrift.getBedrag() * -1) &&
+
+                    if (rekening.getRekeningNummer().equals("1010")) {
+                        System.out.printf("");
+                    }
+
+                    if (boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer()).isEmpty()
+                            &&
+                            !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
+                            &&
+                            (rekening.getBedragIncBtw() == afschrift.getBedrag() * -1)
+                            &&
                             (
-                                    (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))) ||
-                            (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
+                                    (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))
+                                            ||
+                                    (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
                             )
+                        )
 
                     {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
@@ -50,8 +64,12 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
         }
     }
 
+    private boolean rekeningAlreadyUsed(List<RubriceerRegel> regels, String rekeningNummer) {
+        return regels.stream().filter(regel -> rekeningNummer.equals(regel.getRekeningNummer())).count() != 0;
+    }
+
     private boolean hasNoBoekingen(List<BoekingMetAfschrift> boekingenVanAfschrift) {
-        if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) return true;
+        if (boekingenVanAfschrift == null || boekingenVanAfschrift.isEmpty()) return true;
         return boekingenVanAfschrift.stream().filter(boeking -> !(boeking instanceof OnverwerktAfschiftBoeking)).count() == 0;
     }
 
