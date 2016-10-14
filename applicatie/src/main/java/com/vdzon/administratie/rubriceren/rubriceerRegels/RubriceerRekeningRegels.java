@@ -26,15 +26,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 RubriceerAction rubriceerAction = RubriceerAction.CREATE_REKENING;
                 String factuurNummer = null;
                 String rekeningNummer = null;
-                if (afschrift.getBedrag() > -1) {
-                    System.out.println("");
-                }
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
-
-                    if (rekening.getRekeningNummer().equals("1010")) {
-                        System.out.printf("");
-                    }
-
                     if (boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer()).isEmpty()
                             &&
                             !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
