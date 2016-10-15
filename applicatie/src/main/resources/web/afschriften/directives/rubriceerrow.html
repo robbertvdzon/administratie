@@ -18,6 +18,16 @@
             <md-button class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToPriveBoeking(regel)">
                 Prive boeking
             </md-button>
+            <md-button ng-show="rubriceerListController.isBetaling(regel)" class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToMaakRekening(regel)">
+                Maak rekening
+            </md-button>
+            <md-button ng-show="rubriceerListController.isBetaling(regel)" class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToBetalngZonderFacuur(regel)">
+                Betaling zonder factuur
+            </md-button>
+            <md-button ng-hide="rubriceerListController.isBetaling(regel)" class="md-raised md-primary" ng-click="rubriceerListController.setRubriceerRegelToInkomstenZonderFactuur(regel)">
+                Inkomsten zonder factuur
+            </md-button>
+            <p >
         </td>
     </tr>
 </table>

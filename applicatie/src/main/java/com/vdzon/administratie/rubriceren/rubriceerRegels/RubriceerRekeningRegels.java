@@ -6,7 +6,8 @@ import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.Rekening;
 import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
-import com.vdzon.administratie.model.boekingen.OnverwerktAfschiftBoeking;
+import com.vdzon.administratie.model.boekingen.BetalingZonderFactuurBoeking;
+import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
@@ -23,7 +24,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
         if (hasNoBoekingen(boekingenVanAfschrift)) {
             if (afschrift.getBedrag() < 0) {
-                RubriceerAction rubriceerAction = RubriceerAction.CREATE_REKENING;
+                RubriceerAction rubriceerAction = RubriceerAction.BETALING_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 String rekeningNummer = null;
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
@@ -61,22 +62,28 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
     }
 
     private boolean hasNoBoekingen(List<BoekingMetAfschrift> boekingenVanAfschrift) {
-        if (boekingenVanAfschrift == null || boekingenVanAfschrift.isEmpty()) return true;
-        return boekingenVanAfschrift.stream().filter(boeking -> !(boeking instanceof OnverwerktAfschiftBoeking)).count() == 0;
+        return boekingenVanAfschrift == null || boekingenVanAfschrift.isEmpty();
     }
 
     @RubriceerRuleCommit
     public void processRegel(RubriceerRegel regel, Gebruiker gebruiker) {
         Afschrift afschrift = regel.getAfschrift().toAfschrift();
-        BetaaldeRekeningBoeking betaaldeRekeningBoeking;
+        Boeking boeking;
         switch (regel.getRubriceerAction()) {
+            case BETALING_ZONDER_FACTUUR:
+                boeking = BetalingZonderFactuurBoeking.builder()
+                        .uuid(UUID.randomUUID().toString())
+                        .afschriftNummer(regel.getAfschrift().getNummer())
+                        .build();
+                gebruiker.getDefaultAdministratie().addBoeking(boeking);
+                break;
             case CONNECT_EXISTING_REKENING:
-                betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                boeking = BetaaldeRekeningBoeking.builder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(regel.getRekeningNummer())
                         .build();
-                gebruiker.getDefaultAdministratie().addBoeking(betaaldeRekeningBoeking);
+                gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CREATE_REKENING:
                 Rekening rekening = Rekening
@@ -92,12 +99,12 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         .build();
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
-                betaaldeRekeningBoeking = BetaaldeRekeningBoeking.builder()
+                boeking = BetaaldeRekeningBoeking.builder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(rekening.getRekeningNummer())
                         .build();
-                gebruiker.getDefaultAdministratie().addBoeking(betaaldeRekeningBoeking);
+                gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
         }
     }

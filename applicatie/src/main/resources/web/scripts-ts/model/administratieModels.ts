@@ -133,7 +133,7 @@ module Application.Model {
 
     export class RubriceerRegel {
         rubriceerAction:String;
-        afschift:AfschriftData;
+        afschrift:AfschriftData;
         rekeningNummer:String;
         faktuurNummer:String;
     }

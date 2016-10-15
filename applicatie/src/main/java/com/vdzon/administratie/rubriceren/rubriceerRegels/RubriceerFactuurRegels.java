@@ -8,6 +8,8 @@ import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
+import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.InkomstenZonderFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
@@ -24,7 +26,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
         if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) {
             if (afschrift.getBedrag() > 0) {
-                RubriceerAction rubriceerAction = RubriceerAction.NONE;
+                RubriceerAction rubriceerAction = RubriceerAction.INKOMSTEN_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
                     if ((factuur.getBedragIncBtw() == afschrift.getBedrag()) && (afschrift.getOmschrijving().contains(factuur.getFactuurNummer()))) {
@@ -42,15 +44,22 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
     @RubriceerRuleCommit
     public void processRegel(RubriceerRegel regel, Gebruiker gebruiker) {
         Afschrift afschrift = regel.getAfschrift().toAfschrift();
+        Boeking boeking;
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_FACTUUR:
-                BetaaldeFactuurBoeking betaaldeFactuurBoeking = BetaaldeFactuurBoeking.builder()
+                boeking = BetaaldeFactuurBoeking.builder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .factuurNummer(regel.getFaktuurNummer())
                         .build();
-                gebruiker.getDefaultAdministratie().addBoeking(betaaldeFactuurBoeking);
-
+                gebruiker.getDefaultAdministratie().addBoeking(boeking);
+                break;
+            case INKOMSTEN_ZONDER_FACTUUR:
+                boeking = InkomstenZonderFactuurBoeking.builder()
+                        .uuid(UUID.randomUUID().toString())
+                        .afschriftNummer(regel.getAfschrift().getNummer())
+                        .build();
+                gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
         }
     }

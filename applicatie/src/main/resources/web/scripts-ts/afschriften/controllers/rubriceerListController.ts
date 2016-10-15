@@ -30,6 +30,19 @@ module Application.Controllers {
             regel.rubriceerAction = "PRIVE";
         }
 
+        public setRubriceerRegelToMaakRekening(regel:RubriceerRegel){
+            regel.rubriceerAction = "CREATE_REKENING";
+        }
+
+        public setRubriceerRegelToBetalngZonderFacuur(regel:RubriceerRegel){
+            regel.rubriceerAction = "BETALING_ZONDER_FACTUUR";
+        }
+
+        public setRubriceerRegelToInkomstenZonderFactuur(regel:RubriceerRegel){
+            regel.rubriceerAction = "INKOMSTEN_ZONDER_FACTUUR";
+        }
+
+
         public startRubriceer(){
             this.afschriftDataService.startRubriceer().then((response) => {
                 this.dataService.reload();
@@ -37,6 +50,9 @@ module Application.Controllers {
             });
         }
 
+        public isBetaling(regel:RubriceerRegel){
+            return Number(regel.afschrift.bedrag)<0;
+        }
 
     }
 

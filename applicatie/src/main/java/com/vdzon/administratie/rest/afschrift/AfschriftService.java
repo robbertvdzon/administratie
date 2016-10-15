@@ -5,7 +5,6 @@ import com.vdzon.administratie.bankimport.ImportFromAbnAmro;
 import com.vdzon.administratie.dto.BoekingDto;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.boekingen.Boeking;
-import com.vdzon.administratie.model.boekingen.OnverwerktAfschiftBoeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
@@ -78,14 +77,7 @@ public class AfschriftService {
             if (afschrift != null) {
                 gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
                 gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
-                gebruiker.getDefaultAdministratie().addBoeking(buildBoeking(afschrift));
             }
         }
     }
-
-    private Boeking buildBoeking(Afschrift afschrift) {
-        return OnverwerktAfschiftBoeking.builder().afschriftNummer(afschrift.getNummer()).build();
-    }
-
-
 }
