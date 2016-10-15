@@ -3,7 +3,6 @@ package com.vdzon.administratie.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetDeclaratie;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.*;
@@ -36,9 +35,6 @@ public class BoekingDto {
         }
         if (boeking instanceof BoekingMetRekening){
             this.rekeningNummer = ((BoekingMetRekening) boeking).getRekeningNummer();
-        }
-        if (boeking instanceof BoekingMetDeclaratie){
-            this.declaratieNummer = ((BoekingMetDeclaratie) boeking).getDeclaratieNummer();
         }
     }
 

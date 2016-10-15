@@ -22,7 +22,6 @@ public class Factuur {
     private String gekoppeldeBestellingNummer;
     private LocalDate factuurDate;
     private Contact contact;
-    private boolean betaald;
     private List<FactuurRegel> factuurRegels = new ArrayList<>();
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
@@ -32,13 +31,12 @@ public class Factuur {
      * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
      */
     @Builder(toBuilder = true)
-    public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, boolean betaald, List<FactuurRegel> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, List<FactuurRegel> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
         this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
         this.factuurDate = factuurDate;
         this.contact = contact;
-        this.betaald = betaald;
         this.factuurRegels = factuurRegels;
         this.bedragExBtw = bedragExBtw;
         this.bedragIncBtw = bedragIncBtw;

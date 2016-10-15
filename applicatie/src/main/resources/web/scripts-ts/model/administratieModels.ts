@@ -28,7 +28,6 @@ module Application.Model {
         gekoppeldeBestellingNummer:String;
         factuurRegels:FactuurRegelData[];
         uuid:String;
-        betaald:boolean;
         factuurDate:String;
         klant:ContactData;
         boekingen:BoekingData[];

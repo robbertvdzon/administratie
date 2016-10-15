@@ -265,9 +265,9 @@ public class GenerateOverzicht {
 //            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()==null){
 //                status = "Betaald";
 //            }
-            if (!factuur.isBetaald()){
-                status = "Niet betaald";
-            }
+//            if (!factuur.isBetaald()){
+//                status = "Niet betaald";
+//            }
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
         }
         catch (Exception ex){

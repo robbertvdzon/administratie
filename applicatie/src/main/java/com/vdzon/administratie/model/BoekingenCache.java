@@ -2,7 +2,6 @@ package com.vdzon.administratie.model;
 
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetDeclaratie;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import lombok.EqualsAndHashCode;
@@ -21,7 +20,6 @@ public class BoekingenCache {
     private Map<String, List<BoekingMetFactuur>> alleFactuurBoekingen = new HashMap<>();
     private Map<String, List<BoekingMetRekening>> alleRekeningBoekingen = new HashMap<>();
     private Map<String, List<BoekingMetAfschrift>> alleAfschriftBoekingen = new HashMap<>();
-    private Map<String, List<BoekingMetDeclaratie>> alleDeclaratieBoekingen = new HashMap<>();
 
     public BoekingenCache(List<Boeking> boekingen) {
         alleAfschriftBoekingen = boekingen.stream()
@@ -39,10 +37,6 @@ public class BoekingenCache {
                 .map(boeking -> (BoekingMetRekening) boeking)
                 .collect(groupingBy(BoekingMetRekening::getRekeningNummer));
 
-        alleDeclaratieBoekingen = boekingen.stream()
-                .filter(boeking -> boeking instanceof BoekingMetDeclaratie)
-                .map(boeking -> (BoekingMetDeclaratie) boeking)
-                .collect(groupingBy(BoekingMetDeclaratie::getDeclaratieNummer));
     }
 
     public List<BoekingMetFactuur> getBoekingenVanFactuur(String factuurUuid) {
@@ -53,11 +47,6 @@ public class BoekingenCache {
     public List<BoekingMetRekening> getBoekingenVanRekening(String rekeningUuid) {
         List<BoekingMetRekening> boekingMetRekenings = alleRekeningBoekingen.get(rekeningUuid);
         return boekingMetRekenings == null ? new ArrayList<>() : boekingMetRekenings;
-    }
-
-    public List<BoekingMetDeclaratie> getBoekingenVanDeclaratie(String declaratieUuid) {
-        List<BoekingMetDeclaratie> boekingMetDeclaraties = alleDeclaratieBoekingen.get(declaratieUuid);
-        return boekingMetDeclaraties == null ? new ArrayList<>() : boekingMetDeclaraties;
     }
 
     public List<BoekingMetAfschrift> getBoekingenVanAfschrift(String afschriftUuid) {

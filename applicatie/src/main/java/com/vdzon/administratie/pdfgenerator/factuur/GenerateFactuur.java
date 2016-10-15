@@ -66,12 +66,7 @@ public class GenerateFactuur {
     }
 
     private void printBetalingsGegevens(Factuur factuur, GeneratePdfHelper generatePdfHelper) throws IOException {
-        if (factuur.isBetaald()){
-            generatePdfHelper.writeNormalText("Factuur is reeds betaald.");
-        }
-        else{
-            generatePdfHelper.writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
-        }
+        generatePdfHelper.writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
         generatePdfHelper.skipDown(10);
     }
 

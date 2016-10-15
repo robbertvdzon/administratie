@@ -135,7 +135,6 @@ module Application.Services {
             factuurClone.uuid = factuur.uuid;
             factuurClone.factuurNummer = factuur.factuurNummer;
             factuurClone.factuurRegels = factuur.factuurRegels;
-            factuurClone.betaald = factuur.betaald;
             factuurClone.factuurDate = factuur.factuurDate;
             factuurClone.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer;
             factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
@@ -167,7 +166,6 @@ module Application.Services {
             factuur.uuid = bestelling.uuid;
             factuur.factuurNummer = this.findNextFactuurnummer();
             factuur.factuurRegels = bestelling.bestellingRegels;
-            factuur.betaald = false;
             factuur.factuurDate = this.$filter('date')(new Date(), 'dd-MM-yyyy');
             factuur.gekoppeldeBestellingNummer = bestelling.bestellingNummer;
             factuur.klant = this.contactDataService.cloneContact(bestelling.klant);

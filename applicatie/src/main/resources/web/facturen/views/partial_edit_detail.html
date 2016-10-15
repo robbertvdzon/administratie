@@ -15,10 +15,6 @@
         <input ng-model="data.factuurToEdit.gekoppeldeBestellingNummer" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <label>Betaald:
-        <input type="checkbox" ng-model="data.factuurToEdit.betaald">
-    </label><br/>
-
     <b>Gekoppelde afschriften:</b><br>
     <span ng-repeat="boeking in data.factuurToEdit.boekingen">
         {{facturenEditDetailscontroller.echoBoeking(boeking)}}

@@ -32,7 +32,6 @@ module Application.Controllers {
 
         copyFactuurDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
             factuurDst.factuurNummer = factuurSrc.factuurNummer;
-            factuurDst.betaald = factuurSrc.betaald;
             factuurDst.factuurDate = factuurSrc.factuurDate;
             factuurDst.gekoppeldeBestellingNummer = factuurSrc.gekoppeldeBestellingNummer;
             factuurDst.klant = this.contactDataService.cloneContact(factuurSrc.klant);

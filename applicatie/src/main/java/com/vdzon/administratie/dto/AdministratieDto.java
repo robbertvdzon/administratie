@@ -67,7 +67,7 @@ public class AdministratieDto {
     private List<DeclaratieDto> toDeclaratiesDto(List<Declaratie> declaraties, BoekingenCache boekingenCache) {
         return declaraties
                 .stream()
-                .map(declaratie -> new DeclaratieDto(declaratie, boekingenCache))
+                .map(declaratie -> new DeclaratieDto(declaratie))
                 .sorted((declaratieDto1, declaratieDto2) -> declaratieDto2.getDeclaratieNummer().compareTo(declaratieDto1.getDeclaratieNummer()))
                 .collect(Collectors.toList());
     }

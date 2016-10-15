@@ -29,7 +29,6 @@ public class FactuurDto {
     private String gekoppeldeBestellingNummer;
     private String factuurDate;
     private ContactDto klant;
-    private boolean betaald;
     private List<FactuurRegelDto> factuurRegels;
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
@@ -44,7 +43,6 @@ public class FactuurDto {
         this.gekoppeldeBestellingNummer = factuur.getGekoppeldeBestellingNummer();
         this.factuurDate = factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER);
         this.klant = factuur.getContact()==null ? null : new ContactDto(factuur.getContact());
-        this.betaald = factuur.isBetaald();
         this.factuurRegels = toFactuurRegelsDto(factuur.getFactuurRegels());
         this.bedragExBtw = factuur.getBedragExBtw();
         this.bedragIncBtw = factuur.getBedragIncBtw();
@@ -73,7 +71,6 @@ public class FactuurDto {
                 .gekoppeldeBestellingNummer(gekoppeldeBestellingNummer)
                 .factuurDate(LocalDate.parse(factuurDate,DATE_FORMATTER))
                 .contact(klant == null ? null : klant.toContact())
-                .betaald(betaald)
                 .factuurRegels(toFactuurRegels())
                 .uuid(uuid)
 //                .gekoppeldAfschrift(gekoppeldAfschrift)

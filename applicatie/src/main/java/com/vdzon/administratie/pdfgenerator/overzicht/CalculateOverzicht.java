@@ -37,7 +37,7 @@ public class CalculateOverzicht {
         overzicht.declaratiesTotaalIncBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.declaratiesTotaalBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBtw()).sum();
 
-        overzicht.betaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+//        overzicht.betaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
 //        overzicht.betaaldeFacturenBuitenGeselecteerdePeriode =
 //                overzicht.filteredFacturen
 //                        .stream()
@@ -45,7 +45,7 @@ public class CalculateOverzicht {
 //                        .filter(factuur->afschriftenMap.get(factuur.getGekoppeldAfschrift())!=null)
 //                        .filter(factuur->!betweenOrAtDates(afschriftenMap.get(factuur.getGekoppeldAfschrift()).getBoekdatum(), overzicht.beginDate, overzicht.endDate))
 //                        .mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
-        overzicht.onbetaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->!factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
+//        overzicht.onbetaaldeFacturen = overzicht.filteredFacturen.stream().filter(factuur->!factuur.isBetaald()).mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
         overzicht.betaaldeRekeningen = overzicht.rekeningenTotaalIncBtw;
 //        overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode =
 //                overzicht.filteredRekeningen
