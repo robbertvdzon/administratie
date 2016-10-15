@@ -40,7 +40,7 @@
     </md-input-container>
 
 
-    <b>Gekoppelde afschriften:</b><br>
+    <b>Boekingen:</b><br>
     <span ng-repeat="boeking in data.rekeningToEdit.boekingen">
         {{rekeningenEditcontroller.echoBoeking(boeking)}}
         <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.removeBoeking(boeking.uuid)"  >

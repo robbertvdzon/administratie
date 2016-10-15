@@ -15,7 +15,7 @@
         <input ng-model="data.factuurToEdit.gekoppeldeBestellingNummer" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <b>Gekoppelde afschriften:</b><br>
+    <b>Boekingen:</b><br>
     <span ng-repeat="boeking in data.factuurToEdit.boekingen">
         {{facturenEditDetailscontroller.echoBoeking(boeking)}}
         <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.removeBoeking(boeking.uuid)"  >
