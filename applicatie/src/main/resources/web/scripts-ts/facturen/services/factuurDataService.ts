@@ -140,9 +140,11 @@ module Application.Services {
             factuurClone.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer;
             factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
             factuurClone.boekingen = [];
-            for (var i = 0; i < factuur.boekingen.length; i++) {
-                var boeking:BoekingData = factuur.boekingen[i];
-                factuurClone.boekingen.push(this.cloneBoeking(boeking));
+            if (!angular.isUndefined(factuur.boekingen)) {
+                for (var i = 0; i < factuur.boekingen.length; i++) {
+                    var boeking:BoekingData = factuur.boekingen[i];
+                    factuurClone.boekingen.push(this.cloneBoeking(boeking));
+                }
             }
             return factuurClone;
         }

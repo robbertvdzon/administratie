@@ -69,9 +69,12 @@ module Application.Services {
             rekeningClone.bedragIncBtw = rekening.bedragIncBtw;
             rekeningClone.btw = rekening.btw;
             rekeningClone.boekingen = [];
-            for (var i = 0; i < rekening.boekingen.length; i++) {
-                var boeking:BoekingData = rekening.boekingen[i];
-                rekeningClone.boekingen.push(this.cloneBoeking(boeking));
+
+            if (!angular.isUndefined(rekening.boekingen)) {
+                for (var i = 0; i < rekening.boekingen.length; i++) {
+                    var boeking:BoekingData = rekening.boekingen[i];
+                    rekeningClone.boekingen.push(this.cloneBoeking(boeking));
+                }
             }
             return rekeningClone;
         }

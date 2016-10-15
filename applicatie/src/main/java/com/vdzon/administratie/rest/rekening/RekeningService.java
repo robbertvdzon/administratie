@@ -35,9 +35,11 @@ public class RekeningService {
         List<BoekingMetRekening> boekingenVanRekening = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanRekening(rekening.getRekeningNummer());
         for (BoekingMetRekening boeking : boekingenVanRekening) {
             boolean found = false;
-            for (BoekingDto boekingDto : rekeningDto.getBoekingen()) {
-                if (boekingDto.getUuid().equals(boeking.getUuid())) {
-                    found = true;
+            if (rekeningDto.getBoekingen()!=null) {
+                for (BoekingDto boekingDto : rekeningDto.getBoekingen()) {
+                    if (boekingDto.getUuid().equals(boeking.getUuid())) {
+                        found = true;
+                    }
                 }
             }
             if (!found) {
