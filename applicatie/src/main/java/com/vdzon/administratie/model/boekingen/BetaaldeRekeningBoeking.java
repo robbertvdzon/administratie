@@ -10,7 +10,7 @@ import org.mongodb.morphia.annotations.Id;
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-public class BetaaldeRekeningBoeking extends Boeking implements BoekingMetRekening, BoekingMetAfschrift {
+public class BetaaldeRekeningBoeking extends Boeking implements BoekingMetRekening {
     private String rekeningNummer;
     private String afschriftNummer;
     @Id

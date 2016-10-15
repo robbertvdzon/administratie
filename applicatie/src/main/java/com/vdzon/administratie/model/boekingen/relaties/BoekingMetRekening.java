@@ -4,7 +4,7 @@ import com.vdzon.administratie.model.Rekening;
 
 import java.util.List;
 
-public interface BoekingMetRekening {
+public interface BoekingMetRekening extends BoekingMetAfschrift{
     String getUuid();
     String getRekeningNummer();
 }

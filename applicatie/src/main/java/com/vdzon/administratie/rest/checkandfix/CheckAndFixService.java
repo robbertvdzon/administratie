@@ -77,9 +77,12 @@ public class CheckAndFixService {
         checkAndFixData.alleAfschriften = administratie.getAfschriften();
         checkAndFixData.alleRekeningen = administratie.getRekeningen();
         checkAndFixData.alleFacturen = administratie.getFacturen();
-        checkAndFixData.afschriftMap = checkAndFixData.alleAfschriften.stream().collect(Collectors.toMap(Afschrift::getNummer, Function.identity()));
-        checkAndFixData.rekeningMap = checkAndFixData.alleRekeningen.stream().collect(Collectors.toMap(Rekening::getRekeningNummer, Function.identity()));
-        checkAndFixData.factuurMap = checkAndFixData.alleFacturen.stream().collect(Collectors.toMap(Factuur::getFactuurNummer, Function.identity()));
+        checkAndFixData.alleBoekingen = administratie.getBoekingen();
+//        checkAndFixData.afschriftMap = checkAndFixData.alleAfschriften.stream().collect(Collectors.toMap(Afschrift::getNummer, Function.identity()));
+//        checkAndFixData.rekeningMap = checkAndFixData.alleRekeningen.stream().collect(Collectors.toMap(Rekening::getRekeningNummer, Function.identity()));
+//        checkAndFixData.factuurMap = checkAndFixData.alleFacturen.stream().collect(Collectors.toMap(Factuur::getFactuurNummer, Function.identity()));
+        checkAndFixData.boekingenCache = new BoekingenCache(administratie.getBoekingen());
+
         return checkAndFixData;
     }
 

@@ -4,7 +4,7 @@ import com.vdzon.administratie.model.Factuur;
 
 import java.util.List;
 
-public interface BoekingMetFactuur {
+public interface BoekingMetFactuur extends BoekingMetAfschrift{
     String getUuid();
     String getFactuurNummer();
 }

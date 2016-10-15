@@ -29,9 +29,7 @@ module Application.Controllers {
 
         getActie(actie:String){
             if (actie=="NONE") return "Geen actie";
-            if (actie=="REMOVE_REF_FROM_FACTUUR") return "Repareer de factuur";
-            if (actie=="REMOVE_REF_FROM_REKENING") return "Repareer de rekening";
-            if (actie=="REMOVE_REF_FROM_AFSCHRIFT") return "Repareer het afschrift";
+            if (actie=="REMOVE_BOEKING") return "Verwijder de boeking";
             return "Geen actie";
         }
 

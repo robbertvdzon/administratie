@@ -14,6 +14,7 @@ public class CheckAndFixRegel {
     private FixAction rubriceerAction;
     private String omschrijving;
     private String data;
+    private String boekingUuid;
     private CheckType checkType;
     private AfschriftDto afschrift;
     private LocalDate date;
