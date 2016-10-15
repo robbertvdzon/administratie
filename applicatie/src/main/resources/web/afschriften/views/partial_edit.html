@@ -29,20 +29,13 @@
         <input ng-model="data.afschriftToEdit.bedrag" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <md-input-container flex>
-        <label>boekingType</label>
-        <input ng-model="data.afschriftToEdit.boekingType" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-
-    <md-input-container flex>
-        <label>factuurNummer</label>
-        <input ng-model="data.afschriftToEdit.factuurNummer" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
-
-    <md-input-container flex>
-        <label>rekeningNummer</label>
-        <input ng-model="data.afschriftToEdit.rekeningNummer" STYLE="background-color: #B2DFDB;">
-    </md-input-container>
+    <b>Gekoppelde fakturen/rekeningen:</b><br>
+    <span ng-repeat="boeking in data.afschriftToEdit.boekingen">
+        {{afschriftenEditcontroller.echoBoeking(boeking)}}
+        <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.removeBoeking(boeking.uuid)"  >
+            Verwijder boeking
+        </md-button>
+    </span>
 
     <br>
 

@@ -62,13 +62,21 @@ module Application.Controllers {
             this.rekeningGuiService.closePage(SCREEN_REKENING_EDIT);
         }
 
-        disconnectAfschrift(id){
+        removeBoeking(uuid){
             var boekingen:BoekingData[] = this.$scope.data.rekeningToEdit.boekingen;
             for (var i = boekingen.length - 1; i >= 0; i--) {
-                if (boekingen[i].afschriftNummer == id) {
+                if (boekingen[i].uuid == uuid) {
                     boekingen.splice(i, 1);
                 }
             }
+        }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.afschriftNummer)){
+                result = result + '(afschrift: '+boeking.afschriftNummer+')';
+            }
+            return result
         }
 
     }

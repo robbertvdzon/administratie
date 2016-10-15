@@ -10,6 +10,7 @@ module Application.Controllers {
     import AfschriftDataService = Application.Services.AfschriftDataService;
     import SCREEN_AFSCHRIFT_EDIT = Application.SCREEN_AFSCHRIFT_EDIT;
     import RubriceerRegels = Application.Model.RubriceerRegels;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data : AfschriftGuiData;
@@ -55,6 +56,17 @@ module Application.Controllers {
             if (boekingsType=="FACTUUR") return "Geboekt";
             if (boekingsType=="REKENING") return "Geboekt";
             return "ok";
+        }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.factuurNummer)){
+                result = result + '(factuurnr: '+boeking.factuurNummer+')';
+            }
+            if (!angular.isUndefined(boeking.rekeningNummer)){
+                result = result + '(rekeningnr: '+boeking.rekeningNummer+')';
+            }
+            return result
         }
 
     }

@@ -101,9 +101,7 @@ module Application.Model {
         relatienaam:String;
         boekdatum:String;
         bedrag:String;
-        boekingType:String;
-        factuurNummer:String;
-        rekeningNummer:String;
+        boekingen:BoekingData[];
     }
 
     export class Administratie {

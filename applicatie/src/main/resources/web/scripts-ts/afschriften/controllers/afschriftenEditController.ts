@@ -6,6 +6,7 @@ module Application.Controllers {
     import AfschriftDataService = Application.Services.AfschriftDataService;
     import AfschriftGuiService = Application.Services.AfschriftGuiService;
     import AfschriftGuiData = Application.Services.AfschriftGuiData;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data:AfschriftGuiData;
@@ -61,6 +62,25 @@ module Application.Controllers {
             this.afschriftGuiService.closePage(SCREEN_AFSCHRIFT_EDIT);
         }
 
+        removeBoeking(uuid){
+            var boekingen:BoekingData[] = this.$scope.data.afschriftToEdit.boekingen;
+            for (var i = boekingen.length - 1; i >= 0; i--) {
+                if (boekingen[i].uuid == uuid) {
+                    boekingen.splice(i, 1);
+                }
+            }
+        }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.factuurNummer)){
+                result = result + '(factuurnr: '+boeking.factuurNummer+')';
+            }
+            if (!angular.isUndefined(boeking.rekeningNummer)){
+                result = result + '(rekeningnr: '+boeking.rekeningNummer+')';
+            }
+            return result
+        }
     }
 }
 

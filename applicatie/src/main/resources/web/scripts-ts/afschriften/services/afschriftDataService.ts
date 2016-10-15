@@ -7,6 +7,7 @@ module Application.Services {
     import AfschriftGuiService = Application.Services.AfschriftGuiService;
     import RubriceerRegels = Application.Model.RubriceerRegels;
     import CheckAndFixRegels = Application.Model.CheckAndFixRegels;
+    import BoekingData = Application.Model.BoekingData;
 
     export class AfschriftDataService {
         constructor(private $rootScope, private $http, private dataService:Application.Services.MyDataservice, private afschriftGuiService:AfschriftGuiService, private $filter) {
@@ -73,11 +74,26 @@ module Application.Services {
             afschriftClone.relatienaam = afschrift.relatienaam;
             afschriftClone.boekdatum = afschrift.boekdatum;
             afschriftClone.bedrag = afschrift.bedrag;
-            afschriftClone.boekingType = afschrift.boekingType;
-            afschriftClone.factuurNummer = afschrift.factuurNummer;
-            afschriftClone.rekeningNummer = afschrift.rekeningNummer;
+            afschriftClone.boekingen = [];
+            for (var i = 0; i < afschrift.boekingen.length; i++) {
+                var boeking:BoekingData = afschrift.boekingen[i];
+                afschriftClone.boekingen.push(this.cloneBoeking(boeking));
+            }
             return afschriftClone;
         }
+
+        public cloneBoeking(boeking:BoekingData):BoekingData{
+            if (boeking==null) return null;
+            var boekingClone = new BoekingData();
+            boekingClone.uuid = boeking.uuid;
+            boekingClone.afschriftNummer = boeking.afschriftNummer;
+            boekingClone.declaratieNummer = boeking.declaratieNummer;
+            boekingClone.factuurNummer = boeking.factuurNummer;
+            boekingClone.omschrijving = boeking.omschrijving;
+            boekingClone.rekeningNummer = boeking.rekeningNummer;
+            return boekingClone;
+        }
+
 
         public copyInto(afschriftFrom:AfschriftData, afschriftTo:AfschriftData) {
             afschriftTo.uuid = afschriftFrom.uuid;
@@ -87,10 +103,7 @@ module Application.Services {
             afschriftTo.relatienaam = afschriftFrom.relatienaam;
             afschriftTo.boekdatum = afschriftFrom.boekdatum;
             afschriftTo.bedrag = afschriftFrom.bedrag;
-            afschriftTo.boekingType = afschriftFrom.boekingType;
-            afschriftTo.factuurNummer = afschriftFrom.factuurNummer;
-            afschriftTo.rekeningNummer = afschriftFrom.rekeningNummer;
-
+            afschriftTo.boekingen = afschriftFrom.boekingen;
         }
 
         public getCheckAndFixRegels() {

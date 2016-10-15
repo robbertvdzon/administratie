@@ -9,6 +9,7 @@ module Application.Controllers {
     import MyDataservice = Application.Services.MyDataservice;
     import RekeningDataService = Application.Services.RekeningDataService;
     import SCREEN_REKENING_EDIT = Application.SCREEN_REKENING_EDIT;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data : RekeningGuiData;
@@ -30,6 +31,15 @@ module Application.Controllers {
             this.rekeningDataService.createAndSelectNewRekening();
             this.rekeningGuiService.showPage(SCREEN_REKENING_EDIT);
         }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.afschriftNummer)){
+                result = result + '(afschrift: '+boeking.afschriftNummer+')';
+            }
+            return result
+        }
+
     }
 
 }

@@ -2,8 +2,11 @@ package com.vdzon.administratie.rest.afschrift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.bankimport.ImportFromAbnAmro;
+import com.vdzon.administratie.dto.BoekingDto;
+import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.OnverwerktAfschiftBoeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.AfschriftDto;
@@ -31,6 +34,20 @@ public class AfschriftService {
 
         gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
         gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
+
+        List<BoekingMetAfschrift> boekingenVanAfschrift = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanAfschrift(afschrift.getNummer());
+        for (BoekingMetAfschrift boeking : boekingenVanAfschrift ){
+            boolean found = false;
+            for (BoekingDto boekingDto : afschriftDto.getBoekingen()){
+                if (boekingDto.getUuid().equals(boeking.getUuid())){
+                    found = true;
+                }
+            }
+            if (!found){
+                gebruiker.getDefaultAdministratie().removeBoeking(boeking.getUuid());
+            }
+        }
+
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }

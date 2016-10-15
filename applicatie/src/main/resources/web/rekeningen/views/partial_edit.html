@@ -42,9 +42,9 @@
 
     <b>Gekoppelde afschriften:</b><br>
     <span ng-repeat="boeking in data.rekeningToEdit.boekingen">
-        {{boeking.afschriftNummer}}
-        <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.disconnectAfschrift(boeking.afschriftNummer)"  >
-            Ontkoppel
+        {{rekeningenEditcontroller.echoBoeking(boeking)}}
+        <md-button class="md-raised md-primary" ng-click="rekeningenEditcontroller.removeBoeking(boeking.uuid)"  >
+            Verwijder boeking
         </md-button>
     </span>
 

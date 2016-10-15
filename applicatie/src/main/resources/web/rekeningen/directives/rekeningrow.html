@@ -6,6 +6,5 @@
     <td width="150">{{ rekening.naam }}</td>
     <td width="100">{{rekening.rekeningDate}}</td>
     <td width="100">&euro; {{ rekening.bedragExBtw }}</td>
-    <td width="100"> <span ng-repeat="boeking in rekening.boekingen"> {{boeking.afschriftNummer}} {{$last ? '' : ', '}}  </span></td>
-
+    <td width="400"> <span ng-repeat="boeking in rekening.boekingen"> {{rekeningenListController.echoBoeking(boeking)}} {{$last ? '' : ', '}}  </span></td>
 </tr></table>
