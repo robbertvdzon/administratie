@@ -170,6 +170,19 @@ public class Administratie {
         }
     }
 
+    public Rekening getRekening(String uuid) {
+        for (Rekening rekening : getRekeningen()) {
+            if (rekeningUuidMatchesUuid(uuid, rekening)) {
+                return rekening;
+            }
+        }
+        return null;
+    }
+
+    private boolean rekeningUuidMatchesUuid(String uuid, Rekening rekening) {
+        return uuid == null && rekening.getUuid() == null || uuid != null && uuid.equals(rekening.getUuid());
+    }
+
     public void addDeclaratie(Declaratie declaratie) {
         declaraties.add(declaratie);
     }

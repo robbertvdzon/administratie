@@ -2,14 +2,12 @@ package com.vdzon.administratie.rest.factuur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.dto.BoekingDto;
-import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.FactuurDto;
-import com.vdzon.administratie.model.Bestelling;
-import com.vdzon.administratie.model.Factuur;
-import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
@@ -58,7 +56,11 @@ public class FactuurService {
         if ("undefined".equals(factuurUuid)) {
             factuurUuid = null;
         }
+        Factuur factuur = gebruiker.getDefaultAdministratie().getFactuur(factuurUuid);
+
         gebruiker.getDefaultAdministratie().removeFactuur(factuurUuid);
+        removeBoekingenVanFactuur(gebruiker, factuur.getFactuurNummer());
+
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
     }
@@ -85,6 +87,16 @@ public class FactuurService {
             gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
         }
         gebruiker.getDefaultAdministratie().removeFactuur(uuid);
+    }
+
+    private void removeBoekingenVanFactuur(Gebruiker gebruiker, String factuurNr) {
+        Administratie defaultAdministratie = gebruiker.getDefaultAdministratie();
+        defaultAdministratie.getBoekingen()
+                .stream()
+                .filter(boeking -> boeking instanceof BoekingMetFactuur)
+                .map(boeking -> (BoekingMetFactuur) boeking)
+                .filter(boeking -> boeking.getFactuurNummer().equals(factuurNr))
+                .forEach(boeking -> defaultAdministratie.removeBoeking(boeking.getUuid()));
     }
 
     protected Object getPdf(Request req, Response res) throws Exception {
