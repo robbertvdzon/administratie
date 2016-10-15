@@ -19,11 +19,15 @@
             <td>{{data.selectedfactuur.betaald}}</td>
         </tr>
         <tr>
-            <td>Gekoppeld afschrift :</td>
-            <td>{{data.selectedfactuur.gekoppeldAfschrift}}</td>
+            <td>Gekoppelde afschriften :</td>
+            <td>
+                <span ng-repeat="boeking in data.factuurToEdit.boekingen">
+                    {{facturenEditcontroller.echoBoeking(boeking)}}
+                    <br>
+                </span>
+            </td>
         </tr>
     </table>
-
 
     <md-button class="md-raised md-primary" ng-click="facturenEditcontroller.editDetails()">
         Bewerk factuur gegevens

@@ -11,6 +11,7 @@ module Application.Controllers {
     import SCREEN_FACTUUR_EDIT_CONTACT = Application.SCREEN_FACTUUR_EDIT_CONTACT;
     import SCREEN_FACTUUR_CONTACT = Application.SCREEN_FACTUUR_CONTACT;
     import FactuurGuiData = Application.Services.FactuurGuiData;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data:FactuurGuiData;
@@ -77,6 +78,14 @@ module Application.Controllers {
 
         print(uuid) {
             this.$window.open('/rest/factuur/pdf/'+uuid, '_blank');
+        }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.afschriftNummer)){
+                result = result + '(afschrift: '+boeking.afschriftNummer+')';
+            }
+            return result
         }
     }
 }

@@ -19,6 +19,16 @@
         <input type="checkbox" ng-model="data.factuurToEdit.betaald">
     </label><br/>
 
+    <b>Gekoppelde afschriften:</b><br>
+    <span ng-repeat="boeking in data.factuurToEdit.boekingen">
+        {{facturenEditDetailscontroller.echoBoeking(boeking)}}
+        <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.removeBoeking(boeking.uuid)"  >
+            Verwijder boeking
+        </md-button>
+    </span>
+    <br>
+
+
     <md-button class="md-raised md-primary" ng-click="facturenEditDetailscontroller.saveDetails()" ng-hide="facturenEditDetailscontroller.notDirty()">
         Opslaan
     </md-button>

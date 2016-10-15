@@ -31,7 +31,7 @@ module Application.Model {
         betaald:boolean;
         factuurDate:String;
         klant:ContactData;
-        gekoppeldAfschrift:String;
+        boekingen:BoekingData[];
     }
 
     export class BestellingRegelData {

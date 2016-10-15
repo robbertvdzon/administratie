@@ -6,5 +6,5 @@
     <td width="100">&euro; {{ factuur.bedragExBtw }}</td>
     <td width="100">&euro; {{ factuur.bedragIncBtw }}</td>
     <td width="100"> <small>{{ factuur.betaald?"Betaald":"Niet betaald" }}</small> </td>
-    <td width="60">{{ factuur.gekoppeldAfschrift}}</td>
+    <td width="400"> <span ng-repeat="boeking in factuur.boekingen"> {{facturenListController.echoBoeking(boeking)}} {{$last ? '' : ', '}}  </span></td>
 </tr></table>

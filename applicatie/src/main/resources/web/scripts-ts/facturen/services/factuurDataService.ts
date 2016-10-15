@@ -9,8 +9,7 @@ module Application.Services {
     import Administratie = Application.Model.Administratie;
     import ContactDataService = Application.Services.ContactDataService;
     import FactuurGuiService = Application.Services.FactuurGuiService;
-
-
+    import BoekingData = Application.Model.BoekingData;
 
     export class FactuurDataService {
 
@@ -140,8 +139,25 @@ module Application.Services {
             factuurClone.factuurDate = factuur.factuurDate;
             factuurClone.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer;
             factuurClone.klant = this.contactDataService.cloneContact(factuur.klant);
-            factuurClone.gekoppeldAfschrift = factuur.gekoppeldAfschrift;
+            factuurClone.boekingen = [];
+            for (var i = 0; i < factuur.boekingen.length; i++) {
+                var boeking:BoekingData = factuur.boekingen[i];
+                factuurClone.boekingen.push(this.cloneBoeking(boeking));
+            }
             return factuurClone;
+        }
+
+
+        public cloneBoeking(boeking:BoekingData):BoekingData{
+            if (boeking==null) return null;
+            var boekingClone = new BoekingData();
+            boekingClone.uuid = boeking.uuid;
+            boekingClone.afschriftNummer = boeking.afschriftNummer;
+            boekingClone.declaratieNummer = boeking.declaratieNummer;
+            boekingClone.factuurNummer = boeking.factuurNummer;
+            boekingClone.omschrijving = boeking.omschrijving;
+            boekingClone.rekeningNummer = boeking.rekeningNummer;
+            return boekingClone;
         }
 
         public addFactuurFromBestelling(bestelling:BestellingData):ng.IPromise<any> {

@@ -10,6 +10,7 @@ module Application.Controllers {
     import FactuurDataService = Application.Services.FactuurDataService;
     import SCREEN_FACTUUR_EDIT = Application.SCREEN_FACTUUR_EDIT;
     import MyDataservice = Application.Services.MyDataservice;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data : FactuurGuiData;
@@ -32,6 +33,13 @@ module Application.Controllers {
             this.factuurGuiService.showPage(SCREEN_FACTUUR_EDIT);
         }
 
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.afschriftNummer)){
+                result = result + '(afschrift: '+boeking.afschriftNummer+')';
+            }
+            return result
+        }
     }
 
 }

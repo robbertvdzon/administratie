@@ -1,6 +1,9 @@
 package com.vdzon.administratie.rest.factuur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vdzon.administratie.dto.BoekingDto;
+import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.FactuurDto;
@@ -14,6 +17,7 @@ import spark.Response;
 
 import javax.inject.Inject;
 import java.io.BufferedOutputStream;
+import java.util.List;
 
 public class FactuurService {
 
@@ -30,6 +34,19 @@ public class FactuurService {
 
         removeFactuur(gebruiker, factuur.getUuid());
         addFactuur(gebruiker, factuur);
+
+        List<BoekingMetFactuur> boekingenVanFactuur = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanFactuur(factuur.getFactuurNummer());
+        for (BoekingMetFactuur boeking : boekingenVanFactuur ){
+            boolean found = false;
+            for (BoekingDto boekingDto : factuurDto.getBoekingen()){
+                if (boekingDto.getUuid().equals(boeking.getUuid())){
+                    found = true;
+                }
+            }
+            if (!found){
+                gebruiker.getDefaultAdministratie().removeBoeking(boeking.getUuid());
+            }
+        }
 
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");

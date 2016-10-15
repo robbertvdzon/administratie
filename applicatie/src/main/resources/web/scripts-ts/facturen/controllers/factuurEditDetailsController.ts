@@ -8,6 +8,7 @@ module Application.Controllers {
     import ContactDataService = Application.Services.ContactDataService;
     import SCREEN_FACTUUR_EDIT_DETAIL = Application.SCREEN_FACTUUR_EDIT_DETAIL;
     import FactuurGuiData = Application.Services.FactuurGuiData;
+    import BoekingData = Application.Model.BoekingData;
 
     interface MyScope extends ng.IScope {
         data:FactuurGuiData;
@@ -35,11 +36,29 @@ module Application.Controllers {
             factuurDst.factuurDate = factuurSrc.factuurDate;
             factuurDst.gekoppeldeBestellingNummer = factuurSrc.gekoppeldeBestellingNummer;
             factuurDst.klant = this.contactDataService.cloneContact(factuurSrc.klant);
+            factuurDst.boekingen = factuurSrc.boekingen;
         }
 
         cancelEditDetails(){
             this.$scope.data.factuurToEdit = this.factuurDataService.cloneFactuur(this.$scope.data.selectedfactuur);
             this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
+        }
+
+        removeBoeking(uuid){
+            var boekingen:BoekingData[] = this.$scope.data.factuurToEdit.boekingen;
+            for (var i = boekingen.length - 1; i >= 0; i--) {
+                if (boekingen[i].uuid == uuid) {
+                    boekingen.splice(i, 1);
+                }
+            }
+        }
+
+        echoBoeking(boeking:BoekingData){
+            var result:String = boeking.omschrijving+' ';
+            if (!angular.isUndefined(boeking.afschriftNummer)){
+                result = result + '(afschrift: '+boeking.afschriftNummer+')';
+            }
+            return result
         }
 
     }
