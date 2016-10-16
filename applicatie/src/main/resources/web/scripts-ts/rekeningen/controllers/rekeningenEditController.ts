@@ -42,6 +42,7 @@ module Application.Controllers {
         }
 
         add() {
+            this.rekeningDataService.copyInto(this.$scope.data.rekeningToEdit, this.$scope.data.selectedrekening);
             this.rekeningDataService.addRekening().then((response) => {
                 this.rekeningGuiService.closePage(SCREEN_REKENING_EDIT);
             }).catch((response) => {
