@@ -17,6 +17,7 @@ module Application.Controllers {
 
     export class FactuurEditContactController {
 
+
         constructor(private $scope:MyScope, private $rootScope, private factuurDataService:FactuurDataService, private contactDataService:ContactDataService, private factuurGuiService:FactuurGuiService) {
             this.$scope.data = factuurGuiService.getFactuurGui().data;
         }
