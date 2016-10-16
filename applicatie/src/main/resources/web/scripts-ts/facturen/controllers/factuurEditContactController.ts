@@ -27,11 +27,12 @@ module Application.Controllers {
 
         saveContactDetails(){
             this.copyContactDetailsInto(this.$scope.data.factuurToEdit, this.$scope.data.selectedfactuur);
-            this.factuurDataService.saveFactuur();
-            this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
-            if (this.$scope.data.addToAdresboek){
-                this.factuurDataService.copyContactFromSelectedFactuurToAdresboek();
-            }
+            this.factuurDataService.saveFactuur().then(()=>{
+                this.factuurGuiService.closePage(SCREEN_FACTUUR_EDIT_DETAIL);
+                if (this.$scope.data.addToAdresboek){
+                    this.factuurDataService.copyContactFromSelectedFactuurToAdresboek();
+                }
+            });
         }
 
         copyContactDetailsInto(factuurSrc:FactuurData, factuurDst:FactuurData):void {
