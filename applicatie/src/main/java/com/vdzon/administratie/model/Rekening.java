@@ -26,5 +26,6 @@ public class Rekening {
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private int maandenAfschrijving = 0;
 
 }

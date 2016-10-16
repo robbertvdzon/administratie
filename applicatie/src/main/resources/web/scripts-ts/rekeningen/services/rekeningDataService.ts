@@ -67,6 +67,7 @@ module Application.Services {
             rekeningClone.rekeningDate = rekening.rekeningDate;
             rekeningClone.bedragExBtw = rekening.bedragExBtw;
             rekeningClone.bedragIncBtw = rekening.bedragIncBtw;
+            rekeningClone.maandenAfschrijving = rekening.maandenAfschrijving;
             rekeningClone.btw = rekening.btw;
             rekeningClone.boekingen = [];
 
@@ -101,6 +102,7 @@ module Application.Services {
             rekeningTo.bedragExBtw = rekeningFrom.bedragExBtw;
             rekeningTo.bedragIncBtw = rekeningFrom.bedragIncBtw;
             rekeningTo.btw = rekeningFrom.btw;
+            rekeningTo.maandenAfschrijving = rekeningFrom.maandenAfschrijving;
             rekeningTo.boekingen = rekeningFrom.boekingen;
         }
 

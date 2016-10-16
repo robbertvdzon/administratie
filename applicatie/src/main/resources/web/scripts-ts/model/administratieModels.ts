@@ -70,6 +70,7 @@ module Application.Model {
         bedragExBtw:String;
         bedragIncBtw:String;
         btw:String;
+        maandenAfschrijving:Number;
         boekingen:BoekingData[];
     }
 

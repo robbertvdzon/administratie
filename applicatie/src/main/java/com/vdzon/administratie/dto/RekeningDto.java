@@ -33,6 +33,7 @@ public class RekeningDto {
     private double bedragIncBtw = 0;
     private double btw = 0;
     private List<BoekingDto> boekingen;
+    private int maandenAfschrijving = 0;
 
     public RekeningDto(Rekening rekening, BoekingenCache boekingenCache) {
         this.uuid = rekening.getUuid();
@@ -45,6 +46,7 @@ public class RekeningDto {
         this.bedragIncBtw = rekening.getBedragIncBtw();
         this.btw = rekening.getBtw();
         this.boekingen = toBoekingenDto(boekingenCache.getBoekingenVanRekening(rekeningNummer), boekingenCache);
+        this.maandenAfschrijving = rekening.getMaandenAfschrijving();
     }
 
     private List<BoekingDto> toBoekingenDto(List<BoekingMetRekening> boekingen, BoekingenCache boekingenCache) {
@@ -65,6 +67,7 @@ public class RekeningDto {
                 .bedragExBtw(bedragExBtw)
                 .bedragIncBtw(bedragIncBtw)
                 .btw(btw)
+                .maandenAfschrijving(maandenAfschrijving)
                 .build();
     }
 
