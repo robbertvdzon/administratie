@@ -125,7 +125,7 @@ public class GenerateOverzicht {
                 .filteredFacturen
                 .stream()
                 .sorted((fak1, fak2) -> fak2.getFactuurNummer().compareTo(fak1.getFactuurNummer()))
-                .forEach(factuur -> listFactuur(factuur));
+                .forEach(factuur -> listFactuur(factuur, boekingenCache));
 
         page.close();
 
@@ -146,9 +146,10 @@ public class GenerateOverzicht {
                 .filteredRekeningen
                 .stream()
                 .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
-                .forEach(rekening -> listRekening(rekening));
+                .forEach(rekening -> listRekening(rekening, boekingenCache));
 
         page.close();
+
 /*
 ********************** DECLARATIES PAGINA
  */
@@ -189,6 +190,27 @@ public class GenerateOverzicht {
         page.close();
 
 /*
+********************** OUDE REKENINGEN MET LOPENDE AFSCHRIJVINGEN
+ */
+        pos = pageHeight;
+
+        pdfPage = new PDPage(PDRectangle.A4);
+        document.addPage(pdfPage);
+        page = new PDPageContentStream(document, pdfPage);
+
+        skipDown(10);
+        writeTitle("Alle rekeningen met nog lopende afschrijvingen");
+        skipDown(10);
+        listRekeningHeader();
+        administratie
+                .getRekeningen()
+                .stream()
+                .filter(rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate))
+                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
+                .forEach(rekening -> listRekening(rekening, boekingenCache));
+
+        page.close();
+/*
 ********************** WAARSCHUWINGEN PAGINA
  */
         pos = pageHeight;
@@ -215,6 +237,11 @@ public class GenerateOverzicht {
 
         document.save(outputStream);
         document.close();
+    }
+
+    private boolean rekeningHeeftLopendeAfschrijving(Rekening rekening, LocalDate beginDate) {
+        if (rekening.getMaandenAfschrijving()==0) return false;
+        return rekening.getRekeningDate().plusMonths(rekening.getMaandenAfschrijving()).isAfter(beginDate);
     }
 
     private static boolean betweenOrAtDates(LocalDate date, LocalDate beginDate, LocalDate endData){
@@ -260,7 +287,13 @@ public class GenerateOverzicht {
         }
     }
 
-    private void listFactuur(Factuur factuur)  {
+    private void listFactuur(Factuur factuur, BoekingenCache boekingenCache)  {
+        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer());
+        String status = "Niet betaald";
+        if (boekingenVanFactuur!=null && boekingenVanFactuur.size()>0){
+            status = "Betaald";
+        }
+
         try {
             skipDown(15);
             int y = 30;
@@ -277,16 +310,6 @@ public class GenerateOverzicht {
             y+=40;
             writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
             y+=80;
-            String status = "";
-//            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()!=null){
-//                status = "Geboekt";
-//            }
-//            if (factuur.isBetaald() && factuur.getGekoppeldAfschrift()==null){
-//                status = "Betaald";
-//            }
-//            if (!factuur.isBetaald()){
-//                status = "Niet betaald";
-//            }
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
         }
         catch (Exception ex){
@@ -316,7 +339,17 @@ public class GenerateOverzicht {
         }
     }
 
-    private void listRekening(Rekening rekening)  {
+    private void listRekening(Rekening rekening, BoekingenCache boekingenCache)  {
+        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
+        String status = "Niet betaald";
+        if (boekingenVanRekening!=null && boekingenVanRekening.size()>0){
+            status = "Betaald";
+        }
+        if (rekening.getMaandenAfschrijving()>0){
+            status += " (afschrijven in "+rekening.getMaandenAfschrijving()+" maanden)";
+
+        }
+
         try {
             skipDown(15);
             int y = 30;
@@ -330,10 +363,6 @@ public class GenerateOverzicht {
             y+=40;
             writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
             y+=80;
-            String status = "Niet geboekt";
-//            if (rekening.getGekoppeldAfschrift()!=null){
-//                status = "Geboekt";
-//            }
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
 
             skipDown(15);
