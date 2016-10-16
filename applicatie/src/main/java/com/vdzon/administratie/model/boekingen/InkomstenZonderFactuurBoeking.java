@@ -26,6 +26,6 @@ public class InkomstenZonderFactuurBoeking extends Boeking implements BoekingMet
 
     @Override
     public String getOmschrijving() {
-        return "Inkomsten";
+        return "Inkomsten waar geen factuur van is";
     }
 }

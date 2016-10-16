@@ -33,6 +33,6 @@ public class BetaaldeRekeningBoeking extends Boeking implements BoekingMetRekeni
 
     @Override
     public String getOmschrijving() {
-        return "Betaling met rekening";
+        return "Betaling van een rekening";
     }
 }

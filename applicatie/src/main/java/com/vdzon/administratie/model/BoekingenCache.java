@@ -39,18 +39,18 @@ public class BoekingenCache {
 
     }
 
-    public List<BoekingMetFactuur> getBoekingenVanFactuur(String factuurUuid) {
-        List<BoekingMetFactuur> boekingMetFactuurs = alleFactuurBoekingen.get(factuurUuid);
+    public List<BoekingMetFactuur> getBoekingenVanFactuur(String factuurNummer) {
+        List<BoekingMetFactuur> boekingMetFactuurs = alleFactuurBoekingen.get(factuurNummer);
         return boekingMetFactuurs == null ? new ArrayList<>() : boekingMetFactuurs;
     }
 
-    public List<BoekingMetRekening> getBoekingenVanRekening(String rekeningUuid) {
-        List<BoekingMetRekening> boekingMetRekenings = alleRekeningBoekingen.get(rekeningUuid);
+    public List<BoekingMetRekening> getBoekingenVanRekening(String rekeningNummer) {
+        List<BoekingMetRekening> boekingMetRekenings = alleRekeningBoekingen.get(rekeningNummer);
         return boekingMetRekenings == null ? new ArrayList<>() : boekingMetRekenings;
     }
 
-    public List<BoekingMetAfschrift> getBoekingenVanAfschrift(String afschriftUuid) {
-        List<BoekingMetAfschrift> boekingMetAfschrifts = alleAfschriftBoekingen.get(afschriftUuid);
+    public List<BoekingMetAfschrift> getBoekingenVanAfschrift(String afschriftNummer) {
+        List<BoekingMetAfschrift> boekingMetAfschrifts = alleAfschriftBoekingen.get(afschriftNummer);
         return boekingMetAfschrifts == null ? new ArrayList<>() : boekingMetAfschrifts;
     }
 

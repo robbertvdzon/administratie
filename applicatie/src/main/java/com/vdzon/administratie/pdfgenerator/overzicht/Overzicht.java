@@ -23,16 +23,30 @@ public class Overzicht {
     public double declaratiesTotaalIncBtw = 0;
     public double declaratiesTotaalBtw = 0;
 
-    public double betaaldeFacturen = 0;
+    // onderstaande velden zijn berekend aan de hand van de afschriften *************************
+    public double ontvangenFactuurBetalingenBetaaldBinnenGeselecteerdePeriode = 0;
+    public double ontvangenFactuurBetalingenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode = 0;
+    public double ontvangenFacturenBetaaldBuitenGeselecteerdePeriode = 0;
     public double onbetaaldeFacturen = 0;
-    public double betaaldeRekeningen = 0;
+
+    public double betaaldeRekeningenBetaaldBinnenGeselecteerdePeriode = 0;
+    public double betaaldeRekeningenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode = 0;
+    public double betaaldeRekeningenBetaaldBuitenGeselecteerdePeriode = 0;
+    public double onbetaaldeRekeningen = 0;
+
+    public double priveBoekingen = 0;
+    public double ontvangenInkomstenZonderFactuur = 0;
+    public double betaaldeRekeningenZonderFactuur = 0;
+
+    // controle bedragen **************************************
     public double verwachtTotaalOpRekeningBij = 0;
 
     public double werkelijkOpBankBij = 0;
-    public double priveOpBankBij = 0;
-    public double werkelijkOpBankBijVoorAdministratie = 0;
+//    public double werkelijkOpBankBijVoorAdministratie = 0;
     public double verschilTussenVerwachtEnWerkelijk = 0;
 
+
+    // voor btw aangifte **************************************
     public double belastbaarInkomenExBtw = 0;
     public double belastbaarInkomenIncBtw = 0;
     public double belastbaarInkomenBtw = 0;
@@ -44,6 +58,6 @@ public class Overzicht {
     public List<Declaratie> filteredDeclaraties = null;
     public List<Afschrift> filteredAfschriften = null;
 
-    public double betaaldeFacturenBuitenGeselecteerdePeriode;
-    public double betaaldeRekeningenBuitenGeselecteerdePeriode;
+//    public List<Factuur> alleFacturen = null;
+
 }

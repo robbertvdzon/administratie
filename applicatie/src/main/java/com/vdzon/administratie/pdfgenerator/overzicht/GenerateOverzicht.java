@@ -1,6 +1,10 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
+import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import com.vdzon.administratie.rest.checkandfix.CheckAndFixService;
 import com.vdzon.administratie.model.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,6 +18,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +50,8 @@ public class GenerateOverzicht {
         pageWidth = rect.getWidth();
         pos = pageHeight;
 
+        BoekingenCache boekingenCache = new BoekingenCache(administratie.getBoekingen());
+
 
         skipDown(25);
         AdministratieGegevens administratieGegevens = administratie.getAdministratieGegevens();
@@ -72,16 +79,29 @@ public class GenerateOverzicht {
         writeFieldValue(fontPlain, "Totaal Inclusief BTW", overzicht.belastbaarInkomenIncBtw);
         skipDown(30);
         writeTitle("Bankrekening controle");
-        writeFieldValue(fontPlain, "Betaalde facturen", overzicht.betaaldeFacturen);
+
+
+        writeFieldValue(fontPlain, "Betaald gekregen facturen van deze periode, ontvangen binnen deze periode", overzicht.ontvangenFactuurBetalingenBetaaldBinnenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Betaald gekregen facturen van deze periode, ontvangen buiten deze periode", overzicht.ontvangenFacturenBetaaldBuitenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Betaald gekregen facturen buiten deze periode, ontvangen binnen deze periode", overzicht.ontvangenFactuurBetalingenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode);
         writeFieldValue(fontPlain, "Onbetaalde facturen", overzicht.onbetaaldeFacturen);
-        writeFieldValue(fontPlain, "Betaalde rekeningen", overzicht.betaaldeRekeningen);
-        writeFieldValue(fontPlain, "Betaalde facturen buiten geselecteerde periode", overzicht.betaaldeFacturenBuitenGeselecteerdePeriode);
-        writeFieldValue(fontPlain, "Betaalde rekeningen buiten geselecteerde periode", overzicht.betaaldeRekeningenBuitenGeselecteerdePeriode);
-        writeFieldValue(fontPlain, "Verwacht totaal op rekening bij", overzicht.verwachtTotaalOpRekeningBij);
+
         skipDown(10);
+
+        writeFieldValue(fontPlain, "Betaalde rekeningen van deze periode, betaald binnen deze periode", overzicht.betaaldeRekeningenBetaaldBinnenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Betaalde rekeningen van deze periode, betaald buiten deze periode", overzicht.betaaldeRekeningenBetaaldBuitenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Betaalde rekeningen buiten deze periode, betaald binnen deze periode", overzicht.betaaldeRekeningenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode);
+        writeFieldValue(fontPlain, "Onbetaalde rekeningen", overzicht.onbetaaldeRekeningen);
+
+        skipDown(10);
+
+        writeFieldValue(fontPlain, "Prive boekingen gedaan", overzicht.priveBoekingen);
+        writeFieldValue(fontPlain, "Ontvangen betalingen op bank waarvan geen factuur van is", overzicht.ontvangenInkomstenZonderFactuur);
+        writeFieldValue(fontPlain, "Betaalde rekeningen waar geen factuur van is", overzicht.betaaldeRekeningenZonderFactuur);
+
+
+        writeFieldValue(fontPlain, "Verwacht totaal op rekening bij", overzicht.verwachtTotaalOpRekeningBij);
         writeFieldValue(fontPlain, "Werkelijk op bank bijgeschreven", overzicht.werkelijkOpBankBij);
-        writeFieldValue(fontPlain, "Prive boekingen op bank", overzicht.priveOpBankBij);
-        writeFieldValue(fontPlain, "Werkelijk totaal voor administratie", overzicht.werkelijkOpBankBijVoorAdministratie);
         skipDown(10);
         writeFieldValue(fontPlain, "Verschil tussen verwacht en werkelijk ontvangen", overzicht.verschilTussenVerwachtEnWerkelijk);
 
@@ -160,12 +180,11 @@ public class GenerateOverzicht {
         skipDown(10);
         writeTitle("Alle afschriften");
         skipDown(10);
-        listAfschriftHeader();
         overzicht
                 .filteredAfschriften
                 .stream()
                 .sorted((afschrift1, afschrift2) -> afschrift2.getNummer().compareTo(afschrift1.getNummer()))
-                .forEach(afschrift-> listAfschrift(afschrift));
+                .forEach(afschrift-> listAfschrift(afschrift, boekingenCache));
 
         page.close();
 
@@ -374,58 +393,55 @@ public class GenerateOverzicht {
         }
     }
 
-
-
-    private void listAfschriftHeader()  {
+    private void listAfschrift(Afschrift afschrift, BoekingenCache boekingenCache)  {
         try {
-            skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag");
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Type");
-            y+=100;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Naam");
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void listAfschrift(Afschrift afschrift)  {
-        try {
-            skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getNummer());
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getBoekdatum().toString());
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, ""+afschrift.getBedrag());
-            y+=60;
+            List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
             String status = "";
-//            switch (afschrift.getBoekingType()){
-//                case NONE:
-//                    status = "Niet gekoppeld";
-//                    break;
-//                case FACTUUR:
-//                    status = "Factuur "+afschrift.getFactuurNummer();
-//                    break;
-//                case REKENING:
-//                    status = "Rekening "+afschrift.getRekeningNummer();
-//                    break;
-//                case PRIVE:
-//                    status = "Prive boeking";
-//                    break;
-//            }
-            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
-            y+=100;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, afschrift.getRelatienaam());
+            for (BoekingMetAfschrift boekingMetAfschrift : boekingenVanAfschrift){
+                status += ((Boeking)boekingMetAfschrift).getOmschrijving()+" ";
+                if (boekingMetAfschrift instanceof BoekingMetFactuur){
+                    status += "(factuur "+((BoekingMetFactuur) boekingMetAfschrift).getFactuurNummer()+")";
+                }
+                if (boekingMetAfschrift instanceof BoekingMetRekening){
+                    status += "(rekening "+((BoekingMetRekening) boekingMetAfschrift).getRekeningNummer()+")";
+                }
+            }
+
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, afschrift.getOmschrijving());
-            skipDown(5);
+
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getNummer());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getBoekdatum().toString());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, ""+afschrift.getBedrag());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Geboekt als:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, status);
+
+
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Naam:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getRelatienaam());
+            skipDown(15);
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
+
+            String[] omschrijvingInPartsOf80Chars = afschrift.getOmschrijving().split("(?<=\\G.{80})");
+            boolean first = true;
+            for (String omschrijvingPartOf80Chars: omschrijvingInPartsOf80Chars){
+                if (!first){
+                    skipDown(15);
+                }
+                first = false;
+                writeText(LIJST_FONT_SIZE, 120, fontPlain, omschrijvingPartOf80Chars);
+            }
+            skipDown(8);
 
         }
         catch (Exception ex){
@@ -511,8 +527,8 @@ public class GenerateOverzicht {
     private void writeFieldValue(PDFont font, String titel1, String titel3) throws IOException {
         skipDown(15);
         writeText(12, 30, font, titel1);
-        writeText(12, 300, font, ":");
-        writeText(12, 305, font, titel3);
+        writeText(12, 500, font, ":");
+        writeText(12, 505, font, titel3);
     }
 
     private float skipDown(float amount) throws IOException {

@@ -26,6 +26,6 @@ public class BetalingZonderFactuurBoeking extends Boeking implements BoekingMetA
 
     @Override
     public String getOmschrijving() {
-        return "Betaling zonder rekening";
+        return "Betaling waar geen rekening van is";
     }
 }
