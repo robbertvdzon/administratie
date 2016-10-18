@@ -54,6 +54,7 @@ public class Administratie {
     }
 
     public List<Boeking> getBoekingen() {
+        if (boekingen==null) return Collections.unmodifiableList(new ArrayList<>());
         return Collections.unmodifiableList(new ArrayList<>(boekingen));
     }
 

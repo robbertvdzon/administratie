@@ -10,7 +10,7 @@ public class UpdateMongo {
         Mongeez mongeez = new Mongeez();
         mongeez.setFile(new ClassPathResource("dbscripts/mongeez.xml"));
         mongeez.setMongo(mongo);
-        mongeez.setDbName(dbName);
+//        mongeez.setDbName(dbName);
         mongeez.process();
 
     }
