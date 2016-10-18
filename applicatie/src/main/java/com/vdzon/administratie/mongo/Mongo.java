@@ -59,8 +59,6 @@ public class Mongo {
 
         System.out.println("usage voorbeeld: -DmongoDbHost=\"37.97.149.78\" -DmongoDbUsername=\"robbert\" -DmongoDbPasswd=\"hdkash746ioye123jhg\" -DmongoDbName=\"mijndb\"");
 
-
-
         String host = mongoDbHostname == null ? "localhost" : mongoDbHostname;
         String port = mongoDbPort == null ? "27017" : mongoDbPort;
         String username = mongoDbUsername == null ? "" : mongoDbUsername;
