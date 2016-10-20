@@ -56,7 +56,6 @@ public class Mongo {
         System.out.println("mongoDbUsername:"+mongoDbUsername);
         System.out.println("mongoDbPasswd:"+mongoDbPasswd);
         System.out.println("mongoDbName:"+mongoDbName);
-
         System.out.println("usage voorbeeld: -DmongoDbHost=\"37.97.149.78\" -DmongoDbUsername=\"robbert\" -DmongoDbPasswd=\"hdkash746ioye123jhg\" -DmongoDbName=\"mijndb\"");
 
         String host = mongoDbHostname == null ? "localhost" : mongoDbHostname;
