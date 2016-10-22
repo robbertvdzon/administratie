@@ -5,6 +5,8 @@ import com.vdzon.administratie.bankimport.ImportFromAbnAmro;
 import com.vdzon.administratie.dto.BoekingDto;
 import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
+import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
@@ -20,6 +22,7 @@ import spark.Response;
 import javax.inject.Inject;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 public class AfschriftService {
 
@@ -37,6 +40,14 @@ public class AfschriftService {
         gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
 
         List<BoekingMetAfschrift> boekingenVanAfschrift = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanAfschrift(afschrift.getNummer());
+        removeDeletedBoekingen(gebruiker, afschriftDto, boekingenVanAfschrift);
+        addNewBoekingen(gebruiker, afschriftDto, boekingenVanAfschrift);
+
+        crudService.updateGebruiker(gebruiker);
+        return new SingleAnswer("ok");
+    }
+
+    private void removeDeletedBoekingen(Gebruiker gebruiker, AfschriftDto afschriftDto, List<BoekingMetAfschrift> boekingenVanAfschrift) {
         for (BoekingMetAfschrift boeking : boekingenVanAfschrift ){
             boolean found = false;
             for (BoekingDto boekingDto : afschriftDto.getBoekingen()){
@@ -48,9 +59,39 @@ public class AfschriftService {
                 gebruiker.getDefaultAdministratie().removeBoeking(boeking.getUuid());
             }
         }
+    }
 
-        crudService.updateGebruiker(gebruiker);
-        return new SingleAnswer("ok");
+    private void addNewBoekingen(Gebruiker gebruiker, AfschriftDto afschriftDto, List<BoekingMetAfschrift> boekingenVanAfschrift) {
+        for (BoekingDto boekingDto : afschriftDto.getBoekingen()){
+            boolean found = false;
+            for (BoekingMetAfschrift boeking : boekingenVanAfschrift ){
+                if (boekingDto.getUuid().equals(boeking.getUuid())){
+                    found = true;
+                }
+            }
+            if (!found){
+                if (notEmpty(boekingDto.getFactuurNummer())){
+                    Boeking boeking = BetaaldeFactuurBoeking.builder()
+                            .afschriftNummer(afschriftDto.getNummer())
+                            .factuurNummer(boekingDto.getFactuurNummer())
+                            .uuid(UUID.randomUUID().toString())
+                            .build();
+                    gebruiker.getDefaultAdministratie().addBoeking(boeking);
+                }
+                else if (notEmpty(boekingDto.getRekeningNummer())){
+                    Boeking boeking = BetaaldeRekeningBoeking.builder()
+                            .afschriftNummer(afschriftDto.getNummer())
+                            .rekeningNummer(boekingDto.getRekeningNummer())
+                            .uuid(UUID.randomUUID().toString())
+                            .build();
+                    gebruiker.getDefaultAdministratie().addBoeking(boeking);
+                }
+            }
+        }
+    }
+
+    private boolean notEmpty(String s) {
+        return s!=null && s !="";
     }
 
     protected Object removeAfschrift(Request req, Response res) throws Exception {

@@ -62,6 +62,22 @@ module Application.Controllers {
             this.afschriftGuiService.closePage(SCREEN_AFSCHRIFT_EDIT);
         }
 
+        showAddBoeking(){
+            this.$scope.data.addManualBoeking = new BoekingData();
+            this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING);
+        }
+
+        addManualBoeking(){
+            this.$scope.data.addManualBoeking.omschrijving = "nieuwe boeking";
+            this.$scope.data.addManualBoeking.uuid = new Date().toLocaleTimeString();
+            this.$scope.data.afschriftToEdit.boekingen.push(this.afschriftDataService.cloneBoeking(this.$scope.data.addManualBoeking));
+            this.afschriftGuiService.closePage(SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING);
+        }
+
+        cancelAddManualBoeking(){
+            this.afschriftGuiService.closePage(SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING);
+        }
+
         removeBoeking(uuid){
             var boekingen:BoekingData[] = this.$scope.data.afschriftToEdit.boekingen;
             for (var i = boekingen.length - 1; i >= 0; i--) {

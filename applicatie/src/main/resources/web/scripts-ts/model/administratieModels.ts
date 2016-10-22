@@ -80,7 +80,6 @@ module Application.Model {
         factuurNummer:String;
         rekeningNummer:String;
         afschriftNummer:String;
-        declaratieNummer:String;
     }
 
     export class DeclaratieData {

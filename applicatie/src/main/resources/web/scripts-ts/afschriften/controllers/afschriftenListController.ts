@@ -27,6 +27,10 @@ module Application.Controllers {
             this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_EDIT);
         }
 
+        addManualBoeking(uuid:String) {
+            this.afschriftGuiService.showPage(SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING);
+        }
+
         getCheckAndFixRegels() {
             this.afschriftDataService.getCheckAndFixRegels().success((data)=> {
                 this.afschriftDataService.setCheckAndFixRegelLijst(data);

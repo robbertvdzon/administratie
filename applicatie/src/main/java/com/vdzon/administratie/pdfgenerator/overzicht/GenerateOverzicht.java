@@ -429,10 +429,10 @@ public class GenerateOverzicht {
             for (BoekingMetAfschrift boekingMetAfschrift : boekingenVanAfschrift){
                 status += ((Boeking)boekingMetAfschrift).getOmschrijving()+" ";
                 if (boekingMetAfschrift instanceof BoekingMetFactuur){
-                    status += "(factuur "+((BoekingMetFactuur) boekingMetAfschrift).getFactuurNummer()+")";
+                    status += "(factuur "+((BoekingMetFactuur) boekingMetAfschrift).getFactuurNummer()+") ";
                 }
                 if (boekingMetAfschrift instanceof BoekingMetRekening){
-                    status += "(rekening "+((BoekingMetRekening) boekingMetAfschrift).getRekeningNummer()+")";
+                    status += "(rekening "+((BoekingMetRekening) boekingMetAfschrift).getRekeningNummer()+") ";
                 }
             }
 
@@ -452,7 +452,15 @@ public class GenerateOverzicht {
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Geboekt als:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, status);
+            String[] statusInPartsOf80Chars = status.split("(?<=\\G.{80})");
+            boolean first = true;
+            for (String statusPartOf80Chars: statusInPartsOf80Chars){
+                if (!first){
+                    skipDown(15);
+                }
+                first = false;
+                writeText(LIJST_FONT_SIZE, 120, fontPlain, statusPartOf80Chars);
+            }
 
 
             skipDown(15);
@@ -462,7 +470,7 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
 
             String[] omschrijvingInPartsOf80Chars = afschrift.getOmschrijving().split("(?<=\\G.{80})");
-            boolean first = true;
+            first = true;
             for (String omschrijvingPartOf80Chars: omschrijvingInPartsOf80Chars){
                 if (!first){
                     skipDown(15);

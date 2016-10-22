@@ -85,7 +85,6 @@ module Application.Services {
             var boekingClone = new BoekingData();
             boekingClone.uuid = boeking.uuid;
             boekingClone.afschriftNummer = boeking.afschriftNummer;
-            boekingClone.declaratieNummer = boeking.declaratieNummer;
             boekingClone.factuurNummer = boeking.factuurNummer;
             boekingClone.omschrijving = boeking.omschrijving;
             boekingClone.rekeningNummer = boeking.rekeningNummer;

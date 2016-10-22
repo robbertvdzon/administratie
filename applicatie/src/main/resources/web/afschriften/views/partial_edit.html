@@ -29,15 +29,18 @@
         <input ng-model="data.afschriftToEdit.bedrag" STYLE="background-color: #B2DFDB;">
     </md-input-container>
 
-    <b>Gekoppelde fakturen/rekeningen:</b><br>
+    <b>Gekoppelde fakturen/rekeningen:</b>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.showAddBoeking()"  >
+        Voeg boeking toe
+    </md-button>
+    <br>
     <span ng-repeat="boeking in data.afschriftToEdit.boekingen">
         {{afschriftenEditcontroller.echoBoeking(boeking)}}
         <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.removeBoeking(boeking.uuid)"  >
             Verwijder boeking
         </md-button>
+        <br>
     </span>
-
-    <br>
 
     <br><br>
     <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.add()"  ng-show="afschriftenEditcontroller.showAddButton()">

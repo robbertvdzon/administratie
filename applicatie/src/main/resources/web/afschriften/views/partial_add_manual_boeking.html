@@ -1,0 +1,21 @@
+<div ng-cloak data-ng-controller="AfschriftEditController as afschriftenEditcontroller">
+<br>
+    <md-input-container flex>
+        <label>FactuurNummer</label>
+        <input ng-model="data.addManualBoeking.factuurNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+    <md-input-container flex>
+        <label>rekeningNummer</label>
+        <input ng-model="data.addManualBoeking.rekeningNummer" STYLE="background-color: #B2DFDB;">
+    </md-input-container>
+
+    <br>
+
+    <br><br>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.addManualBoeking()" >
+        Boeking toevoegen
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="afschriftenEditcontroller.cancelAddManualBoeking()">
+        Annuleren
+    </md-button>
+</div>

@@ -6,12 +6,14 @@ module Application.Services {
     import GuiData = Application.Model.GuiData;
     import RubriceerRegels = Application.Model.RubriceerRegels;
     import CheckAndFixRegels  = Application.Model.CheckAndFixRegels;
+    import BoekingData = Application.Model.BoekingData;
 
     export class AfschriftGui{
         // velden voor afschrift edit schermen
         afschriftTabDisabled:boolean = true;
         rubriceerTabDisabled:boolean = true;
         checkAndFixTabDisabled:boolean = true;
+        addManualBoekingTabDisabled:boolean = true;
         selectedIndex : number = 0;
 
         data : AfschriftGuiData = new AfschriftGuiData();
@@ -25,6 +27,7 @@ module Application.Services {
         afschriften:AfschriftData[];
         rubriceerRegels:RubriceerRegels;
         checkAndFixRegels:CheckAndFixRegels;
+        addManualBoeking:BoekingData;
     }
 
 
@@ -55,6 +58,7 @@ module Application.Services {
             this.afschriftGui.afschriftTabDisabled=true;
             this.afschriftGui.rubriceerTabDisabled=true;
             this.afschriftGui.checkAndFixTabDisabled=true;
+            this.afschriftGui.addManualBoekingTabDisabled=true;
 
             if (page == SCREEN_AFSCHRIFT_LIJST) {
                 this.afschriftGui.selectedIndex=0;
@@ -71,6 +75,10 @@ module Application.Services {
                 this.afschriftGui.selectedIndex=3;
                 this.afschriftGui.checkAndFixTabDisabled=false;
             }
+            if (page == SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING) {
+                this.afschriftGui.selectedIndex=4;
+                this.afschriftGui.addManualBoekingTabDisabled=false;
+            }
 
         }
 
@@ -85,6 +93,9 @@ module Application.Services {
             }
             if (page == SCREEN_AFSCHRIFT_CHECK_AND_FIX_REGELS) {
                 this.showPage(SCREEN_AFSCHRIFT_LIJST);
+            }
+            if (page == SCREEN_AFSCHRIFT_ADD_MANUAL_BOEKING) {
+                this.showPage(SCREEN_AFSCHRIFT_EDIT);
             }
         }
 
