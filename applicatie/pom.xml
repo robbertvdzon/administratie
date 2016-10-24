@@ -189,7 +189,21 @@
                     <archive>
                         <manifest>
                             <mainClass>com.vdzon.administratie.App</mainClass>
+                            <addClasspath>true</addClasspath>
                         </manifest>
+                        <manifestEntries>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                        </manifestEntries>
+                        <manifestSections>
+                            <manifestSection>
+                                <name>${build.manifest.section}</name>
+                                <manifestEntries>
+                                    <Implementation-Title>${project.name}</Implementation-Title>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Implementation-Build-Number>${build.number}</Implementation-Build-Number>
+                                </manifestEntries>
+                            </manifestSection>
+                        </manifestSections>
                     </archive>
 
                 </configuration>
