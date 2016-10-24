@@ -52,6 +52,7 @@ module Application.Model {
 
     export class ContactData {
         naam:String;
+        tenNameVan:String;
         klantNummer:String;
         uuid:String;
         woonplaats:String;

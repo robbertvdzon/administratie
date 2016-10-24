@@ -44,6 +44,7 @@ module Application.Controllers {
             factuurDst.klant.land = factuurSrc.klant.land;
             factuurDst.klant.postcode = factuurSrc.klant.postcode;
             factuurDst.klant.woonplaats = factuurSrc.klant.woonplaats;
+            factuurDst.klant.tenNameVan = factuurSrc.klant.tenNameVan;
         }
 
         cancelEditDetails(){

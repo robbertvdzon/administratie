@@ -17,6 +17,7 @@ public class Contact {
     private String uuid;
     private String klantNummer;
     private String naam;
+    private String tenNameVan;
     private String woonplaats;
     private String adres;
     private String postcode;

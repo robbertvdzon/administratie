@@ -16,6 +16,7 @@ public class ContactDto {
     private String uuid;
     private String klantNummer;
     private String naam;
+    private String tenNameVan;
     private String woonplaats;
     private String adres;
     private String postcode;
@@ -25,6 +26,7 @@ public class ContactDto {
         this.uuid = contact.getUuid();
         this.klantNummer = contact.getKlantNummer();
         this.naam = contact.getNaam();
+        this.tenNameVan = contact.getTenNameVan();
         this.woonplaats = contact.getWoonplaats();
         this.adres = contact.getAdres();
         this.postcode = contact.getPostcode();
@@ -36,6 +38,7 @@ public class ContactDto {
                 .uuid(uuid)
                 .klantNummer(klantNummer)
                 .naam(naam)
+                .tenNameVan(tenNameVan)
                 .woonplaats(woonplaats)
                 .adres(adres)
                 .postcode(postcode)

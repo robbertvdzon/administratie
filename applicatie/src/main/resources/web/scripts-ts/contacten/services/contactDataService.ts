@@ -56,6 +56,7 @@ module Application.Services {
             contactClone.land = contact.land;
             contactClone.postcode = contact.postcode;
             contactClone.woonplaats = contact.woonplaats;
+            contactClone.tenNameVan = contact.tenNameVan;
             contactClone.adres = contact.adres;
             return contactClone;
         }
@@ -82,10 +83,13 @@ module Application.Services {
         };
 
         public addNewContact(contact:ContactData): ng.IPromise<any> {
+            var contactClone:ContactData = this.cloneContact(contact);
+            contactClone.uuid = this.createUuid();
+
             return this.$http({
                 url: "/rest/contact/",
                 method: "PUT",
-                data: contact,
+                data: contactClone,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then((response) => {
                 this.dataService.reload();

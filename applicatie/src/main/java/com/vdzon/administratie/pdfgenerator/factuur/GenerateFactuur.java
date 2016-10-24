@@ -11,8 +11,11 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GenerateFactuur {
 
@@ -83,13 +86,46 @@ public class GenerateFactuur {
         generatePdfHelper.skipDown(10);
     }
 
+
     private void printFactuurRegels(Factuur factuur, PdfData pdfData, GeneratePdfHelper generatePdfHelper) throws IOException {
         generatePdfHelper.skipDown(10);
         TabelCols tabelCols = new TabelCols(30,80, 300,400,500);
         generatePdfHelper.writeTabel5(pdfData.fontBold, tabelCols, "Aantal", "Omschrijving", "Prijs", "Btw", "Totaal ex");
         for (FactuurRegel factuurRegel : factuur.getFactuurRegels()) {
-            generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" + factuurRegel.getAantal(), "" + factuurRegel.getOmschrijving(), "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs() * factuurRegel.getAantal()));
+
+            List<String> omschrijvingSplitted = new ArrayList<>();
+            String remain = factuurRegel.getOmschrijving();
+            while (remain.length()>0){
+                String text = findTextWithMaxWidth(pdfData.fontPlain, remain, 1500, GeneratePdfHelper.NORMAL_FONT_SIZE);
+                omschrijvingSplitted.add(text);
+                remain = remain.substring(text.length());
+            }
+
+            boolean first = true;
+            for (String omschrijving: omschrijvingSplitted){
+                if (first){
+                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" + factuurRegel.getAantal(), "" + omschrijving, "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs() * factuurRegel.getAantal()));
+                    first = false;
+                }
+                else {
+                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" , omschrijving, "" , "", "" );
+                }
+            }
         }
+    }
+
+    private String findTextWithMaxWidth(PDFont fontPlain, String remain, int maxWith, int fontSize) {
+        for (int nr=0; nr<remain.length(); nr++){
+            String test = remain.substring(0,nr);
+            try {
+                if ((fontPlain.getStringWidth(test)/fontSize)>maxWith){
+                    return remain.substring(0,nr-1);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return remain;
     }
 
     private void printFactuurHeaderSummary(Factuur factuur, GeneratePdfHelper generatePdfHelper) throws IOException {
@@ -104,6 +140,7 @@ public class GenerateFactuur {
         generatePdfHelper.skipDown(10);
         generatePdfHelper.writeBoldText("Klant factuuradres");
         generatePdfHelper.writeNormalText(factuur.getContact().getNaam());
+        generatePdfHelper.writeNormalText(factuur.getContact().getTenNameVan());
         generatePdfHelper.writeNormalText(factuur.getContact().getAdres());
         generatePdfHelper.writeNormalText(factuur.getContact().getPostcode() + " " + factuur.getContact().getWoonplaats());
     }

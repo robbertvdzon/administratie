@@ -58,7 +58,6 @@ public class CheckBedragen {
     }
 
     private boolean checkRekening(Rekening rekening, CheckAndFixData data) {
-        System.out.println("");
         double sumVanAfschriften = data.boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer()).stream().mapToDouble(boeking -> getAfschriftBedrag(data, boeking)).sum();
         return sumVanAfschriften != -1*rekening.getBedragIncBtw();
     }

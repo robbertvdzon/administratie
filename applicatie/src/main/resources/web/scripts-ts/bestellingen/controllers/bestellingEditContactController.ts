@@ -42,6 +42,7 @@ module Application.Controllers {
             bestellingDst.klant.land = bestellingSrc.klant.land;
             bestellingDst.klant.postcode = bestellingSrc.klant.postcode;
             bestellingDst.klant.woonplaats = bestellingSrc.klant.woonplaats;
+            bestellingDst.klant.tenNameVan = bestellingSrc.klant.tenNameVan;
         }
 
         cancelEditDetails(){

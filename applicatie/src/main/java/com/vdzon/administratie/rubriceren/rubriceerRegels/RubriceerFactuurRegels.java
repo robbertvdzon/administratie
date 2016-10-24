@@ -29,7 +29,8 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
                 RubriceerAction rubriceerAction = RubriceerAction.INKOMSTEN_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
-                    if ((factuur.getBedragIncBtw() == afschrift.getBedrag()) && (afschrift.getOmschrijving().contains(factuur.getFactuurNummer()))) {
+                    String omschrijvingZonderSpaties = afschrift.getOmschrijving().replaceAll(" ","");
+                    if ((factuur.getBedragIncBtw() == afschrift.getBedrag()) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR;
                         factuurNummer = factuur.getFactuurNummer();
                     }
