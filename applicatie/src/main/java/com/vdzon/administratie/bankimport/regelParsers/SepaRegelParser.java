@@ -34,10 +34,10 @@ public class SepaRegelParser implements RegelParser {
         int posStart = pos + "Omschrijving:".length();
         if (pos > 0) {
             String nextKeyword = findNextKeyword(omschrijving.substring(posStart));
-            int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
             if (nextKeyword == null) {
                 return omschrijving.substring(posStart);
             } else {
+                int posEnd = posStart + omschrijving.substring(posStart).indexOf(nextKeyword);
                 return omschrijving.substring(posStart, posEnd - 1);
             }
         }
