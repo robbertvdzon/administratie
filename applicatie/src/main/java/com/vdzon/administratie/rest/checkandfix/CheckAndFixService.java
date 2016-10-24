@@ -66,8 +66,6 @@ public class CheckAndFixService {
     }
 
     private void fixAllRegels(Gebruiker gebruiker, List<CheckAndFixRegel> regelsToFix) {
-//        Reflections reflections = new Reflections(FIX_PACKAGE, new MethodAnnotationsScanner());
-//        Set<Method> methodsAnnotatedWith = reflections.getMethodsAnnotatedWith(AdministratieFix.class);
         methodsAnnotatedWithFix.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
         crudService.updateGebruiker(gebruiker);
     }
@@ -89,7 +87,10 @@ public class CheckAndFixService {
     private void callCheckAction(Method method, CheckAndFixData checkAndFixData, List<CheckAndFixRegel> regels) {
         Object o = getInstance(method.getDeclaringClass());
         Object invoke = callMethod(method, o, checkAndFixData);
-        regels.addAll((Collection<? extends CheckAndFixRegel>) invoke);
+        Collection<? extends CheckAndFixRegel> checkAndFixRegels = (Collection<? extends CheckAndFixRegel>) invoke;
+        if (checkAndFixRegels!=null) {
+            regels.addAll(checkAndFixRegels);
+        }
     }
 
     private void callFix(Method method, List<CheckAndFixRegel> regelsToFix, Gebruiker gebruiker) {

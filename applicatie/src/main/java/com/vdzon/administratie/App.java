@@ -17,6 +17,7 @@ import com.vdzon.administratie.rest.overzicht.OverzichtResource;
 import com.vdzon.administratie.rest.rekening.RekeningResource;
 import com.vdzon.administratie.rest.rubriceren.RubriceerResource;
 import com.vdzon.administratie.rest.version.VersionResource;
+import com.vdzon.administratie.checkandfix.actions.check.AfschriftCheckTest;
 import spark.Spark;
 
 import java.io.File;
