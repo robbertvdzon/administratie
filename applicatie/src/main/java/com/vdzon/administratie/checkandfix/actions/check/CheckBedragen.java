@@ -17,22 +17,22 @@ import java.util.stream.Collectors;
 public class CheckBedragen {
 
 
-    @AdministratieCheckRule
-    public Collection<? extends CheckAndFixRegel> vergelijkBedragTussenFacturenEnAfschriften(CheckAndFixData data) {
-        return data.alleFacturen
-                .stream()
-                .filter(factuur -> checkFactuur(factuur, data))
-                .map(factuur -> CheckAndFixRegel
-                        .newBuilder()
-                        .rubriceerAction(FixAction.NONE)
-                        .checkType(CheckType.WARNING)
-                        .omschrijving("Factuur " + factuur.getFactuurNummer() + " is niet volledig betaald of geboekt")
-                        .data("")
-                        .date(factuur.getFactuurDate())
-                        .build()
-                )
-                .collect(Collectors.toList());
-    }
+//    @AdministratieCheckRule
+//    public Collection<? extends CheckAndFixRegel> vergelijkBedragTussenFacturenEnAfschriften(CheckAndFixData data) {
+//        return data.alleFacturen
+//                .stream()
+//                .filter(factuur -> checkFactuur(factuur, data))
+//                .map(factuur -> CheckAndFixRegel
+//                        .newBuilder()
+//                        .rubriceerAction(FixAction.NONE)
+//                        .checkType(CheckType.WARNING)
+//                        .omschrijving("Factuur " + factuur.getFactuurNummer() + " is niet volledig betaald of geboekt")
+//                        .data("")
+//                        .date(factuur.getFactuurDate())
+//                        .build()
+//                )
+//                .collect(Collectors.toList());
+//    }
 
 
     @AdministratieCheckRule
