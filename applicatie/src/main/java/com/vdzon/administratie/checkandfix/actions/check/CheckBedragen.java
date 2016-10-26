@@ -23,7 +23,7 @@ public class CheckBedragen {
                 .stream()
                 .filter(factuur -> checkFactuur(factuur, data))
                 .map(factuur -> CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.NONE)
                         .checkType(CheckType.WARNING)
                         .omschrijving("Factuur " + factuur.getFactuurNummer() + " is niet volledig betaald of geboekt")
@@ -41,7 +41,7 @@ public class CheckBedragen {
                 .stream()
                 .filter(rekening -> checkRekening(rekening, data))
                 .map(rekening -> CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.NONE)
                         .checkType(CheckType.WARNING)
                         .omschrijving("Rekening " + rekening.getRekeningNummer() + " is niet volledig betaald of geboekt")
@@ -67,7 +67,7 @@ public class CheckBedragen {
                 .stream()
                 .filter(afschrift -> afschrift.getNummer().equals(boeking.getAfschriftNummer()))
                 .findFirst()
-                .orElse(Afschrift.builder().bedrag(0).build())
+                .orElse(Afschrift.newBuilder().bedrag(0).build())
                 .getBedrag();
     }
 

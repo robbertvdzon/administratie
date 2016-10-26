@@ -35,7 +35,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
                         factuurNummer = factuur.getFactuurNummer();
                     }
                 }
-                RubriceerRegel rubriceerRegel = RubriceerRegel.builder().rubriceerAction(rubriceerAction).rekeningNummer(null).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift, boekingenCache)).build();
+                RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder().rubriceerAction(rubriceerAction).rekeningNummer(null).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift, boekingenCache)).build();
                 regels.add(rubriceerRegel);
             }
         }
@@ -48,7 +48,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
         Boeking boeking;
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_FACTUUR:
-                boeking = BetaaldeFactuurBoeking.builder()
+                boeking = BetaaldeFactuurBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .factuurNummer(regel.getFaktuurNummer())
@@ -56,7 +56,7 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case INKOMSTEN_ZONDER_FACTUUR:
-                boeking = InkomstenZonderFactuurBoeking.builder()
+                boeking = InkomstenZonderFactuurBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .build();

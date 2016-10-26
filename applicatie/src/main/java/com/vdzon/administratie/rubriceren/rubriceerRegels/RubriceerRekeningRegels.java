@@ -46,7 +46,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         rekeningNummer = rekening.getRekeningNummer();
                     }
                 }
-                RubriceerRegel rubriceerRegel = RubriceerRegel.builder()
+                RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder()
                         .rubriceerAction(rubriceerAction)
                         .rekeningNummer(rekeningNummer)
                         .faktuurNummer(factuurNummer)
@@ -71,14 +71,14 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
         Boeking boeking;
         switch (regel.getRubriceerAction()) {
             case BETALING_ZONDER_FACTUUR:
-                boeking = BetalingZonderFactuurBoeking.builder()
+                boeking = BetalingZonderFactuurBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .build();
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CONNECT_EXISTING_REKENING:
-                boeking = BetaaldeRekeningBoeking.builder()
+                boeking = BetaaldeRekeningBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(regel.getRekeningNummer())
@@ -87,7 +87,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 break;
             case CREATE_REKENING:
                 Rekening rekening = Rekening
-                        .builder()
+                        .newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .rekeningNummer("" + findNextRekeningNummer(gebruiker))
                         .naam(afschrift.getRelatienaam())
@@ -99,7 +99,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         .build();
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
-                boeking = BetaaldeRekeningBoeking.builder()
+                boeking = BetaaldeRekeningBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .rekeningNummer(rekening.getRekeningNummer())

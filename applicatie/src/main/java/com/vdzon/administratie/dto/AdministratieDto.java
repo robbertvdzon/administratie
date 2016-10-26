@@ -3,17 +3,10 @@ package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.*;
-import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @JsonIgnoreProperties
 public class AdministratieDto {
 
@@ -26,6 +19,37 @@ public class AdministratieDto {
     private List<DeclaratieDto> declaraties;
     private List<BestellingDto> bestellingen;
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public AdministratieGegevensDto getAdministratieGegevens() {
+        return administratieGegevens;
+    }
+
+    public List<FactuurDto> getFacturen() {
+        return facturen;
+    }
+
+    public List<ContactDto> getAdresboek() {
+        return adresboek;
+    }
+
+    public List<RekeningDto> getRekeningen() {
+        return rekeningen;
+    }
+
+    public List<AfschriftDto> getAfschriften() {
+        return afschriften;
+    }
+
+    public List<DeclaratieDto> getDeclaraties() {
+        return declaraties;
+    }
+
+    public List<BestellingDto> getBestellingen() {
+        return bestellingen;
+    }
 
     public AdministratieDto(Administratie administratie) {
         BoekingenCache boekingenCache = new BoekingenCache(administratie.getBoekingen());
@@ -38,6 +62,34 @@ public class AdministratieDto {
         this.declaraties = toDeclaratiesDto(administratie.getDeclaraties(), boekingenCache);
         this.bestellingen = toBestellingenDto(administratie.getBestellingen());
 
+    }
+
+    private AdministratieDto(Builder builder) {
+        uuid = builder.uuid;
+        administratieGegevens = builder.administratieGegevens;
+        facturen = builder.facturen;
+        adresboek = builder.adresboek;
+        rekeningen = builder.rekeningen;
+        afschriften = builder.afschriften;
+        declaraties = builder.declaraties;
+        bestellingen = builder.bestellingen;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(AdministratieDto copy) {
+        Builder builder = new Builder();
+        builder.uuid = copy.uuid;
+        builder.administratieGegevens = copy.administratieGegevens;
+        builder.facturen = copy.facturen;
+        builder.adresboek = copy.adresboek;
+        builder.rekeningen = copy.rekeningen;
+        builder.afschriften = copy.afschriften;
+        builder.declaraties = copy.declaraties;
+        builder.bestellingen = copy.bestellingen;
+        return builder;
     }
 
     private List<BestellingDto> toBestellingenDto(List<Bestelling> bestellingen) {
@@ -89,7 +141,7 @@ public class AdministratieDto {
     }
 
     public Administratie toAdministratie() {
-        return Administratie.builder()
+        return Administratie.newBuilder()
                 .uuid(uuid)
                 .bestellingen(toBestellingen())
                 .facturen(toFacturen())
@@ -143,4 +195,61 @@ public class AdministratieDto {
     }
 
 
+    public static final class Builder {
+        private String uuid;
+        private AdministratieGegevensDto administratieGegevens;
+        private List<FactuurDto> facturen;
+        private List<ContactDto> adresboek;
+        private List<RekeningDto> rekeningen;
+        private List<AfschriftDto> afschriften;
+        private List<DeclaratieDto> declaraties;
+        private List<BestellingDto> bestellingen;
+
+        private Builder() {
+        }
+
+        public Builder uuid(String val) {
+            uuid = val;
+            return this;
+        }
+
+        public Builder administratieGegevens(AdministratieGegevensDto val) {
+            administratieGegevens = val;
+            return this;
+        }
+
+        public Builder facturen(List<FactuurDto> val) {
+            facturen = val;
+            return this;
+        }
+
+        public Builder adresboek(List<ContactDto> val) {
+            adresboek = val;
+            return this;
+        }
+
+        public Builder rekeningen(List<RekeningDto> val) {
+            rekeningen = val;
+            return this;
+        }
+
+        public Builder afschriften(List<AfschriftDto> val) {
+            afschriften = val;
+            return this;
+        }
+
+        public Builder declaraties(List<DeclaratieDto> val) {
+            declaraties = val;
+            return this;
+        }
+
+        public Builder bestellingen(List<BestellingDto> val) {
+            bestellingen = val;
+            return this;
+        }
+
+        public AdministratieDto build() {
+            return new AdministratieDto(this);
+        }
+    }
 }

@@ -19,7 +19,7 @@ public class ImportFromAbnAmroHelper {
         double bedrag = getBedrag(afschriftData.bedragStr);
         LocalDate boekDatum = getBoekDatum(afschriftData.date);
         int nextAfschriftNummer = nextNummerHolder.nextNummer++;
-        return Afschrift.builder()
+        return Afschrift.newBuilder()
                 .uuid(afschriftData.uuid)
                 .nummer("" + nextAfschriftNummer)
                 .rekening(afschriftData.rekeningNr)

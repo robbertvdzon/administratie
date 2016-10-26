@@ -47,7 +47,7 @@ public class BoekingsVerrijker {
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.INKOMSTEN_ZONDER_FACTUUR;
         double boekingsBedrag = afschift.getBedrag();
 
-        return VerrijkteBoeking.builder()
+        return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
                 .afschriftBedrag(afschift.getBedrag())
                 .afschriftDate(afschift.getBoekdatum())
@@ -62,7 +62,7 @@ public class BoekingsVerrijker {
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETALING_ZONDER_FACTUUR;
         double boekingsBedrag = afschift.getBedrag();
 
-        return VerrijkteBoeking.builder()
+        return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
                 .afschriftBedrag(afschift.getBedrag())
                 .afschriftDate(afschift.getBoekdatum())
@@ -77,7 +77,7 @@ public class BoekingsVerrijker {
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.PRIVE_BETALING;
         double boekingsBedrag = afschift.getBedrag();
 
-        return VerrijkteBoeking.builder()
+        return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
                 .afschriftBedrag(afschift.getBedrag())
                 .afschriftDate(afschift.getBoekdatum())
@@ -95,7 +95,7 @@ public class BoekingsVerrijker {
         double factuurBedrag = factuur.getBedragIncBtw();
         LocalDate factuurDate = factuur.getFactuurDate();
 
-        return VerrijkteBoeking.builder()
+        return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
                 .afschriftBedrag(afschift.getBedrag())
                 .afschriftDate(afschift.getBoekdatum())
@@ -114,7 +114,7 @@ public class BoekingsVerrijker {
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING;
         double boekingsBedrag = afschift.getBedrag();
 
-        return VerrijkteBoeking.builder()
+        return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
                 .afschriftBedrag(afschift.getBedrag())
                 .afschriftDate(afschift.getBoekdatum())

@@ -24,7 +24,7 @@ public class DataService {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, userCrud);
         List<GebruikerDto> gebruikers = gebruiker.isAdmin() ? userCrud.getAllGebruikers().stream().map((user) -> new GebruikerDto(user)).collect(Collectors.<GebruikerDto>toList()) : null;
         AdministratieDto administratie = new AdministratieDto(gebruiker.getDefaultAdministratie());
-        return new GuiDataDto(gebruikers, administratie, new GebruikerDto(gebruiker));
+        return GuiDataDto.newBuilder().gebruikers (gebruikers).administratie(administratie).huidigeGebruiker(new GebruikerDto(gebruiker)).build();
     }
 
 }

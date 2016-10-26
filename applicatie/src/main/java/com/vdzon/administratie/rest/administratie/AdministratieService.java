@@ -29,10 +29,10 @@ public class AdministratieService {
         AdministratieGegevensDto administratieGegevensDto = mapper.readValue(administratieGegevensJson, AdministratieGegevensDto.class);
         AdministratieGegevens administratieGegevens = administratieGegevensDto.toAdministratieGegevens();
 
-        Administratie administratie = gebruiker.getDefaultAdministratie().toBuilder().administratieGegevens(administratieGegevens).build();
+        Administratie administratie = Administratie.newBuilder(gebruiker.getDefaultAdministratie()).administratieGegevens(administratieGegevens).build();
         ArrayList<Administratie> administraties = new ArrayList<>();
         administraties.add(administratie);
-        Gebruiker gebruikerToUpdate = gebruiker.toBuilder().administraties(administraties).build();
+        Gebruiker gebruikerToUpdate = Gebruiker.newBuilder(gebruiker).administraties(administraties).build();
         userCrud.updateGebruiker(gebruikerToUpdate);
         return new SingleAnswer("ok");
     }

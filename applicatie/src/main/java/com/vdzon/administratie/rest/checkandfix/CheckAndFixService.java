@@ -48,7 +48,7 @@ public class CheckAndFixService {
     public Object getCheckAndFixRegels(Request req, Response res) {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
         List<CheckAndFixRegel> regels = getCheckAndFixRegels(gebruiker.getDefaultAdministratie());
-        return CheckAndFixRegels.builder().checkAndFixRegels(regels).build();
+        return CheckAndFixRegels.newBuilder().checkAndFixRegels(regels).build();
     }
 
     protected Object fix(Request req, Response res) throws Exception {

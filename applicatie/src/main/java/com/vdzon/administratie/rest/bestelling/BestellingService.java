@@ -36,7 +36,7 @@ public class BestellingService {
         String niewFactuurNummer = bestelling.getGekoppeldFactuurNummer();
         Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(niewFactuurNummer);
         if (gekoppelFactuur != null) {
-            Factuur updatedFactuur = gekoppelFactuur.toBuilder().gekoppeldeBestellingNummer(bestelling.getBestellingNummer()).build();
+            Factuur updatedFactuur = Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(bestelling.getBestellingNummer()).build();
             gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }
@@ -59,7 +59,7 @@ public class BestellingService {
         String factuurNummerOudeBestelling = bestelling == null ? null : bestelling.getGekoppeldFactuurNummer();
         Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(factuurNummerOudeBestelling);
         if (gekoppelFactuur != null) {
-            Factuur updatedFactuur = gekoppelFactuur.toBuilder().gekoppeldeBestellingNummer(null).build();
+            Factuur updatedFactuur = Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(null).build();
             gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }

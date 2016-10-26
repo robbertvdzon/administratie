@@ -29,7 +29,7 @@ public class CheckDubbeleNummers {
         for (String key : alleFacturenGroupedByNummer.keySet()){
             if (alleFacturenGroupedByNummer.get(key).size()>1){
                 CheckAndFixRegel regel = CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.NONE)
                         .checkType(CheckType.WARNING)
                         .omschrijving("Factuur " + key + " bestaat " + alleFacturenGroupedByNummer.get(key).size() + " keer")
@@ -50,7 +50,7 @@ public class CheckDubbeleNummers {
         for (String key : alleRekeningenGroupedByNummer.keySet()){
             if (alleRekeningenGroupedByNummer.get(key).size()>1){
                 CheckAndFixRegel regel = CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.NONE)
                         .checkType(CheckType.WARNING)
                         .omschrijving("Rekening " + key + " bestaat " + alleRekeningenGroupedByNummer.get(key).size() + " keer")
@@ -71,7 +71,7 @@ public class CheckDubbeleNummers {
         for (String key : alleAfschriftenGroupedByNummer.keySet()){
             if (alleAfschriftenGroupedByNummer.get(key).size()>1){
                 CheckAndFixRegel regel = CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.NONE)
                         .checkType(CheckType.WARNING)
                         .omschrijving("Afschrift " + key + " bestaat " + alleAfschriftenGroupedByNummer.get(key).size() + " keer")

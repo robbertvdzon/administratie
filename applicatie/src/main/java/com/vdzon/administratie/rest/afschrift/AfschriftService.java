@@ -71,7 +71,7 @@ public class AfschriftService {
             }
             if (!found){
                 if (notEmpty(boekingDto.getFactuurNummer())){
-                    Boeking boeking = BetaaldeFactuurBoeking.builder()
+                    Boeking boeking = BetaaldeFactuurBoeking.newBuilder()
                             .afschriftNummer(afschriftDto.getNummer())
                             .factuurNummer(boekingDto.getFactuurNummer())
                             .uuid(UUID.randomUUID().toString())
@@ -79,7 +79,7 @@ public class AfschriftService {
                     gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 }
                 else if (notEmpty(boekingDto.getRekeningNummer())){
-                    Boeking boeking = BetaaldeRekeningBoeking.builder()
+                    Boeking boeking = BetaaldeRekeningBoeking.newBuilder()
                             .afschriftNummer(afschriftDto.getNummer())
                             .rekeningNummer(boekingDto.getRekeningNummer())
                             .uuid(UUID.randomUUID().toString())

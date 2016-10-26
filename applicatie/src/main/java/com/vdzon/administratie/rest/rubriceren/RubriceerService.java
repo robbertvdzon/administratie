@@ -42,7 +42,7 @@ public class RubriceerService {
     protected Object getRubriceerRegels(Request req, Response res) throws Exception {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
         List<RubriceerRegel> regels = getRubriceerRegels(gebruiker);
-        return RubriceerRegels.builder().rubriceerRegelList(regels).build();
+        return RubriceerRegels.newBuilder().rubriceerRegelList(regels).build();
     }
 
     protected Object rubriceerRegels(Request req, Response res) throws Exception {

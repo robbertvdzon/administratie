@@ -23,7 +23,7 @@ public class GebruikerService {
         GebruikerDto nieuweGebruikerDto = mapper.readValue(nieuweGebruikerJson, GebruikerDto.class);
         Gebruiker originalGebruiker = crudService.getGebruiker(nieuweGebruikerDto.getUuid());
         if (originalGebruiker == null) {
-            originalGebruiker = new Gebruiker();
+            originalGebruiker = Gebruiker.newBuilder().build();
         }
         Gebruiker updatedGebruiker = nieuweGebruikerDto.cloneGebruikerWithDtoFields(originalGebruiker);
         crudService.updateGebruiker(updatedGebruiker);
@@ -46,7 +46,7 @@ public class GebruikerService {
         String gebruikerUuid = req.params(":uuid");
         String newPassword = req.params(":newPassword");
         Gebruiker gebruikerToChange = crudService.getGebruiker(gebruikerUuid);
-        Gebruiker changedGebruiker = gebruikerToChange.toBuilder().password(newPassword).build();
+        Gebruiker changedGebruiker = Gebruiker.newBuilder(gebruikerToChange).password(newPassword).build();
         crudService.updateGebruiker(changedGebruiker);
         return new SingleAnswer("ok");
     }

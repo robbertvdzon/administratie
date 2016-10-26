@@ -1,15 +1,41 @@
 package com.vdzon.administratie.rubriceren.model;
 
-import lombok.*;
-
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor
 public class RubriceerRegels {
     private List<RubriceerRegel> rubriceerRegelList;
+
+    private RubriceerRegels(Builder builder) {
+        rubriceerRegelList = builder.rubriceerRegelList;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(RubriceerRegels copy) {
+        Builder builder = new Builder();
+        builder.rubriceerRegelList = copy.rubriceerRegelList;
+        return builder;
+    }
+
+    public List<RubriceerRegel> getRubriceerRegelList() {
+        return rubriceerRegelList;
+    }
+
+    public static final class Builder {
+        private List<RubriceerRegel> rubriceerRegelList;
+
+        private Builder() {
+        }
+
+        public Builder rubriceerRegelList(List<RubriceerRegel> val) {
+            rubriceerRegelList = val;
+            return this;
+        }
+
+        public RubriceerRegels build() {
+            return new RubriceerRegels(this);
+        }
+    }
 }

@@ -31,7 +31,7 @@ public class AuthService {
         }
 
         gebruiker = Gebruiker
-                .builder()
+                .newBuilder()
                 .admin(false)
                 .name(name)
                 .password(password)

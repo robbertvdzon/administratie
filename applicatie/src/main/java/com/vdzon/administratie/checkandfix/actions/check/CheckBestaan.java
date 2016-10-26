@@ -25,7 +25,7 @@ public class CheckBestaan {
                 .map(boeking -> (BoekingMetAfschrift)boeking)
                 .filter(boeking -> !afschriftExists(boeking.getAfschriftNummer(), data))
                 .map(boeking -> CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.REMOVE_BOEKING)
                         .checkType(CheckType.FIX_NEEDED)
                         .boekingUuid(boeking.getUuid())
@@ -43,7 +43,7 @@ public class CheckBestaan {
                 .map(boeking -> (BoekingMetRekening)boeking)
                 .filter(boeking -> !rekeningExists(boeking.getRekeningNummer(), data))
                 .map(boeking -> CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.REMOVE_BOEKING)
                         .checkType(CheckType.FIX_NEEDED)
                         .boekingUuid(boeking.getUuid())
@@ -61,7 +61,7 @@ public class CheckBestaan {
                 .map(boeking -> (BoekingMetFactuur)boeking)
                 .filter(boeking -> !factuurExists(boeking.getFactuurNummer(), data))
                 .map(boeking -> CheckAndFixRegel
-                        .builder()
+                        .newBuilder()
                         .rubriceerAction(FixAction.REMOVE_BOEKING)
                         .checkType(CheckType.FIX_NEEDED)
                         .boekingUuid(boeking.getUuid())

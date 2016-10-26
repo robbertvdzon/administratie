@@ -15,7 +15,7 @@ public class RubriceerPriveRegels extends RubriceerHelper {
         Afschrift afschrift = regel.getAfschrift().toAfschrift();
         switch (regel.getRubriceerAction()) {
             case PRIVE:
-                PriveBetalingBoeking priveBetalingBoeking = PriveBetalingBoeking.builder()
+                PriveBetalingBoeking priveBetalingBoeking = PriveBetalingBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
                         .build();

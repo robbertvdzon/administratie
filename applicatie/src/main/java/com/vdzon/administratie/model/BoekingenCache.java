@@ -4,8 +4,6 @@ import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,12 +12,13 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
 
-@ToString
-@EqualsAndHashCode
 public class BoekingenCache {
     private Map<String, List<BoekingMetFactuur>> alleFactuurBoekingen = new HashMap<>();
     private Map<String, List<BoekingMetRekening>> alleRekeningBoekingen = new HashMap<>();
     private Map<String, List<BoekingMetAfschrift>> alleAfschriftBoekingen = new HashMap<>();
+
+    public BoekingenCache() {
+    }
 
     public BoekingenCache(List<Boeking> boekingen) {
         alleAfschriftBoekingen = boekingen.stream()

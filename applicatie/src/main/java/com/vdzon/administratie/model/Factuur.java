@@ -1,6 +1,5 @@
 package com.vdzon.administratie.model;
 
-import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -9,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@NoArgsConstructor
 @Entity("factuur")
 public class Factuur {
 
@@ -27,10 +22,78 @@ public class Factuur {
     private double bedragIncBtw = 0;
     private double btw = 0;
 
+    public Factuur() {
+    }
+
+    private Factuur(Builder builder) {
+        uuid = builder.uuid;
+        factuurNummer = builder.factuurNummer;
+        gekoppeldeBestellingNummer = builder.gekoppeldeBestellingNummer;
+        factuurDate = builder.factuurDate;
+        contact = builder.contact;
+        factuurRegels = builder.factuurRegels;
+        bedragExBtw = builder.bedragExBtw;
+        bedragIncBtw = builder.bedragIncBtw;
+        btw = builder.btw;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Factuur copy) {
+        Builder builder = new Builder();
+        builder.uuid = copy.uuid;
+        builder.factuurNummer = copy.factuurNummer;
+        builder.gekoppeldeBestellingNummer = copy.gekoppeldeBestellingNummer;
+        builder.factuurDate = copy.factuurDate;
+        builder.contact = copy.contact;
+        builder.factuurRegels = copy.factuurRegels;
+        builder.bedragExBtw = copy.bedragExBtw;
+        builder.bedragIncBtw = copy.bedragIncBtw;
+        builder.btw = copy.btw;
+        return builder;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public String getGekoppeldeBestellingNummer() {
+        return gekoppeldeBestellingNummer;
+    }
+
+    public LocalDate getFactuurDate() {
+        return factuurDate;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public List<FactuurRegel> getFactuurRegels() {
+        return factuurRegels;
+    }
+
+    public double getBedragExBtw() {
+        return bedragExBtw;
+    }
+
+    public double getBedragIncBtw() {
+        return bedragIncBtw;
+    }
+
+    public double getBtw() {
+        return btw;
+    }
+
     /*
-     * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
-     */
-    @Builder(toBuilder = true)
+         * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
+         */
     public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, List<FactuurRegel> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
@@ -69,4 +132,67 @@ public class Factuur {
     }
 
 
+    public static final class Builder {
+        private String uuid;
+        private String factuurNummer;
+        private String gekoppeldeBestellingNummer;
+        private LocalDate factuurDate;
+        private Contact contact;
+        private List<FactuurRegel> factuurRegels;
+        private double bedragExBtw;
+        private double bedragIncBtw;
+        private double btw;
+
+        private Builder() {
+        }
+
+        public Builder uuid(String val) {
+            uuid = val;
+            return this;
+        }
+
+        public Builder factuurNummer(String val) {
+            factuurNummer = val;
+            return this;
+        }
+
+        public Builder gekoppeldeBestellingNummer(String val) {
+            gekoppeldeBestellingNummer = val;
+            return this;
+        }
+
+        public Builder factuurDate(LocalDate val) {
+            factuurDate = val;
+            return this;
+        }
+
+        public Builder contact(Contact val) {
+            contact = val;
+            return this;
+        }
+
+        public Builder factuurRegels(List<FactuurRegel> val) {
+            factuurRegels = val;
+            return this;
+        }
+
+        public Builder bedragExBtw(double val) {
+            bedragExBtw = val;
+            return this;
+        }
+
+        public Builder bedragIncBtw(double val) {
+            bedragIncBtw = val;
+            return this;
+        }
+
+        public Builder btw(double val) {
+            btw = val;
+            return this;
+        }
+
+        public Factuur build() {
+            return new Factuur(this);
+        }
+    }
 }

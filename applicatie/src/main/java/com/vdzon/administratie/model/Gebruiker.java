@@ -1,6 +1,5 @@
 package com.vdzon.administratie.model;
 
-import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -9,12 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor
 @Entity("gebruiker")
 public class Gebruiker {
 
@@ -26,6 +19,52 @@ public class Gebruiker {
     private boolean admin;
     private List<Administratie> administraties = new ArrayList<>();
 
+    public Gebruiker() {
+    }
+
+    private Gebruiker(Builder builder) {
+        uuid = builder.uuid;
+        name = builder.name;
+        username = builder.username;
+        password = builder.password;
+        admin = builder.admin;
+        administraties = builder.administraties;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Gebruiker copy) {
+        Builder builder = new Builder();
+        builder.uuid = copy.uuid;
+        builder.name = copy.name;
+        builder.username = copy.username;
+        builder.password = copy.password;
+        builder.admin = copy.admin;
+        builder.administraties = copy.administraties;
+        return builder;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
 
     public List<Administratie> getAdministraties() {
         initDefaultAdministratie();
@@ -43,11 +82,11 @@ public class Gebruiker {
         }
         if (administraties.size() == 0) {
             AdministratieGegevens administratieGegevens = AdministratieGegevens
-                    .builder()
+                    .newBuilder()
                     .uuid(UUID.randomUUID().toString()).name("mijn admin").build();
             administraties.add(
                     Administratie
-                            .builder()
+                            .newBuilder()
                             .uuid(UUID.randomUUID().toString())
                             .administratieGegevens(administratieGegevens)
                             .bestellingen(new ArrayList<>())
@@ -85,4 +124,49 @@ public class Gebruiker {
         return getPassword().equals(password);
     }
 
+    public static final class Builder {
+        private String uuid;
+        private String name;
+        private String username;
+        private String password;
+        private boolean admin;
+        private List<Administratie> administraties;
+
+        private Builder() {
+        }
+
+        public Builder uuid(String val) {
+            uuid = val;
+            return this;
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder username(String val) {
+            username = val;
+            return this;
+        }
+
+        public Builder password(String val) {
+            password = val;
+            return this;
+        }
+
+        public Builder admin(boolean val) {
+            admin = val;
+            return this;
+        }
+
+        public Builder administraties(List<Administratie> val) {
+            administraties = val;
+            return this;
+        }
+
+        public Gebruiker build() {
+            return new Gebruiker(this);
+        }
+    }
 }

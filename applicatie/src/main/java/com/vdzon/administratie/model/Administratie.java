@@ -1,7 +1,6 @@
 package com.vdzon.administratie.model;
 
 import com.vdzon.administratie.model.boekingen.Boeking;
-import lombok.*;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -9,12 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor
 @Entity("administratie")
 public class Administratie {
 
@@ -28,6 +21,47 @@ public class Administratie {
     private List<Afschrift> afschriften = new ArrayList<>();
     private List<Declaratie> declaraties = new ArrayList<>();
     private List<Boeking> boekingen = new ArrayList<>();
+
+    public Administratie() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public AdministratieGegevens getAdministratieGegevens() {
+        return administratieGegevens;
+    }
+
+    private Administratie(Builder builder) {
+        uuid = builder.uuid;
+        administratieGegevens = builder.administratieGegevens;
+        bestellingen = builder.bestellingen;
+        facturen = builder.facturen;
+        adresboek = builder.adresboek;
+        rekeningen = builder.rekeningen;
+        afschriften = builder.afschriften;
+        declaraties = builder.declaraties;
+        boekingen = builder.boekingen;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Administratie copy) {
+        Builder builder = new Builder();
+        builder.uuid = copy.uuid;
+        builder.administratieGegevens = copy.administratieGegevens;
+        builder.bestellingen = copy.bestellingen;
+        builder.facturen = copy.facturen;
+        builder.adresboek = copy.adresboek;
+        builder.rekeningen = copy.rekeningen;
+        builder.afschriften = copy.afschriften;
+        builder.declaraties = copy.declaraties;
+        builder.boekingen = copy.boekingen;
+        return builder;
+    }
 
     public List<Bestelling> getBestellingen() {
         return Collections.unmodifiableList(new ArrayList<>(bestellingen));
@@ -223,4 +257,67 @@ public class Administratie {
         }
     }
 
+    public static final class Builder {
+        private String uuid;
+        private AdministratieGegevens administratieGegevens;
+        private List<Bestelling> bestellingen;
+        private List<Factuur> facturen;
+        private List<Contact> adresboek;
+        private List<Rekening> rekeningen;
+        private List<Afschrift> afschriften;
+        private List<Declaratie> declaraties;
+        private List<Boeking> boekingen;
+
+        private Builder() {
+        }
+
+        public Builder uuid(String val) {
+            uuid = val;
+            return this;
+        }
+
+        public Builder administratieGegevens(AdministratieGegevens val) {
+            administratieGegevens = val;
+            return this;
+        }
+
+        public Builder bestellingen(List<Bestelling> val) {
+            bestellingen = val;
+            return this;
+        }
+
+        public Builder facturen(List<Factuur> val) {
+            facturen = val;
+            return this;
+        }
+
+        public Builder adresboek(List<Contact> val) {
+            adresboek = val;
+            return this;
+        }
+
+        public Builder rekeningen(List<Rekening> val) {
+            rekeningen = val;
+            return this;
+        }
+
+        public Builder afschriften(List<Afschrift> val) {
+            afschriften = val;
+            return this;
+        }
+
+        public Builder declaraties(List<Declaratie> val) {
+            declaraties = val;
+            return this;
+        }
+
+        public Builder boekingen(List<Boeking> val) {
+            boekingen = val;
+            return this;
+        }
+
+        public Administratie build() {
+            return new Administratie(this);
+        }
+    }
 }
