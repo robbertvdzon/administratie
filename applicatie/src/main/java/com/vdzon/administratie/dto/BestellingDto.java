@@ -24,6 +24,9 @@ public class BestellingDto {
     private double bedragIncBtw = 0;
     private double btw = 0;
 
+    public BestellingDto() {
+    }
+
     private BestellingDto(Builder builder) {
         uuid = builder.uuid;
         bestellingNummer = builder.bestellingNummer;

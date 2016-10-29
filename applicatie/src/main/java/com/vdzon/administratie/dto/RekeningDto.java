@@ -27,6 +27,9 @@ public class RekeningDto {
     private List<BoekingDto> boekingen;
     private int maandenAfschrijving = 0;
 
+    public RekeningDto() {
+    }
+
     private RekeningDto(Builder builder) {
         uuid = builder.uuid;
         rekeningNummer = builder.rekeningNummer;

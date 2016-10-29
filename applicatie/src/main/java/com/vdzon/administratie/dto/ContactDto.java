@@ -15,6 +15,9 @@ public class ContactDto {
     private String postcode;
     private String land;
 
+    public ContactDto() {
+    }
+
     private ContactDto(Builder builder) {
         uuid = builder.uuid;
         klantNummer = builder.klantNummer;

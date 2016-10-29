@@ -8,6 +8,9 @@ import org.junit.Assert._
 import org.junit.Test
 
 import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 
 class CheckAndFixServiceTest {
@@ -51,6 +54,19 @@ class CheckAndFixServiceTest {
     assertTrue("", regels(0).getRubriceerAction == FixAction.REMOVE_BOEKING)
     assertTrue("", regels(0).getCheckType == CheckType.FIX_NEEDED)
     assertTrue("", regels(0).getBoekingUuid.equals("b2"))
+  }
+
+  @Test
+  def when_boeking_heeft_nonexisting_factuur_then_boeking_removed_after_fix(): Unit = {
+    val administratie = Administratie.newBuilder
+      .afschriften(List(buildAfschrift("a1", 100), buildAfschrift("a2", 100)))
+      .facturen(List(buildFactuur("f1", 100, 80, 20)))
+      .rekeningen(List[Rekening]())
+      .boekingen(List(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2"))).build()
+
+    val fixedAdministratie = new CheckAndFixService().getFixedAdministratie(administratie);
+    assertTrue("", fixedAdministratie.getBoekingen.size() == 1)
+    assertTrue("", fixedAdministratie.getBoekingen()(0).getUuid.equals("b1"))
   }
 
   @Test

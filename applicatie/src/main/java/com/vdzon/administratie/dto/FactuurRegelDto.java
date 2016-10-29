@@ -12,6 +12,9 @@ public class FactuurRegelDto {
     private double stuksPrijs;
     private double btwPercentage;
 
+    public FactuurRegelDto() {
+    }
+
     private FactuurRegelDto(Builder builder) {
         uuid = builder.uuid;
         omschrijving = builder.omschrijving;

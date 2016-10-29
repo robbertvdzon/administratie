@@ -31,6 +31,9 @@ public class FactuurDto {
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    public FactuurDto() {
+    }
+
     private FactuurDto(Builder builder) {
         uuid = builder.uuid;
         factuurNummer = builder.factuurNummer;

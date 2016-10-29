@@ -14,6 +14,9 @@ public class BestellingRegelDto {
     private double stuksPrijs;
     private double btwPercentage;
 
+    public BestellingRegelDto() {
+    }
+
     private BestellingRegelDto(Builder builder) {
         uuid = builder.uuid;
         omschrijving = builder.omschrijving;

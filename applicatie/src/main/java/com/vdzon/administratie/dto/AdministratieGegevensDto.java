@@ -55,6 +55,9 @@ public class AdministratieGegevensDto {
         return logoUrl;
     }
 
+    public AdministratieGegevensDto() {
+    }
+
     public AdministratieGegevensDto(AdministratieGegevens administratieGegegens) {
         if (administratieGegegens != null) {
             this.uuid = administratieGegegens.getUuid();

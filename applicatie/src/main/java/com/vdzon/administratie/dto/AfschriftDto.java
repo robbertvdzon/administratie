@@ -25,6 +25,9 @@ public class AfschriftDto {
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    public AfschriftDto() {
+    }
+
     private AfschriftDto(Builder builder) {
         uuid = builder.uuid;
         nummer = builder.nummer;

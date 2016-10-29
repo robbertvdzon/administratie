@@ -9,6 +9,9 @@ public class GuiDataDto {
     private AdministratieDto administratie;
     private GebruikerDto huidigeGebruiker;
 
+    public GuiDataDto() {
+    }
+
     private GuiDataDto(Builder builder) {
         gebruikers = builder.gebruikers;
         administratie = builder.administratie;

@@ -17,10 +17,7 @@ import spark.Response;
 
 import javax.inject.Inject;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,9 +50,22 @@ public class CheckAndFixService {
 
     protected Object fix(Request req, Response res) throws Exception {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
-        List<CheckAndFixRegel> regelsToFix = getCheckAndFixRegels(gebruiker.getDefaultAdministratie()).stream().filter(regel -> regel.getCheckType() == CheckType.FIX_NEEDED).collect(Collectors.toList());
-        fixAllRegels(gebruiker, regelsToFix);
+        fix(gebruiker);
         return new SingleAnswer("ok");
+    }
+
+    protected void fix(Gebruiker gebruiker) throws Exception {
+        Gebruiker updatedGebruiker = gebruiker.newBuilder(gebruiker).administraties(Arrays.asList(getFixedAdministratie(gebruiker.getDefaultAdministratie()))).build();
+        crudService.updateGebruiker(updatedGebruiker);
+    }
+
+    public Administratie getFixedAdministratie(Administratie administratie) throws Exception {
+        List<CheckAndFixRegel> regelsToFix = getCheckAndFixRegels(administratie).stream().filter(regel -> regel.getCheckType() == CheckType.FIX_NEEDED).collect(Collectors.toList());
+        final Wrapper wrapper = new Wrapper();
+        wrapper.adm = administratie;
+
+        methodsAnnotatedWithFix.stream().forEach(method -> wrapper.adm = (Administratie) callFix(method, regelsToFix, wrapper.adm ));
+        return wrapper.adm;
     }
 
     public List<CheckAndFixRegel> getCheckAndFixRegels(Administratie administratie) {
@@ -63,11 +73,6 @@ public class CheckAndFixService {
         List<CheckAndFixRegel> regels = new ArrayList();
         methodsAnnotatedWithCheck.stream().forEach(method -> callCheckAction(method, checkAndFixData, regels));
         return regels;
-    }
-
-    private void fixAllRegels(Gebruiker gebruiker, List<CheckAndFixRegel> regelsToFix) {
-        methodsAnnotatedWithFix.stream().forEach(method -> callFix(method, regelsToFix, gebruiker));
-        crudService.updateGebruiker(gebruiker);
     }
 
     private CheckAndFixData populateCheckAndFixData(Administratie administratie) {
@@ -93,9 +98,16 @@ public class CheckAndFixService {
         }
     }
 
-    private void callFix(Method method, List<CheckAndFixRegel> regelsToFix, Gebruiker gebruiker) {
+    private Administratie callFix(Method method, List<CheckAndFixRegel> regelsToFix, Administratie administratie) {
         Object instance = getInstance(method.getDeclaringClass());
-        regelsToFix.stream().forEach(regel -> callMethod(method, instance, regel, gebruiker));
+        final Wrapper wrapper = new Wrapper();
+        wrapper.adm = administratie;
+        regelsToFix.stream().forEach(regel -> wrapper.adm = (Administratie) callMethod(method, instance, regel, wrapper.adm));
+        return wrapper.adm;
+    }
+
+    class Wrapper{
+        public Administratie adm = null;
     }
 
 }

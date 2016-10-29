@@ -19,6 +19,9 @@ public class DeclaratieDto {
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    public DeclaratieDto() {
+    }
+
     private DeclaratieDto(Builder builder) {
         uuid = builder.uuid;
         declaratieNummer = builder.declaratieNummer;

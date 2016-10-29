@@ -16,6 +16,9 @@ public class BoekingDto {
     private String afschriftNummer;
     private String declaratieNummer;
 
+    public BoekingDto() {
+    }
+
     private BoekingDto(Builder builder) {
         uuid = builder.uuid;
         omschrijving = builder.omschrijving;

@@ -51,6 +51,9 @@ public class AdministratieDto {
         return bestellingen;
     }
 
+    public AdministratieDto() {
+    }
+
     public AdministratieDto(Administratie administratie) {
         BoekingenCache boekingenCache = new BoekingenCache(administratie.getBoekingen());
         this.uuid = administratie.getUuid();

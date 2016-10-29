@@ -10,6 +10,9 @@ public class GebruikerDto {
     private String username;
     private boolean admin;
 
+    public GebruikerDto() {
+    }
+
     private GebruikerDto(Builder builder) {
         uuid = builder.uuid;
         name = builder.name;
