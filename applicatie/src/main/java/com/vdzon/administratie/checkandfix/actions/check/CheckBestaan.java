@@ -17,23 +17,23 @@ import java.util.stream.Collectors;
 public class CheckBestaan {
 
 
-    @AdministratieCheckRule
-    public Collection<? extends CheckAndFixRegel> checkOfAfschriftNogBestaat(CheckAndFixData data) {
-        return data.alleBoekingen
-                .stream()
-                .filter(boeking -> boeking instanceof BoekingMetAfschrift)
-                .map(boeking -> (BoekingMetAfschrift)boeking)
-                .filter(boeking -> !afschriftExists(boeking.getAfschriftNummer(), data))
-                .map(boeking -> CheckAndFixRegel
-                        .newBuilder()
-                        .rubriceerAction(FixAction.REMOVE_BOEKING)
-                        .checkType(CheckType.FIX_NEEDED)
-                        .boekingUuid(boeking.getUuid())
-                        .omschrijving("Afschift " + boeking.getAfschriftNummer() + " bestaat niet meer terwijl er wel een boeking van bestaat")
-                        .build()
-                )
-                .collect(Collectors.toList());
-    }
+//    @AdministratieCheckRule
+//    public Collection<? extends CheckAndFixRegel> checkOfAfschriftNogBestaat(CheckAndFixData data) {
+//        return data.alleBoekingen
+//                .stream()
+//                .filter(boeking -> boeking instanceof BoekingMetAfschrift)
+//                .map(boeking -> (BoekingMetAfschrift)boeking)
+//                .filter(boeking -> !afschriftExists(boeking.getAfschriftNummer(), data))
+//                .map(boeking -> CheckAndFixRegel
+//                        .newBuilder()
+//                        .rubriceerAction(FixAction.REMOVE_BOEKING)
+//                        .checkType(CheckType.FIX_NEEDED)
+//                        .boekingUuid(boeking.getUuid())
+//                        .omschrijving("Afschift " + boeking.getAfschriftNummer() + " bestaat niet meer terwijl er wel een boeking van bestaat")
+//                        .build()
+//                )
+//                .collect(Collectors.toList());
+//    }
 
     @AdministratieCheckRule
     public Collection<? extends CheckAndFixRegel> checkRekeningNogBestaat(CheckAndFixData data) {
