@@ -1,6 +1,6 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
-import com.vdzon.administratie.checkandfix.CheckService;
+import com.vdzon.administratie.checkandfix.CheckServiceScala;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
@@ -34,11 +34,11 @@ public class GenerateOverzicht {
     private PDDocument document = null;
     private PDPage pdfPage = null;
 
-    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckService checkService) throws IOException {
-        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream, checkService);
+    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
+        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream);
     }
 
-    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckService checkService) throws IOException {
+    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream) throws IOException {
         document = new PDDocument();
         pdfPage = new PDPage(PDRectangle.A4);
         PDRectangle rect = pdfPage.getMediaBox();
@@ -219,7 +219,7 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        List<CheckAndFixRegel> checkAndFixRegels = checkService.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        List<CheckAndFixRegel> checkAndFixRegels = CheckServiceScala.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         if (checkAndFixRegels.isEmpty()){
             writeTitle("Geen waarschuwingen gevonden");
         }
