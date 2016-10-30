@@ -5,8 +5,9 @@ import java.util.Collection
 import com.vdzon.administratie.checkandfix.actions.check.{BestaanCheck, DubbeleNummersCheck, BedragenCheck}
 import com.vdzon.administratie.checkandfix.actions.fix.BoekingenFix
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
-import com.vdzon.administratie.model.{Rekening, BoekingenCache, Administratie}
+import com.vdzon.administratie.model.{Afschrift, Rekening, BoekingenCache, Administratie}
 
+import scala.collection.JavaConversions
 import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
@@ -41,13 +42,13 @@ object CheckServiceScala {
   }
 
   private def populateCheckAndFixData(administratie: Administratie): CheckAndFixData = {
-    val checkAndFixData: CheckAndFixData = new CheckAndFixData
-    checkAndFixData.alleAfschriften = administratie.getAfschriften
-    checkAndFixData.alleRekeningen = administratie.getRekeningen
-    checkAndFixData.alleFacturen = administratie.getFacturen
-    checkAndFixData.alleBoekingen = administratie.getBoekingen
-    checkAndFixData.boekingenCache = new BoekingenCache(administratie.getBoekingen)
-    return checkAndFixData
+    new CheckAndFixData(
+      JavaConversions.asScalaBuffer(administratie.getAfschriften).toList,
+      JavaConversions.asScalaBuffer(administratie.getRekeningen).toList,
+      JavaConversions.asScalaBuffer(administratie.getFacturen).toList,
+      JavaConversions.asScalaBuffer(administratie.getBoekingen).toList,
+      new BoekingenCache(administratie.getBoekingen)
+    )
   }
 
 }
