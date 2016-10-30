@@ -1,6 +1,6 @@
 package com.vdzon.administratie.rest.overzicht;
 
-import com.vdzon.administratie.checkandfix.CheckAndFixModule;
+import com.vdzon.administratie.checkandfix.CheckService;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.model.Gebruiker;
@@ -18,7 +18,7 @@ public class OverzichtService {
     UserCrud crudService;
 
     @Inject
-    CheckAndFixModule checkAndFixModule;
+    CheckService checkService;
 
     protected Object getPdf(Request req, Response res) throws Exception {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
@@ -36,7 +36,7 @@ public class OverzichtService {
             res.raw().setContentType("application/pdf");
             res.raw().setHeader("Content-Disposition","attachment; filename=overzicht_"+beginDate+"_"+endDate+".pdf");
             try (BufferedOutputStream zipOutputStream = new BufferedOutputStream(res.raw().getOutputStream())) {
-                GenerateOverzicht.buildPdf(gebruiker.getDefaultAdministratie(), beginDate, endDate, zipOutputStream, checkAndFixModule);
+                GenerateOverzicht.buildPdf(gebruiker.getDefaultAdministratie(), beginDate, endDate, zipOutputStream, checkService);
                 zipOutputStream.flush();
                 zipOutputStream.close();
             }

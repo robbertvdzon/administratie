@@ -1,12 +1,11 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
-import com.vdzon.administratie.checkandfix.CheckAndFixModule;
+import com.vdzon.administratie.checkandfix.CheckService;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
-import com.vdzon.administratie.rest.checkandfix.CheckAndFixService;
 import com.vdzon.administratie.model.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -19,7 +18,6 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +34,11 @@ public class GenerateOverzicht {
     private PDDocument document = null;
     private PDPage pdfPage = null;
 
-    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckAndFixModule checkAndFixModule) throws IOException {
-        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream, checkAndFixModule);
+    public static void buildPdf(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckService checkService) throws IOException {
+        new GenerateOverzicht().start(administratie, beginDate, endDate, outputStream, checkService);
     }
 
-    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckAndFixModule checkAndFixModule) throws IOException {
+    private void start(Administratie administratie, String beginDate, String endDate, BufferedOutputStream outputStream, CheckService checkService) throws IOException {
         document = new PDDocument();
         pdfPage = new PDPage(PDRectangle.A4);
         PDRectangle rect = pdfPage.getMediaBox();
@@ -221,7 +219,7 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        List<CheckAndFixRegel> checkAndFixRegels = checkAndFixModule.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        List<CheckAndFixRegel> checkAndFixRegels = checkService.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         if (checkAndFixRegels.isEmpty()){
             writeTitle("Geen waarschuwingen gevonden");
         }

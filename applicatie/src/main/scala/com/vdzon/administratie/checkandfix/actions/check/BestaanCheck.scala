@@ -13,9 +13,8 @@ import com.vdzon.administratie.model.{Factuur, Rekening}
 import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
-class BestaanCheck {
+object BestaanCheck {
 
-  @AdministratieCheckRule
   def checkOfAfschriftNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
     data.alleBoekingen
       .stream
@@ -33,7 +32,6 @@ class BestaanCheck {
         .omschrijving("Afschift " + boeking.getAfschriftNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
         .build)
 
-  @AdministratieCheckRule
   def checkOfRekeningNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
     data.alleBoekingen
       .stream
@@ -51,7 +49,6 @@ class BestaanCheck {
         .omschrijving("Rekening " + boeking.getRekeningNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
         .build)
 
-  @AdministratieCheckRule
   def checkOfFactuurNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
     data.alleBoekingen
       .stream

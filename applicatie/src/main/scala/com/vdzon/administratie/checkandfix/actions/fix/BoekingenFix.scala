@@ -6,10 +6,8 @@ import com.vdzon.administratie.model.Administratie
 import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
-class BoekingenFix {
+object BoekingenFix {
 
-
-  @AdministratieFix
   def fixAfschrift(regel: CheckAndFixRegel, administratie: Administratie): Administratie = {
   if (regel.getRubriceerAction ne FixAction.REMOVE_BOEKING) return administratie
   val nieuweBoekingen = administratie.getBoekingen

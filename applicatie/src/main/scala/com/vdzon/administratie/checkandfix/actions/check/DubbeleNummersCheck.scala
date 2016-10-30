@@ -8,9 +8,8 @@ import com.vdzon.administratie.checkandfix.model.{CheckAndFixRegel, CheckType, F
 import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
-class DubbeleNummersCheck {
+object DubbeleNummersCheck {
 
-  @AdministratieCheckRule
   def checkFacturenMetDezelfdeFactuurNummer(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = {
     val facturenNummersGroup = data.alleFacturen
       .stream
@@ -26,7 +25,6 @@ class DubbeleNummersCheck {
         .build)
   }
 
-  @AdministratieCheckRule
   def checkRekeningenMetHetzelfdeRekeningNummer(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = {
     val rekeningNummersGroup = data.alleRekeningen
       .stream
@@ -42,7 +40,6 @@ class DubbeleNummersCheck {
         .build)
   }
 
-  @AdministratieCheckRule
   def checkAfschriftenMetHetzelfdeNummer(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = {
     val afschriftenNummersGroup = data.alleAfschriften
       .stream

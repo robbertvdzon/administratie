@@ -12,8 +12,8 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
-class BedragenCheck {
-  @AdministratieCheckRule
+object BedragenCheck {
+
   def checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = data
     .alleFacturen
     .stream
@@ -21,7 +21,6 @@ class BedragenCheck {
     .filter(f => factuurNietVolledigBetaald(f, data))
     .map(f => buildNietVolledigBetaaldCheckAndFixRegel(f))
 
-  @AdministratieCheckRule
   def checkOfRekeningenVolledigBetaaldZijn(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = data
     .alleRekeningen
     .stream
