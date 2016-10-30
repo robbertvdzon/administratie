@@ -1,7 +1,5 @@
 package com.vdzon.administratie.checkandfix
 
-import javax.inject.Inject
-
 import com.vdzon.administratie.checkandfix.actions.fix.BoekingenFix
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
 import com.vdzon.administratie.model.Administratie
