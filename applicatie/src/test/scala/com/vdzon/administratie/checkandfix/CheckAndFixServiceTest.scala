@@ -161,6 +161,7 @@ class CheckAndFixServiceTest {
     assertTrue("", regels(0).getCheckType == CheckType.WARNING)
   }
 
+  @Test
   def when_dubbele_facturen_then_return_een_error(): Unit = {
     val administratie = Administratie.newBuilder
       .afschriften(List[Afschrift]())
@@ -176,6 +177,7 @@ class CheckAndFixServiceTest {
     assertTrue("", regels(0).getCheckType == CheckType.WARNING)
   }
 
+  @Test
   def when_dubbele_afschriften_then_return_een_error(): Unit = {
     val administratie = Administratie.newBuilder
       .afschriften(List(buildAfschrift("a1", 0), buildAfschrift("a1", 0)))
