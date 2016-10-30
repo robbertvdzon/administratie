@@ -246,6 +246,7 @@ public class GenerateOverzicht {
     }
 
     private static boolean betweenOrAtDates(LocalDate date, LocalDate beginDate, LocalDate endData){
+        if (date==null) return true;
         return date.equals(beginDate) || date.equals(endData) || betweenDates(date, beginDate, endData);
     }
 

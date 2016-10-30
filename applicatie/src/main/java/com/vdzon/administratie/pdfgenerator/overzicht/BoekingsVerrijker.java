@@ -90,6 +90,9 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(BetaaldeFactuurBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         Factuur factuur = getFactuur(boeking, administratie);
+        if (factuur == null){
+            factuur = Factuur.newBuilder().factuurDate(afschift.getBoekdatum()).build();
+        }
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR;
         double boekingsBedrag = afschift.getBedrag();
         double factuurBedrag = factuur.getBedragIncBtw();
