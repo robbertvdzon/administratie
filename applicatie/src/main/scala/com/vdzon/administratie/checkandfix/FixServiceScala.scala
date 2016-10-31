@@ -7,7 +7,7 @@ import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
 object FixServiceScala {
-  val fixAfschriftCheck = (regel:CheckAndFixRegel,administratie:Administratie) => BoekingenFix.fixAfschrift(regel,administratie)
+  val fixAfschriftCheck = (regel:CheckAndFixRegel,administratie:Administratie) => BoekingenFix.removeBoekingen(regel,administratie)
   val fixFunctions = List(fixAfschriftCheck)
 
   def getFixedAdministratie(administratie: Administratie): Administratie = {

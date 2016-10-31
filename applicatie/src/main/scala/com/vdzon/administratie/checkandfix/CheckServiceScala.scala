@@ -1,9 +1,6 @@
 package com.vdzon.administratie.checkandfix
 
-import java.util.Collection
-
 import com.vdzon.administratie.checkandfix.actions.check.{BestaanCheck, DubbeleNummersCheck, BedragenCheck}
-import com.vdzon.administratie.checkandfix.actions.fix.BoekingenFix
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
 import com.vdzon.administratie.model.{Afschrift, Rekening, BoekingenCache, Administratie}
 
@@ -24,7 +21,8 @@ object CheckServiceScala {
   val checkFacturenMetDezelfdeFactuurNummer = (data: CheckAndFixData) => DubbeleNummersCheck.checkFacturenMetDezelfdeFactuurNummer(data)
   val checkRekeningenMetHetzelfdeRekeningNummer = (data: CheckAndFixData) => DubbeleNummersCheck.checkRekeningenMetHetzelfdeRekeningNummer(data)
 
-  val checkFunctions = List(checkOfFacturenVolledigBetaaldZijn,
+  val checkFunctions = List(
+    checkOfFacturenVolledigBetaaldZijn,
     checkOfRekeningenVolledigBetaaldZijn,
     checkOfAfschriftNogBestaat,
     checkOfFactuurNogBestaat,

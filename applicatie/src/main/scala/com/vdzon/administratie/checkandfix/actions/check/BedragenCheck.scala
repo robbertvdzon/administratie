@@ -1,30 +1,20 @@
 package com.vdzon.administratie.checkandfix.actions.check
 
-import java.util.Collection
-
 import com.vdzon.administratie.checkandfix.CheckAndFixData
 import com.vdzon.administratie.checkandfix.model.CheckType.WARNING
 import com.vdzon.administratie.checkandfix.model.{CheckAndFixRegel, FixAction}
-import com.vdzon.administratie.model.Afschrift.newBuilder
-import com.vdzon.administratie.model.{Rekening, Factuur}
+import com.vdzon.administratie.model.{Afschrift, Rekening, Factuur}
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
-
-import scala.collection.JavaConversions._
-import scala.compat.java8.StreamConverters._
 
 object BedragenCheck {
 
-  def checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = data
+  def checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData) = data
     .alleFacturen
-    .stream
-    .toScala[Stream]
     .filter(f => factuurNietVolledigBetaald(f, data))
     .map(f => buildNietVolledigBetaaldCheckAndFixRegel(f))
 
-  def checkOfRekeningenVolledigBetaaldZijn(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] = data
+  def checkOfRekeningenVolledigBetaaldZijn(data: CheckAndFixData) = data
     .alleRekeningen
-    .stream
-    .toScala[Stream]
     .filter(r => rekeningNietVolledigBetaald(r, data))
     .map(r => buildNietVolledigBetaaldCheckAndFixRegel(r))
 
@@ -58,8 +48,8 @@ object BedragenCheck {
     return sumVanAfschriften != -1*rekening.getBedragIncBtw
   }
 
-  private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = {
-    return data.alleAfschriften.stream.filter(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer())).findFirst.orElse(newBuilder.bedrag(0).build).getBedrag
-  }
+  private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = data.alleAfschriften
+      .find(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer()))
+      .getOrElse(Afschrift.newBuilder().build()).getBedrag
 
 }

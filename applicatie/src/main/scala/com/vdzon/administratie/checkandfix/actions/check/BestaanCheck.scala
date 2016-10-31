@@ -1,24 +1,13 @@
 package com.vdzon.administratie.checkandfix.actions.check
 
-import java.util.Collection
-import java.util.stream.Collectors
-
 import com.vdzon.administratie.checkandfix.CheckAndFixData
-import com.vdzon.administratie.checkandfix.model.CheckType.WARNING
 import com.vdzon.administratie.checkandfix.model.{CheckType, CheckAndFixRegel, FixAction}
-import com.vdzon.administratie.model.Afschrift.newBuilder
 import com.vdzon.administratie.model.boekingen.relaties.{BoekingMetFactuur, BoekingMetRekening, BoekingMetAfschrift}
-import com.vdzon.administratie.model.{Factuur, Rekening}
-
-import scala.collection.JavaConversions._
-import scala.compat.java8.StreamConverters._
 
 object BestaanCheck {
 
-  def checkOfAfschriftNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
+  def checkOfAfschriftNogBestaat(data: CheckAndFixData) =
     data.alleBoekingen
-      .stream
-      .toScala[Stream]
       .filter(boeking => boeking match {
         case b:BoekingMetAfschrift => true
         case _ => false
@@ -32,10 +21,8 @@ object BestaanCheck {
         .omschrijving("Afschift " + boeking.getAfschriftNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
         .build)
 
-  def checkOfRekeningNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
+  def checkOfRekeningNogBestaat(data: CheckAndFixData) =
     data.alleBoekingen
-      .stream
-      .toScala[Stream]
       .filter(boeking => boeking match {
         case b:BoekingMetRekening => true
         case _ => false
@@ -49,10 +36,8 @@ object BestaanCheck {
         .omschrijving("Rekening " + boeking.getRekeningNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
         .build)
 
-  def checkOfFactuurNogBestaat(data: CheckAndFixData): Collection[_ <: CheckAndFixRegel] =
+  def checkOfFactuurNogBestaat(data: CheckAndFixData) =
     data.alleBoekingen
-      .stream
-      .toScala[Stream]
       .filter(boeking => boeking match {
         case b:BoekingMetFactuur => true
         case _ => false
@@ -67,14 +52,14 @@ object BestaanCheck {
         .build)
 
   private def afschriftExists(afschriftNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleAfschriften.stream.filter(afschrift => afschrift.getNummer().equals(afschriftNummer)).count > 0
+    return data.alleAfschriften.filter(afschrift => afschrift.getNummer().equals(afschriftNummer)).size > 0
   }
 
   private def rekeningExists(rekeningNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleRekeningen.stream.filter(rekening => rekening.getRekeningNummer().equals(rekeningNummer)).count > 0
+    return data.alleRekeningen.filter(rekening => rekening.getRekeningNummer().equals(rekeningNummer)).size > 0
   }
 
   private def factuurExists(factuurNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleFacturen.stream.filter(factuur => factuur.getFactuurNummer().equals(factuurNummer)).count > 0
+    return data.alleFacturen.filter(factuur => factuur.getFactuurNummer().equals(factuurNummer)).size > 0
   }
 }

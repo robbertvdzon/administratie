@@ -6,8 +6,8 @@ import scala.collection.JavaConversions._
 import scala.compat.java8.StreamConverters._
 
 case class CheckAndFixData(
-                            alleAfschriften: List[Afschrift],
-                            alleRekeningen: List[Rekening],
-                            alleFacturen: List[Factuur],
-                            alleBoekingen: List[Boeking],
-                            boekingenCache: BoekingenCache)
+                  alleAfschriften: List[Afschrift],
+                  alleRekeningen: List[Rekening],
+                  alleFacturen: List[Factuur],
+                  alleBoekingen: List[Boeking],
+                  boekingenCache: BoekingenCache)

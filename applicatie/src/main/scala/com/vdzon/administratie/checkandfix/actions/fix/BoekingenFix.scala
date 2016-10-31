@@ -8,15 +8,15 @@ import scala.compat.java8.StreamConverters._
 
 object BoekingenFix {
 
-  def fixAfschrift(regel: CheckAndFixRegel, administratie: Administratie): Administratie = {
-  if (regel.getRubriceerAction ne FixAction.REMOVE_BOEKING) return administratie
-  val nieuweBoekingen = administratie.getBoekingen
-    .stream
-    .toScala[Stream]
+  def removeBoekingen(regel: CheckAndFixRegel, administratie: Administratie): Administratie = {
+    if (regel.getRubriceerAction ne FixAction.REMOVE_BOEKING) return administratie
+    val nieuweBoekingen = administratie.getBoekingen
+      .stream
+      .toScala[Stream]
       .filter(boeking => boeking.getUuid.ne(regel.getBoekingUuid))
 
-  return Administratie.newBuilder(administratie).boekingen(nieuweBoekingen).build
-}
+    return Administratie.newBuilder(administratie).boekingen(nieuweBoekingen).build
+  }
 
 
 }
