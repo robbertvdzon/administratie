@@ -69,7 +69,6 @@ object AppScala {
     val checkAndFixResource: CheckAndFixResource = injector.getInstance(classOf[CheckAndFixResource])
   }
 
-
   private def loadVersion {
     System.out.println("Load version from manifest")
       val resources: java.util.Enumeration[URL] = classOf[AppScalaClass].getClassLoader.getResources("META-INF/MANIFEST.MF")
