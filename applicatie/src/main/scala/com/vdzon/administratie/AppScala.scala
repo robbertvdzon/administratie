@@ -70,6 +70,7 @@ object AppScala {
   }
 
 
+
   private def loadVersion {
     System.out.println("Load version from manifest")
       val resources: java.util.Enumeration[URL] = classOf[AppScalaClass].getClassLoader.getResources("META-INF/MANIFEST.MF")
