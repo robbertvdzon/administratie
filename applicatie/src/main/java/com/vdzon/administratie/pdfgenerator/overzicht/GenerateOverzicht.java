@@ -233,7 +233,6 @@ public class GenerateOverzicht {
 ********************** CLOSE
  */
 
-
         document.save(outputStream);
         document.close();
     }
