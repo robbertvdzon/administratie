@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/administratie.iml" filepath="$PROJECT_DIR$/administratie.iml" />
       <module fileurl="file://$PROJECT_DIR$/applicatie/applicatie.iml" filepath="$PROJECT_DIR$/applicatie/applicatie.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cucumber/cucumber.iml" filepath="$PROJECT_DIR$/cucumber/cucumber.iml" />
       <module fileurl="file://$PROJECT_DIR$/sparkjava/spark-core.iml" filepath="$PROJECT_DIR$/sparkjava/spark-core.iml" />
     </modules>
   </component>
