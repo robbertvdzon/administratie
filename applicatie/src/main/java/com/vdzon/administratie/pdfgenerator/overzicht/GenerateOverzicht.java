@@ -219,7 +219,7 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        List<CheckAndFixRegel> checkAndFixRegels = CheckServiceScala.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        List<CheckAndFixRegel> checkAndFixRegels = CheckServiceScala.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.date(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         if (checkAndFixRegels.isEmpty()){
             writeTitle("Geen waarschuwingen gevonden");
         }
@@ -255,7 +255,7 @@ public class GenerateOverzicht {
     private void listWaarschuwing(CheckAndFixRegel regel) {
         try {
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, regel.getOmschrijving());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, regel.omschrijving());
         }
         catch (Exception ex){
             ex.printStackTrace();

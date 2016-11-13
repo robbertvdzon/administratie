@@ -19,23 +19,21 @@ object BedragenCheck {
     .map(r => buildNietVolledigBetaaldCheckAndFixRegel(r))
 
   private def buildNietVolledigBetaaldCheckAndFixRegel(f: Factuur): CheckAndFixRegel = {
-    CheckAndFixRegel
-      .newBuilder()
-      .checkType(WARNING)
-      .data("")
-      .date(f.getFactuurDate)
-      .omschrijving("Factuur " + f.getFactuurNummer + " is niet volledig betaald of geboekt")
-      .rubriceerAction(FixAction.NONE).build()
+    CheckAndFixRegel(
+      checkType=WARNING,
+      data="",
+      date=f.getFactuurDate,
+      omschrijving="Factuur " + f.getFactuurNummer + " is niet volledig betaald of geboekt",
+      rubriceerAction=FixAction.NONE)
   }
 
   private def buildNietVolledigBetaaldCheckAndFixRegel(r: Rekening): CheckAndFixRegel = {
-    CheckAndFixRegel
-      .newBuilder()
-      .checkType(WARNING)
-      .data("")
-      .date(r.getRekeningDate)
-      .omschrijving("Rekening " + r.getRekeningNummer + " is niet volledig betaald of geboekt")
-      .rubriceerAction(FixAction.NONE).build()
+    CheckAndFixRegel(
+      checkType = WARNING,
+      data = "",
+      date = r.getRekeningDate,
+      omschrijving = "Rekening " + r.getRekeningNummer + " is niet volledig betaald of geboekt",
+      rubriceerAction = FixAction.NONE)
   }
 
   private def factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData): Boolean = {

@@ -35,7 +35,7 @@ class CheckAndFixServiceTest {
       .boekingen(List(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2"), rekeningBoeking("b3", "r1", "a3"))).build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie)
-    regels.stream().forEach(f => println(f.getOmschrijving))
+    regels.stream().forEach(f => println(f.omschrijving))
     assertTrue("", regels.size == 0)
   }
 
@@ -50,9 +50,9 @@ class CheckAndFixServiceTest {
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie)
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.REMOVE_BOEKING)
-    assertTrue("", regels(0).getCheckType == CheckType.FIX_NEEDED)
-    assertTrue("", regels(0).getBoekingUuid.equals("b2"))
+    assertTrue("", regels(0).rubriceerAction == FixAction.REMOVE_BOEKING)
+    assertTrue("", regels(0).checkType == CheckType.FIX_NEEDED)
+    assertTrue("", regels(0).boekingUuid.equals("b2"))
   }
 
   @Test
@@ -77,11 +77,11 @@ class CheckAndFixServiceTest {
       .boekingen(List(rekeningBoeking("b1", "r1", "a1"))).build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.REMOVE_BOEKING)
-    assertTrue("", regels(0).getCheckType == CheckType.FIX_NEEDED)
-    assertTrue("", regels(0).getBoekingUuid.equals("b1"))
+    assertTrue("", regels(0).rubriceerAction == FixAction.REMOVE_BOEKING)
+    assertTrue("", regels(0).checkType == CheckType.FIX_NEEDED)
+    assertTrue("", regels(0).boekingUuid.equals("b1"))
   }
 
   @Test
@@ -93,11 +93,11 @@ class CheckAndFixServiceTest {
       .boekingen(List(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2"))).build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.REMOVE_BOEKING)
-    assertTrue("", regels(0).getCheckType == CheckType.FIX_NEEDED)
-    assertTrue("", regels(0).getBoekingUuid.equals("b2"))
+    assertTrue("", regels(0).rubriceerAction == FixAction.REMOVE_BOEKING)
+    assertTrue("", regels(0).checkType == CheckType.FIX_NEEDED)
+    assertTrue("", regels(0).boekingUuid.equals("b2"))
   }
 
   @Test
@@ -110,10 +110,10 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.NONE)
-    assertTrue("", regels(0).getCheckType == CheckType.WARNING)
+    assertTrue("", regels(0).rubriceerAction == FixAction.NONE)
+    assertTrue("", regels(0).checkType == CheckType.WARNING)
   }
 
   @Test
@@ -126,7 +126,7 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 0)
   }
 
@@ -140,7 +140,7 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 0)
   }
 
@@ -154,10 +154,10 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.NONE)
-    assertTrue("", regels(0).getCheckType == CheckType.WARNING)
+    assertTrue("", regels(0).rubriceerAction == FixAction.NONE)
+    assertTrue("", regels(0).checkType == CheckType.WARNING)
   }
 
   @Test
@@ -170,10 +170,10 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.NONE)
-    assertTrue("", regels(0).getCheckType == CheckType.WARNING)
+    assertTrue("", regels(0).rubriceerAction == FixAction.NONE)
+    assertTrue("", regels(0).checkType == CheckType.WARNING)
   }
 
   @Test
@@ -186,10 +186,10 @@ class CheckAndFixServiceTest {
       .build()
 
     val regels = CheckServiceScala.getCheckAndFixRegels(administratie);
-    regels.stream().forEach(f => println(f.getOmschrijving));
+    regels.stream().forEach(f => println(f.omschrijving));
     assertTrue("", regels.size == 1)
-    assertTrue("", regels(0).getRubriceerAction == FixAction.NONE)
-    assertTrue("", regels(0).getCheckType == CheckType.WARNING)
+    assertTrue("", regels(0).rubriceerAction == FixAction.NONE)
+    assertTrue("", regels(0).checkType == CheckType.WARNING)
   }
 
 

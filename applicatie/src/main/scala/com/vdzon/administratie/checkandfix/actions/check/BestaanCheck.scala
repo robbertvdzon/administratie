@@ -14,12 +14,13 @@ object BestaanCheck {
       })
       .map(boeking => boeking.asInstanceOf[BoekingMetAfschrift])
       .filter(boeking => !afschriftExists(boeking.getAfschriftNummer, data))
-      .map(boeking => CheckAndFixRegel.newBuilder
-        .rubriceerAction(FixAction.REMOVE_BOEKING)
-        .checkType(CheckType.FIX_NEEDED)
-        .boekingUuid(boeking.getUuid)
-        .omschrijving("Afschift " + boeking.getAfschriftNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
-        .build)
+      .map(boeking => CheckAndFixRegel(
+        rubriceerAction = FixAction.REMOVE_BOEKING,
+        checkType = CheckType.FIX_NEEDED,
+        boekingUuid = boeking.getUuid,
+        omschrijving = "Afschift " + boeking.getAfschriftNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
+      )
+
 
   def checkOfRekeningNogBestaat(data: CheckAndFixData) =
     data.alleBoekingen
@@ -29,12 +30,12 @@ object BestaanCheck {
       })
       .map(boeking => boeking.asInstanceOf[BoekingMetRekening])
       .filter(boeking => !rekeningExists(boeking.getRekeningNummer, data))
-      .map(boeking => CheckAndFixRegel.newBuilder
-        .rubriceerAction(FixAction.REMOVE_BOEKING)
-        .checkType(CheckType.FIX_NEEDED)
-        .boekingUuid(boeking.getUuid)
-        .omschrijving("Rekening " + boeking.getRekeningNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
-        .build)
+      .map(boeking => CheckAndFixRegel(
+        rubriceerAction = FixAction.REMOVE_BOEKING,
+        checkType = CheckType.FIX_NEEDED,
+        boekingUuid = boeking.getUuid,
+        omschrijving = "Rekening " + boeking.getRekeningNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
+        )
 
   def checkOfFactuurNogBestaat(data: CheckAndFixData) =
     data.alleBoekingen
@@ -44,12 +45,12 @@ object BestaanCheck {
       })
       .map(boeking => boeking.asInstanceOf[BoekingMetFactuur])
       .filter(boeking => !factuurExists(boeking.getFactuurNummer, data))
-      .map(boeking => CheckAndFixRegel.newBuilder
-        .rubriceerAction(FixAction.REMOVE_BOEKING)
-        .checkType(CheckType.FIX_NEEDED)
-        .boekingUuid(boeking.getUuid)
-        .omschrijving("Factuur " + boeking.getFactuurNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
-        .build)
+      .map(boeking => CheckAndFixRegel(
+        rubriceerAction = FixAction.REMOVE_BOEKING,
+        checkType = CheckType.FIX_NEEDED,
+        boekingUuid = boeking.getUuid,
+        omschrijving = "Factuur " + boeking.getFactuurNummer + " bestaat niet meer terwijl er wel een boeking van bestaat")
+        )
 
   private def afschriftExists(afschriftNummer: String, data: CheckAndFixData): Boolean = {
     return data.alleAfschriften.filter(afschrift => afschrift.getNummer().equals(afschriftNummer)).size > 0

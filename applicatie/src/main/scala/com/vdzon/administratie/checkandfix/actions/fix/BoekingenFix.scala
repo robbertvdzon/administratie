@@ -9,11 +9,11 @@ import scala.compat.java8.StreamConverters._
 object BoekingenFix {
 
   def removeBoekingen(regel: CheckAndFixRegel, administratie: Administratie): Administratie = {
-    if (regel.getRubriceerAction ne FixAction.REMOVE_BOEKING) return administratie
+    if (regel.rubriceerAction ne FixAction.REMOVE_BOEKING) return administratie
     val nieuweBoekingen = administratie.getBoekingen
       .stream
       .toScala[Stream]
-      .filter(boeking => boeking.getUuid.ne(regel.getBoekingUuid))
+      .filter(boeking => boeking.getUuid.ne(regel.boekingUuid))
 
     return Administratie.newBuilder(administratie).boekingen(nieuweBoekingen).build
   }
