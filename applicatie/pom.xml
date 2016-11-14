@@ -186,7 +186,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>com.vdzon.administratie.AppScala</mainClass>
+                            <mainClass>com.vdzon.administratie.App</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
