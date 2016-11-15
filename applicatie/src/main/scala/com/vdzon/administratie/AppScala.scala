@@ -93,6 +93,7 @@ object AppScala {
   }
 
   def getVersion: String = {
+    System.out.println("GET VERSION! " + AppScala.version)
     return AppScala.version
   }
 
@@ -103,7 +104,9 @@ object AppScala {
   }
 
   def setVersion(version: String) {
+    System.out.println("SET VERSION-1 " + version)
     AppScala.version = version
+    System.out.println("SET VERSION2 " + AppScala.version)
   }
 
   def getBuildTime: String = {
