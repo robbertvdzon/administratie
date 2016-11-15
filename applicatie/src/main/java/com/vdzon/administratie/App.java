@@ -98,9 +98,13 @@ public class App {
             // we need find ours by checking the mainClass
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
+                System.out.println("----------------- url="+url.getFile());
                 Properties properties = new Properties();
                 properties.load(url.openStream());
                 String mainClass = properties.getProperty("Main-Class");
+                System.out.println("mainClass="+mainClass);
+                System.out.println(properties);
+                properties.load(url.openStream());
                 if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
                     //Correct manifest found
                     setVersion(properties.getProperty("Implementation-Build-Number"));
