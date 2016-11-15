@@ -77,7 +77,7 @@ object AppScala {
         System.out.println("----------------- url=" + url.getFile)
         val properties: Properties = new Properties
         properties.load(url.openStream)
-        val mainClass: String = properties.getProperty("Main-Class")
+        val mainClass: String = properties.getProperty("Main-Class")+"Class"
         System.out.println("mainClass=" + mainClass)
         System.out.println("classname=" + classOf[AppScalaClass].getCanonicalName)
         System.out.println(properties)
