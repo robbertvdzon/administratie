@@ -74,11 +74,17 @@ object AppScala {
       val resources: java.util.Enumeration[URL] = classOf[AppScalaClass].getClassLoader.getResources("META-INF/MANIFEST.MF")
       while (resources.hasMoreElements) {
         val url: URL = resources.nextElement
+        System.out.println("----------------- url=" + url.getFile)
         val properties: Properties = new Properties
         properties.load(url.openStream)
         val mainClass: String = properties.getProperty("Main-Class")
+        System.out.println("mainClass=" + mainClass)
+        System.out.println("classname=" + classOf[AppScalaClass].getCanonicalName)
+        System.out.println(properties)
+
         if (mainClass != null && (mainClass == classOf[AppScalaClass].getCanonicalName)) {
-          setVersion(properties.getProperty("Implementation-Build-Number"))
+          System.out.println("found manifest")
+          setVersion(properties.getProperty("Implementation-Version"))
           setBuildTime(reformatBuildTime(properties.getProperty("Build-Time")))
         }
       }
