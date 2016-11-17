@@ -70,20 +70,14 @@ object AppScala {
   }
 
   private def loadVersion {
-    System.out.println("Load version from manifest")
       val resources: java.util.Enumeration[URL] = classOf[AppScalaClass].getClassLoader.getResources("META-INF/MANIFEST.MF")
       while (resources.hasMoreElements) {
         val url: URL = resources.nextElement
-        System.out.println("----------------- url=" + url.getFile)
         val properties: Properties = new Properties
         properties.load(url.openStream)
         val mainClass: String = properties.getProperty("Main-Class")+"Class"
-        System.out.println("mainClass=" + mainClass)
-        System.out.println("classname=" + classOf[AppScalaClass].getCanonicalName)
-        System.out.println(properties)
 
         if (mainClass != null && (mainClass == classOf[AppScalaClass].getCanonicalName)) {
-          System.out.println("found manifest")
           setVersion(properties.getProperty("Implementation-Version"))
           setBuildTime(reformatBuildTime(properties.getProperty("Build-Time")))
         }
@@ -93,7 +87,6 @@ object AppScala {
   }
 
   def getVersion: String = {
-    System.out.println("GET VERSION! " + AppScala.version)
     return AppScala.version
   }
 
@@ -104,9 +97,7 @@ object AppScala {
   }
 
   def setVersion(version: String) {
-    System.out.println("SET VERSION-1 " + version)
     AppScala.version = version
-    System.out.println("SET VERSION2 " + AppScala.version)
   }
 
   def getBuildTime: String = {

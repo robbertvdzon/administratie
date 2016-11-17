@@ -35,6 +35,7 @@ public class Factuur {
         bedragExBtw = builder.bedragExBtw;
         bedragIncBtw = builder.bedragIncBtw;
         btw = builder.btw;
+        calculate();
     }
 
     public static Builder newBuilder() {
