@@ -112,14 +112,16 @@ public class Factuur {
         bedragExBtw = 0;
         bedragIncBtw = 0;
         btw = 0;
-        for (FactuurRegel factuurRegel : factuurRegels) {
-            double regelBedragEx = factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
-            double regelBedragBtw = round(regelBedragEx * (factuurRegel.getBtwPercentage() / 100),2);
-            double regelBedragInc = regelBedragEx + regelBedragBtw;
+        if (factuurRegels != null) {
+            for (FactuurRegel factuurRegel : factuurRegels) {
+                double regelBedragEx = factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
+                double regelBedragBtw = round(regelBedragEx * (factuurRegel.getBtwPercentage() / 100), 2);
+                double regelBedragInc = regelBedragEx + regelBedragBtw;
 
-            bedragExBtw += regelBedragEx;
-            btw += regelBedragBtw;
-            bedragIncBtw += regelBedragInc;
+                bedragExBtw += regelBedragEx;
+                btw += regelBedragBtw;
+                bedragIncBtw += regelBedragInc;
+            }
         }
     }
 
