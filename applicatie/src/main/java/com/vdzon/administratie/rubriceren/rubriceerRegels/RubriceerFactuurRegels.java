@@ -2,12 +2,10 @@ package com.vdzon.administratie.rubriceren.rubriceerRegels;
 
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
-import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.InkomstenZonderFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
@@ -23,14 +21,14 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
 
     @RubriceerRule
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
-        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
+        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.nummer());
         if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) {
-            if (afschrift.getBedrag() > 0) {
+            if (afschrift.bedrag() > 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.INKOMSTEN_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
-                    String omschrijvingZonderSpaties = afschrift.getOmschrijving().replaceAll(" ","");
-                    if ((factuur.getBedragIncBtw() == afschrift.getBedrag()) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
+                    String omschrijvingZonderSpaties = afschrift.omschrijving().replaceAll(" ","");
+                    if ((factuur.getBedragIncBtw() == afschrift.bedrag()) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR;
                         factuurNummer = factuur.getFactuurNummer();
                     }

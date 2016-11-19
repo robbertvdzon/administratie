@@ -3,10 +3,8 @@ package com.vdzon.administratie.mongo;
 import com.vdzon.administratie.model.*;
 import org.mongodb.morphia.Datastore;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class TestDataGenerator {

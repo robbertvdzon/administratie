@@ -25,7 +25,7 @@ public class CalculateOverzicht {
         overzicht.filteredFacturen = administratie.getFacturen().stream().filter(factuur -> betweenOrAtDates(factuur.getFactuurDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredRekeningen = administratie.getRekeningen().stream().filter(rekening-> betweenOrAtDates(rekening.getRekeningDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredDeclaraties = administratie.getDeclaraties().stream().filter(declaratie-> betweenOrAtDates(declaratie.getDeclaratieDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
-        overzicht.filteredAfschriften = administratie.getAfschriften().stream().filter(afschriften-> betweenOrAtDates(afschriften.getBoekdatum(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        overzicht.filteredAfschriften = administratie.getAfschriften().stream().filter(afschriften-> betweenOrAtDates(afschriften.boekdatum(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
 
 
         overzicht.facturenTotaalExBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragExBtw()).sum();
@@ -133,7 +133,7 @@ public class CalculateOverzicht {
                 + overzicht.ontvangenInkomstenZonderFactuur
                 - overzicht.betaaldeRekeningenZonderFactuur;
 
-        overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag()).sum();
+        overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.bedrag()).sum();
         overzicht.verschilTussenVerwachtEnWerkelijk = overzicht.verwachtTotaalOpRekeningBij - overzicht.werkelijkOpBankBij;
 
         overzicht.belastbaarInkomenExBtw = overzicht.facturenTotaalExBtw - overzicht.rekeningenTotaalExBtw - overzicht.declaratiesTotaalExBtw - overzicht.betaaldeRekeningenZonderFactuur;

@@ -53,7 +53,7 @@ object BestaanCheck {
         )
 
   private def afschriftExists(afschriftNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleAfschriften.filter(afschrift => afschrift.getNummer().equals(afschriftNummer)).size > 0
+    return data.alleAfschriften.filter(afschrift => afschrift.nummer.equals(afschriftNummer)).size > 0
   }
 
   private def rekeningExists(rekeningNummer: String, data: CheckAndFixData): Boolean = {

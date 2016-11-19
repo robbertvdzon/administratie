@@ -9,7 +9,6 @@ import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.AfschriftDto;
@@ -36,10 +35,10 @@ public class AfschriftService {
         AfschriftDto afschriftDto = mapper.readValue(afschriftJson, AfschriftDto.class);
         Afschrift afschrift = afschriftDto.toAfschrift();
 
-        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+        gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.nummer());
         gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
 
-        List<BoekingMetAfschrift> boekingenVanAfschrift = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanAfschrift(afschrift.getNummer());
+        List<BoekingMetAfschrift> boekingenVanAfschrift = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanAfschrift(afschrift.nummer());
         removeDeletedBoekingen(gebruiker, afschriftDto, boekingenVanAfschrift);
         addNewBoekingen(gebruiker, afschriftDto, boekingenVanAfschrift);
 
@@ -129,7 +128,7 @@ public class AfschriftService {
     private void updateAfschriftenVanGebruiker(Gebruiker gebruiker, List<Afschrift> afschriften) {
         for (Afschrift afschrift : afschriften) {
             if (afschrift != null) {
-                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.getNummer());
+                gebruiker.getDefaultAdministratie().removeAfschrift(afschrift.nummer());
                 gebruiker.getDefaultAdministratie().addAfschrift(afschrift);
             }
         }

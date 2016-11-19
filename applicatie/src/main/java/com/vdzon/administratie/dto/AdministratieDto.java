@@ -2,6 +2,7 @@ package com.vdzon.administratie.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.model.*;
 
 import java.util.List;

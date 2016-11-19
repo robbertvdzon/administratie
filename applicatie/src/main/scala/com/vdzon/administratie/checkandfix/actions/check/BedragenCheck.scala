@@ -47,7 +47,7 @@ object BedragenCheck {
   }
 
   private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = data.alleAfschriften
-      .find(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer()))
-      .getOrElse(Afschrift.newBuilder().build()).getBedrag
+      .find(afschrift => afschrift.nummer.equals(boeking.getAfschriftNummer()))
+      .getOrElse(new Afschrift(null,null,null,null,null,null,0)).bedrag
 
 }

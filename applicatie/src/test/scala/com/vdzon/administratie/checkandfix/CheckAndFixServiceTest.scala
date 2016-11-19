@@ -1,6 +1,7 @@
 package com.vdzon.administratie.checkandfix
 
 import com.vdzon.administratie.checkandfix.model.{CheckType, FixAction}
+import com.vdzon.administratie.model
 import com.vdzon.administratie.model.boekingen.{BetaaldeFactuurBoeking, BetaaldeRekeningBoeking, Boeking}
 import com.vdzon.administratie.model._
 import org.junit.Assert._
@@ -216,10 +217,7 @@ class CheckAndFixServiceTest {
   }
 
   def buildAfschrift(nummer: String, bedrag: Double): Afschrift = {
-    Afschrift.newBuilder()
-      .nummer(nummer)
-      .bedrag(bedrag)
-      .build()
+    new Afschrift(nummer=nummer,bedrag=bedrag)
   }
 
   def buildRekening(nummer: String, inc: Double, ex: Double, btw: Double): Rekening = {

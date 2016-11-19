@@ -24,7 +24,7 @@ object DubbeleNummersCheck {
         )
 
   def checkAfschriftenMetHetzelfdeNummer(data: CheckAndFixData) = data.alleAfschriften
-      .groupBy(a => a.getNummer)
+      .groupBy(a => a.nummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,

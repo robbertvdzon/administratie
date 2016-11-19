@@ -238,7 +238,7 @@ public class Administratie {
     public void removeAfschrift(String nummer) {
         List<Afschrift> afschriftenClone = getAfschriften();
         for (Afschrift afschrift : afschriftenClone) {
-            if (afschrift.getNummer().equals(nummer)) {
+            if (afschrift.nummer().equals(nummer)) {
                 this.afschriften.remove(afschrift);
             }
         }

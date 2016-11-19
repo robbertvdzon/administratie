@@ -21,9 +21,9 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
 
     @RubriceerRule
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
-        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
+        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.nummer());
         if (hasNoBoekingen(boekingenVanAfschrift)) {
-            if (afschrift.getBedrag() < 0) {
+            if (afschrift.bedrag() < 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.BETALING_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 String rekeningNummer = null;
@@ -32,12 +32,12 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                             &&
                             !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
                             &&
-                            (rekening.getBedragIncBtw() == afschrift.getBedrag() * -1)
+                            (rekening.getBedragIncBtw() == afschrift.bedrag() * -1)
                             &&
                             (
-                                    (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))
+                                    (afschrift.omschrijving().contains(rekening.getRekeningNummer()))
                                             ||
-                                    (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
+                                    (afschrift.omschrijving().equals(rekening.getOmschrijving()))
                             )
                         )
 
@@ -90,11 +90,11 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         .newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .rekeningNummer("" + findNextRekeningNummer(gebruiker))
-                        .naam(afschrift.getRelatienaam())
-                        .omschrijving(afschrift.getOmschrijving())
-                        .rekeningDate(afschrift.getBoekdatum())
-                        .bedragExBtw(afschrift.getBedrag() * -1)
-                        .bedragIncBtw(afschrift.getBedrag() * -1)
+                        .naam(afschrift.relatienaam())
+                        .omschrijving(afschrift.omschrijving())
+                        .rekeningDate(afschrift.boekdatum())
+                        .bedragExBtw(afschrift.bedrag() * -1)
+                        .bedragIncBtw(afschrift.bedrag() * -1)
                         .btw(0)
                         .build();
                 gebruiker.getDefaultAdministratie().addRekening(rekening);

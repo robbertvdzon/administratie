@@ -1,7 +1,7 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
 import com.vdzon.administratie.checkandfix.CheckServiceScala;
-import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
+import com.vdzon.administratie.checkandfix.model.*;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
@@ -183,7 +183,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredAfschriften
                 .stream()
-                .sorted((afschrift1, afschrift2) -> afschrift2.getNummer().compareTo(afschrift1.getNummer()))
+                .sorted((afschrift1, afschrift2) -> afschrift2.nummer().compareTo(afschrift1.nummer()))
                 .forEach(afschrift-> listAfschrift(afschrift, boekingenCache));
 
         page.close();
@@ -423,7 +423,7 @@ public class GenerateOverzicht {
 
     private void listAfschrift(Afschrift afschrift, BoekingenCache boekingenCache)  {
         try {
-            List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
+            List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.nummer());
             String status = "";
             for (BoekingMetAfschrift boekingMetAfschrift : boekingenVanAfschrift){
                 status += ((Boeking)boekingMetAfschrift).getOmschrijving()+" ";
@@ -439,15 +439,15 @@ public class GenerateOverzicht {
 
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getNummer());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.nummer());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getBoekdatum().toString());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.boekdatum().toString());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, ""+afschrift.getBedrag());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, ""+afschrift.bedrag());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Geboekt als:");
@@ -461,14 +461,13 @@ public class GenerateOverzicht {
                 writeText(LIJST_FONT_SIZE, 120, fontPlain, statusPartOf80Chars);
             }
 
-
             skipDown(15);
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Naam:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getRelatienaam());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.relatienaam());
             skipDown(15);
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
 
-            String[] omschrijvingInPartsOf80Chars = afschrift.getOmschrijving().split("(?<=\\G.{80})");
+            String[] omschrijvingInPartsOf80Chars = afschrift.omschrijving().split("(?<=\\G.{80})");
             first = true;
             for (String omschrijvingPartOf80Chars: omschrijvingInPartsOf80Chars){
                 if (!first){
