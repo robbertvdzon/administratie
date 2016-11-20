@@ -61,6 +61,6 @@ object BestaanCheck {
   }
 
   private def factuurExists(factuurNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleFacturen.filter(factuur => factuur.getFactuurNummer().equals(factuurNummer)).size > 0
+    return data.alleFacturen.filter(factuur => factuur.factuurNummer().equals(factuurNummer)).size > 0
   }
 }

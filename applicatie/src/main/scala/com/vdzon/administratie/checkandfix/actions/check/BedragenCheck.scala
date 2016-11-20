@@ -22,8 +22,8 @@ object BedragenCheck {
     CheckAndFixRegel(
       checkType=WARNING,
       data="",
-      date=f.getFactuurDate,
-      omschrijving="Factuur " + f.getFactuurNummer + " is niet volledig betaald of geboekt",
+      date=f.factuurDate,
+      omschrijving="Factuur " + f.factuurNummer + " is niet volledig betaald of geboekt",
       rubriceerAction=FixAction.NONE)
   }
 
@@ -37,8 +37,8 @@ object BedragenCheck {
   }
 
   private def factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData): Boolean = {
-    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != factuur.getBedragIncBtw
+    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
+    return sumVanAfschriften != factuur.bedragIncBtw
   }
 
   private def rekeningNietVolledigBetaald(rekening: Rekening, data: CheckAndFixData): Boolean = {

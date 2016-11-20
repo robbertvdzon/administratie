@@ -95,8 +95,8 @@ public class BoekingsVerrijker {
         }
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR;
         double boekingsBedrag = afschift.bedrag();
-        double factuurBedrag = factuur.getBedragIncBtw();
-        LocalDate factuurDate = factuur.getFactuurDate();
+        double factuurBedrag = factuur.bedragIncBtw();
+        LocalDate factuurDate = factuur.factuurDate();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
@@ -141,7 +141,7 @@ public class BoekingsVerrijker {
     private static Factuur getFactuur(BoekingMetFactuur boeking, Administratie administratie) {
         return administratie.getFacturen()
                 .stream()
-                .filter(factuur -> factuur.getFactuurNummer().equals(boeking.getFactuurNummer()))
+                .filter(factuur -> factuur.factuurNummer().equals(boeking.getFactuurNummer()))
                 .findFirst()
                 .orElse(null);
     }

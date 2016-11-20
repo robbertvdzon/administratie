@@ -32,9 +32,6 @@ public class Factuur {
         factuurDate = builder.factuurDate;
         contact = builder.contact;
         factuurRegels = builder.factuurRegels;
-        bedragExBtw = builder.bedragExBtw;
-        bedragIncBtw = builder.bedragIncBtw;
-        btw = builder.btw;
         calculate();
     }
 
@@ -56,55 +53,52 @@ public class Factuur {
         return builder;
     }
 
-    public String getUuid() {
+    public String uuid() {
         return uuid;
     }
 
-    public String getFactuurNummer() {
+    public String factuurNummer() {
         return factuurNummer;
     }
 
-    public String getGekoppeldeBestellingNummer() {
+    public String gekoppeldeBestellingNummer() {
         return gekoppeldeBestellingNummer;
     }
 
-    public LocalDate getFactuurDate() {
+    public LocalDate factuurDate() {
         return factuurDate;
     }
 
-    public Contact getContact() {
+    public Contact contact() {
         return contact;
     }
 
-    public List<FactuurRegel> getFactuurRegels() {
+    public List<FactuurRegel> factuurRegels() {
         return factuurRegels;
     }
 
-    public double getBedragExBtw() {
+    public double bedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public double bedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public double btw() {
         return btw;
     }
 
     /*
          * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
          */
-    public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, List<FactuurRegel> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, List<FactuurRegel> factuurRegels) {
         this.uuid = uuid;
         this.factuurNummer = factuurNummer;
         this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
         this.factuurDate = factuurDate;
         this.contact = contact;
         this.factuurRegels = factuurRegels;
-        this.bedragExBtw = bedragExBtw;
-        this.bedragIncBtw = bedragIncBtw;
-        this.btw = btw;
         calculate();
     }
 

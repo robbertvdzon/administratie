@@ -2,7 +2,6 @@ package com.vdzon.administratie.pdfgenerator.overzicht;
 
 import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.model.boekingen.VerrijkteBoeking;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CalculateOverzicht {
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -22,15 +20,15 @@ public class CalculateOverzicht {
         overzicht.beginDate = LocalDate.parse(beginDateStr, DATE_FORMATTER);
         overzicht.endDate = LocalDate.parse(endDateStr, DATE_FORMATTER);
 
-        overzicht.filteredFacturen = administratie.getFacturen().stream().filter(factuur -> betweenOrAtDates(factuur.getFactuurDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        overzicht.filteredFacturen = administratie.getFacturen().stream().filter(factuur -> betweenOrAtDates(factuur.factuurDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredRekeningen = administratie.getRekeningen().stream().filter(rekening-> betweenOrAtDates(rekening.rekeningDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredDeclaraties = administratie.getDeclaraties().stream().filter(declaratie-> betweenOrAtDates(declaratie.getDeclaratieDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredAfschriften = administratie.getAfschriften().stream().filter(afschriften-> betweenOrAtDates(afschriften.boekdatum(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
 
 
-        overzicht.facturenTotaalExBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragExBtw()).sum();
-        overzicht.facturenTotaalIncBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragIncBtw()).sum();
-        overzicht.facturenTotaalBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBtw()).sum();
+        overzicht.facturenTotaalExBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.bedragExBtw()).sum();
+        overzicht.facturenTotaalIncBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.bedragIncBtw()).sum();
+        overzicht.facturenTotaalBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.btw()).sum();
 
         overzicht.rekeningenTotaalExBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.bedragExBtw()).sum();
         overzicht.rekeningenTotaalIncBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.bedragIncBtw()).sum();
@@ -107,7 +105,7 @@ public class CalculateOverzicht {
         overzicht.onbetaaldeFacturen = overzicht.filteredFacturen
                 .stream()
                 .filter(factuur -> factuurZonderBoekingen(factuur, boekingenCache))
-                .mapToDouble(factuur -> factuur.getBedragIncBtw())
+                .mapToDouble(factuur -> factuur.bedragIncBtw())
                 .sum();
 
         overzicht.onbetaaldeRekeningen = overzicht.filteredRekeningen
@@ -150,7 +148,7 @@ public class CalculateOverzicht {
     }
 
     private static boolean factuurZonderBoekingen(Factuur factuur, BoekingenCache boekingenCache) {
-        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer());
+        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer());
         return boekingenVanFactuur==null || boekingenVanFactuur.size()==0;
     }
 

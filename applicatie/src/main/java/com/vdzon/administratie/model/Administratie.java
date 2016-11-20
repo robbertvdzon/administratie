@@ -128,11 +128,11 @@ public class Administratie {
     }
 
     private boolean factuurUuidMatchesUuid(String uuid, Factuur factuur) {
-        return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
+        return uuid == null && factuur.uuid() == null || uuid != null && uuid.equals(factuur.uuid());
     }
 
     private boolean factuurNummerMatchesFactuurNummer(String factuurNummer, Factuur factuur) {
-        return factuurNummer == null && factuur.getFactuurNummer() == null || factuurNummer != null && factuurNummer.equals(factuur.getFactuurNummer());
+        return factuurNummer == null && factuur.factuurNummer() == null || factuurNummer != null && factuurNummer.equals(factuur.factuurNummer());
     }
 
     public void addBestelling(Bestelling bestelling) {

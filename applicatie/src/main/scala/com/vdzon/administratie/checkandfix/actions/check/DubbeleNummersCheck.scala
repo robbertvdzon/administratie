@@ -6,7 +6,7 @@ import com.vdzon.administratie.checkandfix.model.{CheckAndFixRegel, CheckType, F
 object DubbeleNummersCheck {
 
   def checkFacturenMetDezelfdeFactuurNummer(data: CheckAndFixData) = data.alleFacturen
-      .groupBy(f => f.getFactuurNummer)
+      .groupBy(f => f.factuurNummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,

@@ -75,9 +75,9 @@ public class GenerateFactuur {
 
     private void printSummeryTotals(Factuur factuur, PdfData pdfData, GeneratePdfHelper generatePdfHelper) throws IOException {
         TabelCols tabelCols = new TabelCols(30,190,200);
-        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag exclusief BTW", ":", "" + String.format("%.2f", factuur.getBedragExBtw()));
-        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "BTW", ":", "" + String.format("%.2f", factuur.getBtw()));
-        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag inclusief BTW", ":", "" + String.format("%.2f", factuur.getBedragIncBtw()));
+        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag exclusief BTW", ":", "" + String.format("%.2f", factuur.bedragExBtw()));
+        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "BTW", ":", "" + String.format("%.2f", factuur.btw()));
+        generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag inclusief BTW", ":", "" + String.format("%.2f", factuur.bedragIncBtw()));
     }
 
     private void printSeparatorLine(GeneratePdfHelper generatePdfHelper) throws IOException {
@@ -91,7 +91,7 @@ public class GenerateFactuur {
         generatePdfHelper.skipDown(10);
         TabelCols tabelCols = new TabelCols(30,80, 300,400,500);
         generatePdfHelper.writeTabel5(pdfData.fontBold, tabelCols, "Aantal", "Omschrijving", "Prijs", "Btw", "Totaal ex");
-        for (FactuurRegel factuurRegel : factuur.getFactuurRegels()) {
+        for (FactuurRegel factuurRegel : factuur.factuurRegels()) {
 
             List<String> omschrijvingSplitted = new ArrayList<>();
             String remain = factuurRegel.getOmschrijving();
@@ -132,17 +132,17 @@ public class GenerateFactuur {
         generatePdfHelper.skipDown(25);
         generatePdfHelper.writeTitle("Factuur");
         generatePdfHelper.drawLine();
-        generatePdfHelper.writeNormalText("Factuurnummer " + factuur.getFactuurNummer() + "    " + "Factuurdatum: " + factuur.getFactuurDate());
+        generatePdfHelper.writeNormalText("Factuurnummer " + factuur.factuurNummer() + "    " + "Factuurdatum: " + factuur.factuurDate());
         generatePdfHelper.drawLine();
     }
 
     private void printKlantGegevens(Factuur factuur, GeneratePdfHelper generatePdfHelper) throws IOException {
         generatePdfHelper.skipDown(10);
         generatePdfHelper.writeBoldText("Klant factuuradres");
-        generatePdfHelper.writeNormalText(factuur.getContact().getNaam());
-        generatePdfHelper.writeNormalText(factuur.getContact().getTenNameVan());
-        generatePdfHelper.writeNormalText(factuur.getContact().getAdres());
-        generatePdfHelper.writeNormalText(factuur.getContact().getPostcode() + " " + factuur.getContact().getWoonplaats());
+        generatePdfHelper.writeNormalText(factuur.contact().getNaam());
+        generatePdfHelper.writeNormalText(factuur.contact().getTenNameVan());
+        generatePdfHelper.writeNormalText(factuur.contact().getAdres());
+        generatePdfHelper.writeNormalText(factuur.contact().getPostcode() + " " + factuur.contact().getWoonplaats());
     }
 
     private void printLogo(PDDocument document, AdministratieGegevens administratieGegevens, GeneratePdfHelper generatePdfHelper) {

@@ -28,9 +28,9 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
                     String omschrijvingZonderSpaties = afschrift.omschrijving().replaceAll(" ","");
-                    if ((factuur.getBedragIncBtw() == afschrift.bedrag()) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
+                    if ((factuur.bedragIncBtw() == afschrift.bedrag()) && (omschrijvingZonderSpaties.contains(factuur.factuurNummer()))) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR;
-                        factuurNummer = factuur.getFactuurNummer();
+                        factuurNummer = factuur.factuurNummer();
                     }
                 }
                 RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder().rubriceerAction(rubriceerAction).rekeningNummer(null).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift, boekingenCache)).build();

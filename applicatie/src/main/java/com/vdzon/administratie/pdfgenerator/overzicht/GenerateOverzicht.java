@@ -123,7 +123,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredFacturen
                 .stream()
-                .sorted((fak1, fak2) -> fak2.getFactuurNummer().compareTo(fak1.getFactuurNummer()))
+                .sorted((fak1, fak2) -> fak2.factuurNummer().compareTo(fak1.factuurNummer()))
                 .forEach(factuur -> listFactuur(factuur, boekingenCache));
 
         page.close();
@@ -287,7 +287,7 @@ public class GenerateOverzicht {
     }
 
     private void listFactuur(Factuur factuur, BoekingenCache boekingenCache)  {
-        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer());
+        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer());
         String status = "Niet betaald";
         if (boekingenVanFactuur!=null && boekingenVanFactuur.size()>0){
             status = "Betaald";
@@ -296,18 +296,18 @@ public class GenerateOverzicht {
         try {
             skipDown(15);
             int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurNummer());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.factuurNummer());
             y+=50;
-            Contact contact = factuur.getContact();
+            Contact contact = factuur.contact();
             writeText(LIJST_FONT_SIZE, y, fontPlain, contact == null ? "" : contact.getNaam());
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurDate().toString());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.factuurDate().toString());
             y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragExBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.bedragExBtw()));
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.btw()));
             y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.bedragIncBtw()));
             y+=80;
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
         }
