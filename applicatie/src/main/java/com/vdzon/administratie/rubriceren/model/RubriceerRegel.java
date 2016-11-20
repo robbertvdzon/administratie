@@ -8,6 +8,9 @@ public class RubriceerRegel {
     private String faktuurNummer;
     private AfschriftDto afschrift;
 
+    public RubriceerRegel() {
+    }
+
     private RubriceerRegel(Builder builder) {
         rubriceerAction = builder.rubriceerAction;
         rekeningNummer = builder.rekeningNummer;

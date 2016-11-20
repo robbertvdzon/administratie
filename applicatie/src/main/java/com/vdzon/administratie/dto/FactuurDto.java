@@ -132,16 +132,7 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return Factuur
-                .newBuilder()
-                .factuurNummer(factuurNummer)
-                .gekoppeldeBestellingNummer(gekoppeldeBestellingNummer)
-                .factuurDate(LocalDate.parse(factuurDate,DATE_FORMATTER))
-                .contact(klant == null ? null : klant.toContact())
-                .factuurRegels(toFactuurRegels())
-                .uuid(uuid)
-//                .gekoppeldAfschrift(gekoppeldAfschrift)
-                .build();
+        return new Factuur(uuid,factuurNummer,gekoppeldeBestellingNummer,LocalDate.parse(factuurDate,DATE_FORMATTER),klant.toContact(),toFactuurRegels());
     }
 
     private List<FactuurRegel> toFactuurRegels() {

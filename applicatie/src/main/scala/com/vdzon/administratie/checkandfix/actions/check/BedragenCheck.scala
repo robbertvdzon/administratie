@@ -38,7 +38,7 @@ object BedragenCheck {
 
   private def factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData): Boolean = {
     val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != factuur.bedragIncBtw
+    return sumVanAfschriften != factuur.bedragIncBtwVal
   }
 
   private def rekeningNietVolledigBetaald(rekening: Rekening, data: CheckAndFixData): Boolean = {

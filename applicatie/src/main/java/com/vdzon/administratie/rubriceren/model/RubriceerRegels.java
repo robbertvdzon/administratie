@@ -5,6 +5,9 @@ import java.util.List;
 public class RubriceerRegels {
     private List<RubriceerRegel> rubriceerRegelList;
 
+    public RubriceerRegels() {
+    }
+
     private RubriceerRegels(Builder builder) {
         rubriceerRegelList = builder.rubriceerRegelList;
     }
