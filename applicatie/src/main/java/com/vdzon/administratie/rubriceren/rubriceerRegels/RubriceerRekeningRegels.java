@@ -11,6 +11,8 @@ import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
+import org.bson.types.ObjectId;
+import scala.Unit;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,22 +30,22 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 String factuurNummer = null;
                 String rekeningNummer = null;
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
-                    if (boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer()).isEmpty()
+                    if (boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer()).isEmpty()
                             &&
-                            !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
+                            !rekeningAlreadyUsed(regels, rekening.rekeningNummer())
                             &&
-                            (rekening.getBedragIncBtw() == afschrift.bedrag() * -1)
+                            (rekening.bedragIncBtw() == afschrift.bedrag() * -1)
                             &&
                             (
-                                    (afschrift.omschrijving().contains(rekening.getRekeningNummer()))
+                                    (afschrift.omschrijving().contains(rekening.rekeningNummer()))
                                             ||
-                                    (afschrift.omschrijving().equals(rekening.getOmschrijving()))
+                                            (afschrift.omschrijving().equals(rekening.omschrijving()))
                             )
-                        )
+                            )
 
                     {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
-                        rekeningNummer = rekening.getRekeningNummer();
+                        rekeningNummer = rekening.rekeningNummer();
                     }
                 }
                 RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder()
@@ -86,23 +88,14 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CREATE_REKENING:
-                Rekening rekening = Rekening
-                        .newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .rekeningNummer("" + findNextRekeningNummer(gebruiker))
-                        .naam(afschrift.relatienaam())
-                        .omschrijving(afschrift.omschrijving())
-                        .rekeningDate(afschrift.boekdatum())
-                        .bedragExBtw(afschrift.bedrag() * -1)
-                        .bedragIncBtw(afschrift.bedrag() * -1)
-                        .btw(0)
-                        .build();
+                Rekening rekening = new Rekening(UUID.randomUUID().toString(), "" + findNextRekeningNummer(gebruiker), "",afschrift.relatienaam(), afschrift.omschrijving(),
+                        afschrift.boekdatum(), afschrift.bedrag() * -1, afschrift.bedrag() * -1, 0,0);
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
                 boeking = BetaaldeRekeningBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
-                        .rekeningNummer(rekening.getRekeningNummer())
+                        .rekeningNummer(rekening.rekeningNummer())
                         .build();
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;

@@ -57,7 +57,7 @@ object BestaanCheck {
   }
 
   private def rekeningExists(rekeningNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleRekeningen.filter(rekening => rekening.getRekeningNummer().equals(rekeningNummer)).size > 0
+    return data.alleRekeningen.filter(rekening => rekening.rekeningNummer.equals(rekeningNummer)).size > 0
   }
 
   private def factuurExists(factuurNummer: String, data: CheckAndFixData): Boolean = {

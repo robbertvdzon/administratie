@@ -23,7 +23,7 @@ public class CalculateOverzicht {
         overzicht.endDate = LocalDate.parse(endDateStr, DATE_FORMATTER);
 
         overzicht.filteredFacturen = administratie.getFacturen().stream().filter(factuur -> betweenOrAtDates(factuur.getFactuurDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
-        overzicht.filteredRekeningen = administratie.getRekeningen().stream().filter(rekening-> betweenOrAtDates(rekening.getRekeningDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        overzicht.filteredRekeningen = administratie.getRekeningen().stream().filter(rekening-> betweenOrAtDates(rekening.rekeningDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredDeclaraties = administratie.getDeclaraties().stream().filter(declaratie-> betweenOrAtDates(declaratie.getDeclaratieDate(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         overzicht.filteredAfschriften = administratie.getAfschriften().stream().filter(afschriften-> betweenOrAtDates(afschriften.boekdatum(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
 
@@ -32,9 +32,9 @@ public class CalculateOverzicht {
         overzicht.facturenTotaalIncBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragIncBtw()).sum();
         overzicht.facturenTotaalBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBtw()).sum();
 
-        overzicht.rekeningenTotaalExBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragExBtw()).sum();
-        overzicht.rekeningenTotaalIncBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragIncBtw()).sum();
-        overzicht.rekeningenTotaalBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBtw()).sum();
+        overzicht.rekeningenTotaalExBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.bedragExBtw()).sum();
+        overzicht.rekeningenTotaalIncBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.bedragIncBtw()).sum();
+        overzicht.rekeningenTotaalBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.btw()).sum();
 
         overzicht.declaratiesTotaalExBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragExBtw()).sum();
         overzicht.declaratiesTotaalIncBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
@@ -113,7 +113,7 @@ public class CalculateOverzicht {
         overzicht.onbetaaldeRekeningen = overzicht.filteredRekeningen
                 .stream()
                 .filter(rekening -> rekeningZonderBoekingen(rekening, boekingenCache))
-                .mapToDouble(rekening-> rekening.getBedragIncBtw())
+                .mapToDouble(rekening-> rekening.bedragIncBtw())
                 .sum();
 
 
@@ -145,7 +145,7 @@ public class CalculateOverzicht {
     }
 
     private static boolean rekeningZonderBoekingen(Rekening rekening, BoekingenCache boekingenCache) {
-        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
+        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer());
         return boekingenVanRekening==null || boekingenVanRekening.size()==0;
     }
 

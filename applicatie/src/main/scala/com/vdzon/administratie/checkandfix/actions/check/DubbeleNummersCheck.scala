@@ -15,7 +15,7 @@ object DubbeleNummersCheck {
         )
 
   def checkRekeningenMetHetzelfdeRekeningNummer(data: CheckAndFixData) = data.alleRekeningen
-      .groupBy(r => r.getRekeningNummer)
+      .groupBy(r => r.rekeningNummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,

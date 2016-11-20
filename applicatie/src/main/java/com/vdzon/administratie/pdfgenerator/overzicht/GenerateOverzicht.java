@@ -144,7 +144,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredRekeningen
                 .stream()
-                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
+                .sorted((rek1, rek2) -> rek2.rekeningNummer().compareTo(rek1.rekeningNummer()))
                 .forEach(rekening -> listRekening(rekening, boekingenCache));
 
         page.close();
@@ -205,7 +205,7 @@ public class GenerateOverzicht {
                 .getRekeningen()
                 .stream()
                 .filter(rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate))
-                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
+                .sorted((rek1, rek2) -> rek2.rekeningNummer().compareTo(rek1.rekeningNummer()))
                 .forEach(rekening -> listRekening(rekening, boekingenCache));
 
         page.close();
@@ -238,8 +238,8 @@ public class GenerateOverzicht {
     }
 
     private boolean rekeningHeeftLopendeAfschrijving(Rekening rekening, LocalDate beginDate) {
-        if (rekening.getMaandenAfschrijving()==0) return false;
-        return rekening.getRekeningDate().plusMonths(rekening.getMaandenAfschrijving()).isAfter(beginDate);
+        if (rekening.maandenAfschrijving()==0) return false;
+        return rekening.rekeningDate().plusMonths(rekening.maandenAfschrijving()).isAfter(beginDate);
     }
 
     private static boolean betweenOrAtDates(LocalDate date, LocalDate beginDate, LocalDate endData){
@@ -339,35 +339,35 @@ public class GenerateOverzicht {
     }
 
     private void listRekening(Rekening rekening, BoekingenCache boekingenCache)  {
-        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
+        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer());
         String status = "Niet betaald";
         if (boekingenVanRekening!=null && boekingenVanRekening.size()>0){
             status = "Betaald";
         }
-        if (rekening.getMaandenAfschrijving()>0){
-            status += " (afschrijven in "+rekening.getMaandenAfschrijving()+" maanden)";
+        if (rekening.maandenAfschrijving()>0){
+            status += " (afschrijven in "+rekening.maandenAfschrijving()+" maanden)";
 
         }
 
         try {
             skipDown(15);
             int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningNummer());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.rekeningNummer());
             y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningDate().toString());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.rekeningDate().toString());
             y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragExBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.bedragExBtw()));
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.btw()));
             y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.bedragIncBtw()));
             y+=80;
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
 
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.getNaam().toString());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.naam().toString());
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.getOmschrijving().toString());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.omschrijving().toString());
             skipDown(5);
 
         }

@@ -221,12 +221,7 @@ class CheckAndFixServiceTest {
   }
 
   def buildRekening(nummer: String, inc: Double, ex: Double, btw: Double): Rekening = {
-    Rekening.newBuilder()
-      .bedragExBtw(ex)
-      .bedragIncBtw(inc)
-      .btw(btw)
-      .rekeningNummer(nummer)
-      .build()
+    new Rekening(null, bedragExBtw=ex,bedragIncBtw=inc,btw=btw,rekeningNummer=nummer);
   }
 
 }

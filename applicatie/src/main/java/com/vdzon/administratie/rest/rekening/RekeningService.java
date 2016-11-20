@@ -30,9 +30,9 @@ public class RekeningService {
         RekeningDto rekeningDto = mapper.readValue(contactJson, RekeningDto.class);
         rekening = rekeningDto.toRekening();
 
-        gebruiker.getDefaultAdministratie().removeRekening(rekening.getUuid());
+        gebruiker.getDefaultAdministratie().removeRekening(rekening.uuid().toString());
         gebruiker.getDefaultAdministratie().addRekening(rekening);
-        List<BoekingMetRekening> boekingenVanRekening = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanRekening(rekening.getRekeningNummer());
+        List<BoekingMetRekening> boekingenVanRekening = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanRekening(rekening.rekeningNummer());
         for (BoekingMetRekening boeking : boekingenVanRekening) {
             boolean found = false;
             if (rekeningDto.getBoekingen()!=null) {
@@ -58,7 +58,7 @@ public class RekeningService {
             rekeningUuid = null;
         }
         Rekening huidigeRekening = gebruiker.getDefaultAdministratie().getRekening(rekeningUuid);
-        removeBoekingenVanRekening(gebruiker, huidigeRekening.getRekeningNummer());
+        removeBoekingenVanRekening(gebruiker, huidigeRekening.rekeningNummer());
         gebruiker.getDefaultAdministratie().removeRekening(rekeningUuid);
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");

@@ -199,7 +199,7 @@ public class Administratie {
     public void removeRekening(String uuid) {
         List<Rekening> rekeningenClone = getRekeningen();
         for (Rekening rekening : rekeningenClone) {
-            if (rekening.getUuid().equals(uuid)) {
+            if (rekening.uuid().equals(uuid)) {
                 this.rekeningen.remove(rekening);
             }
         }
@@ -215,7 +215,7 @@ public class Administratie {
     }
 
     private boolean rekeningUuidMatchesUuid(String uuid, Rekening rekening) {
-        return uuid == null && rekening.getUuid() == null || uuid != null && uuid.equals(rekening.getUuid());
+        return uuid == null && rekening.uuid() == null || uuid != null && uuid.equals(rekening.uuid());
     }
 
     public void addDeclaratie(Declaratie declaratie) {

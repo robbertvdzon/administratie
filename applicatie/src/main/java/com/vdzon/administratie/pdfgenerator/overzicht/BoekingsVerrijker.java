@@ -125,15 +125,15 @@ public class BoekingsVerrijker {
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
                 .rekening(rekening)
-                .rekeningBedrag(rekening.getBedragIncBtw())
-                .rekeningDate(rekening.getRekeningDate())
+                .rekeningBedrag(rekening.bedragIncBtw())
+                .rekeningDate(rekening.rekeningDate())
                 .build();
     }
 
     private static Rekening getRekening(BoekingMetRekening boeking, Administratie administratie) {
         return administratie.getRekeningen()
                 .stream()
-                .filter(rekening -> rekening.getRekeningNummer().equals(boeking.getRekeningNummer()))
+                .filter(rekening -> rekening.rekeningNummer().equals(boeking.getRekeningNummer()))
                 .findFirst()
                 .orElse(null);
     }
