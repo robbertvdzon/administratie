@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Rekening;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class VerrijkteBoeking {
@@ -52,10 +53,10 @@ public class VerrijkteBoeking {
     private Rekening rekening;
     private Afschrift afschrift;
     private BOEKINGSTYPE boekingsType;
-    private double boekingsBedrag;
-    private double afschriftBedrag;
-    private double factuurBedrag;
-    private double rekeningBedrag;
+    private BigDecimal boekingsBedrag;
+    private BigDecimal afschriftBedrag;
+    private BigDecimal factuurBedrag;
+    private BigDecimal rekeningBedrag;
     private LocalDate afschriftDate;
     private LocalDate factuurDate;
     private LocalDate rekeningDate;
@@ -80,19 +81,19 @@ public class VerrijkteBoeking {
         return boekingsType;
     }
 
-    public double getBoekingsBedrag() {
+    public BigDecimal getBoekingsBedrag() {
         return boekingsBedrag;
     }
 
-    public double getAfschriftBedrag() {
+    public BigDecimal getAfschriftBedrag() {
         return afschriftBedrag;
     }
 
-    public double getFactuurBedrag() {
+    public BigDecimal getFactuurBedrag() {
         return factuurBedrag;
     }
 
-    public double getRekeningBedrag() {
+    public BigDecimal getRekeningBedrag() {
         return rekeningBedrag;
     }
 
@@ -114,10 +115,10 @@ public class VerrijkteBoeking {
         private Rekening rekening;
         private Afschrift afschrift;
         private BOEKINGSTYPE boekingsType;
-        private double boekingsBedrag;
-        private double afschriftBedrag;
-        private double factuurBedrag;
-        private double rekeningBedrag;
+        private BigDecimal boekingsBedrag;
+        private BigDecimal afschriftBedrag;
+        private BigDecimal factuurBedrag;
+        private BigDecimal rekeningBedrag;
         private LocalDate afschriftDate;
         private LocalDate factuurDate;
         private LocalDate rekeningDate;
@@ -150,22 +151,22 @@ public class VerrijkteBoeking {
             return this;
         }
 
-        public Builder boekingsBedrag(double val) {
+        public Builder boekingsBedrag(BigDecimal val) {
             boekingsBedrag = val;
             return this;
         }
 
-        public Builder afschriftBedrag(double val) {
+        public Builder afschriftBedrag(BigDecimal val) {
             afschriftBedrag = val;
             return this;
         }
 
-        public Builder factuurBedrag(double val) {
+        public Builder factuurBedrag(BigDecimal val) {
             factuurBedrag = val;
             return this;
         }
 
-        public Builder rekeningBedrag(double val) {
+        public Builder rekeningBedrag(BigDecimal val) {
             rekeningBedrag = val;
             return this;
         }

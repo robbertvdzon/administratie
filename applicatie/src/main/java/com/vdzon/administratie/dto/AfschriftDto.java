@@ -6,6 +6,7 @@ import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,7 +21,7 @@ public class AfschriftDto {
     private String omschrijving;
     private String relatienaam;
     private String boekdatum;
-    private double bedrag = 0;
+    private BigDecimal bedrag = BigDecimal.ZERO;
     private List<BoekingDto> boekingen;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -80,7 +81,7 @@ public class AfschriftDto {
         return boekdatum;
     }
 
-    public double getBedrag() {
+    public BigDecimal getBedrag() {
         return bedrag;
     }
 
@@ -125,7 +126,7 @@ public class AfschriftDto {
         private String omschrijving;
         private String relatienaam;
         private String boekdatum;
-        private double bedrag;
+        private BigDecimal bedrag;
         private List<BoekingDto> boekingen;
 
         private Builder() {
@@ -161,7 +162,7 @@ public class AfschriftDto {
             return this;
         }
 
-        public Builder bedrag(double val) {
+        public Builder bedrag(BigDecimal val) {
             bedrag = val;
             return this;
         }

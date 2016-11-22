@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity("afschrift")
@@ -20,7 +21,7 @@ public class Afschrift {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate boekdatum;
-    private double bedrag;
+    private BigDecimal bedrag;
 
     public Afschrift() {
     }
@@ -75,7 +76,7 @@ public class Afschrift {
         return boekdatum;
     }
 
-    public double getBedrag() {
+    public BigDecimal getBedrag() {
         return bedrag;
     }
 
@@ -86,7 +87,7 @@ public class Afschrift {
         private String omschrijving;
         private String relatienaam;
         private LocalDate boekdatum;
-        private double bedrag;
+        private BigDecimal bedrag;
 
         private Builder() {
         }
@@ -121,7 +122,7 @@ public class Afschrift {
             return this;
         }
 
-        public Builder bedrag(double val) {
+        public Builder bedrag(BigDecimal val) {
             bedrag = val;
             return this;
         }

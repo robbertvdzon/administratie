@@ -12,6 +12,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
         if (hasNoBoekingen(boekingenVanAfschrift)) {
-            if (afschrift.getBedrag() < 0) {
+            if (afschrift.getBedrag().doubleValue() < 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.BETALING_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 String rekeningNummer = null;
@@ -32,7 +33,7 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                             &&
                             !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
                             &&
-                            (rekening.getBedragIncBtw() == afschrift.getBedrag() * -1)
+                            (rekening.getBedragIncBtw().compareTo(afschrift.getBedrag().negate())==0)
                             &&
                             (
                                     (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))
@@ -93,9 +94,9 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                         .naam(afschrift.getRelatienaam())
                         .omschrijving(afschrift.getOmschrijving())
                         .rekeningDate(afschrift.getBoekdatum())
-                        .bedragExBtw(afschrift.getBedrag() * -1)
-                        .bedragIncBtw(afschrift.getBedrag() * -1)
-                        .btw(0)
+                        .bedragExBtw(afschrift.getBedrag().negate())
+                        .bedragIncBtw(afschrift.getBedrag().negate())
+                        .btw(BigDecimal.ZERO)
                         .build();
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 

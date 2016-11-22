@@ -104,7 +104,7 @@ public class GenerateFactuur {
             boolean first = true;
             for (String omschrijving: omschrijvingSplitted){
                 if (first){
-                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" + factuurRegel.getAantal(), "" + omschrijving, "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs() * factuurRegel.getAantal()));
+                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" + factuurRegel.getAantal(), "" + omschrijving, "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs().doubleValue() * factuurRegel.getAantal().doubleValue()));
                     first = false;
                 }
                 else {

@@ -3,6 +3,7 @@ package com.vdzon.administratie.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.Declaratie;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -13,9 +14,9 @@ public class DeclaratieDto {
     private String declaratieNummer;
     private String omschrijving;
     private String declaratieDate;
-    private double bedragExBtw = 0;
-    private double bedragIncBtw = 0;
-    private double btw = 0;
+    private BigDecimal bedragExBtw = BigDecimal.ZERO;
+    private BigDecimal bedragIncBtw = BigDecimal.ZERO;
+    private BigDecimal btw = BigDecimal.ZERO;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -64,15 +65,15 @@ public class DeclaratieDto {
         return declaratieDate;
     }
 
-    public double getBedragExBtw() {
+    public BigDecimal getBedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public BigDecimal getBedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public BigDecimal getBtw() {
         return btw;
     }
 
@@ -104,9 +105,9 @@ public class DeclaratieDto {
         private String declaratieNummer;
         private String omschrijving;
         private String declaratieDate;
-        private double bedragExBtw;
-        private double bedragIncBtw;
-        private double btw;
+        private BigDecimal bedragExBtw;
+        private BigDecimal bedragIncBtw;
+        private BigDecimal btw;
 
         private Builder() {
         }
@@ -131,17 +132,17 @@ public class DeclaratieDto {
             return this;
         }
 
-        public Builder bedragExBtw(double val) {
+        public Builder bedragExBtw(BigDecimal val) {
             bedragExBtw = val;
             return this;
         }
 
-        public Builder bedragIncBtw(double val) {
+        public Builder bedragIncBtw(BigDecimal val) {
             bedragIncBtw = val;
             return this;
         }
 
-        public Builder btw(double val) {
+        public Builder btw(BigDecimal val) {
             btw = val;
             return this;
         }

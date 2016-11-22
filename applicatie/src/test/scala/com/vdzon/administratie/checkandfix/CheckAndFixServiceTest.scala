@@ -209,24 +209,24 @@ class CheckAndFixServiceTest {
 
   def buildFactuur(nummer: String, ex: Double, perc: Double): Factuur = {
     Factuur.newBuilder()
-      .bedragExBtw(ex)
+      .bedragExBtw(java.math.BigDecimal.valueOf(ex))
       .factuurNummer(nummer)
-      .factuurRegels(FactuurRegel.newBuilder().aantal(1).stuksPrijs(ex).btwPercentage(perc).build()::Nil)
+      .factuurRegels(FactuurRegel.newBuilder().aantal(java.math.BigDecimal.ONE).stuksPrijs(java.math.BigDecimal.valueOf(ex)).btwPercentage(java.math.BigDecimal.valueOf(perc)).build()::Nil)
       .build()
   }
 
   def buildAfschrift(nummer: String, bedrag: Double): Afschrift = {
     Afschrift.newBuilder()
       .nummer(nummer)
-      .bedrag(bedrag)
+      .bedrag(java.math.BigDecimal.valueOf(bedrag))
       .build()
   }
 
   def buildRekening(nummer: String, inc: Double, ex: Double, btw: Double): Rekening = {
     Rekening.newBuilder()
-      .bedragExBtw(ex)
-      .bedragIncBtw(inc)
-      .btw(btw)
+      .bedragExBtw(java.math.BigDecimal.valueOf(ex))
+      .bedragIncBtw(java.math.BigDecimal.valueOf(inc))
+      .btw(java.math.BigDecimal.valueOf(btw))
       .rekeningNummer(nummer)
       .build()
   }

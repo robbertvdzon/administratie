@@ -3,14 +3,16 @@ package com.vdzon.administratie.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.FactuurRegel;
 
+import java.math.BigDecimal;
+
 @JsonIgnoreProperties
 public class FactuurRegelDto {
 
     private String uuid;
     private String omschrijving;
-    private double aantal;
-    private double stuksPrijs;
-    private double btwPercentage;
+    private BigDecimal aantal;
+    private BigDecimal stuksPrijs;
+    private BigDecimal btwPercentage;
 
     public FactuurRegelDto() {
     }
@@ -45,15 +47,15 @@ public class FactuurRegelDto {
         return omschrijving;
     }
 
-    public double getAantal() {
+    public BigDecimal getAantal() {
         return aantal;
     }
 
-    public double getStuksPrijs() {
+    public BigDecimal getStuksPrijs() {
         return stuksPrijs;
     }
 
-    public double getBtwPercentage() {
+    public BigDecimal getBtwPercentage() {
         return btwPercentage;
     }
 
@@ -79,9 +81,9 @@ public class FactuurRegelDto {
     public static final class Builder {
         private String uuid;
         private String omschrijving;
-        private double aantal;
-        private double stuksPrijs;
-        private double btwPercentage;
+        private BigDecimal aantal;
+        private BigDecimal stuksPrijs;
+        private BigDecimal btwPercentage;
 
         private Builder() {
         }
@@ -96,17 +98,17 @@ public class FactuurRegelDto {
             return this;
         }
 
-        public Builder aantal(double val) {
+        public Builder aantal(BigDecimal val) {
             aantal = val;
             return this;
         }
 
-        public Builder stuksPrijs(double val) {
+        public Builder stuksPrijs(BigDecimal val) {
             stuksPrijs = val;
             return this;
         }
 
-        public Builder btwPercentage(double val) {
+        public Builder btwPercentage(BigDecimal val) {
             btwPercentage = val;
             return this;
         }

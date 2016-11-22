@@ -9,6 +9,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class FactuurDto {
     private String factuurDate;
     private ContactDto klant;
     private List<FactuurRegelDto> factuurRegels;
-    private double bedragExBtw = 0;
-    private double bedragIncBtw = 0;
-    private double btw = 0;
+    private BigDecimal bedragExBtw = BigDecimal.ZERO;
+    private BigDecimal bedragIncBtw = BigDecimal.ZERO;
+    private BigDecimal btw = BigDecimal.ZERO;
     private List<BoekingDto> boekingen;
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -90,15 +91,15 @@ public class FactuurDto {
         return factuurRegels;
     }
 
-    public double getBedragExBtw() {
+    public BigDecimal getBedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public BigDecimal getBedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public BigDecimal getBtw() {
         return btw;
     }
 
@@ -160,9 +161,9 @@ public class FactuurDto {
         private String factuurDate;
         private ContactDto klant;
         private List<FactuurRegelDto> factuurRegels;
-        private double bedragExBtw;
-        private double bedragIncBtw;
-        private double btw;
+        private BigDecimal bedragExBtw;
+        private BigDecimal bedragIncBtw;
+        private BigDecimal btw;
         private List<BoekingDto> boekingen;
 
         private Builder() {
@@ -198,17 +199,17 @@ public class FactuurDto {
             return this;
         }
 
-        public Builder bedragExBtw(double val) {
+        public Builder bedragExBtw(BigDecimal val) {
             bedragExBtw = val;
             return this;
         }
 
-        public Builder bedragIncBtw(double val) {
+        public Builder bedragIncBtw(BigDecimal val) {
             bedragIncBtw = val;
             return this;
         }
 
-        public Builder btw(double val) {
+        public Builder btw(BigDecimal val) {
             btw = val;
             return this;
         }

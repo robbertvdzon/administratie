@@ -14,6 +14,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +26,12 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
         if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) {
-            if (afschrift.getBedrag() > 0) {
+            if (afschrift.getBedrag().doubleValue() > 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.INKOMSTEN_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
                     String omschrijvingZonderSpaties = afschrift.getOmschrijving().replaceAll(" ","");
-                    if ((factuur.getBedragIncBtw() == afschrift.getBedrag()) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
+                    if ((factuur.getBedragIncBtw().compareTo(afschrift.getBedrag())==0) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR;
                         factuurNummer = factuur.getFactuurNummer();
                     }

@@ -7,6 +7,7 @@ import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,9 +22,9 @@ public class RekeningDto {
     private String naam;
     private String omschrijving;
     private String rekeningDate;
-    private double bedragExBtw = 0;
-    private double bedragIncBtw = 0;
-    private double btw = 0;
+    private BigDecimal bedragExBtw = BigDecimal.ZERO;
+    private BigDecimal bedragIncBtw = BigDecimal.ZERO;
+    private BigDecimal btw = BigDecimal.ZERO;
     private List<BoekingDto> boekingen;
     private int maandenAfschrijving = 0;
 
@@ -88,15 +89,15 @@ public class RekeningDto {
         return rekeningDate;
     }
 
-    public double getBedragExBtw() {
+    public BigDecimal getBedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public BigDecimal getBedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public BigDecimal getBtw() {
         return btw;
     }
 
@@ -151,9 +152,9 @@ public class RekeningDto {
         private String naam;
         private String omschrijving;
         private String rekeningDate;
-        private double bedragExBtw;
-        private double bedragIncBtw;
-        private double btw;
+        private BigDecimal bedragExBtw;
+        private BigDecimal bedragIncBtw;
+        private BigDecimal btw;
         private List<BoekingDto> boekingen;
         private int maandenAfschrijving;
 
@@ -190,17 +191,17 @@ public class RekeningDto {
             return this;
         }
 
-        public Builder bedragExBtw(double val) {
+        public Builder bedragExBtw(BigDecimal val) {
             bedragExBtw = val;
             return this;
         }
 
-        public Builder bedragIncBtw(double val) {
+        public Builder bedragIncBtw(BigDecimal val) {
             bedragIncBtw = val;
             return this;
         }
 
-        public Builder btw(double val) {
+        public Builder btw(BigDecimal val) {
             btw = val;
             return this;
         }

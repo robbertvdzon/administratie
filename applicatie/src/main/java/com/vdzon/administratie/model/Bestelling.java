@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,9 +24,9 @@ public class Bestelling {
     private LocalDate bestellingDate;
     private Contact contact;
     private List<BestellingRegel> bestellingRegels = new ArrayList<>();
-    private double bedragExBtw = 0;
-    private double bedragIncBtw = 0;
-    private double btw = 0;
+    private BigDecimal bedragExBtw = BigDecimal.ZERO;
+    private BigDecimal bedragIncBtw = BigDecimal.ZERO;
+    private BigDecimal btw = BigDecimal.ZERO;
 
     public Bestelling() {
     }
@@ -83,22 +85,22 @@ public class Bestelling {
         return contact;
     }
 
-    public double getBedragExBtw() {
+    public BigDecimal getBedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public BigDecimal getBedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public BigDecimal getBtw() {
         return btw;
     }
 
     /*
          * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
          */
-    Bestelling(String uuid, String bestellingNummer, String gekoppeldFactuurNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, double bedragExBtw, double bedragIncBtw, double btw) {
+    Bestelling(String uuid, String bestellingNummer, String gekoppeldFactuurNummer, LocalDate bestellingDate, Contact contact, List<BestellingRegel> bestellingRegels, BigDecimal bedragExBtw, BigDecimal bedragIncBtw, BigDecimal btw) {
         this.uuid = uuid;
         this.bestellingNummer = bestellingNummer;
         this.gekoppeldFactuurNummer = gekoppeldFactuurNummer;
@@ -113,13 +115,18 @@ public class Bestelling {
 
 
     private void calculate() {
-        bedragExBtw = 0;
-        bedragIncBtw = 0;
-        btw = 0;
+        bedragExBtw = BigDecimal.ZERO;
+        bedragIncBtw = BigDecimal.ZERO;
+        btw = BigDecimal.ZERO;
         for (BestellingRegel bestellingRegel : bestellingRegels) {
-            bedragExBtw += bestellingRegel.getStuksPrijs() * bestellingRegel.getAantal();
-            btw += bedragExBtw * (bestellingRegel.getBtwPercentage() / 100);
-            bedragIncBtw += bedragExBtw + btw;
+            BigDecimal regelBedragEx = bestellingRegel.getStuksPrijs().multiply(bestellingRegel.getAantal());
+            BigDecimal regelBedragBtw = regelBedragEx.multiply(bestellingRegel.getBtwPercentage().divide(BigDecimal.valueOf(100)));
+            regelBedragBtw = regelBedragBtw.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal regelBedragInc = regelBedragEx.add(regelBedragBtw);
+
+            bedragExBtw = bedragExBtw.add(regelBedragEx);
+            btw = btw.add(regelBedragBtw);
+            bedragIncBtw = bedragIncBtw.add(regelBedragInc);
         }
     }
 
@@ -130,9 +137,9 @@ public class Bestelling {
         private LocalDate bestellingDate;
         private Contact contact;
         private List<BestellingRegel> bestellingRegels;
-        private double bedragExBtw;
-        private double bedragIncBtw;
-        private double btw;
+        private BigDecimal bedragExBtw;
+        private BigDecimal bedragIncBtw;
+        private BigDecimal btw;
 
         private Builder() {
         }
@@ -167,17 +174,17 @@ public class Bestelling {
             return this;
         }
 
-        public Builder bedragExBtw(double val) {
+        public Builder bedragExBtw(BigDecimal val) {
             bedragExBtw = val;
             return this;
         }
 
-        public Builder bedragIncBtw(double val) {
+        public Builder bedragIncBtw(BigDecimal val) {
             bedragIncBtw = val;
             return this;
         }
 
-        public Builder btw(double val) {
+        public Builder btw(BigDecimal val) {
             btw = val;
             return this;
         }

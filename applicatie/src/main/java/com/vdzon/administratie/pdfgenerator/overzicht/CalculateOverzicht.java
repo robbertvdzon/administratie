@@ -28,38 +28,38 @@ public class CalculateOverzicht {
         overzicht.filteredAfschriften = administratie.getAfschriften().stream().filter(afschriften-> betweenOrAtDates(afschriften.getBoekdatum(), overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
 
 
-        overzicht.facturenTotaalExBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragExBtw()).sum();
-        overzicht.facturenTotaalIncBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragIncBtw()).sum();
-        overzicht.facturenTotaalBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBtw()).sum();
+        overzicht.facturenTotaalExBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragExBtw().doubleValue()).sum();
+        overzicht.facturenTotaalIncBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBedragIncBtw().doubleValue()).sum();
+        overzicht.facturenTotaalBtw = overzicht.filteredFacturen.stream().mapToDouble(factuur -> factuur.getBtw().doubleValue()).sum();
 
-        overzicht.rekeningenTotaalExBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragExBtw()).sum();
-        overzicht.rekeningenTotaalIncBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragIncBtw()).sum();
-        overzicht.rekeningenTotaalBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBtw()).sum();
+        overzicht.rekeningenTotaalExBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragExBtw().doubleValue()).sum();
+        overzicht.rekeningenTotaalIncBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBedragIncBtw().doubleValue()).sum();
+        overzicht.rekeningenTotaalBtw = overzicht.filteredRekeningen.stream().mapToDouble(rekening -> rekening.getBtw().doubleValue()).sum();
 
-        overzicht.declaratiesTotaalExBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragExBtw()).sum();
-        overzicht.declaratiesTotaalIncBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragIncBtw()).sum();
-        overzicht.declaratiesTotaalBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBtw()).sum();
+        overzicht.declaratiesTotaalExBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragExBtw().doubleValue()).sum();
+        overzicht.declaratiesTotaalIncBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBedragIncBtw().doubleValue()).sum();
+        overzicht.declaratiesTotaalBtw = overzicht.filteredDeclaraties.stream().mapToDouble(declaratie -> declaratie.getBtw().doubleValue()).sum();
 
         // overzicht van alle ontvangen facturen
         overzicht.ontvangenFactuurBetalingenBetaaldBinnenGeselecteerdePeriode = verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR)
                 .filter(boeking -> betweenOrAtDates(boeking.getFactuurDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.ontvangenFactuurBetalingenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode = verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR)
                 .filter(boeking -> !betweenOrAtDates(boeking.getFactuurDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.ontvangenFacturenBetaaldBuitenGeselecteerdePeriode = verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR)
                 .filter(boeking -> betweenOrAtDates(boeking.getFactuurDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> !betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         // overzicht van alle betaalde rekeningen
@@ -67,53 +67,53 @@ public class CalculateOverzicht {
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING)
                 .filter(boeking -> betweenOrAtDates(boeking.getRekeningDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.betaaldeRekeningenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode = -1*verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING)
                 .filter(boeking -> !betweenOrAtDates(boeking.getRekeningDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.betaaldeRekeningenBetaaldBuitenGeselecteerdePeriode = -1*verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING)
                 .filter(boeking -> betweenOrAtDates(boeking.getRekeningDate(), overzicht.beginDate, overzicht.endDate))
                 .filter(boeking -> !betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         // overzicht van overige betalingen
         overzicht.priveBoekingen = verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.PRIVE_BETALING)
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.ontvangenInkomstenZonderFactuur = verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.INKOMSTEN_ZONDER_FACTUUR)
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         overzicht.betaaldeRekeningenZonderFactuur = -1*verrijkteBoekings.stream()
                 .filter(boeking -> boeking.getBoekingsType() == VerrijkteBoeking.BOEKINGSTYPE.BETALING_ZONDER_FACTUUR)
                 .filter(boeking -> betweenOrAtDates(boeking.getAfschriftDate(), overzicht.beginDate, overzicht.endDate))
-                .mapToDouble(boeking -> boeking.getBoekingsBedrag())
+                .mapToDouble(boeking -> boeking.getBoekingsBedrag().doubleValue())
                 .sum();
 
         // zoek facturen en rekeningen zonder boeking
         overzicht.onbetaaldeFacturen = overzicht.filteredFacturen
                 .stream()
                 .filter(factuur -> factuurZonderBoekingen(factuur, boekingenCache))
-                .mapToDouble(factuur -> factuur.getBedragIncBtw())
+                .mapToDouble(factuur -> factuur.getBedragIncBtw().doubleValue())
                 .sum();
 
         overzicht.onbetaaldeRekeningen = overzicht.filteredRekeningen
                 .stream()
                 .filter(rekening -> rekeningZonderBoekingen(rekening, boekingenCache))
-                .mapToDouble(rekening-> rekening.getBedragIncBtw())
+                .mapToDouble(rekening-> rekening.getBedragIncBtw().doubleValue())
                 .sum();
 
 
@@ -133,7 +133,7 @@ public class CalculateOverzicht {
                 + overzicht.ontvangenInkomstenZonderFactuur
                 - overzicht.betaaldeRekeningenZonderFactuur;
 
-        overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag()).sum();
+        overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften.stream().mapToDouble(afschrift -> afschrift.getBedrag().doubleValue()).sum();
         overzicht.verschilTussenVerwachtEnWerkelijk = overzicht.verwachtTotaalOpRekeningBij - overzicht.werkelijkOpBankBij;
 
         overzicht.belastbaarInkomenExBtw = overzicht.facturenTotaalExBtw - overzicht.rekeningenTotaalExBtw - overzicht.declaratiesTotaalExBtw - overzicht.betaaldeRekeningenZonderFactuur;

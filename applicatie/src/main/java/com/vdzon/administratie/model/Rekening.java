@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity("rekening")
@@ -20,9 +21,9 @@ public class Rekening {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate rekeningDate;
-    private double bedragExBtw = 0;
-    private double bedragIncBtw = 0;
-    private double btw = 0;
+    private BigDecimal bedragExBtw = BigDecimal.ZERO;
+    private BigDecimal bedragIncBtw = BigDecimal.ZERO;
+    private BigDecimal btw = BigDecimal.ZERO;
     private int maandenAfschrijving = 0;
 
     public Rekening() {
@@ -84,15 +85,15 @@ public class Rekening {
         return rekeningDate;
     }
 
-    public double getBedragExBtw() {
+    public BigDecimal getBedragExBtw() {
         return bedragExBtw;
     }
 
-    public double getBedragIncBtw() {
+    public BigDecimal getBedragIncBtw() {
         return bedragIncBtw;
     }
 
-    public double getBtw() {
+    public BigDecimal getBtw() {
         return btw;
     }
 
@@ -107,9 +108,9 @@ public class Rekening {
         private String naam;
         private String omschrijving;
         private LocalDate rekeningDate;
-        private double bedragExBtw;
-        private double bedragIncBtw;
-        private double btw;
+        private BigDecimal bedragExBtw;
+        private BigDecimal bedragIncBtw;
+        private BigDecimal btw;
         private int maandenAfschrijving;
 
         private Builder() {
@@ -145,17 +146,17 @@ public class Rekening {
             return this;
         }
 
-        public Builder bedragExBtw(double val) {
+        public Builder bedragExBtw(BigDecimal val) {
             bedragExBtw = val;
             return this;
         }
 
-        public Builder bedragIncBtw(double val) {
+        public Builder bedragIncBtw(BigDecimal val) {
             bedragIncBtw = val;
             return this;
         }
 
-        public Builder btw(double val) {
+        public Builder btw(BigDecimal val) {
             btw = val;
             return this;
         }

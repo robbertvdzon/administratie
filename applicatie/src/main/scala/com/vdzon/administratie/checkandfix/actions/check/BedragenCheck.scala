@@ -43,11 +43,11 @@ object BedragenCheck {
 
   private def rekeningNietVolledigBetaald(rekening: Rekening, data: CheckAndFixData): Boolean = {
     val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != -1*rekening.getBedragIncBtw
+    return sumVanAfschriften != -1*rekening.getBedragIncBtw.doubleValue()
   }
 
   private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = data.alleAfschriften
       .find(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer()))
-      .getOrElse(Afschrift.newBuilder().build()).getBedrag
+      .getOrElse(Afschrift.newBuilder().build()).getBedrag.doubleValue()
 
 }

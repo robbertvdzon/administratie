@@ -8,7 +8,9 @@ import com.vdzon.administratie.model.boekingen.*;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
+import com.vdzon.administratie.mongo.BigDecimalConverter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +47,7 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(InkomstenZonderFactuurBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.INKOMSTEN_ZONDER_FACTUUR;
-        double boekingsBedrag = afschift.getBedrag();
+        BigDecimal boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
@@ -60,7 +62,7 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(BetalingZonderFactuurBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETALING_ZONDER_FACTUUR;
-        double boekingsBedrag = afschift.getBedrag();
+        BigDecimal boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
@@ -75,7 +77,7 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(PriveBetalingBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.PRIVE_BETALING;
-        double boekingsBedrag = afschift.getBedrag();
+        BigDecimal boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
@@ -94,8 +96,8 @@ public class BoekingsVerrijker {
             factuur = Factuur.newBuilder().factuurDate(afschift.getBoekdatum()).build();
         }
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR;
-        double boekingsBedrag = afschift.getBedrag();
-        double factuurBedrag = factuur.getBedragIncBtw();
+        BigDecimal boekingsBedrag = afschift.getBedrag();
+        BigDecimal factuurBedrag = factuur.getBedragIncBtw();
         LocalDate factuurDate = factuur.getFactuurDate();
 
         return VerrijkteBoeking.newBuilder()
@@ -115,7 +117,7 @@ public class BoekingsVerrijker {
         Afschrift afschift = getAfschift(boeking, administratie);
         Rekening rekening = getRekening(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING;
-        double boekingsBedrag = afschift.getBedrag();
+        BigDecimal boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)

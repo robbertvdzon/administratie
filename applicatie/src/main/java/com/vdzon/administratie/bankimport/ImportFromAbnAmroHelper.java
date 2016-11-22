@@ -5,6 +5,7 @@ import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.Gebruiker;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -16,7 +17,7 @@ public class ImportFromAbnAmroHelper {
     public static final int START_AFSCHRIFT_NUMMER = 1000;
 
     protected static Afschrift buildAfschrift(NextNummerHolder nextNummerHolder, AfschriftData afschriftData) {
-        double bedrag = getBedrag(afschriftData.bedragStr);
+        BigDecimal bedrag = getBedrag(afschriftData.bedragStr);
         LocalDate boekDatum = getBoekDatum(afschriftData.date);
         int nextAfschriftNummer = nextNummerHolder.nextNummer++;
         return Afschrift.newBuilder()
@@ -75,8 +76,8 @@ public class ImportFromAbnAmroHelper {
 
     }
 
-    protected static double getBedrag(String bedrag) {
-        return new Double(bedrag.replace(",", ".")).doubleValue();
+    protected static BigDecimal getBedrag(String bedrag) {
+        return BigDecimal.valueOf(new Double(bedrag.replace(",", ".")).doubleValue());
     }
 
 

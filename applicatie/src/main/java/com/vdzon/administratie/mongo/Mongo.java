@@ -42,6 +42,7 @@ public class Mongo {
     public void init() throws MongobeeException {
         final Morphia morphia = new Morphia();
         morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
+        morphia.getMapper().getConverters().addConverter(BigDecimalConverter.class);
         System.out.println("connect to mongo");
         morphia.mapPackage("org.mongodb.morphia.example");
 
