@@ -89,13 +89,13 @@ public class AfschriftDto {
     }
 
     public AfschriftDto (Afschrift afschrift, BoekingenCache boekingenCache) {
-        uuid = afschrift.uuid();
-        nummer = afschrift.nummer();
-        rekening = afschrift.rekening();
-        omschrijving = afschrift.omschrijving();
-        relatienaam = afschrift.relatienaam();
-        boekdatum = afschrift.boekdatum()==null ? null : afschrift.boekdatum().format(DATE_FORMATTER);
-        bedrag =  afschrift.bedrag();
+        uuid = afschrift.getUuid();
+        nummer = afschrift.getNummer();
+        rekening = afschrift.getRekening();
+        omschrijving = afschrift.getOmschrijving();
+        relatienaam = afschrift.getRelatienaam();
+        boekdatum = afschrift.getBoekdatum()==null ? null : afschrift.getBoekdatum().format(DATE_FORMATTER);
+        bedrag =  afschrift.getBedrag();
         boekingen = toBoekingenDto(boekingenCache.getBoekingenVanAfschrift(nummer), boekingenCache);
     }
 
@@ -107,7 +107,15 @@ public class AfschriftDto {
     }
 
     public Afschrift toAfschrift() {
-        return new Afschrift(uuid, nummer, rekening, omschrijving, relatienaam, LocalDate.parse(boekdatum,DATE_FORMATTER), bedrag);
+        return Afschrift.newBuilder()
+                .uuid(uuid)
+                .nummer(nummer)
+                .rekening(rekening)
+                .omschrijving(omschrijving)
+                .relatienaam(relatienaam)
+                .boekdatum(LocalDate.parse(boekdatum,DATE_FORMATTER))
+                .bedrag(bedrag)
+                .build();
     }
 
     public static final class Builder {

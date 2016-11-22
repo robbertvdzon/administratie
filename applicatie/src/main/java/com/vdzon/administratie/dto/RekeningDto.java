@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Rekening;
 import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
 import java.time.LocalDate;
@@ -108,17 +109,17 @@ public class RekeningDto {
     }
 
     public RekeningDto(Rekening rekening, BoekingenCache boekingenCache) {
-        this.uuid = rekening.uuid().toString();
-        this.rekeningNummer = rekening.rekeningNummer();
-        this.factuurNummer = rekening.factuurNummer();
-        this.naam = rekening.naam();
-        this.omschrijving = rekening.omschrijving();
-        this.rekeningDate = rekening.rekeningDate() == null ? null : rekening.rekeningDate().format(DATE_FORMATTER);
-        this.bedragExBtw = rekening.bedragExBtw();
-        this.bedragIncBtw = rekening.bedragIncBtw();
-        this.btw = rekening.btw();
+        this.uuid = rekening.getUuid();
+        this.rekeningNummer = rekening.getRekeningNummer();
+        this.factuurNummer = rekening.getFactuurNummer();
+        this.naam = rekening.getNaam();
+        this.omschrijving = rekening.getOmschrijving();
+        this.rekeningDate = rekening.getRekeningDate() == null ? null : rekening.getRekeningDate().format(DATE_FORMATTER);
+        this.bedragExBtw = rekening.getBedragExBtw();
+        this.bedragIncBtw = rekening.getBedragIncBtw();
+        this.btw = rekening.getBtw();
         this.boekingen = toBoekingenDto(boekingenCache.getBoekingenVanRekening(rekeningNummer), boekingenCache);
-        this.maandenAfschrijving = rekening.maandenAfschrijving();
+        this.maandenAfschrijving = rekening.getMaandenAfschrijving();
     }
 
     private List<BoekingDto> toBoekingenDto(List<BoekingMetRekening> boekingen, BoekingenCache boekingenCache) {
@@ -129,7 +130,18 @@ public class RekeningDto {
     }
 
     public Rekening toRekening() {
-        return new Rekening(uuid,rekeningNummer,factuurNummer,naam,omschrijving,LocalDate.parse(rekeningDate, DATE_FORMATTER),bedragExBtw,bedragIncBtw,btw,maandenAfschrijving);
+        return Rekening.newBuilder()
+                .uuid(uuid)
+                .rekeningNummer(rekeningNummer)
+                .factuurNummer(factuurNummer)
+                .naam(naam)
+                .omschrijving(omschrijving)
+                .rekeningDate(LocalDate.parse(rekeningDate, DATE_FORMATTER))
+                .bedragExBtw(bedragExBtw)
+                .bedragIncBtw(bedragIncBtw)
+                .btw(btw)
+                .maandenAfschrijving(maandenAfschrijving)
+                .build();
     }
 
     public static final class Builder {

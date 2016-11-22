@@ -2,7 +2,7 @@ package com.vdzon.administratie.checkandfix
 
 import com.vdzon.administratie.checkandfix.actions.check.{BestaanCheck, DubbeleNummersCheck, BedragenCheck}
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
-import com.vdzon.administratie.model.{Rekening, BoekingenCache, Administratie}
+import com.vdzon.administratie.model.{Afschrift, Rekening, BoekingenCache, Administratie}
 
 import scala.collection.JavaConversions
 import scala.collection.JavaConversions._

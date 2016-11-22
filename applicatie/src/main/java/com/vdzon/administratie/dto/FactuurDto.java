@@ -5,7 +5,9 @@ import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
 import com.vdzon.administratie.model.boekingen.Boeking;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -105,15 +107,15 @@ public class FactuurDto {
     }
 
     public FactuurDto(Factuur factuur, BoekingenCache boekingenCache){
-        this.uuid = factuur.uuid();
-        this.factuurNummer = factuur.factuurNummer();
-        this.gekoppeldeBestellingNummer = factuur.gekoppeldeBestellingNummer();
-        this.factuurDate = factuur.factuurDate()==null ? null : factuur.factuurDate().format(DATE_FORMATTER);
-        this.klant = factuur.contact()==null ? null : new ContactDto(factuur.contact());
-        this.factuurRegels = toFactuurRegelsDto(factuur.factuurRegels());
-        this.bedragExBtw = factuur.bedragExBtw();
-        this.bedragIncBtw = factuur.bedragIncBtw();
-        this.btw = factuur.btw();
+        this.uuid = factuur.getUuid();
+        this.factuurNummer = factuur.getFactuurNummer();
+        this.gekoppeldeBestellingNummer = factuur.getGekoppeldeBestellingNummer();
+        this.factuurDate = factuur.getFactuurDate()==null ? null : factuur.getFactuurDate().format(DATE_FORMATTER);
+        this.klant = factuur.getContact()==null ? null : new ContactDto(factuur.getContact());
+        this.factuurRegels = toFactuurRegelsDto(factuur.getFactuurRegels());
+        this.bedragExBtw = factuur.getBedragExBtw();
+        this.bedragIncBtw = factuur.getBedragIncBtw();
+        this.btw = factuur.getBtw();
         boekingen = toBoekingenDto(boekingenCache.getBoekingenVanFactuur(factuurNummer), boekingenCache);
     }
 
@@ -132,7 +134,16 @@ public class FactuurDto {
     }
 
     public Factuur toFactuur() {
-        return new Factuur(uuid,factuurNummer,gekoppeldeBestellingNummer,LocalDate.parse(factuurDate,DATE_FORMATTER),klant.toContact(),toFactuurRegels());
+        return Factuur
+                .newBuilder()
+                .factuurNummer(factuurNummer)
+                .gekoppeldeBestellingNummer(gekoppeldeBestellingNummer)
+                .factuurDate(LocalDate.parse(factuurDate,DATE_FORMATTER))
+                .contact(klant == null ? null : klant.toContact())
+                .factuurRegels(toFactuurRegels())
+                .uuid(uuid)
+//                .gekoppeldAfschrift(gekoppeldAfschrift)
+                .build();
     }
 
     private List<FactuurRegel> toFactuurRegels() {

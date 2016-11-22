@@ -128,11 +128,11 @@ public class Administratie {
     }
 
     private boolean factuurUuidMatchesUuid(String uuid, Factuur factuur) {
-        return uuid == null && factuur.uuid() == null || uuid != null && uuid.equals(factuur.uuid());
+        return uuid == null && factuur.getUuid() == null || uuid != null && uuid.equals(factuur.getUuid());
     }
 
     private boolean factuurNummerMatchesFactuurNummer(String factuurNummer, Factuur factuur) {
-        return factuurNummer == null && factuur.factuurNummer() == null || factuurNummer != null && factuurNummer.equals(factuur.factuurNummer());
+        return factuurNummer == null && factuur.getFactuurNummer() == null || factuurNummer != null && factuurNummer.equals(factuur.getFactuurNummer());
     }
 
     public void addBestelling(Bestelling bestelling) {
@@ -199,7 +199,7 @@ public class Administratie {
     public void removeRekening(String uuid) {
         List<Rekening> rekeningenClone = getRekeningen();
         for (Rekening rekening : rekeningenClone) {
-            if (rekening.uuid().equals(uuid)) {
+            if (rekening.getUuid().equals(uuid)) {
                 this.rekeningen.remove(rekening);
             }
         }
@@ -215,7 +215,7 @@ public class Administratie {
     }
 
     private boolean rekeningUuidMatchesUuid(String uuid, Rekening rekening) {
-        return uuid == null && rekening.uuid() == null || uuid != null && uuid.equals(rekening.uuid());
+        return uuid == null && rekening.getUuid() == null || uuid != null && uuid.equals(rekening.getUuid());
     }
 
     public void addDeclaratie(Declaratie declaratie) {
@@ -238,7 +238,7 @@ public class Administratie {
     public void removeAfschrift(String nummer) {
         List<Afschrift> afschriftenClone = getAfschriften();
         for (Afschrift afschrift : afschriftenClone) {
-            if (afschrift.nummer().equals(nummer)) {
+            if (afschrift.getNummer().equals(nummer)) {
                 this.afschriften.remove(afschrift);
             }
         }

@@ -208,15 +208,27 @@ class CheckAndFixServiceTest {
   }
 
   def buildFactuur(nummer: String, ex: Double, perc: Double): Factuur = {
-    new Factuur(null, factuurNummer=nummer,factuurRegels=FactuurRegel.newBuilder().aantal(1).stuksPrijs(ex).btwPercentage(perc).build()::Nil)
+    Factuur.newBuilder()
+      .bedragExBtw(ex)
+      .factuurNummer(nummer)
+      .factuurRegels(FactuurRegel.newBuilder().aantal(1).stuksPrijs(ex).btwPercentage(perc).build()::Nil)
+      .build()
   }
 
   def buildAfschrift(nummer: String, bedrag: Double): Afschrift = {
-    new Afschrift(nummer=nummer,bedrag=bedrag)
+    Afschrift.newBuilder()
+      .nummer(nummer)
+      .bedrag(bedrag)
+      .build()
   }
 
   def buildRekening(nummer: String, inc: Double, ex: Double, btw: Double): Rekening = {
-    new Rekening(null, bedragExBtw=ex,bedragIncBtw=inc,btw=btw,rekeningNummer=nummer);
+    Rekening.newBuilder()
+      .bedragExBtw(ex)
+      .bedragIncBtw(inc)
+      .btw(btw)
+      .rekeningNummer(nummer)
+      .build()
   }
 
 }

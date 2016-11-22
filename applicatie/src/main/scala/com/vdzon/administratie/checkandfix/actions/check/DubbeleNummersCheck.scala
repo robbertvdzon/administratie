@@ -6,7 +6,7 @@ import com.vdzon.administratie.checkandfix.model.{CheckAndFixRegel, CheckType, F
 object DubbeleNummersCheck {
 
   def checkFacturenMetDezelfdeFactuurNummer(data: CheckAndFixData) = data.alleFacturen
-      .groupBy(f => f.factuurNummer)
+      .groupBy(f => f.getFactuurNummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,
@@ -15,7 +15,7 @@ object DubbeleNummersCheck {
         )
 
   def checkRekeningenMetHetzelfdeRekeningNummer(data: CheckAndFixData) = data.alleRekeningen
-      .groupBy(r => r.rekeningNummer)
+      .groupBy(r => r.getRekeningNummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,
@@ -24,7 +24,7 @@ object DubbeleNummersCheck {
         )
 
   def checkAfschriftenMetHetzelfdeNummer(data: CheckAndFixData) = data.alleAfschriften
-      .groupBy(a => a.nummer)
+      .groupBy(a => a.getNummer)
       .filter(_._2.size > 1)
       .map(tuple => CheckAndFixRegel(
         rubriceerAction = FixAction.NONE,

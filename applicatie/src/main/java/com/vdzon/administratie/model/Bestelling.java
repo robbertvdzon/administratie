@@ -1,5 +1,7 @@
 package com.vdzon.administratie.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -15,6 +17,8 @@ public class Bestelling {
     private String uuid;
     private String bestellingNummer;
     private String gekoppeldFactuurNummer;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate bestellingDate;
     private Contact contact;
     private List<BestellingRegel> bestellingRegels = new ArrayList<>();

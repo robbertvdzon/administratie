@@ -22,8 +22,8 @@ object BedragenCheck {
     CheckAndFixRegel(
       checkType=WARNING,
       data="",
-      date=f.factuurDate,
-      omschrijving="Factuur " + f.factuurNummer + " is niet volledig betaald of geboekt",
+      date=f.getFactuurDate,
+      omschrijving="Factuur " + f.getFactuurNummer + " is niet volledig betaald of geboekt",
       rubriceerAction=FixAction.NONE)
   }
 
@@ -31,23 +31,23 @@ object BedragenCheck {
     CheckAndFixRegel(
       checkType = WARNING,
       data = "",
-      date = r.rekeningDate,
-      omschrijving = "Rekening " + r.rekeningNummer + " is niet volledig betaald of geboekt",
+      date = r.getRekeningDate,
+      omschrijving = "Rekening " + r.getRekeningNummer + " is niet volledig betaald of geboekt",
       rubriceerAction = FixAction.NONE)
   }
 
   private def factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData): Boolean = {
-    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != factuur.bedragIncBtwVal
+    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
+    return sumVanAfschriften != factuur.getBedragIncBtw
   }
 
   private def rekeningNietVolledigBetaald(rekening: Rekening, data: CheckAndFixData): Boolean = {
-    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != -1*rekening.bedragIncBtw
+    val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
+    return sumVanAfschriften != -1*rekening.getBedragIncBtw
   }
 
   private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = data.alleAfschriften
-      .find(afschrift => afschrift.nummer.equals(boeking.getAfschriftNummer()))
-      .getOrElse(new Afschrift(null,null,null,null,null,null,0)).bedrag
+      .find(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer()))
+      .getOrElse(Afschrift.newBuilder().build()).getBedrag
 
 }

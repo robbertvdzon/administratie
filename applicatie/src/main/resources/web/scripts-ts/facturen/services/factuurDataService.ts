@@ -123,7 +123,7 @@ module Application.Services {
             nieuweRegel.omschrijving = "Werkzaamheden";
             nieuweRegel.aantal = 1;
             nieuweRegel.btwPercentage = 21;
-            nieuweRegel.stuksPrijs = 72.5;
+            nieuweRegel.stuksPrijs = 0;
             nieuweRegel.uuid = this.createUuid();
             this.setSelectedFactuurRegel(nieuweRegel);
             this.factuurGuiService.getFactuurGui().data.addRegelMode = true;

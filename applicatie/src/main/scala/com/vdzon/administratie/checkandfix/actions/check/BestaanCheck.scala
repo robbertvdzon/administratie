@@ -53,14 +53,14 @@ object BestaanCheck {
         )
 
   private def afschriftExists(afschriftNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleAfschriften.filter(afschrift => afschrift.nummer.equals(afschriftNummer)).size > 0
+    return data.alleAfschriften.filter(afschrift => afschrift.getNummer().equals(afschriftNummer)).size > 0
   }
 
   private def rekeningExists(rekeningNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleRekeningen.filter(rekening => rekening.rekeningNummer.equals(rekeningNummer)).size > 0
+    return data.alleRekeningen.filter(rekening => rekening.getRekeningNummer().equals(rekeningNummer)).size > 0
   }
 
   private def factuurExists(factuurNummer: String, data: CheckAndFixData): Boolean = {
-    return data.alleFacturen.filter(factuur => factuur.factuurNummer.equals(factuurNummer)).size > 0
+    return data.alleFacturen.filter(factuur => factuur.getFactuurNummer().equals(factuurNummer)).size > 0
   }
 }

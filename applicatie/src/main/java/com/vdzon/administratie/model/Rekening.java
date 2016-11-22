@@ -1,5 +1,6 @@
 package com.vdzon.administratie.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.mongodb.morphia.annotations.Entity;
@@ -7,46 +8,55 @@ import org.mongodb.morphia.annotations.Id;
 
 import java.time.LocalDate;
 
-@Entity("declaratie")
-public class Declaratie {
+@Entity("rekening")
+public class Rekening {
 
     @Id
     private String uuid;
-    private String declaratieNummer;
+    private String rekeningNummer;
+    private String factuurNummer;
+    private String naam;
     private String omschrijving;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate declaratieDate;
+    private LocalDate rekeningDate;
     private double bedragExBtw = 0;
     private double bedragIncBtw = 0;
     private double btw = 0;
+    private int maandenAfschrijving = 0;
 
-    public Declaratie() {
+    public Rekening() {
     }
 
-    private Declaratie(Builder builder) {
+    private Rekening(Builder builder) {
         uuid = builder.uuid;
-        declaratieNummer = builder.declaratieNummer;
+        rekeningNummer = builder.rekeningNummer;
+        factuurNummer = builder.factuurNummer;
+        naam = builder.naam;
         omschrijving = builder.omschrijving;
-        declaratieDate = builder.declaratieDate;
+        rekeningDate = builder.rekeningDate;
         bedragExBtw = builder.bedragExBtw;
         bedragIncBtw = builder.bedragIncBtw;
         btw = builder.btw;
+        maandenAfschrijving = builder.maandenAfschrijving;
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public static Builder newBuilder(Declaratie copy) {
+    public static Builder newBuilder(Rekening copy) {
         Builder builder = new Builder();
         builder.uuid = copy.uuid;
-        builder.declaratieNummer = copy.declaratieNummer;
+        builder.rekeningNummer = copy.rekeningNummer;
+        builder.factuurNummer = copy.factuurNummer;
+        builder.naam = copy.naam;
         builder.omschrijving = copy.omschrijving;
-        builder.declaratieDate = copy.declaratieDate;
+        builder.rekeningDate = copy.rekeningDate;
         builder.bedragExBtw = copy.bedragExBtw;
         builder.bedragIncBtw = copy.bedragIncBtw;
         builder.btw = copy.btw;
+        builder.maandenAfschrijving = copy.maandenAfschrijving;
         return builder;
     }
 
@@ -54,16 +64,24 @@ public class Declaratie {
         return uuid;
     }
 
-    public String getDeclaratieNummer() {
-        return declaratieNummer;
+    public String getRekeningNummer() {
+        return rekeningNummer;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public String getNaam() {
+        return naam;
     }
 
     public String getOmschrijving() {
         return omschrijving;
     }
 
-    public LocalDate getDeclaratieDate() {
-        return declaratieDate;
+    public LocalDate getRekeningDate() {
+        return rekeningDate;
     }
 
     public double getBedragExBtw() {
@@ -78,14 +96,21 @@ public class Declaratie {
         return btw;
     }
 
+    public int getMaandenAfschrijving() {
+        return maandenAfschrijving;
+    }
+
     public static final class Builder {
         private String uuid;
-        private String declaratieNummer;
+        private String rekeningNummer;
+        private String factuurNummer;
+        private String naam;
         private String omschrijving;
-        private LocalDate declaratieDate;
+        private LocalDate rekeningDate;
         private double bedragExBtw;
         private double bedragIncBtw;
         private double btw;
+        private int maandenAfschrijving;
 
         private Builder() {
         }
@@ -95,8 +120,18 @@ public class Declaratie {
             return this;
         }
 
-        public Builder declaratieNummer(String val) {
-            declaratieNummer = val;
+        public Builder rekeningNummer(String val) {
+            rekeningNummer = val;
+            return this;
+        }
+
+        public Builder factuurNummer(String val) {
+            factuurNummer = val;
+            return this;
+        }
+
+        public Builder naam(String val) {
+            naam = val;
             return this;
         }
 
@@ -105,8 +140,8 @@ public class Declaratie {
             return this;
         }
 
-        public Builder declaratieDate(LocalDate val) {
-            declaratieDate = val;
+        public Builder rekeningDate(LocalDate val) {
+            rekeningDate = val;
             return this;
         }
 
@@ -125,8 +160,13 @@ public class Declaratie {
             return this;
         }
 
-        public Declaratie build() {
-            return new Declaratie(this);
+        public Builder maandenAfschrijving(int val) {
+            maandenAfschrijving = val;
+            return this;
+        }
+
+        public Rekening build() {
+            return new Rekening(this);
         }
     }
 }

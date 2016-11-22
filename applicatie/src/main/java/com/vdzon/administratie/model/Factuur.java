@@ -1,0 +1,247 @@
+package com.vdzon.administratie.model;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@Entity("factuur")
+public class Factuur {
+
+    @Id
+    private String uuid;
+    private String factuurNummer;
+    private String gekoppeldeBestellingNummer;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate factuurDate;
+    private Contact contact;
+    private List<FactuurRegel> factuurRegels = new ArrayList<>();
+    private double bedragExBtw = 0;
+    private double bedragIncBtw = 0;
+    private double btw = 0;
+    private long bedragExBtwCent = 0;
+    private long bedragIncBtwCent = 0;
+    private long btwCent = 0;
+
+    public Factuur() {
+    }
+
+    private Factuur(Builder builder) {
+        uuid = builder.uuid;
+        factuurNummer = builder.factuurNummer;
+        gekoppeldeBestellingNummer = builder.gekoppeldeBestellingNummer;
+        factuurDate = builder.factuurDate;
+        contact = builder.contact;
+        factuurRegels = builder.factuurRegels;
+        bedragExBtw = builder.bedragExBtw;
+        bedragIncBtw = builder.bedragIncBtw;
+        btw = builder.btw;
+        bedragExBtwCent = builder.bedragExBtwCent;
+        bedragIncBtwCent = builder.bedragIncBtwCent;
+        btwCent = builder.btwCent;
+        calculate();
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Factuur copy) {
+        Builder builder = new Builder();
+        builder.uuid = copy.uuid;
+        builder.factuurNummer = copy.factuurNummer;
+        builder.gekoppeldeBestellingNummer = copy.gekoppeldeBestellingNummer;
+        builder.factuurDate = copy.factuurDate;
+        builder.contact = copy.contact;
+        builder.factuurRegels = copy.factuurRegels;
+        builder.bedragExBtw = copy.bedragExBtw;
+        builder.bedragIncBtw = copy.bedragIncBtw;
+        builder.btw = copy.btw;
+        builder.bedragExBtwCent = copy.bedragExBtwCent;
+        builder.bedragIncBtwCent = copy.bedragIncBtwCent;
+        builder.btwCent = copy.btwCent;
+        return builder;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getFactuurNummer() {
+        return factuurNummer;
+    }
+
+    public String getGekoppeldeBestellingNummer() {
+        return gekoppeldeBestellingNummer;
+    }
+
+    public LocalDate getFactuurDate() {
+        return factuurDate;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public List<FactuurRegel> getFactuurRegels() {
+        return factuurRegels;
+    }
+
+    public double getBedragExBtw() {
+        return bedragExBtw;
+    }
+
+    public double getBedragIncBtw() {
+        return bedragIncBtw;
+    }
+
+    public double getBtw() {
+        return btw;
+    }
+
+    public long getBedragExBtwCent() {
+        return bedragExBtwCent;
+    }
+
+    public long getBedragIncBtwCent() {
+        return bedragIncBtwCent;
+    }
+
+    public long getBtwCent() {
+        return btwCent;
+    }
+
+    /*
+             * Use a custom all-arg constructor. This because we want to call calculate at the end of the constructor
+             */
+    public Factuur(String uuid, String factuurNummer, String gekoppeldeBestellingNummer, LocalDate factuurDate, Contact contact, List<FactuurRegel> factuurRegels, double bedragExBtw, double bedragIncBtw, double btw, long bedragExBtwCent, long bedragIncBtwCent, long btwCent) {
+        this.uuid = uuid;
+        this.factuurNummer = factuurNummer;
+        this.gekoppeldeBestellingNummer = gekoppeldeBestellingNummer;
+        this.factuurDate = factuurDate;
+        this.contact = contact;
+        this.factuurRegels = factuurRegels;
+        this.bedragExBtw = bedragExBtw;
+        this.bedragIncBtw = bedragIncBtw;
+        this.btw = btw;
+        this.bedragExBtwCent = bedragExBtwCent;
+        this.bedragIncBtwCent = bedragIncBtwCent;
+        this.btwCent = btwCent;
+        calculate();
+    }
+
+    private void calculate() {
+        bedragExBtw = 0;
+        bedragIncBtw = 0;
+        btw = 0;
+        if (factuurRegels != null) {
+            for (FactuurRegel factuurRegel : factuurRegels) {
+                double regelBedragEx = factuurRegel.getStuksPrijs() * factuurRegel.getAantal();
+                double regelBedragBtw = round(regelBedragEx * (factuurRegel.getBtwPercentage() / 100), 2);
+                double regelBedragInc = regelBedragEx + regelBedragBtw;
+
+                bedragExBtw += regelBedragEx;
+                btw += regelBedragBtw;
+                bedragIncBtw += regelBedragInc;
+            }
+        }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+
+    public static final class Builder {
+        private String uuid;
+        private String factuurNummer;
+        private String gekoppeldeBestellingNummer;
+        private LocalDate factuurDate;
+        private Contact contact;
+        private List<FactuurRegel> factuurRegels;
+        private double bedragExBtw;
+        private double bedragIncBtw;
+        private double btw;
+        private long bedragExBtwCent;
+        private long bedragIncBtwCent;
+        private long btwCent;
+
+        private Builder() {
+        }
+
+        public Builder uuid(String val) {
+            uuid = val;
+            return this;
+        }
+
+        public Builder factuurNummer(String val) {
+            factuurNummer = val;
+            return this;
+        }
+
+        public Builder gekoppeldeBestellingNummer(String val) {
+            gekoppeldeBestellingNummer = val;
+            return this;
+        }
+
+        public Builder factuurDate(LocalDate val) {
+            factuurDate = val;
+            return this;
+        }
+
+        public Builder contact(Contact val) {
+            contact = val;
+            return this;
+        }
+
+        public Builder factuurRegels(List<FactuurRegel> val) {
+            factuurRegels = val;
+            return this;
+        }
+
+        public Builder bedragExBtw(double val) {
+            bedragExBtw = val;
+            return this;
+        }
+
+        public Builder bedragIncBtw(double val) {
+            bedragIncBtw = val;
+            return this;
+        }
+
+        public Builder btw(double val) {
+            btw = val;
+            return this;
+        }
+
+        public Builder bedragExBtwCent(long val) {
+            bedragExBtwCent = val;
+            return this;
+        }
+
+        public Builder bedragIncBtwCent(long val) {
+            bedragIncBtwCent = val;
+            return this;
+        }
+
+        public Builder btwCent(long val) {
+            btwCent = val;
+            return this;
+        }
+
+        public Factuur build() {
+            return new Factuur(this);
+        }
+    }
+}

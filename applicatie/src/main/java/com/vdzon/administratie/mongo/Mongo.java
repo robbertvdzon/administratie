@@ -1,5 +1,6 @@
 package com.vdzon.administratie.mongo;
 
+import com.github.mongobee.exception.MongobeeException;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mongo {
-    private static Mongo mongo = new Mongo();
+    private static Mongo mongo = null;
 
     private Datastore datastore;
 
-    private Mongo() {
+    private Mongo() throws MongobeeException {
         init();
         createAdminUserWhenNotExists();
     }
@@ -38,7 +39,7 @@ public class Mongo {
         return datastore;
     }
 
-    public void init() {
+    public void init() throws MongobeeException {
         final Morphia morphia = new Morphia();
         morphia.getMapper().getConverters().addConverter(new LocalDateTimeConverter());
         System.out.println("connect to mongo");
@@ -73,8 +74,12 @@ public class Mongo {
         datastore = morphia.createDatastore(mongoClient, dbName);
         datastore.ensureIndexes();
 
-//        new UpdateMongo().start(mongoClient, dbName);
+        new UpdateMongo().start(mongoClient, dbName);
     }
 
 
+    public static void start() throws MongobeeException {
+        mongo = new Mongo();
+
+    }
 }

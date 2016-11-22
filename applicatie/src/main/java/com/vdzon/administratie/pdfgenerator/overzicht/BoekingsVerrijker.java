@@ -45,12 +45,12 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(InkomstenZonderFactuurBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.INKOMSTEN_ZONDER_FACTUUR;
-        double boekingsBedrag = afschift.bedrag();
+        double boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
-                .afschriftBedrag(afschift.bedrag())
-                .afschriftDate(afschift.boekdatum())
+                .afschriftBedrag(afschift.getBedrag())
+                .afschriftDate(afschift.getBoekdatum())
                 .boeking(boeking)
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
@@ -60,12 +60,12 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(BetalingZonderFactuurBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETALING_ZONDER_FACTUUR;
-        double boekingsBedrag = afschift.bedrag();
+        double boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
-                .afschriftBedrag(afschift.bedrag())
-                .afschriftDate(afschift.boekdatum())
+                .afschriftBedrag(afschift.getBedrag())
+                .afschriftDate(afschift.getBoekdatum())
                 .boeking(boeking)
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
@@ -75,12 +75,12 @@ public class BoekingsVerrijker {
     private static VerrijkteBoeking verrijk(PriveBetalingBoeking boeking, Administratie administratie) {
         Afschrift afschift = getAfschift(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.PRIVE_BETALING;
-        double boekingsBedrag = afschift.bedrag();
+        double boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
-                .afschriftBedrag(afschift.bedrag())
-                .afschriftDate(afschift.boekdatum())
+                .afschriftBedrag(afschift.getBedrag())
+                .afschriftDate(afschift.getBoekdatum())
                 .boeking(boeking)
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
@@ -91,17 +91,17 @@ public class BoekingsVerrijker {
         Afschrift afschift = getAfschift(boeking, administratie);
         Factuur factuur = getFactuur(boeking, administratie);
         if (factuur == null){
-            factuur = new Factuur(null,null,null,afschift.boekdatum(),null,null);
+            factuur = Factuur.newBuilder().factuurDate(afschift.getBoekdatum()).build();
         }
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_FACTUUR;
-        double boekingsBedrag = afschift.bedrag();
-        double factuurBedrag = factuur.bedragIncBtw();
-        LocalDate factuurDate = factuur.factuurDate();
+        double boekingsBedrag = afschift.getBedrag();
+        double factuurBedrag = factuur.getBedragIncBtw();
+        LocalDate factuurDate = factuur.getFactuurDate();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
-                .afschriftBedrag(afschift.bedrag())
-                .afschriftDate(afschift.boekdatum())
+                .afschriftBedrag(afschift.getBedrag())
+                .afschriftDate(afschift.getBoekdatum())
                 .boeking(boeking)
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
@@ -115,25 +115,25 @@ public class BoekingsVerrijker {
         Afschrift afschift = getAfschift(boeking, administratie);
         Rekening rekening = getRekening(boeking, administratie);
         VerrijkteBoeking.BOEKINGSTYPE boekingsType = VerrijkteBoeking.BOEKINGSTYPE.BETAALDE_REKENING;
-        double boekingsBedrag = afschift.bedrag();
+        double boekingsBedrag = afschift.getBedrag();
 
         return VerrijkteBoeking.newBuilder()
                 .afschrift(afschift)
-                .afschriftBedrag(afschift.bedrag())
-                .afschriftDate(afschift.boekdatum())
+                .afschriftBedrag(afschift.getBedrag())
+                .afschriftDate(afschift.getBoekdatum())
                 .boeking(boeking)
                 .boekingsBedrag(boekingsBedrag)
                 .boekingsType(boekingsType)
                 .rekening(rekening)
-                .rekeningBedrag(rekening.bedragIncBtw())
-                .rekeningDate(rekening.rekeningDate())
+                .rekeningBedrag(rekening.getBedragIncBtw())
+                .rekeningDate(rekening.getRekeningDate())
                 .build();
     }
 
     private static Rekening getRekening(BoekingMetRekening boeking, Administratie administratie) {
         return administratie.getRekeningen()
                 .stream()
-                .filter(rekening -> rekening.rekeningNummer().equals(boeking.getRekeningNummer()))
+                .filter(rekening -> rekening.getRekeningNummer().equals(boeking.getRekeningNummer()))
                 .findFirst()
                 .orElse(null);
     }
@@ -141,7 +141,7 @@ public class BoekingsVerrijker {
     private static Factuur getFactuur(BoekingMetFactuur boeking, Administratie administratie) {
         return administratie.getFacturen()
                 .stream()
-                .filter(factuur -> factuur.factuurNummer().equals(boeking.getFactuurNummer()))
+                .filter(factuur -> factuur.getFactuurNummer().equals(boeking.getFactuurNummer()))
                 .findFirst()
                 .orElse(null);
     }
@@ -149,7 +149,7 @@ public class BoekingsVerrijker {
     private static Afschrift getAfschift(BoekingMetAfschrift boeking, Administratie administratie) {
         return administratie.getAfschriften()
                 .stream()
-                .filter(afschrift -> afschrift.nummer().equals(boeking.getAfschriftNummer()))
+                .filter(afschrift -> afschrift.getNummer().equals(boeking.getAfschriftNummer()))
                 .findFirst()
                 .orElse(null);
     }

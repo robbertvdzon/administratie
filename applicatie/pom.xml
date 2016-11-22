@@ -40,9 +40,12 @@
             <version>0.8.0-RC8</version>
         </dependency>
         <dependency>
-            <groupId>org.mongeez</groupId>
-            <artifactId>mongeez</artifactId>
-            <version>0.9.6</version>
+            <groupId>com.github.mongobee</groupId>
+            <artifactId>mongobee</artifactId>
+            <version>0.13</version>
+            <!--<groupId>com.github.mongobee</groupId>-->
+            <!--<artifactId>mongobee</artifactId>-->
+            <!--<version>0.13-SNAPSHOT</version>-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -186,7 +189,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>com.vdzon.administratie.AppScala</mainClass>
+                            <mainClass>com.vdzon.administratie.App</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>

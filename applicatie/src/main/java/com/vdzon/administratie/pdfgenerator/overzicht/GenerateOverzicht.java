@@ -1,7 +1,7 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
 import com.vdzon.administratie.checkandfix.CheckServiceScala;
-import com.vdzon.administratie.checkandfix.model.*;
+import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
@@ -123,7 +123,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredFacturen
                 .stream()
-                .sorted((fak1, fak2) -> fak2.factuurNummer().compareTo(fak1.factuurNummer()))
+                .sorted((fak1, fak2) -> fak2.getFactuurNummer().compareTo(fak1.getFactuurNummer()))
                 .forEach(factuur -> listFactuur(factuur, boekingenCache));
 
         page.close();
@@ -144,7 +144,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredRekeningen
                 .stream()
-                .sorted((rek1, rek2) -> rek2.rekeningNummer().compareTo(rek1.rekeningNummer()))
+                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
                 .forEach(rekening -> listRekening(rekening, boekingenCache));
 
         page.close();
@@ -183,7 +183,7 @@ public class GenerateOverzicht {
         overzicht
                 .filteredAfschriften
                 .stream()
-                .sorted((afschrift1, afschrift2) -> afschrift2.nummer().compareTo(afschrift1.nummer()))
+                .sorted((afschrift1, afschrift2) -> afschrift2.getNummer().compareTo(afschrift1.getNummer()))
                 .forEach(afschrift-> listAfschrift(afschrift, boekingenCache));
 
         page.close();
@@ -205,7 +205,7 @@ public class GenerateOverzicht {
                 .getRekeningen()
                 .stream()
                 .filter(rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate))
-                .sorted((rek1, rek2) -> rek2.rekeningNummer().compareTo(rek1.rekeningNummer()))
+                .sorted((rek1, rek2) -> rek2.getRekeningNummer().compareTo(rek1.getRekeningNummer()))
                 .forEach(rekening -> listRekening(rekening, boekingenCache));
 
         page.close();
@@ -233,13 +233,14 @@ public class GenerateOverzicht {
 ********************** CLOSE
  */
 
+
         document.save(outputStream);
         document.close();
     }
 
     private boolean rekeningHeeftLopendeAfschrijving(Rekening rekening, LocalDate beginDate) {
-        if (rekening.maandenAfschrijving()==0) return false;
-        return rekening.rekeningDate().plusMonths(rekening.maandenAfschrijving()).isAfter(beginDate);
+        if (rekening.getMaandenAfschrijving()==0) return false;
+        return rekening.getRekeningDate().plusMonths(rekening.getMaandenAfschrijving()).isAfter(beginDate);
     }
 
     private static boolean betweenOrAtDates(LocalDate date, LocalDate beginDate, LocalDate endData){
@@ -287,7 +288,7 @@ public class GenerateOverzicht {
     }
 
     private void listFactuur(Factuur factuur, BoekingenCache boekingenCache)  {
-        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer());
+        List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer());
         String status = "Niet betaald";
         if (boekingenVanFactuur!=null && boekingenVanFactuur.size()>0){
             status = "Betaald";
@@ -296,18 +297,18 @@ public class GenerateOverzicht {
         try {
             skipDown(15);
             int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.factuurNummer());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurNummer());
             y+=50;
-            Contact contact = factuur.contact();
+            Contact contact = factuur.getContact();
             writeText(LIJST_FONT_SIZE, y, fontPlain, contact == null ? "" : contact.getNaam());
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.factuurDate().toString());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurDate().toString());
             y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.bedragExBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragExBtw()));
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.btw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBtw()));
             y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.bedragIncBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
             y+=80;
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
         }
@@ -339,35 +340,35 @@ public class GenerateOverzicht {
     }
 
     private void listRekening(Rekening rekening, BoekingenCache boekingenCache)  {
-        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer());
+        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
         String status = "Niet betaald";
         if (boekingenVanRekening!=null && boekingenVanRekening.size()>0){
             status = "Betaald";
         }
-        if (rekening.maandenAfschrijving()>0){
-            status += " (afschrijven in "+rekening.maandenAfschrijving()+" maanden)";
+        if (rekening.getMaandenAfschrijving()>0){
+            status += " (afschrijven in "+rekening.getMaandenAfschrijving()+" maanden)";
 
         }
 
         try {
             skipDown(15);
             int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.rekeningNummer());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningNummer());
             y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.rekeningDate().toString());
+            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningDate().toString());
             y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.bedragExBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragExBtw()));
             y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.btw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBtw()));
             y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.bedragIncBtw()));
+            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
             y+=80;
             writeText(LIJST_FONT_SIZE, y, fontPlain, status);
 
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.naam().toString());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.getNaam().toString());
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.omschrijving().toString());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.getOmschrijving().toString());
             skipDown(5);
 
         }
@@ -423,7 +424,7 @@ public class GenerateOverzicht {
 
     private void listAfschrift(Afschrift afschrift, BoekingenCache boekingenCache)  {
         try {
-            List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.nummer());
+            List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
             String status = "";
             for (BoekingMetAfschrift boekingMetAfschrift : boekingenVanAfschrift){
                 status += ((Boeking)boekingMetAfschrift).getOmschrijving()+" ";
@@ -439,15 +440,15 @@ public class GenerateOverzicht {
 
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.nummer());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getNummer());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.boekdatum().toString());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getBoekdatum().toString());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, ""+afschrift.bedrag());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, ""+afschrift.getBedrag());
             skipDown(15);
 
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Geboekt als:");
@@ -461,13 +462,14 @@ public class GenerateOverzicht {
                 writeText(LIJST_FONT_SIZE, 120, fontPlain, statusPartOf80Chars);
             }
 
+
             skipDown(15);
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Naam:");
-            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.relatienaam());
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, afschrift.getRelatienaam());
             skipDown(15);
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
 
-            String[] omschrijvingInPartsOf80Chars = afschrift.omschrijving().split("(?<=\\G.{80})");
+            String[] omschrijvingInPartsOf80Chars = afschrift.getOmschrijving().split("(?<=\\G.{80})");
             first = true;
             for (String omschrijvingPartOf80Chars: omschrijvingInPartsOf80Chars){
                 if (!first){

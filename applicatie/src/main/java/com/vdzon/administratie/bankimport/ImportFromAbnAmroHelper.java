@@ -2,6 +2,7 @@ package com.vdzon.administratie.bankimport;
 
 
 import com.vdzon.administratie.model.Afschrift;
+import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.Gebruiker;
 
 import java.time.LocalDate;
@@ -18,7 +19,15 @@ public class ImportFromAbnAmroHelper {
         double bedrag = getBedrag(afschriftData.bedragStr);
         LocalDate boekDatum = getBoekDatum(afschriftData.date);
         int nextAfschriftNummer = nextNummerHolder.nextNummer++;
-        return new Afschrift(afschriftData.uuid,"" + nextAfschriftNummer,afschriftData.rekeningNr,afschriftData.oms,afschriftData.naam,boekDatum,bedrag);
+        return Afschrift.newBuilder()
+                .uuid(afschriftData.uuid)
+                .nummer("" + nextAfschriftNummer)
+                .rekening(afschriftData.rekeningNr)
+                .omschrijving(afschriftData.oms)
+                .relatienaam(afschriftData.naam)
+                .boekdatum(boekDatum)
+                .bedrag(bedrag)
+                .build();
     }
 
     protected static AfschriftData parseAfschriftData(String line, Function<String, String> extractNaam, Function<String, String> extractOmschrijving) {
@@ -38,7 +47,7 @@ public class ImportFromAbnAmroHelper {
     }
 
     protected static int findNextAfschriftNummer(Gebruiker gebruiker) {
-        return 1 + gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift -> Integer.parseInt(afschrift.nummer())).max(Comparator.naturalOrder()).orElse(START_AFSCHRIFT_NUMMER);
+        return 1 + gebruiker.getDefaultAdministratie().getAfschriften().stream().map(afschrift -> Integer.parseInt(afschrift.getNummer())).max(Comparator.naturalOrder()).orElse(START_AFSCHRIFT_NUMMER);
     }
     public static String findNextKeyword(String s) {
         String[] words = s.split(" ");
@@ -51,7 +60,7 @@ public class ImportFromAbnAmroHelper {
     }
 
     protected static Afschrift getBestaandAfschriftMetDezeUuid(Gebruiker gebruiker, String uuid) {
-        return gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.uuid().equals(uuid)).findFirst().orElse(null);
+        return gebruiker.getDefaultAdministratie().getAfschriften().stream().filter(afschrift -> afschrift.getUuid().equals(uuid)).findFirst().orElse(null);
     }
 
     protected static LocalDate getBoekDatum(String date) {

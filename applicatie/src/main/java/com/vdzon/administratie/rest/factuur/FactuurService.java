@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.dto.BoekingDto;
 import com.vdzon.administratie.model.*;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.dto.FactuurDto;
@@ -29,10 +30,10 @@ public class FactuurService {
         FactuurDto factuurDto = mapper.readValue(factuurJson, FactuurDto.class);
         factuur = factuurDto.toFactuur();
 
-        removeFactuur(gebruiker, factuur.uuid());
+        removeFactuur(gebruiker, factuur.getUuid());
         addFactuur(gebruiker, factuur);
 
-        List<BoekingMetFactuur> boekingenVanFactuur = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanFactuur(factuur.factuurNummer());
+        List<BoekingMetFactuur> boekingenVanFactuur = new BoekingenCache(gebruiker.getDefaultAdministratie().getBoekingen()).getBoekingenVanFactuur(factuur.getFactuurNummer());
         for (BoekingMetFactuur boeking : boekingenVanFactuur ){
             boolean found = false;
             for (BoekingDto boekingDto : factuurDto.getBoekingen()){
@@ -58,7 +59,7 @@ public class FactuurService {
         Factuur factuur = gebruiker.getDefaultAdministratie().getFactuur(factuurUuid);
 
         gebruiker.getDefaultAdministratie().removeFactuur(factuurUuid);
-        removeBoekingenVanFactuur(gebruiker, factuur.factuurNummer());
+        removeBoekingenVanFactuur(gebruiker, factuur.getFactuurNummer());
 
         crudService.updateGebruiker(gebruiker);
         return new SingleAnswer("ok");
@@ -66,10 +67,10 @@ public class FactuurService {
 
 
     private void addFactuur(Gebruiker gebruiker, Factuur factuur) {
-        String nieuwBestellingNummer = factuur.gekoppeldeBestellingNummer();
+        String nieuwBestellingNummer = factuur.getGekoppeldeBestellingNummer();
         Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(nieuwBestellingNummer);
         if (gekoppelBestelling != null) {
-            Bestelling updatedBestelling = Bestelling.newBuilder(gekoppelBestelling).gekoppeldFactuurNummer(factuur.factuurNummer()).build();
+            Bestelling updatedBestelling = Bestelling.newBuilder(gekoppelBestelling).gekoppeldFactuurNummer(factuur.getFactuurNummer()).build();
             gebruiker.getDefaultAdministratie().removeBestelling(gekoppelBestelling.getUuid());
             gebruiker.getDefaultAdministratie().addBestelling(updatedBestelling);
         }
@@ -78,7 +79,7 @@ public class FactuurService {
 
     private void removeFactuur(Gebruiker gebruiker, String uuid) {
         Factuur factuur = gebruiker.getDefaultAdministratie().getFactuur(uuid);
-        String bestellingNummerOudeFactuur = factuur == null ? null : factuur.gekoppeldeBestellingNummer();
+        String bestellingNummerOudeFactuur = factuur == null ? null : factuur.getGekoppeldeBestellingNummer();
         Bestelling gekoppelBestelling = gebruiker.getDefaultAdministratie().getBestellingByBestellingNummer(bestellingNummerOudeFactuur);
         if (gekoppelBestelling != null) {
             Bestelling updatedBestelling = Bestelling.newBuilder(gekoppelBestelling).gekoppeldFactuurNummer(null).build();
@@ -108,7 +109,7 @@ public class FactuurService {
 
         Factuur factuur = gebruiker.getDefaultAdministratie().getFactuur(factuurUuid);
         res.raw().setContentType("application/pdf");
-        res.raw().setHeader("Content-Disposition", "attachment; filename=" + factuur.factuurNummer() + ".pdf");
+        res.raw().setHeader("Content-Disposition", "attachment; filename=" + factuur.getFactuurNummer() + ".pdf");
         try (BufferedOutputStream zipOutputStream = new BufferedOutputStream(res.raw().getOutputStream())) {
             GenerateFactuur.buildPdf(gebruiker.getDefaultAdministratie(), factuur, zipOutputStream);
             zipOutputStream.flush();

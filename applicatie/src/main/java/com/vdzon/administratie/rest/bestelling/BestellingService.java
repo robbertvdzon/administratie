@@ -36,9 +36,8 @@ public class BestellingService {
         String niewFactuurNummer = bestelling.getGekoppeldFactuurNummer();
         Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(niewFactuurNummer);
         if (gekoppelFactuur != null) {
-            Factuur updatedFactuur = new Factuur(gekoppelFactuur.uuid(),gekoppelFactuur.factuurNummer(),bestelling.getBestellingNummer(),gekoppelFactuur.factuurDate(),gekoppelFactuur.contact(),gekoppelFactuur.factuurRegels());
-//                    Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(bestelling.getBestellingNummer()).build();
-            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.uuid());
+            Factuur updatedFactuur = Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(bestelling.getBestellingNummer()).build();
+            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }
         gebruiker.getDefaultAdministratie().addBestelling(bestelling);
@@ -60,9 +59,8 @@ public class BestellingService {
         String factuurNummerOudeBestelling = bestelling == null ? null : bestelling.getGekoppeldFactuurNummer();
         Factuur gekoppelFactuur = gebruiker.getDefaultAdministratie().getFactuurByFactuurNummer(factuurNummerOudeBestelling);
         if (gekoppelFactuur != null) {
-            Factuur updatedFactuur = new Factuur(gekoppelFactuur.uuid(),gekoppelFactuur.factuurNummer(),null,gekoppelFactuur.factuurDate(),gekoppelFactuur.contact(),gekoppelFactuur.factuurRegels());
-//            Factuur updatedFactuur = Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(null).build();
-            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.uuid());
+            Factuur updatedFactuur = Factuur.newBuilder(gekoppelFactuur).gekoppeldeBestellingNummer(null).build();
+            gebruiker.getDefaultAdministratie().removeFactuur(gekoppelFactuur.getUuid());
             gebruiker.getDefaultAdministratie().addFactuur(updatedFactuur);
         }
         gebruiker.getDefaultAdministratie().removeBestelling(uuid);

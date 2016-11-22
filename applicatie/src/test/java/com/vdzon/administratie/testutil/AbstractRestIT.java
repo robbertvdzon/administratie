@@ -1,7 +1,7 @@
 package com.vdzon.administratie.testutil;
 
 import com.jayway.restassured.response.Response;
-import com.vdzon.administratie.AppScala;
+import com.vdzon.administratie.App;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -33,7 +33,7 @@ public abstract class AbstractRestIT {
     }
 
     private void setUpApplication() throws Exception {
-        AppScala.main(new String[]{REST_PORT, String.valueOf(MONGO_PORT)});
+        App.main(new String[]{REST_PORT, String.valueOf(MONGO_PORT)});
     }
 
     private void setUpMongoDb() throws Exception {

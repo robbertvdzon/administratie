@@ -11,8 +11,6 @@ import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
-import org.bson.types.ObjectId;
-import scala.Unit;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,29 +21,29 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
 
     @RubriceerRule
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
-        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.nummer());
+        List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
         if (hasNoBoekingen(boekingenVanAfschrift)) {
-            if (afschrift.bedrag() < 0) {
+            if (afschrift.getBedrag() < 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.BETALING_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 String rekeningNummer = null;
                 for (Rekening rekening : gebruiker.getDefaultAdministratie().getRekeningen()) {
-                    if (boekingenCache.getBoekingenVanRekening(rekening.rekeningNummer()).isEmpty()
+                    if (boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer()).isEmpty()
                             &&
-                            !rekeningAlreadyUsed(regels, rekening.rekeningNummer())
+                            !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
                             &&
-                            (rekening.bedragIncBtw() == afschrift.bedrag() * -1)
+                            (rekening.getBedragIncBtw() == afschrift.getBedrag() * -1)
                             &&
                             (
-                                    (afschrift.omschrijving().contains(rekening.rekeningNummer()))
+                                    (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))
                                             ||
-                                            (afschrift.omschrijving().equals(rekening.omschrijving()))
+                                    (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
                             )
-                            )
+                        )
 
                     {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
-                        rekeningNummer = rekening.rekeningNummer();
+                        rekeningNummer = rekening.getRekeningNummer();
                     }
                 }
                 RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder()
@@ -88,14 +86,23 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CREATE_REKENING:
-                Rekening rekening = new Rekening(UUID.randomUUID().toString(), "" + findNextRekeningNummer(gebruiker), "",afschrift.relatienaam(), afschrift.omschrijving(),
-                        afschrift.boekdatum(), afschrift.bedrag() * -1, afschrift.bedrag() * -1, 0,0);
+                Rekening rekening = Rekening
+                        .newBuilder()
+                        .uuid(UUID.randomUUID().toString())
+                        .rekeningNummer("" + findNextRekeningNummer(gebruiker))
+                        .naam(afschrift.getRelatienaam())
+                        .omschrijving(afschrift.getOmschrijving())
+                        .rekeningDate(afschrift.getBoekdatum())
+                        .bedragExBtw(afschrift.getBedrag() * -1)
+                        .bedragIncBtw(afschrift.getBedrag() * -1)
+                        .btw(0)
+                        .build();
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
                 boeking = BetaaldeRekeningBoeking.newBuilder()
                         .uuid(UUID.randomUUID().toString())
                         .afschriftNummer(regel.getAfschrift().getNummer())
-                        .rekeningNummer(rekening.rekeningNummer())
+                        .rekeningNummer(rekening.getRekeningNummer())
                         .build();
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
