@@ -1,5 +1,7 @@
 package com.vdzon.administratie.checkandfix.actions.check
 
+import java.math.BigDecimal
+
 import com.vdzon.administratie.checkandfix.CheckAndFixData
 import com.vdzon.administratie.checkandfix.model.CheckType.WARNING
 import com.vdzon.administratie.checkandfix.model.{CheckAndFixRegel, FixAction}
@@ -38,7 +40,7 @@ object BedragenCheck {
 
   private def factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData): Boolean = {
     val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer).stream.mapToDouble(boeking => getAfschriftBedrag(data, boeking)).sum
-    return sumVanAfschriften != factuur.getBedragIncBtw
+    return sumVanAfschriften.toDouble != factuur.getBedragIncBtw.doubleValue()
   }
 
   private def rekeningNietVolledigBetaald(rekening: Rekening, data: CheckAndFixData): Boolean = {
@@ -48,6 +50,6 @@ object BedragenCheck {
 
   private def getAfschriftBedrag(data: CheckAndFixData, boeking: BoekingMetAfschrift): Double = data.alleAfschriften
       .find(afschrift => afschrift.getNummer().equals(boeking.getAfschriftNummer()))
-      .getOrElse(Afschrift.newBuilder().build()).getBedrag.doubleValue()
+      .getOrElse(Afschrift.newBuilder().bedrag(BigDecimal.ZERO).build()).getBedrag.doubleValue()
 
 }
