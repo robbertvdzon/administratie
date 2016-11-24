@@ -108,10 +108,13 @@ public class App {
                 Properties properties = new Properties();
                 properties.load(url.openStream());
                 String mainClass = properties.getProperty("Main-Class");
+                System.out.println("mainClass:"+mainClass);
+                System.out.println("App.class.getCanonicalName():"+App.class.getCanonicalName());
                 if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
                     //Correct manifest found
                     setVersion(properties.getProperty("Implementation-Build-Number"));
                     setBuildTime(reformatBuildTime(properties.getProperty("Build-Time")));
+                    System.out.println("props:"+properties);
                 }
             }
         } catch (IOException e) {
