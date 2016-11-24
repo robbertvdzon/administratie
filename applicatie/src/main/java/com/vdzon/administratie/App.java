@@ -112,7 +112,7 @@ public class App {
                 System.out.println("App.class.getCanonicalName():"+App.class.getCanonicalName());
                 if (mainClass != null && mainClass.equals(App.class.getCanonicalName())) {
                     //Correct manifest found
-                    setVersion(properties.getProperty("Implementation-Build-Number"));
+                    setVersion(properties.getProperty("Implementation-Version"));
                     setBuildTime(reformatBuildTime(properties.getProperty("Build-Time")));
                     System.out.println("props:"+properties);
                 }
