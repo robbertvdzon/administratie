@@ -11,7 +11,6 @@ public class SepaRegelParser implements RegelParser {
         return omschrijving.startsWith("SEPA");
     }
 
-
     @Override
     public String extractNaam(String omschrijving) {
         int pos = omschrijving.indexOf("Naam:");
