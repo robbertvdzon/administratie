@@ -43,8 +43,8 @@ public class App {
         loadVersion();
 
         // init spark with web statics
-        if (new File("C:\\workspace\\administratie\\applicatie\\src\\main\\resources\\web").exists()){
-            Spark.externalStaticFileLocation("C:\\workspace\\administratie\\applicatie\\src\\main\\resources\\web");
+        if (new File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()){
+            Spark.externalStaticFileLocation("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web");
         }
         else{
             Spark.staticFileLocation("/web");

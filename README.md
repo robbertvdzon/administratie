@@ -1,6 +1,6 @@
 Typescript compiler gebruiken:
 
-cd C:\workspace\administratie\applicatie\src\main\resources\web
+cd C:\git\administratie\applicatie\src\main\resources\web
 tsc -w --rootDir scripts-ts --outDir scripts
 
 
