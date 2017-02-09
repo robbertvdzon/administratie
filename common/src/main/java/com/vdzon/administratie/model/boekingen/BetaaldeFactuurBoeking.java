@@ -1,6 +1,5 @@
 package com.vdzon.administratie.model.boekingen;
 
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import org.mongodb.morphia.annotations.Id;
 

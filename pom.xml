@@ -11,6 +11,8 @@
     <modules>
         <module>sparkjava</module>
         <module>applicatie</module>
+        <module>common</module>
+        <module>scala</module>
     </modules>
 
 

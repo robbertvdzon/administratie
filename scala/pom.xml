@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.vdzon.administratie</groupId>
-    <artifactId>applicatie</artifactId>
+    <artifactId>scala</artifactId>
     <packaging>jar</packaging>
 
 
@@ -30,8 +30,18 @@
             <artifactId>common</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>scala</artifactId>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-java8-compat_2.12.0-RC2</artifactId>
+            <version>0.8.0-RC8</version>
         </dependency>
         <dependency>
             <groupId>com.github.mongobee</groupId>
@@ -132,6 +142,29 @@
                 </execution></executions>
             </plugin>
 
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scala-compile</id>
+                        <goals><goal>compile</goal></goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <goals><goal>testCompile</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <executions><execution>
+                    <id>test</id>
+                    <goals><goal>test</goal></goals>
+                </execution></executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -203,6 +236,23 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <configuration>
+                        <recompileMode>incremental</recompileMode>
+                        <args>
+                            <arg>-target:jvm-${java.version}</arg>
+                            <arg>-language:experimental.macros</arg>
+                            <arg>-deprecation</arg>
+                        </args>
+                        <javacArgs>
+                            <javacArg>-source</javacArg><javacArg>${java.version}</javacArg>
+                            <javacArg>-target</javacArg><javacArg>${java.version}</javacArg>
+                        </javacArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
@@ -229,7 +279,16 @@
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.3.1</version>
                 </plugin>
-
+                <plugin>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest-maven-plugin</artifactId>
+                    <version>1.0-RC2</version>
+                    <configuration>
+                        <reportsDirectory>${project.build.directory}/scalatest-reports</reportsDirectory>
+                        <junitxml>.</junitxml>
+                        <filereports>DFW TestSuite.txt</filereports>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -255,12 +314,28 @@
                 <artifactId>common</artifactId>
                 <version>0.4</version>
             </dependency>
+             <!--scala-->
             <dependency>
-                <groupId>com.vdzon.administratie</groupId>
-                <artifactId>scala</artifactId>
-                <version>0.4</version>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-reflect</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scalap</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_${scala.version}</artifactId>
+                <version>3.0.0</version>
+            </dependency>
 
              <!--test scoped-->
             <dependency>

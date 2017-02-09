@@ -1,8 +1,8 @@
 package com.vdzon.administratie.rest.checkandfix;
 
-//import com.vdzon.administratie.checkandfix.FixService;
 import com.vdzon.administratie.checkandfix.CheckServiceScala;
 import com.vdzon.administratie.checkandfix.FixServiceScala;
+
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
 import com.vdzon.administratie.model.*;

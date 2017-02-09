@@ -5,9 +5,7 @@ import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
 import com.vdzon.administratie.model.boekingen.Boeking;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

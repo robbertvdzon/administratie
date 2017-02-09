@@ -12,12 +12,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="applicatie" />
+        <module name="applicatie (1)" />
+        <module name="applicatie (2)" />
         <module name="spark-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="administratie" target="1.5" />
       <module name="applicatie" target="1.8" />
+      <module name="applicatie (1)" target="1.8" />
+      <module name="applicatie (2)" target="1.8" />
       <module name="cucumber" target="1.5" />
       <module name="spark-core" target="1.8" />
     </bytecodeTargetLevel>

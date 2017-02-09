@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Rekening;
 import com.vdzon.administratie.model.boekingen.Boeking;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening;
 
 import java.math.BigDecimal;

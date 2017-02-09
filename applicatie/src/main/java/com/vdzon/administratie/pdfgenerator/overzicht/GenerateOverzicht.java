@@ -2,6 +2,7 @@ package com.vdzon.administratie.pdfgenerator.overzicht;
 
 import com.vdzon.administratie.checkandfix.CheckServiceScala;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
+
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;

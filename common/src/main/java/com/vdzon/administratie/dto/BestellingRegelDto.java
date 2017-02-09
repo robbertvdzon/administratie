@@ -1,9 +1,7 @@
 package com.vdzon.administratie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vdzon.administratie.model.Bestelling;
 import com.vdzon.administratie.model.BestellingRegel;
-import com.vdzon.administratie.model.FactuurRegel;
 
 import java.math.BigDecimal;
 
