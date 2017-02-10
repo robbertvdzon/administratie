@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/applicatie/applicatie.iml" filepath="$PROJECT_DIR$/applicatie/applicatie.iml" />
       <module fileurl="file://$PROJECT_DIR$/scala/applicatie (1).iml" filepath="$PROJECT_DIR$/scala/applicatie (1).iml" />
       <module fileurl="file://$PROJECT_DIR$/common/applicatie (2).iml" filepath="$PROJECT_DIR$/common/applicatie (2).iml" />
+      <module fileurl="file://$PROJECT_DIR$/checkandfix/checkandfix.iml" filepath="$PROJECT_DIR$/checkandfix/checkandfix.iml" />
       <module fileurl="file://$PROJECT_DIR$/sparkjava/spark-core.iml" filepath="$PROJECT_DIR$/sparkjava/spark-core.iml" />
     </modules>
   </component>

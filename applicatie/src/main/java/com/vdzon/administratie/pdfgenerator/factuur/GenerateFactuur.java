@@ -4,8 +4,8 @@ import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.AdministratieGegevens;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.FactuurRegel;
-import com.vdzon.administratie.pdfgenerator.pdfutil.PdfData;
 import com.vdzon.administratie.pdfgenerator.pdfutil.GeneratePdfHelper;
+import com.vdzon.administratie.pdfgenerator.pdfutil.PdfData;
 import com.vdzon.administratie.pdfgenerator.pdfutil.TabelCols;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -13,7 +13,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class GenerateFactuur {
 
     private void printBedrijfGegevens(PdfData pdfData, AdministratieGegevens administratieGegevens, GeneratePdfHelper generatePdfHelper) throws IOException {
         if (administratieGegevens != null) {
-            TabelCols tabelCols = new TabelCols(30,190,200);
+            TabelCols tabelCols = new TabelCols(30, 190, 200);
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "ABN-Amro rekeningnummer", ":", administratieGegevens.getRekeningNummer());
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "BTW-nr", ":", administratieGegevens.getBtwNummer());
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Handelsregister", ":", administratieGegevens.getHandelsRegister());
@@ -71,10 +72,14 @@ public class GenerateFactuur {
     private void printBetalingsGegevens(Factuur factuur, GeneratePdfHelper generatePdfHelper) throws IOException {
         generatePdfHelper.writeNormalText("Bij betaling gaarne factuurnummer vermelden.");
         generatePdfHelper.skipDown(10);
+        generatePdfHelper.getClass()
+                         .getCanonicalName()
+                         .concat("")
+                         .codePointAt(5);
     }
 
     private void printSummeryTotals(Factuur factuur, PdfData pdfData, GeneratePdfHelper generatePdfHelper) throws IOException {
-        TabelCols tabelCols = new TabelCols(30,190,200);
+        TabelCols tabelCols = new TabelCols(30, 190, 200);
         generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag exclusief BTW", ":", "" + String.format("%.2f", factuur.getBedragExBtw()));
         generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "BTW", ":", "" + String.format("%.2f", factuur.getBtw()));
         generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Bedrag inclusief BTW", ":", "" + String.format("%.2f", factuur.getBedragIncBtw()));
@@ -89,37 +94,36 @@ public class GenerateFactuur {
 
     private void printFactuurRegels(Factuur factuur, PdfData pdfData, GeneratePdfHelper generatePdfHelper) throws IOException {
         generatePdfHelper.skipDown(10);
-        TabelCols tabelCols = new TabelCols(30,80, 300,400,500);
+        TabelCols tabelCols = new TabelCols(30, 80, 300, 400, 500);
         generatePdfHelper.writeTabel5(pdfData.fontBold, tabelCols, "Aantal", "Omschrijving", "Prijs", "Btw", "Totaal ex");
         for (FactuurRegel factuurRegel : factuur.getFactuurRegels()) {
 
             List<String> omschrijvingSplitted = new ArrayList<>();
             String remain = factuurRegel.getOmschrijving();
-            while (remain.length()>0){
+            while (remain.length() > 0) {
                 String text = findTextWithMaxWidth(pdfData.fontPlain, remain, 1500, GeneratePdfHelper.NORMAL_FONT_SIZE);
                 omschrijvingSplitted.add(text);
                 remain = remain.substring(text.length());
             }
 
             boolean first = true;
-            for (String omschrijving: omschrijvingSplitted){
-                if (first){
+            for (String omschrijving : omschrijvingSplitted) {
+                if (first) {
                     generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" + factuurRegel.getAantal(), "" + omschrijving, "" + factuurRegel.getStuksPrijs(), "" + factuurRegel.getBtwPercentage(), "" + String.format("%.2f", factuurRegel.getStuksPrijs().doubleValue() * factuurRegel.getAantal().doubleValue()));
                     first = false;
-                }
-                else {
-                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "" , omschrijving, "" , "", "" );
+                } else {
+                    generatePdfHelper.writeTabel5(pdfData.fontPlain, tabelCols, "", omschrijving, "", "", "");
                 }
             }
         }
     }
 
     private String findTextWithMaxWidth(PDFont fontPlain, String remain, int maxWith, int fontSize) {
-        for (int nr=0; nr<remain.length(); nr++){
-            String test = remain.substring(0,nr);
+        for (int nr = 0; nr < remain.length(); nr++) {
+            String test = remain.substring(0, nr);
             try {
-                if ((fontPlain.getStringWidth(test)/fontSize)>maxWith){
-                    return remain.substring(0,nr-1);
+                if ((fontPlain.getStringWidth(test) / fontSize) > maxWith) {
+                    return remain.substring(0, nr - 1);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

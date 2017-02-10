@@ -31,6 +31,10 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>checkandfix</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>scala</artifactId>
         </dependency>
         <dependency>
@@ -258,6 +262,11 @@
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
                 <artifactId>scala</artifactId>
+                <version>0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vdzon.administratie</groupId>
+                <artifactId>checkandfix</artifactId>
                 <version>0.4</version>
             </dependency>
 
