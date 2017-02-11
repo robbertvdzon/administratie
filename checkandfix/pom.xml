@@ -23,6 +23,16 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>common</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>scala</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -35,7 +35,10 @@ object CheckServiceScala {
   def getCheckAndFixRegels(administratie: Administratie):java.util.List[CheckAndFixRegel] = {
     val checkAndFixData: CheckAndFixData = populateCheckAndFixData(administratie)
     var regels = List[CheckAndFixRegel]()
-    checkFunctions.stream.forEach(f => regels = regels ++ f(checkAndFixData))
+    checkFunctions.stream.forEach(f => {
+      f(checkAndFixData)
+      regels = regels ++ f(checkAndFixData)
+    })
     return regels
   }
 
