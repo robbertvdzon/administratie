@@ -1,22 +1,19 @@
 package com.vdzon.administratie.checkandfix
 
 import com.vdzon.administratie.checkandfix.actions.check.BedragenCheck2
-import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
+import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel2
 import com.vdzon.administratie.model.Administratie
 import com.vdzon.administratie.model.BoekingenCache
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.function.Function
+import java.util.*
 
 /**
  * Created by robbe on 2/12/2017.
  */
 object CheckService {
 
-    private val checkOfRekeningenVolledigBetaaldZijn = { data : CheckAndFixData2 -> BedragenCheck2.checkOfRekeningenVolledigBetaaldZijn(data) }
+    private val checkOfRekeningenVolledigBetaaldZijn = { data: CheckAndFixData2 -> BedragenCheck2.checkOfRekeningenVolledigBetaaldZijn(data) }
 
-    private val checkFunctions = Arrays.asList<(CheckAndFixData2) -> List<CheckAndFixRegel>>(
+    private val checkFunctions = Arrays.asList<(CheckAndFixData2) -> List<CheckAndFixRegel2>>(
             //            checkOfFacturenVolledigBetaaldZijn,
             checkOfRekeningenVolledigBetaaldZijn
             //            checkOfAfschriftNogBestaat,
@@ -27,9 +24,9 @@ object CheckService {
             //            checkRekeningenMetHetzelfdeRekeningNummer
     )
 
-    fun getCheckAndFixRegels(administratie: Administratie): List<CheckAndFixRegel> {
+    fun getCheckAndFixRegels(administratie: Administratie): List<CheckAndFixRegel2> {
         val checkAndFixData = populateCheckAndFixData(administratie)
-        val regels = ArrayList<CheckAndFixRegel>()
+        val regels = ArrayList<CheckAndFixRegel2>()
         checkFunctions.forEach { f ->
             //                f(checkAndFixData);
             //            CheckAndFixRegel apply = f.apply(checkAndFixData);

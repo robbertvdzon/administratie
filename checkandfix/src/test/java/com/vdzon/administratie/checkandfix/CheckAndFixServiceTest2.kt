@@ -1,18 +1,14 @@
 package com.vdzon.administratie.checkandfix
 
-import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel
+//import org.junit.jupiter.api.Test
+
 import com.vdzon.administratie.model.*
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking
 import com.vdzon.administratie.model.boekingen.Boeking
-import org.junit.jupiter.api.Test
-
+import junit.framework.Assert.assertEquals
+import org.junit.Test
 import java.util.*
 
-import org.junit.jupiter.api.Assertions.*
-
-/**
- * Created by robbe on 2/12/2017.
- */
 internal class CheckAndFixServiceTest2 {
     @Test
     fun when_alle_facturen_betaald_then_geen_checkregels() {
@@ -24,7 +20,7 @@ internal class CheckAndFixServiceTest2 {
 
         val regels = CheckService.getCheckAndFixRegels(administratie)
 
-        assertTrue(regels.size == 1)
+        assertEquals(1, regels.size)
     }
 
     private fun factuurBoeking(uuid: String, factuurNr: String, afschriftNummer: String): BetaaldeFactuurBoeking {

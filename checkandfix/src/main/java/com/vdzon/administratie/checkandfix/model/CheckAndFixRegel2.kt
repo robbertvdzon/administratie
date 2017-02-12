@@ -1,6 +1,12 @@
 package com.vdzon.administratie.checkandfix.model
 
-/**
- * Created by robbe on 2/12/2017.
- */
-class CheckAndFixRegel2
+import com.vdzon.administratie.dto.AfschriftDto
+import java.time.LocalDate
+
+class CheckAndFixRegel2(val rubriceerAction: FixAction? = null,
+                        val omschrijving: String? = null,
+                        val data: String? = null,
+                        val boekingUuid: String? = null,
+                        val checkType: CheckType? = null,
+                        val afschrift: AfschriftDto? = null,
+                        val date: LocalDate? = null);
