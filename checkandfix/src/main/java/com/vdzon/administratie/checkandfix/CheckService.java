@@ -3,6 +3,7 @@ package com.vdzon.administratie.checkandfix;
 import com.vdzon.administratie.checkandfix.actions.check.BedragenCheck2;
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
 import com.vdzon.administratie.model.Administratie;
+import com.vdzon.administratie.model.BoekingenCache;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,9 +15,9 @@ import java.util.function.Function;
  */
 public class CheckService {
 
-    private static Function<CheckAndFixData, CheckAndFixRegel> checkOfRekeningenVolledigBetaaldZijn = (data) -> BedragenCheck2.checkOfRekeningenVolledigBetaaldZijn(data);
+    private static Function<CheckAndFixData2, List<CheckAndFixRegel>> checkOfRekeningenVolledigBetaaldZijn = (data) -> BedragenCheck2.INSTANCE.checkOfRekeningenVolledigBetaaldZijn(data);
 
-    private static List<Function<CheckAndFixData, CheckAndFixRegel>> checkFunctions = Arrays.asList(
+    private static List<Function<CheckAndFixData2, List<CheckAndFixRegel>>> checkFunctions = Arrays.asList(
 //            checkOfFacturenVolledigBetaaldZijn,
             checkOfRekeningenVolledigBetaaldZijn
 //            checkOfAfschriftNogBestaat,
@@ -28,17 +29,24 @@ public class CheckService {
     );
 
     public static List<CheckAndFixRegel> getCheckAndFixRegels(Administratie administratie) {
-        CheckAndFixData checkAndFixData = populateCheckAndFixData(administratie);
+        CheckAndFixData2 checkAndFixData = populateCheckAndFixData(administratie);
         List<CheckAndFixRegel> regels = new ArrayList<>();
         checkFunctions.forEach(f -> {
 //                f(checkAndFixData);
 //            CheckAndFixRegel apply = f.apply(checkAndFixData);
-            regels.add(f.apply(checkAndFixData));
+            regels.addAll(f.apply(checkAndFixData));
         });
         return regels;
     }
 
-    private static CheckAndFixData populateCheckAndFixData(Administratie administratie) {
-        return null;
+    private static CheckAndFixData2 populateCheckAndFixData(Administratie administratie) {
+        return new CheckAndFixData2(
+                administratie.getAfschriften(),
+                administratie.getRekeningen(),
+                administratie.getFacturen(),
+                administratie.getBoekingen(),
+                new BoekingenCache(administratie.getBoekingen()));
+
     }
+
 }
