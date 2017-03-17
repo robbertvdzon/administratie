@@ -118,9 +118,9 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        writeTitle("Alle facturen");
-        skipDown(10);
-        listFactuurHeader();
+        writeTitle("Alle uitgeschreven facturen");
+//        skipDown(10);
+//        listFactuurHeader();
         overzicht
                 .filteredFacturen
                 .stream()
@@ -140,8 +140,6 @@ public class GenerateOverzicht {
 
         skipDown(10);
         writeTitle("Alle rekeningen");
-        skipDown(10);
-        listRekeningHeader();
         overzicht
                 .filteredRekeningen
                 .stream()
@@ -161,8 +159,6 @@ public class GenerateOverzicht {
 
         skipDown(10);
         writeTitle("Alle declaraties");
-        skipDown(10);
-        listDeclaratiesHeader();
         overzicht.filteredDeclaraties
                 .stream()
                 .sorted((decl1, decl2) -> decl2.getDeclaratieNummer().compareTo(decl1.getDeclaratieNummer()))
@@ -179,7 +175,7 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        writeTitle("Alle afschriften");
+        writeTitle("Alle bank afschrijvingen");
         skipDown(10);
         overzicht
                 .filteredAfschriften
@@ -200,8 +196,6 @@ public class GenerateOverzicht {
 
         skipDown(10);
         writeTitle("Alle rekeningen met nog lopende afschrijvingen");
-        skipDown(10);
-        listRekeningHeader();
         administratie
                 .getRekeningen()
                 .stream()
@@ -265,112 +259,44 @@ public class GenerateOverzicht {
 
     private static int LIJST_FONT_SIZE = 10;
 
-    private void listFactuurHeader()  {
-        try {
-            skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Klant");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Status");
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
     private void listFactuur(Factuur factuur, BoekingenCache boekingenCache)  {
         List<BoekingMetFactuur> boekingenVanFactuur = boekingenCache.getBoekingenVanFactuur(factuur.getFactuurNummer());
-        String status = "Niet betaald";
+        String status = "Geen betaling gevonden in de afschriften";
         if (boekingenVanFactuur!=null && boekingenVanFactuur.size()>0){
             status = "Betaald";
         }
 
         try {
             skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurNummer());
-            y+=50;
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, factuur.getFactuurNummer());
+            skipDown(15);
+
             Contact contact = factuur.getContact();
-            writeText(LIJST_FONT_SIZE, y, fontPlain, contact == null ? "" : contact.getNaam());
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, factuur.getFactuurDate().toString());
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragExBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBtw()));
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-
-    private void listRekeningHeader()  {
-        try {
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Klant:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, contact.getNaam());
             skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Status");
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
-    private void listRekening(Rekening rekening, BoekingenCache boekingenCache)  {
-        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
-        String status = "Niet betaald";
-        if (boekingenVanRekening!=null && boekingenVanRekening.size()>0){
-            status = "Betaald";
-        }
-        if (rekening.getMaandenAfschrijving()>0){
-            status += " (afschrijven in "+rekening.getMaandenAfschrijving()+" maanden)";
-
-        }
-
-        try {
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, factuur.getFactuurDate().toString());
             skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningNummer());
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, rekening.getRekeningDate().toString());
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragExBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBtw()));
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, status);
 
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag ex Btw:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",factuur.getBedragExBtw()));
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "klant:"+rekening.getNaam().toString());
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "BTW:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",factuur.getBtw()));
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, "omschrijving:"+rekening.getOmschrijving().toString());
-            skipDown(5);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag inc Btw:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",factuur.getBedragIncBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Status:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, status);
+            skipDown(15);
 
         }
         catch (Exception ex){
@@ -378,50 +304,6 @@ public class GenerateOverzicht {
         }
     }
 
-
-
-    private void listDeclaratiesHeader()  {
-        try {
-            skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontBold, "Omschrijving");
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void listDeclaraties(Declaratie declaratie)  {
-        try {
-            skipDown(15);
-            int y = 30;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getDeclaratieNummer());
-            y+=50;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getDeclaratieDate().toString());
-            y+=60;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBedragExBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBtw()));
-            y+=40;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, String.format("%.2f",declaratie.getBedragIncBtw()));
-            y+=80;
-            writeText(LIJST_FONT_SIZE, y, fontPlain, declaratie.getOmschrijving().toString());
-
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
     private void listAfschrift(Afschrift afschrift, BoekingenCache boekingenCache)  {
         try {
@@ -486,6 +368,113 @@ public class GenerateOverzicht {
             ex.printStackTrace();
         }
     }
+
+    private void listRekeningHeader()  {
+        try {
+            skipDown(15);
+            int y = 30;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Nummer");
+            y+=50;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Datum");
+            y+=60;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag ex Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "BTW");
+            y+=40;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Bedrag inc Btw");
+            y+=80;
+            writeText(LIJST_FONT_SIZE, y, fontBold, "Status");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listRekening(Rekening rekening, BoekingenCache boekingenCache)  {
+        List<BoekingMetRekening> boekingenVanRekening = boekingenCache.getBoekingenVanRekening(rekening.getRekeningNummer());
+        String status = "Geen betaling gevonden in de afschriften";
+        if (boekingenVanRekening!=null && boekingenVanRekening.size()>0){
+            status = "Betaald";
+        }
+        if (rekening.getMaandenAfschrijving()>0){
+            status += " (afschrijven in "+rekening.getMaandenAfschrijving()+" maanden)";
+
+        }
+
+        try {
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getRekeningNummer());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getRekeningDate().toString());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrijf:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getNaam().toString());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getOmschrijving().toString());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag ex Btw");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",rekening.getBedragExBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "BTW:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",rekening.getBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag inc Btw:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",rekening.getBedragIncBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Status:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, status);
+            skipDown(15);
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void listDeclaraties(Declaratie declaratie)  {
+        try {
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Nummer:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, declaratie.getDeclaratieNummer());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, declaratie.getDeclaratieDate().toString());
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag ex Btw:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",declaratie.getBedragExBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "BTW:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",declaratie.getBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Bedrag inc Btw:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, String.format("%.2f",declaratie.getBedragIncBtw()));
+            skipDown(15);
+
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Omschrijving:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, declaratie.getOmschrijving().toString());
+            skipDown(15);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     private void addAnImage(PDDocument document, String logoUrl) {
         try {
             URL url = new URL(logoUrl);
