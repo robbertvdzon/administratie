@@ -408,6 +408,10 @@ public class GenerateOverzicht {
             writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getRekeningNummer());
             skipDown(15);
 
+            writeText(LIJST_FONT_SIZE, 30, fontBold, "Factuurnummer:");
+            writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getFactuurNummer());
+            skipDown(15);
+
             writeText(LIJST_FONT_SIZE, 30, fontBold, "Datum:");
             writeText(LIJST_FONT_SIZE, 120, fontPlain, rekening.getRekeningDate().toString());
             skipDown(15);
