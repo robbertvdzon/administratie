@@ -52,6 +52,10 @@ object BedragenCheck2 {
             return Afschrift.newBuilder().bedrag(BigDecimal.ZERO).build().bedrag.toDouble()
         }
     }
+
+    fun checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData2): List<CheckAndFixRegel2> {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 
