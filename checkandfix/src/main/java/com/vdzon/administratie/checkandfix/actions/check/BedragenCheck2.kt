@@ -53,9 +53,16 @@ object BedragenCheck2 {
         }
     }
 
-    fun checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData2): List<CheckAndFixRegel2> {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun factuurNietVolledigBetaald(factuur: Factuur, data: CheckAndFixData2): Boolean  {
+        val sumVanAfschriften: Double = data.boekingenCache.getBoekingenVanFactuur(factuur.factuurNummer).map{boeking -> getAfschriftBedrag(data, boeking)}.sum()
+        return sumVanAfschriften.toDouble() != factuur.bedragIncBtw.toDouble()
     }
+
+    fun checkOfFacturenVolledigBetaaldZijn(data: CheckAndFixData2): List<CheckAndFixRegel2> = data
+            .alleFacturen
+            .filter{f -> factuurNietVolledigBetaald(f, data)}
+            .map{f -> buildNietVolledigBetaaldCheckAndFixRegel(f)}
+
 }
 
 
