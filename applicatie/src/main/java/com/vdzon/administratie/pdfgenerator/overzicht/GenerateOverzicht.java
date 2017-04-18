@@ -1,7 +1,7 @@
 package com.vdzon.administratie.pdfgenerator.overzicht;
 
-import com.vdzon.administratie.checkandfix.CheckServiceScala;
-import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel;
+import com.vdzon.administratie.checkandfix.CheckService;
+import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel2;
 
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
@@ -214,7 +214,7 @@ public class GenerateOverzicht {
         page = new PDPageContentStream(document, pdfPage);
 
         skipDown(10);
-        List<CheckAndFixRegel> checkAndFixRegels = CheckServiceScala.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.date(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
+        List<CheckAndFixRegel2> checkAndFixRegels = CheckService.INSTANCE.getCheckAndFixRegels(administratie).stream().filter(regel->betweenOrAtDates(regel.getDate(),overzicht.beginDate, overzicht.endDate)).collect(Collectors.toList());
         if (checkAndFixRegels.isEmpty()){
             writeTitle("Geen waarschuwingen gevonden");
         }
@@ -247,10 +247,10 @@ public class GenerateOverzicht {
         return date.isAfter(beginDate) && date.isBefore(endData);
     }
 
-    private void listWaarschuwing(CheckAndFixRegel regel) {
+    private void listWaarschuwing(CheckAndFixRegel2 regel) {
         try {
             skipDown(15);
-            writeText(LIJST_FONT_SIZE, 30, fontPlain, regel.omschrijving());
+            writeText(LIJST_FONT_SIZE, 30, fontPlain, regel.getOmschrijving());
         }
         catch (Exception ex){
             ex.printStackTrace();

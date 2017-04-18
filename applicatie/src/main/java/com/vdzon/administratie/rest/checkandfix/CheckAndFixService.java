@@ -1,7 +1,7 @@
 package com.vdzon.administratie.rest.checkandfix;
 
-import com.vdzon.administratie.checkandfix.CheckServiceScala;
-import com.vdzon.administratie.checkandfix.FixServiceScala;
+import com.vdzon.administratie.checkandfix.CheckService;
+import com.vdzon.administratie.checkandfix.FixService;
 
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.crud.UserCrud;
@@ -23,12 +23,12 @@ public class CheckAndFixService {
 
     public Object getCheckAndFixRegels(Request req, Response res) {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
-        return CheckServiceScala.getCheckAndFixRegels(gebruiker.getDefaultAdministratie());
+        return CheckService.INSTANCE.getCheckAndFixRegels(gebruiker.getDefaultAdministratie());
     }
 
     protected Object fix(Request req, Response res) throws Exception {
         Gebruiker gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService);
-        Gebruiker updatedGebruiker = gebruiker.newBuilder(gebruiker).administraties(Arrays.asList(FixServiceScala.getFixedAdministratie(gebruiker.getDefaultAdministratie()))).build();
+        Gebruiker updatedGebruiker = gebruiker.newBuilder(gebruiker).administraties(Arrays.asList(FixService.INSTANCE.getFixedAdministratie(gebruiker.getDefaultAdministratie()))).build();
         crudService.updateGebruiker(updatedGebruiker);
         return new SingleAnswer("ok");
     }

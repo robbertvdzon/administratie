@@ -34,10 +34,6 @@
             <artifactId>checkandfix</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>scala</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.mongobee</groupId>
             <artifactId>mongobee</artifactId>
             <version>0.12</version>
@@ -257,11 +253,6 @@
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
                 <artifactId>common</artifactId>
-                <version>0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>com.vdzon.administratie</groupId>
-                <artifactId>scala</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>

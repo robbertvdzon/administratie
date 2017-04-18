@@ -11,7 +11,6 @@
     <modules>
         <module>applicatie</module>
         <module>common</module>
-        <module>scala</module>
         <module>checkandfix</module>
     </modules>
 
