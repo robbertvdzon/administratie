@@ -21,7 +21,6 @@
         <java.version>1.8</java.version>
         <build.manifest.section>Build Details</build.manifest.section>
         <build.number>unknown</build.number>
-        <scala.version>2.12.0-RC2</scala.version>
     </properties>
 
     <dependencies>
