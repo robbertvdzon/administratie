@@ -10,6 +10,6 @@ object BoekingenFix2 {
     fun removeBoekingen(regel: CheckAndFixRegel2, administratie: Administratie): Administratie {
         if (regel.rubriceerAction != FixAction.REMOVE_BOEKING) return administratie
         val nieuweBoekingen: List<Boeking> = administratie.boekingen.toMutableList().filter { boeking -> boeking.uuid != regel.boekingUuid }
-        return Administratie.newBuilder(administratie).boekingen(nieuweBoekingen).build()
+        return administratie.copy(boekingen=nieuweBoekingen.toMutableList())
     }
 }

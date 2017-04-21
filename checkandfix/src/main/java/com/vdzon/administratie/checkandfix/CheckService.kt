@@ -6,6 +6,7 @@ import com.vdzon.administratie.checkandfix.actions.check.DubbeleNummersCheck2
 import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel2
 import com.vdzon.administratie.model.Administratie
 import com.vdzon.administratie.model.BoekingenCache
+import com.vdzon.administratie.model.Contact
 import java.util.*
 
 /**

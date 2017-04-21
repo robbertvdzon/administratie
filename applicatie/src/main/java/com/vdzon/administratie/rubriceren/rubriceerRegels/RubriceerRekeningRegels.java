@@ -33,14 +33,14 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                             &&
                             !rekeningAlreadyUsed(regels, rekening.getRekeningNummer())
                             &&
-                            (rekening.getBedragIncBtw().compareTo(afschrift.getBedrag().negate())==0)
+                            (rekening.getBedragIncBtw().compareTo(afschrift.getBedrag().negate()) == 0)
                             &&
                             (
                                     (afschrift.getOmschrijving().contains(rekening.getRekeningNummer()))
                                             ||
-                                    (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
+                                            (afschrift.getOmschrijving().equals(rekening.getOmschrijving()))
                             )
-                        )
+                            )
 
                     {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING;
@@ -48,11 +48,11 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
                     }
                 }
                 RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder()
-                        .rubriceerAction(rubriceerAction)
-                        .rekeningNummer(rekeningNummer)
-                        .faktuurNummer(factuurNummer)
-                        .afschrift(new AfschriftDto(afschrift, boekingenCache))
-                        .build();
+                                                              .rubriceerAction(rubriceerAction)
+                                                              .rekeningNummer(rekeningNummer)
+                                                              .faktuurNummer(factuurNummer)
+                                                              .afschrift(AfschriftDto.Companion.toDto(afschrift, boekingenCache))
+                                                              .build();
                 regels.add(rubriceerRegel);
             }
         }
@@ -72,39 +72,36 @@ public class RubriceerRekeningRegels extends RubriceerHelper {
         Boeking boeking;
         switch (regel.getRubriceerAction()) {
             case BETALING_ZONDER_FACTUUR:
-                boeking = BetalingZonderFactuurBoeking.newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .afschriftNummer(regel.getAfschrift().getNummer())
-                        .build();
+                boeking = new BetalingZonderFactuurBoeking(
+                        regel.getAfschrift().getNummer(),
+                        UUID.randomUUID().toString());
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CONNECT_EXISTING_REKENING:
-                boeking = BetaaldeRekeningBoeking.newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .afschriftNummer(regel.getAfschrift().getNummer())
-                        .rekeningNummer(regel.getRekeningNummer())
-                        .build();
+                boeking = new BetaaldeRekeningBoeking(
+                        regel.getRekeningNummer(),
+                        regel.getAfschrift().getNummer(),
+                        UUID.randomUUID().toString());
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case CREATE_REKENING:
-                Rekening rekening = Rekening
-                        .newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .rekeningNummer("" + findNextRekeningNummer(gebruiker))
-                        .naam(afschrift.getRelatienaam())
-                        .omschrijving(afschrift.getOmschrijving())
-                        .rekeningDate(afschrift.getBoekdatum())
-                        .bedragExBtw(afschrift.getBedrag().negate())
-                        .bedragIncBtw(afschrift.getBedrag().negate())
-                        .btw(BigDecimal.ZERO)
-                        .build();
+                Rekening rekening = new Rekening(
+                        UUID.randomUUID().toString(),
+                        "" + findNextRekeningNummer(gebruiker),
+                        "",
+                        afschrift.getRelatienaam(),
+                        afschrift.getOmschrijving(),
+                        afschrift.getBoekdatum(),
+                        afschrift.getBedrag().negate(),
+                        afschrift.getBedrag().negate(),
+                        BigDecimal.ZERO,
+                        0);
                 gebruiker.getDefaultAdministratie().addRekening(rekening);
 
-                boeking = BetaaldeRekeningBoeking.newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .afschriftNummer(regel.getAfschrift().getNummer())
-                        .rekeningNummer(rekening.getRekeningNummer())
-                        .build();
+                boeking = new BetaaldeRekeningBoeking(
+                        rekening.getRekeningNummer(),
+                        regel.getAfschrift().getNummer(),
+                        UUID.randomUUID().toString());
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
         }

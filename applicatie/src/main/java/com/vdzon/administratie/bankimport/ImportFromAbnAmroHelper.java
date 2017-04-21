@@ -20,15 +20,13 @@ public class ImportFromAbnAmroHelper {
         BigDecimal bedrag = getBedrag(afschriftData.bedragStr);
         LocalDate boekDatum = getBoekDatum(afschriftData.date);
         int nextAfschriftNummer = nextNummerHolder.nextNummer++;
-        return Afschrift.newBuilder()
-                .uuid(afschriftData.uuid)
-                .nummer("" + nextAfschriftNummer)
-                .rekening(afschriftData.rekeningNr)
-                .omschrijving(afschriftData.oms)
-                .relatienaam(afschriftData.naam)
-                .boekdatum(boekDatum)
-                .bedrag(bedrag)
-                .build();
+        return new Afschrift(afschriftData.uuid,
+                                  "" + nextAfschriftNummer,
+                                  afschriftData.rekeningNr,
+                                  afschriftData.oms,
+                                  afschriftData.naam,
+                                  boekDatum,
+                                  bedrag);
     }
 
     protected static AfschriftData parseAfschriftData(String line, Function<String, String> extractNaam, Function<String, String> extractOmschrijving) {

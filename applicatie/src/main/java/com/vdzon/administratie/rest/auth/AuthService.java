@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.auth;
 
 import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.model.Administratie;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SessionHelper;
 import com.vdzon.administratie.util.SingleAnswer;
@@ -9,6 +10,7 @@ import spark.Response;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Singleton
@@ -24,25 +26,24 @@ public class AuthService {
 
         Gebruiker gebruiker = userCrud.getGebruikerByUsername(username);
 
-        if (gebruiker != null ) {
+        if (gebruiker != null) {
             res.status(401);
             SessionHelper.removeAuthenticatedUserUuid(req);
             return new SingleAnswer("username bestaat al");
         }
 
-        gebruiker = Gebruiker
-                .newBuilder()
-                .admin(false)
-                .name(name)
-                .password(password)
-                .username(username)
-                .uuid(UUID.randomUUID().toString()).build();
+        gebruiker = new Gebruiker(
+                UUID.randomUUID().toString(),
+                name,
+                username,
+                password,
+                false,
+                new ArrayList<Administratie>());
         gebruiker.initDefaultAdministratie();
         try {
             userCrud.updateGebruiker(gebruiker);
             SessionHelper.setAuthenticatedUserUuid(req, gebruiker.getUuid());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new SingleAnswer("ok");

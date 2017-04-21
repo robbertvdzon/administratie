@@ -2,19 +2,16 @@ package com.vdzon.administratie.rubriceren.rubriceerRegels;
 
 import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.dto.BoekingType;
 import com.vdzon.administratie.model.BoekingenCache;
 import com.vdzon.administratie.model.Factuur;
 import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
-import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.InkomstenZonderFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
 import com.vdzon.administratie.rubriceren.model.RubriceerAction;
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,18 +22,19 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
     @RubriceerRule
     public void updateRegels(Gebruiker gebruiker, List<RubriceerRegel> regels, Afschrift afschrift, BoekingenCache boekingenCache) {
         List<BoekingMetAfschrift> boekingenVanAfschrift = boekingenCache.getBoekingenVanAfschrift(afschrift.getNummer());
-        if (boekingenVanAfschrift==null || boekingenVanAfschrift.isEmpty()) {
+        if (boekingenVanAfschrift == null || boekingenVanAfschrift.isEmpty()) {
             if (afschrift.getBedrag().doubleValue() > 0) {
                 RubriceerAction rubriceerAction = RubriceerAction.INKOMSTEN_ZONDER_FACTUUR;
                 String factuurNummer = null;
                 for (Factuur factuur : gebruiker.getDefaultAdministratie().getFacturen()) {
-                    String omschrijvingZonderSpaties = afschrift.getOmschrijving().replaceAll(" ","");
-                    if ((factuur.getBedragIncBtw().compareTo(afschrift.getBedrag())==0) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
+                    String omschrijvingZonderSpaties = afschrift.getOmschrijving().replaceAll(" ", "");
+                    if ((factuur.getBedragIncBtw().compareTo(afschrift.getBedrag()) == 0) && (omschrijvingZonderSpaties.contains(factuur.getFactuurNummer()))) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR;
                         factuurNummer = factuur.getFactuurNummer();
                     }
                 }
-                RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder().rubriceerAction(rubriceerAction).rekeningNummer(null).faktuurNummer(factuurNummer).afschrift(new AfschriftDto(afschrift, boekingenCache)).build();
+                RubriceerRegel rubriceerRegel = RubriceerRegel.newBuilder().rubriceerAction(rubriceerAction).rekeningNummer(null).faktuurNummer(factuurNummer).afschrift(
+                        AfschriftDto.Companion.toDto(afschrift, boekingenCache)).build();
                 regels.add(rubriceerRegel);
             }
         }
@@ -49,18 +47,18 @@ public class RubriceerFactuurRegels extends RubriceerHelper {
         Boeking boeking;
         switch (regel.getRubriceerAction()) {
             case CONNECT_EXISTING_FACTUUR:
-                boeking = BetaaldeFactuurBoeking.newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .afschriftNummer(regel.getAfschrift().getNummer())
-                        .factuurNummer(regel.getFaktuurNummer())
-                        .build();
+                boeking = new BetaaldeFactuurBoeking(
+                        regel.getFaktuurNummer(),
+                        regel.getAfschrift().getNummer(),
+                        UUID.randomUUID().toString()
+                );
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
             case INKOMSTEN_ZONDER_FACTUUR:
-                boeking = InkomstenZonderFactuurBoeking.newBuilder()
-                        .uuid(UUID.randomUUID().toString())
-                        .afschriftNummer(regel.getAfschrift().getNummer())
-                        .build();
+                boeking = new InkomstenZonderFactuurBoeking(
+                        regel.getAfschrift().getNummer(),
+                        UUID.randomUUID().toString()
+                );
                 gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 break;
         }

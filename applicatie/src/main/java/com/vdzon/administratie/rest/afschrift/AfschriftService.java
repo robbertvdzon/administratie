@@ -2,19 +2,18 @@ package com.vdzon.administratie.rest.afschrift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdzon.administratie.bankimport.ImportFromAbnAmro;
+import com.vdzon.administratie.crud.UserCrud;
+import com.vdzon.administratie.dto.AfschriftDto;
 import com.vdzon.administratie.dto.BoekingDto;
 import com.vdzon.administratie.model.Administratie;
+import com.vdzon.administratie.model.Afschrift;
 import com.vdzon.administratie.model.BoekingenCache;
+import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking;
 import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking;
 import com.vdzon.administratie.model.boekingen.Boeking;
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift;
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur;
 import com.vdzon.administratie.util.SessionHelper;
-import com.vdzon.administratie.crud.UserCrud;
-import com.vdzon.administratie.dto.AfschriftDto;
-import com.vdzon.administratie.model.Afschrift;
-import com.vdzon.administratie.model.Gebruiker;
 import com.vdzon.administratie.util.SingleAnswer;
 import spark.Request;
 import spark.Response;
@@ -48,42 +47,40 @@ public class AfschriftService {
     }
 
     private void removeDeletedBoekingen(Gebruiker gebruiker, AfschriftDto afschriftDto, List<BoekingMetAfschrift> boekingenVanAfschrift) {
-        for (BoekingMetAfschrift boeking : boekingenVanAfschrift ){
+        for (BoekingMetAfschrift boeking : boekingenVanAfschrift) {
             boolean found = false;
-            for (BoekingDto boekingDto : afschriftDto.getBoekingen()){
-                if (boekingDto.getUuid().equals(boeking.getUuid())){
+            for (BoekingDto boekingDto : afschriftDto.getBoekingen()) {
+                if (boekingDto.getUuid().equals(boeking.getUuid())) {
                     found = true;
                 }
             }
-            if (!found){
+            if (!found) {
                 gebruiker.getDefaultAdministratie().removeBoeking(boeking.getUuid());
             }
         }
     }
 
     private void addNewBoekingen(Gebruiker gebruiker, AfschriftDto afschriftDto, List<BoekingMetAfschrift> boekingenVanAfschrift) {
-        for (BoekingDto boekingDto : afschriftDto.getBoekingen()){
+        for (BoekingDto boekingDto : afschriftDto.getBoekingen()) {
             boolean found = false;
-            for (BoekingMetAfschrift boeking : boekingenVanAfschrift ){
-                if (boekingDto.getUuid().equals(boeking.getUuid())){
+            for (BoekingMetAfschrift boeking : boekingenVanAfschrift) {
+                if (boekingDto.getUuid().equals(boeking.getUuid())) {
                     found = true;
                 }
             }
-            if (!found){
-                if (notEmpty(boekingDto.getFactuurNummer())){
-                    Boeking boeking = BetaaldeFactuurBoeking.newBuilder()
-                            .afschriftNummer(afschriftDto.getNummer())
-                            .factuurNummer(boekingDto.getFactuurNummer())
-                            .uuid(UUID.randomUUID().toString())
-                            .build();
+            if (!found) {
+                if (notEmpty(boekingDto.getFactuurNummer())) {
+                    Boeking boeking = new BetaaldeFactuurBoeking(
+                            boekingDto.getFactuurNummer(),
+                            afschriftDto.getNummer(),
+                            UUID.randomUUID().toString()
+                    );
                     gebruiker.getDefaultAdministratie().addBoeking(boeking);
-                }
-                else if (notEmpty(boekingDto.getRekeningNummer())){
-                    Boeking boeking = BetaaldeRekeningBoeking.newBuilder()
-                            .afschriftNummer(afschriftDto.getNummer())
-                            .rekeningNummer(boekingDto.getRekeningNummer())
-                            .uuid(UUID.randomUUID().toString())
-                            .build();
+                } else if (notEmpty(boekingDto.getRekeningNummer())) {
+                    Boeking boeking = new BetaaldeRekeningBoeking(
+                            afschriftDto.getNummer(),
+                            boekingDto.getRekeningNummer(),
+                            UUID.randomUUID().toString());
                     gebruiker.getDefaultAdministratie().addBoeking(boeking);
                 }
             }
@@ -91,7 +88,7 @@ public class AfschriftService {
     }
 
     private boolean notEmpty(String s) {
-        return s!=null && s !="";
+        return s != null && s != "";
     }
 
     protected Object removeAfschrift(Request req, Response res) throws Exception {
@@ -109,11 +106,11 @@ public class AfschriftService {
     private void removeBoekingenVanAfschrift(Gebruiker gebruiker, String afschriftNummer) {
         Administratie defaultAdministratie = gebruiker.getDefaultAdministratie();
         defaultAdministratie.getBoekingen()
-                .stream()
-                .filter(boeking -> boeking instanceof BoekingMetAfschrift)
-                .map(boeking -> (BoekingMetAfschrift) boeking)
-                .filter(boeking -> boeking.getAfschriftNummer().equals(afschriftNummer))
-                .forEach(boeking -> defaultAdministratie.removeBoeking(boeking.getUuid()));
+                            .stream()
+                            .filter(boeking -> boeking instanceof BoekingMetAfschrift)
+                            .map(boeking -> (BoekingMetAfschrift) boeking)
+                            .filter(boeking -> boeking.getAfschriftNummer().equals(afschriftNummer))
+                            .forEach(boeking -> defaultAdministratie.removeBoeking(boeking.getUuid()));
     }
 
     protected Object uploadabn(Request request, Response response) {

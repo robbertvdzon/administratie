@@ -45,11 +45,11 @@ object BedragenCheck2 {
 
     fun getAfschriftBedrag(data: CheckAndFixData2, boeking: BoekingMetAfschrift): Double {
         val afschrift = data.alleAfschriften
-                .find { it.getNummer().equals(boeking.getAfschriftNummer()) }
+                .find { it.nummer.equals(boeking.afschriftNummer) }
         if (afschrift != null) {
             return afschrift.bedrag.toDouble()
         } else {
-            return Afschrift.newBuilder().bedrag(BigDecimal.ZERO).build().bedrag.toDouble()
+            return BigDecimal.ZERO.toDouble()
         }
     }
 
