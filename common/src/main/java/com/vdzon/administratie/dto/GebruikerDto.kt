@@ -4,10 +4,10 @@ package com.vdzon.administratie.dto
 import com.vdzon.administratie.model.Gebruiker
 
 class GebruikerDto(
-        val uuid: String,
-        val name: String,
-        val username: String,
-        val isAdmin: Boolean) {
+        val uuid: String?,
+        val name: String?,
+        val username: String?,
+        val isAdmin: Boolean?) {
 
     fun cloneGebruikerWithDtoFields(gebruiker: Gebruiker): Gebruiker {
         return gebruiker.copy(

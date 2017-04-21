@@ -12,13 +12,13 @@ class VerrijkteBoeking (
         val boeking: Boeking,
         val factuur: Factuur?,
         val rekening: Rekening?,
-        val afschrift: Afschrift,
+        val afschrift: Afschrift?,
         val boekingsType: BOEKINGSTYPE,
         val boekingsBedrag: BigDecimal,
-        val afschriftBedrag: BigDecimal,
+        val afschriftBedrag: BigDecimal?,
         val factuurBedrag: BigDecimal?,
         val rekeningBedrag: BigDecimal?,
-        val afschriftDate: LocalDate,
+        val afschriftDate: LocalDate?,
         val factuurDate: LocalDate?,
         val rekeningDate: LocalDate?
 ){

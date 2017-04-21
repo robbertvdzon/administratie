@@ -19,7 +19,7 @@ import java.io.BufferedOutputStream
 class FactuurService {
 
     @Inject
-    internal var crudService: UserCrud? = null
+    lateinit internal var crudService: UserCrud
 
     @Throws(Exception::class)
     fun putFactuur(req: Request, res: Response): Any {

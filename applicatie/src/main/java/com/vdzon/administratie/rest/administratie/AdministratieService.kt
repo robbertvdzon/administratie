@@ -19,7 +19,7 @@ import javax.inject.Singleton
 class AdministratieService {
 
     @Inject
-    internal var userCrud: UserCrud? = null
+    lateinit internal var userCrud: UserCrud
 
     @Throws(Exception::class)
     fun putAdministratie(req: Request, res: Response): Any {

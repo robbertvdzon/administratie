@@ -33,7 +33,7 @@ public abstract class AbstractRestIT {
     }
 
     private void setUpApplication() throws Exception {
-        App.main(new String[]{REST_PORT, String.valueOf(MONGO_PORT)});
+        App.INSTANCE.main(new String[]{REST_PORT, String.valueOf(MONGO_PORT)});
     }
 
     private void setUpMongoDb() throws Exception {

@@ -16,7 +16,7 @@ import java.util.*
 class CheckAndFixService {
 
     @Inject
-    internal var crudService: UserCrud? = null
+    lateinit internal var crudService: UserCrud
 
     fun getCheckAndFixRegels(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)

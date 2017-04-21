@@ -4,28 +4,27 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.mongodb.morphia.annotations.Entity
 import org.mongodb.morphia.annotations.Id
-
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
-import java.util.ArrayList
+import java.util.*
 
 @Entity("factuur")
-data class Factuur (
+data class Factuur(
         @Id
-    val uuid: String = "",
+        val uuid: String = "",
         val factuurNummer: String = "",
         val gekoppeldeBestellingNummer: String? = null,
         @JsonSerialize(using = LocalDateSerializer::class)
-    @JsonDeserialize(using = LocalDateDeserializer::class)
-    val factuurDate: LocalDate = LocalDate.now(),
+        @JsonDeserialize(using = LocalDateDeserializer::class)
+        val factuurDate: LocalDate? = null,
         val contact: Contact? = null,
         val factuurRegels: List<FactuurRegel> = ArrayList(),
         var bedragExBtw: BigDecimal = BigDecimal.ZERO,
-        var bedragIncBtw:BigDecimal = BigDecimal.ZERO,
-        var btw:BigDecimal = BigDecimal.ZERO){
+        var bedragIncBtw: BigDecimal = BigDecimal.ZERO,
+        var btw: BigDecimal = BigDecimal.ZERO) {
 
-    init{
+    init {
         calculate()
     }
 

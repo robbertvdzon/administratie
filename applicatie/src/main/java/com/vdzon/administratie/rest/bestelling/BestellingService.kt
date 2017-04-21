@@ -16,7 +16,7 @@ import javax.inject.Inject
 class BestellingService {
 
     @Inject
-    internal var crudService: UserCrud? = null
+    lateinit internal var crudService: UserCrud
 
     @Throws(Exception::class)
     fun putBestelling(req: Request, res: Response): Any {

@@ -16,7 +16,7 @@ import java.util.ArrayList
 class GebruikerService {
 
     @Inject
-    internal var crudService: UserCrud? = null
+    lateinit internal var crudService: UserCrud
 
     @Throws(Exception::class)
     fun postGebruiker(req: Request, res: Response): Any {
@@ -50,7 +50,7 @@ class GebruikerService {
         val gebruikerUuid = req.params(":uuid")
         val newPassword = req.params(":newPassword")
         val gebruikerToChange = crudService!!.getGebruiker(gebruikerUuid)
-        val changedGebruiker = gebruikerToChange.copy(password = newPassword)
+        val changedGebruiker = gebruikerToChange?.copy(password = newPassword)
         crudService!!.updateGebruiker(changedGebruiker)
         return SingleAnswer("ok")
     }

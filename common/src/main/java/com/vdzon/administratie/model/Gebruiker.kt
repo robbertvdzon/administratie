@@ -8,12 +8,17 @@ import java.util.*
 @Entity("gebruiker")
 data class Gebruiker(
         @Id
-        val uuid: String,
-        val name: String,
-        val username: String,
-        val password: String,
-        val isAdmin: Boolean,
-        val administraties: MutableList<Administratie> = ArrayList()) {
+        var uuid: String? = null,
+        var name: String? = null,
+        var username: String? = null,
+        var password: String? = null,
+        var isAdmin: Boolean? = null,
+        var administraties: MutableList<Administratie> = ArrayList()) {
+
+    constructor():
+        this(null,null,null,null,null)
+
+
 
     val defaultAdministratie: Administratie
         get() {
