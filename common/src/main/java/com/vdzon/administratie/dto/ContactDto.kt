@@ -30,11 +30,11 @@ class ContactDto(
                 uuid = contact.uuid,
                 klantNummer = contact.klantNummer,
                 naam = contact.naam,
-                tenNameVan = contact.tenNameVan,
+                tenNameVan = contact.tenNameVan?:"",
                 woonplaats = contact.woonplaats,
                 adres = contact.adres,
                 postcode = contact.postcode,
-                land = contact.land
+                land = contact.land?:""
                 )
 
     }

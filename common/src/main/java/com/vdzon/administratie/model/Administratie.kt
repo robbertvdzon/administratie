@@ -1,20 +1,18 @@
 package com.vdzon.administratie.model
 
 import com.vdzon.administratie.model.boekingen.Boeking
-import org.mongodb.morphia.annotations.Entity
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 import java.util.*
 
-@Entity("administratie")
-data class Administratie(@Id
+data class Administratie(@MongoId
                          val uuid: String = "",
-                         val administratieGegevens: AdministratieGegevens = AdministratieGegevens(),
-                         val bestellingen: MutableList<Bestelling> = ArrayList<Bestelling>(),
+                         val administratieGegevens: AdministratieGegevens? = AdministratieGegevens(),
+                         val bestellingen: MutableList<Bestelling>? = ArrayList<Bestelling>(),
                          val facturen: MutableList<Factuur> = ArrayList<Factuur>(),
                          val adresboek: MutableList<Contact> = ArrayList<Contact>(),
                          val rekeningen: MutableList<Rekening> = ArrayList<Rekening>(),
                          val afschriften: MutableList<Afschrift> = ArrayList<Afschrift>(),
-                         val declaraties: MutableList<Declaratie> = ArrayList<Declaratie>(),
+                         val declaraties: MutableList<Declaratie>? = ArrayList<Declaratie>(),
                          val boekingen: MutableList<Boeking> = ArrayList<Boeking>()) {
 
     fun addFactuur(factuur: Factuur) {
@@ -60,11 +58,11 @@ data class Administratie(@Id
     }
 
     fun addBestelling(bestelling: Bestelling) {
-        bestellingen.add(bestelling)
+        bestellingen!!.add(bestelling)
     }
 
     fun getBestelling(uuid: String?): Bestelling? {
-        for (bestelling in bestellingen) {
+        for (bestelling in bestellingen!!) {
             if (bestellingNummerMatchesUuid(uuid, bestelling)) {
                 return bestelling
             }
@@ -72,8 +70,9 @@ data class Administratie(@Id
         return null
     }
 
-    fun getBestellingByBestellingNummer(bestellingNummer: String): Bestelling? {
-        for (bestelling in bestellingen) {
+    fun getBestellingByBestellingNummer(bestellingNummer: String?): Bestelling? {
+        if (bestellingNummer==null) return null
+        for (bestelling in bestellingen!!) {
             if (bestellingNummerMatchesBestellingNummer(bestellingNummer, bestelling)) {
                 return bestelling
             }
@@ -84,7 +83,7 @@ data class Administratie(@Id
 
     fun removeBestelling(uuid: String?) {
         var bestellingToRemove: Bestelling? = null
-        for (bestelling in bestellingen) {
+        for (bestelling in bestellingen!!) {
             if (bestellingNummerMatchesUuid(uuid, bestelling)) {
                 bestellingToRemove = bestelling
             }
@@ -143,10 +142,12 @@ data class Administratie(@Id
     }
 
     fun addDeclaratie(declaratie: Declaratie) {
+        if (declaraties==null) return
         declaraties.add(declaratie)
     }
 
     fun removeDeclaratie(uuid: String) {
+        if (declaraties==null) return
         val declaratiesClone = declaraties
         for (declaratie in declaratiesClone) {
             if (declaratie.uuid == uuid) {

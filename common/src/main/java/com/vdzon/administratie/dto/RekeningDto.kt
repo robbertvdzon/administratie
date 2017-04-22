@@ -46,7 +46,7 @@ class RekeningDto (
         fun toDto(rekening: Rekening, boekingenCache: BoekingenCache) = RekeningDto(
             uuid = rekening.uuid,
             rekeningNummer = rekening.rekeningNummer,
-            factuurNummer = rekening.factuurNummer,
+            factuurNummer = rekening.factuurNummer?:"",
             naam = rekening.naam,
             omschrijving = rekening.omschrijving,
             rekeningDate = if (rekening.rekeningDate == null) "" else rekening.rekeningDate.format(DATE_FORMATTER),

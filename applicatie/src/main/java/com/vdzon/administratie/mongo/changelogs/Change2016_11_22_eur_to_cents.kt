@@ -5,9 +5,9 @@ import com.github.mongobee.changeset.ChangeSet
 import com.mongodb.*
 import com.vdzon.administratie.model.Factuur
 import com.vdzon.administratie.model.Gebruiker
-import com.vdzon.administratie.util.LocalDateTimeConverter
-import org.mongodb.morphia.Datastore
-import org.mongodb.morphia.Morphia
+//import com.vdzon.administratie.util.LocalDateTimeConverter
+//import org.mongodb.morphia.Datastore
+//import org.mongodb.morphia.Morphia
 
 @ChangeLog
 class Change2016_11_22_eur_to_cents//    @ChangeSet(order = "001", id = "euro_to_cents", author = "Robbert")

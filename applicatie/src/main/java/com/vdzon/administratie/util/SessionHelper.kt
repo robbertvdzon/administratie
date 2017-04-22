@@ -19,7 +19,7 @@ object SessionHelper {
 
     private val AUTHENTICATED_USER_UUID = "authenticatedUserUuid"
 
-    fun getAuthenticatedUserUuid(req: Request): String {
+    fun getAuthenticatedUserUuid(req: Request): String? {
         val session = req.session(true)
         val uuid = session.attribute<String>(AUTHENTICATED_USER_UUID)
         return uuid

@@ -1,13 +1,11 @@
 package com.vdzon.administratie.model
 
 import com.vdzon.administratie.model.boekingen.Boeking
-import org.mongodb.morphia.annotations.Entity
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 import java.util.*
 
-@Entity("gebruiker")
 data class Gebruiker(
-        @Id
+        @MongoId
         var uuid: String? = null,
         var name: String? = null,
         var username: String? = null,

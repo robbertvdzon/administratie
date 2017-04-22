@@ -75,7 +75,8 @@ object App {
 
 
         // default json response
-        Spark.before({ request: Request, response: Response -> response.type("application/json")} as Filter)
+        val f:Filter = Filter(){ request: Request, response: Response -> response.type("application/json")}
+        Spark.before(f)
 
         // create guice injector
         val injector = Guice.createInjector(AppInjector())

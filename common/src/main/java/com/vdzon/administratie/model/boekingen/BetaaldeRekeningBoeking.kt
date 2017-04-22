@@ -1,12 +1,12 @@
 package com.vdzon.administratie.model.boekingen
 
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 
 class BetaaldeRekeningBoeking(
         override val rekeningNummer: String,
         override val afschriftNummer: String,
-        @Id
+        @MongoId
         override val uuid: String) : Boeking(), BoekingMetRekening {
 
     override val omschrijving: String

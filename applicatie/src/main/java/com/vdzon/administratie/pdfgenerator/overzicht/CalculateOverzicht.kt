@@ -8,6 +8,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
@@ -23,7 +24,7 @@ object CalculateOverzicht {
 
         overzicht.filteredFacturen = administratie.facturen.filter{ factuur -> betweenOrAtDates(factuur.factuurDate, overzicht.beginDate, overzicht.endDate) }
         overzicht.filteredRekeningen = administratie.rekeningen.filter({ rekening -> betweenOrAtDates(rekening.rekeningDate, overzicht.beginDate, overzicht.endDate) })
-        overzicht.filteredDeclaraties = administratie.declaraties.filter({ declaratie -> betweenOrAtDates(declaratie.declaratieDate, overzicht.beginDate, overzicht.endDate) })
+        overzicht.filteredDeclaraties = administratie.declaraties?.filter({ declaratie -> betweenOrAtDates(declaratie.declaratieDate, overzicht.beginDate, overzicht.endDate) })?: ArrayList()
         overzicht.filteredAfschriften = administratie.afschriften.filter({ afschriften -> betweenOrAtDates(afschriften.boekdatum, overzicht.beginDate, overzicht.endDate) })
 
 

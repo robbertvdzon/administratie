@@ -2,16 +2,14 @@ package com.vdzon.administratie.model
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import org.mongodb.morphia.annotations.Entity
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 import java.util.*
 
-@Entity("factuur")
 data class Factuur(
-        @Id
+        @MongoId
         val uuid: String = "",
         val factuurNummer: String = "",
         val gekoppeldeBestellingNummer: String? = null,

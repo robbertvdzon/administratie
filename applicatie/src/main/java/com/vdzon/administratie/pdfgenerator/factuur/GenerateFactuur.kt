@@ -34,7 +34,7 @@ class GenerateFactuur {
 
         val generatePdfHelper = GeneratePdfHelper(pdfData)
 
-        printFactuur(factuur, document, pdfData, administratieGegevens, generatePdfHelper)
+        printFactuur(factuur, document, pdfData, administratieGegevens!!, generatePdfHelper)
 
         pdfData.page!!.close()
 
@@ -148,7 +148,7 @@ class GenerateFactuur {
         generatePdfHelper.skipDown(10f)
         generatePdfHelper.writeBoldText("Klant factuuradres")
         generatePdfHelper.writeNormalText(factuur.contact!!.naam)
-        generatePdfHelper.writeNormalText(factuur.contact!!.tenNameVan)
+        generatePdfHelper.writeNormalText(factuur.contact!!.tenNameVan!!)
         generatePdfHelper.writeNormalText(factuur.contact!!.adres)
         generatePdfHelper.writeNormalText(factuur.contact!!.postcode + " " + factuur.contact!!.woonplaats)
     }

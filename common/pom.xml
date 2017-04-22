@@ -44,10 +44,15 @@
             <version>2.7.3</version>
         </dependency>
         <dependency>
-            <groupId>org.mongodb.morphia</groupId>
-            <artifactId>morphia</artifactId>
-            <version>1.0.1</version>
+            <groupId>org.litote.kmongo</groupId>
+            <artifactId>kmongo</artifactId>
+            <version>3.3.5</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.mongodb.morphia</groupId>-->
+            <!--<artifactId>morphia</artifactId>-->
+            <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

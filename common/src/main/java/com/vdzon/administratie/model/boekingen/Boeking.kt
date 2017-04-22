@@ -1,8 +1,8 @@
 package com.vdzon.administratie.model.boekingen
 
-import org.mongodb.morphia.annotations.Entity
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-@Entity("boeking")
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include= JsonTypeInfo.As.PROPERTY, property="className")
 abstract class Boeking {
     abstract val uuid: String
     abstract val omschrijving: String

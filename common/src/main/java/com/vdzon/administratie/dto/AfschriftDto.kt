@@ -39,7 +39,7 @@ class AfschriftDto(
         fun toDto(afschrift: Afschrift, boekingenCache: BoekingenCache): AfschriftDto = AfschriftDto(
                 uuid = afschrift.uuid,
                 nummer = afschrift.nummer,
-                rekening = afschrift.rekening,
+                rekening = afschrift.rekening?:"",
                 omschrijving = afschrift.omschrijving,
                 relatienaam = afschrift.relatienaam,
                 boekdatum = if (afschrift.boekdatum == null) "" else afschrift.boekdatum.format(DATE_FORMATTER),

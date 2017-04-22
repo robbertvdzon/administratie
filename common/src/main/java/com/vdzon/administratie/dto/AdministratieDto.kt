@@ -3,6 +3,7 @@ package com.vdzon.administratie.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.vdzon.administratie.model.*
+import java.util.*
 
 @JsonIgnoreProperties
 class AdministratieDto(
@@ -42,8 +43,8 @@ class AdministratieDto(
                     administratieGegevens = AdministratieGegevensDto.toDto(administratie.administratieGegevens),
                     adresboek = toAdressenDto(administratie.adresboek),
                     afschriften = toAfschriftenDto(administratie.afschriften, boekingenCache),
-                    bestellingen = toBestellingenDto(administratie.bestellingen),
-                    declaraties = toDeclaratiesDto(administratie.declaraties, boekingenCache),
+                    bestellingen = toBestellingenDto(administratie.bestellingen?: ArrayList()),
+                    declaraties = toDeclaratiesDto(administratie.declaraties?: ArrayList(), boekingenCache),
                     facturen = toFacturenDto(administratie.facturen, boekingenCache),
                     rekeningen = toRekeningenDto(administratie.rekeningen, boekingenCache))
         }

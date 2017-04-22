@@ -1,11 +1,9 @@
 package com.vdzon.administratie.model
 
-import org.mongodb.morphia.annotations.Entity
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 
-@Entity("administratieGegevens")
 class AdministratieGegevens (
-    @Id
+    @MongoId
     val uuid: String = "",
     val name: String = "",
     val rekeningNummer: String="",

@@ -69,7 +69,7 @@ class FactuurService {
 
     private fun addFactuur(gebruiker: Gebruiker, factuur: Factuur) {
         val nieuwBestellingNummer = factuur.gekoppeldeBestellingNummer
-        val gekoppelBestelling = gebruiker.defaultAdministratie.getBestellingByBestellingNummer(nieuwBestellingNummer!!)
+        val gekoppelBestelling = gebruiker.defaultAdministratie.getBestellingByBestellingNummer(nieuwBestellingNummer)
         if (gekoppelBestelling != null) {
             val updatedBestelling = gekoppelBestelling.copy(gekoppeldFactuurNummer = factuur.factuurNummer)
             gebruiker.defaultAdministratie.removeBestelling(gekoppelBestelling.uuid)
@@ -81,11 +81,11 @@ class FactuurService {
     private fun removeFactuur(gebruiker: Gebruiker, uuid: String) {
         val factuur = gebruiker.defaultAdministratie.getFactuur(uuid)
         val bestellingNummerOudeFactuur = factuur?.gekoppeldeBestellingNummer
-        val gekoppelBestelling = gebruiker.defaultAdministratie.getBestellingByBestellingNummer(bestellingNummerOudeFactuur!!)
+        val gekoppelBestelling = gebruiker.defaultAdministratie.getBestellingByBestellingNummer(bestellingNummerOudeFactuur)
         if (gekoppelBestelling != null) {
             val updatedBestelling = gekoppelBestelling.copy(gekoppeldFactuurNummer = null)
             gebruiker.defaultAdministratie.removeBestelling(gekoppelBestelling.uuid)
-            gebruiker.defaultAdministratie.addBestelling(updatedBestelling!!)
+            gebruiker.defaultAdministratie.addBestelling(updatedBestelling)
         }
         gebruiker.defaultAdministratie.removeFactuur(uuid)
     }

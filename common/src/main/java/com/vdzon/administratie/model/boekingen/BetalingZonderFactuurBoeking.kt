@@ -1,11 +1,11 @@
 package com.vdzon.administratie.model.boekingen
 
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 
 class BetalingZonderFactuurBoeking(
         override val afschriftNummer: String,
-        @Id
+        @MongoId
         override val uuid: String
 ) : Boeking(), BoekingMetAfschrift {
 

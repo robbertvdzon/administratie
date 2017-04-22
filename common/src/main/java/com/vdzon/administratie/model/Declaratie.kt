@@ -2,16 +2,14 @@ package com.vdzon.administratie.model
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import org.mongodb.morphia.annotations.Entity
-import org.mongodb.morphia.annotations.Id
+import org.litote.kmongo.MongoId
 
 import java.math.BigDecimal
 import java.time.LocalDate
 
-@Entity("declaratie")
 class Declaratie (
 
-    @Id
+    @MongoId
     val uuid: String,
     val declaratieNummer: String,
     val omschrijving: String,

@@ -12,9 +12,7 @@ class LocalDateSerializer : JsonSerializer<LocalDate>() {
     @Throws(IOException::class, JsonProcessingException::class)
     override fun serialize(arg0: LocalDate, arg1: JsonGenerator, arg2: SerializerProvider) {
         try {
-            println(arg0)
             arg1.writeString(arg0.toString())
-            println("done")
         } catch (ex: Exception) {
             ex.printStackTrace()
         }

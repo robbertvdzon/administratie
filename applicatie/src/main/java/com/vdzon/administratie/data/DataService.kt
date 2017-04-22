@@ -24,7 +24,7 @@ class DataService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, userCrud)
         val gebruikers = if (gebruiker.isAdmin!!) userCrud.allGebruikers.map{ user -> GebruikerDto.toDto(user) } else null
         val administratie = AdministratieDto.toDto(gebruiker.defaultAdministratie)
-        return GuiDataDto(gebruikers!!, administratie, GebruikerDto.toDto(gebruiker))
+        return GuiDataDto(gebruikers, administratie, GebruikerDto.toDto(gebruiker))
     }
 
 }

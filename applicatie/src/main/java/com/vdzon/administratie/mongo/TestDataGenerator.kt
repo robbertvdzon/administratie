@@ -1,8 +1,10 @@
 package com.vdzon.administratie.mongo
 
+import com.mongodb.client.MongoDatabase
 import com.vdzon.administratie.model.*
 import com.vdzon.administratie.model.boekingen.Boeking
-import org.mongodb.morphia.Datastore
+import org.litote.kmongo.getCollection
+//import org.mongodb.morphia.Datastore
 
 import java.time.LocalDate
 import java.util.ArrayList
@@ -11,7 +13,7 @@ import java.util.UUID
 
 object TestDataGenerator {
 
-    fun buildTestData(username: String, name: String, passwd: String, admin: Boolean, datastore: Datastore) {
+    fun buildTestData(username: String, name: String, passwd: String, admin: Boolean, datastore: MongoDatabase) {
         println("Maak admin user")
         val adresboek = ArrayList<Contact>()
         val bestellingen = ArrayList<Bestelling>()
@@ -33,7 +35,7 @@ object TestDataGenerator {
         val administraties = ArrayList<Administratie>()
         administraties.add(administratie)
         val gebruiker = Gebruiker(newUuid, name, username, passwd, admin, administraties)
-        datastore.save(gebruiker)
+        datastore.getCollection<Gebruiker>().insertOne(gebruiker)
     }
 
     private val newUuid: String
