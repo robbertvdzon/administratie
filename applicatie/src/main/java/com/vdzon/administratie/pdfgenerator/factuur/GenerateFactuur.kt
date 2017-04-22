@@ -147,10 +147,10 @@ class GenerateFactuur {
     private fun printKlantGegevens(factuur: Factuur, generatePdfHelper: GeneratePdfHelper) {
         generatePdfHelper.skipDown(10f)
         generatePdfHelper.writeBoldText("Klant factuuradres")
-        generatePdfHelper.writeNormalText(factuur.contact!!.naam)
-        generatePdfHelper.writeNormalText(factuur.contact!!.tenNameVan!!)
-        generatePdfHelper.writeNormalText(factuur.contact!!.adres)
-        generatePdfHelper.writeNormalText(factuur.contact!!.postcode + " " + factuur.contact!!.woonplaats)
+        generatePdfHelper.writeNormalText(factuur.contact?.naam?:"")
+        generatePdfHelper.writeNormalText(factuur.contact?.tenNameVan?:"")
+        generatePdfHelper.writeNormalText(factuur.contact?.adres?:"")
+        generatePdfHelper.writeNormalText(factuur.contact?.postcode?:"" + " " + factuur.contact?.woonplaats?:"")
     }
 
     private fun printLogo(document: PDDocument, administratieGegevens: AdministratieGegevens?, generatePdfHelper: GeneratePdfHelper) {

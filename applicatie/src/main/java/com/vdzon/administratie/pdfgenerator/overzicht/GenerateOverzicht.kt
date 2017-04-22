@@ -115,6 +115,7 @@ class GenerateOverzicht {
         overzicht
                 .filteredFacturen!!
                 .sortedBy {  it.factuurNummer}
+                .reversed()
                 .forEach { factuur -> listFactuur(factuur, boekingenCache) }
 
         page!!.close()
@@ -133,6 +134,7 @@ class GenerateOverzicht {
         overzicht
                 .filteredRekeningen!!
                 .sortedBy{it.rekeningNummer}
+                .reversed()
                 .forEach { rekening -> listRekening(rekening, boekingenCache) }
 
         page!!.close()
@@ -150,6 +152,7 @@ class GenerateOverzicht {
         writeTitle("Alle declaraties")
         overzicht.filteredDeclaraties!!
                 .sortedBy { it.declaratieNummer }
+                .reversed()
                 .forEach { declaratie -> listDeclaraties(declaratie) }
 
         page!!.close()
@@ -168,6 +171,7 @@ class GenerateOverzicht {
         overzicht
                 .filteredAfschriften!!
                 .sortedBy{it.nummer}
+                .reversed()
                 .forEach { afschrift -> listAfschrift(afschrift, boekingenCache) }
 
         page!!.close()
@@ -187,6 +191,7 @@ class GenerateOverzicht {
                 .rekeningen
                 .filter{ rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate) }
                 .sortedBy{it.rekeningNummer}
+                .reversed()
                 .forEach { rekening -> listRekening(rekening, boekingenCache) }
 
         page!!.close()

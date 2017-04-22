@@ -25,7 +25,7 @@ class AuthService {
         val username = req.queryParams("username")
         val password = req.queryParams("password")
 
-        var gebruiker: Gebruiker? = userCrud!!.getGebruikerByUsername(username)
+        var gebruiker: Gebruiker? = userCrud.getGebruikerByUsername(username)
 
         if (gebruiker != null) {
             res.status(401)
@@ -42,7 +42,7 @@ class AuthService {
                 ArrayList<Administratie>())
         gebruiker.initDefaultAdministratie()
         try {
-            userCrud!!.updateGebruiker(gebruiker)
+            userCrud.updateGebruiker(gebruiker)
             SessionHelper.setAuthenticatedUserUuid(req, gebruiker.uuid!!)
         } catch (e: Exception) {
             e.printStackTrace()

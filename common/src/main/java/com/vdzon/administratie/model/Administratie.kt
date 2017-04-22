@@ -106,7 +106,8 @@ data class Administratie(@MongoId
         adresboek.add(contact)
     }
 
-    fun removeContact(uuid: String) {
+    fun removeContact(uuid: String?) {
+        if (uuid==null) return
         val adresboekClone = adresboek
         for (contact in adresboekClone) {
             if (contact.uuid == uuid) {

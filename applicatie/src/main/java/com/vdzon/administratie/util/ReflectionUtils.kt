@@ -17,7 +17,7 @@ object ReflectionUtils {
         throw RuntimeException("Kon geen instantie maken")
     }
 
-    fun callMethod(method: Method, instance: Any, vararg args: Any): Any {
+    fun callMethod(method: Method, instance: Any, vararg args: Any): Any? {
         try {
             return method.invoke(instance, *args)
         } catch (e: IllegalAccessException) {

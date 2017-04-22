@@ -120,14 +120,18 @@ object CalculateOverzicht {
         //--
 
 
-        overzicht.verwachtTotaalOpRekeningBij = 0 + overzicht.facturenTotaalIncBtw - overzicht.rekeningenTotaalIncBtw + overzicht.ontvangenFactuurBetalingenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode
-        -overzicht.ontvangenFacturenBetaaldBuitenGeselecteerdePeriode
-        -overzicht.onbetaaldeFacturen
-        -overzicht.betaaldeRekeningenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode
-        +overzicht.betaaldeRekeningenBetaaldBuitenGeselecteerdePeriode
-        +overzicht.onbetaaldeRekeningen
-        +overzicht.priveBoekingen
-        +overzicht.ontvangenInkomstenZonderFactuur - overzicht.betaaldeRekeningenZonderFactuur
+        overzicht.verwachtTotaalOpRekeningBij = 0 +
+                overzicht.facturenTotaalIncBtw -
+                overzicht.rekeningenTotaalIncBtw +
+                overzicht.ontvangenFactuurBetalingenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode -
+                overzicht.ontvangenFacturenBetaaldBuitenGeselecteerdePeriode -
+                overzicht.onbetaaldeFacturen -
+                overzicht.betaaldeRekeningenVanBuitenGeselecteerdePeriodeBetaaldBinnenGeselecteerdePeriode +
+                overzicht.betaaldeRekeningenBetaaldBuitenGeselecteerdePeriode +
+                overzicht.onbetaaldeRekeningen +
+                overzicht.priveBoekingen +
+                overzicht.ontvangenInkomstenZonderFactuur -
+                overzicht.betaaldeRekeningenZonderFactuur
 
         overzicht.werkelijkOpBankBij = overzicht.filteredAfschriften!!.map({ afschrift -> afschrift.bedrag.toDouble() }).sum()
         overzicht.verschilTussenVerwachtEnWerkelijk = overzicht.verwachtTotaalOpRekeningBij - overzicht.werkelijkOpBankBij

@@ -2,6 +2,7 @@ package com.vdzon.administratie.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.vdzon.administratie.model.Contact
+import java.util.*
 
 @JsonIgnoreProperties
 class ContactDto(
@@ -27,13 +28,13 @@ class ContactDto(
     companion object {
 
         fun toDto(contact: Contact) = ContactDto(
-                uuid = contact.uuid,
-                klantNummer = contact.klantNummer,
-                naam = contact.naam,
+                uuid = contact.uuid?:UUID.randomUUID().toString(),
+                klantNummer = contact.klantNummer?:"",
+                naam = contact.naam?:"",
                 tenNameVan = contact.tenNameVan?:"",
-                woonplaats = contact.woonplaats,
-                adres = contact.adres,
-                postcode = contact.postcode,
+                woonplaats = contact.woonplaats?:"",
+                adres = contact.adres?:"",
+                postcode = contact.postcode?:"",
                 land = contact.land?:""
                 )
 
