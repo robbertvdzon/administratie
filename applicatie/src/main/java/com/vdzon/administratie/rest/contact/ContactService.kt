@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.contact
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.ContactDto
@@ -22,7 +23,7 @@ class ContactService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val contactJson = req.body()
         var contact: Contact? = null
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val contactDto = mapper.readValue(contactJson, ContactDto::class.java)
         contact = contactDto.toContact()
 

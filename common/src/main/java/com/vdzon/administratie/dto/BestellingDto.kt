@@ -1,6 +1,7 @@
 package com.vdzon.administratie.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.vdzon.administratie.extensions.ADMINISTRATIE_DATE_FORMATTER
 import com.vdzon.administratie.model.Bestelling
 import com.vdzon.administratie.model.BestellingRegel
 
@@ -27,7 +28,7 @@ class BestellingDto (
         return Bestelling(
                 bestellingNummer=bestellingNummer,
                 gekoppeldFactuurNummer=gekoppeldFactuurNummer,
-                bestellingDate=LocalDate.parse(bestellingDate, DATE_FORMATTER),
+                bestellingDate=LocalDate.parse(bestellingDate, ADMINISTRATIE_DATE_FORMATTER),
                 contact = if (klant == null) null else klant.toContact(),
                 bestellingRegels = toBestellingRegels(),
                 uuid = uuid)
@@ -43,13 +44,11 @@ class BestellingDto (
 
     companion object {
 
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
         fun toDto(bestelling: Bestelling)  = BestellingDto(
             uuid = bestelling.uuid,
             bestellingNummer = bestelling.bestellingNummer,
             gekoppeldFactuurNummer = bestelling.gekoppeldFactuurNummer,
-            bestellingDate = if (bestelling.bestellingDate == null) "" else bestelling.bestellingDate.format(DATE_FORMATTER),
+            bestellingDate = if (bestelling.bestellingDate == null) "" else bestelling.bestellingDate.format(ADMINISTRATIE_DATE_FORMATTER),
             klant = if (bestelling.contact == null) null else ContactDto.toDto(bestelling.contact),
             bestellingRegels = toBestellingRegelsDto(bestelling.bestellingRegels),
             bedragExBtw = bestelling.bedragExBtw,

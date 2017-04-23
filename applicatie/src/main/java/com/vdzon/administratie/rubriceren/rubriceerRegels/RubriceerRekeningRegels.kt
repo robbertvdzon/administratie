@@ -1,6 +1,8 @@
 package com.vdzon.administratie.rubriceren.rubriceerRegels
 
 import com.vdzon.administratie.dto.AfschriftDto
+import com.vdzon.administratie.extensions.compareToNormalized
+import com.vdzon.administratie.extensions.normalizedCopy
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.Gebruiker
@@ -32,7 +34,7 @@ class RubriceerRekeningRegels : RubriceerHelper() {
                             &&
                             !rekeningAlreadyUsed(regels, rekening.rekeningNummer)
                             &&
-                            rekening.bedragIncBtw.compareTo(afschrift.bedrag.negate()) == 0
+                            rekening.bedragIncBtw.compareToNormalized(afschrift.bedrag.negate()) == 0
                             &&
                             (afschrift.omschrijving.contains(rekening.rekeningNummer) || afschrift.omschrijving == rekening.omschrijving)) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_REKENING

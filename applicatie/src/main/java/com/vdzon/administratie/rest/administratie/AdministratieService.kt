@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.administratie
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.AdministratieGegevensDto
@@ -26,7 +27,7 @@ class AdministratieService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, userCrud)
 
         val administratieGegevensJson = req.body()
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val administratieGegevensDto = mapper.readValue(administratieGegevensJson, AdministratieGegevensDto::class.java)
         val administratieGegevens = administratieGegevensDto.toAdministratieGegevens()
 

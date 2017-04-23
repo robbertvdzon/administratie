@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.rekening
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.BoekingDto
 import com.vdzon.administratie.dto.RekeningDto
@@ -26,7 +27,7 @@ class RekeningService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val contactJson = req.body()
         var rekening: Rekening? = null
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val rekeningDto = mapper.readValue(contactJson, RekeningDto::class.java)
         rekening = rekeningDto.toRekening()
 

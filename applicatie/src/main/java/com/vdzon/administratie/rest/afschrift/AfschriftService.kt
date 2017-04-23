@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.afschrift
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.bankimport.ImportFromAbnAmro
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.AfschriftDto
@@ -31,7 +32,7 @@ class AfschriftService {
     fun putAfschrift(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val afschriftJson = req.body()
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val afschriftDto = mapper.readValue(afschriftJson, AfschriftDto::class.java)
         val afschrift = afschriftDto.toAfschrift()
 

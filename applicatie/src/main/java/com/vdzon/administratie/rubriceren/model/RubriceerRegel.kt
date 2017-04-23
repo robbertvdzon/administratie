@@ -1,10 +1,12 @@
 package com.vdzon.administratie.rubriceren.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.vdzon.administratie.dto.AfschriftDto
 
+@JsonIgnoreProperties
 class RubriceerRegel (
-    val rubriceerAction: RubriceerAction,
-    val rekeningNummer: String?,
-    val faktuurNummer: String?,
-    val afschrift: AfschriftDto)
+    var rubriceerAction: RubriceerAction,
+    var rekeningNummer: String?,
+    var faktuurNummer: String?,
+    var afschrift: AfschriftDto)
 

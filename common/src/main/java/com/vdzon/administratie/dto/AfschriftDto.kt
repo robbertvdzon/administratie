@@ -1,13 +1,15 @@
 package com.vdzon.administratie.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.vdzon.administratie.extensions.ADMINISTRATIE_DATE_FORMATTER
+import com.vdzon.administratie.extensions.normalizedCopy
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.boekingen.Boeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @JsonIgnoreProperties
@@ -21,8 +23,6 @@ class AfschriftDto(
         var bedrag: BigDecimal = BigDecimal.ZERO,
         var boekingen: List<BoekingDto>? = ArrayList()) {
 
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
 
     fun toAfschrift(): Afschrift = Afschrift(
                 uuid=uuid,
@@ -30,11 +30,11 @@ class AfschriftDto(
                 rekening=rekening,
                 omschrijving=omschrijving,
                 relatienaam=relatienaam,
-                boekdatum=LocalDate.parse(boekdatum, DATE_FORMATTER),
-                bedrag=bedrag)
+                boekdatum=LocalDate.parse(boekdatum, ADMINISTRATIE_DATE_FORMATTER),
+                bedrag=bedrag.normalizedCopy()
+    )
 
     companion object {
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         fun toDto(afschrift: Afschrift, boekingenCache: BoekingenCache): AfschriftDto = AfschriftDto(
                 uuid = afschrift.uuid,
@@ -42,8 +42,8 @@ class AfschriftDto(
                 rekening = afschrift.rekening?:"",
                 omschrijving = afschrift.omschrijving,
                 relatienaam = afschrift.relatienaam,
-                boekdatum = if (afschrift.boekdatum == null) "" else afschrift.boekdatum.format(DATE_FORMATTER),
-                bedrag = afschrift.bedrag,
+                boekdatum = if (afschrift.boekdatum == null) "" else afschrift.boekdatum.format(ADMINISTRATIE_DATE_FORMATTER),
+                bedrag = afschrift.bedrag.normalizedCopy(),
                 boekingen = toBoekingenDto(boekingenCache.getBoekingenVanAfschrift(afschrift.nummer), boekingenCache))
 
         private fun toBoekingenDto(boekingen: List<BoekingMetAfschrift>?, boekingenCache: BoekingenCache): List<BoekingDto>? =

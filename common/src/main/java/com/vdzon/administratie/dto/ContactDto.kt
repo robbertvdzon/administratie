@@ -6,17 +6,17 @@ import java.util.*
 
 @JsonIgnoreProperties
 class ContactDto(
-        val uuid: String = "",
-        val klantNummer: String = "",
-        val naam: String = "",
-        val tenNameVan: String = "",
-        val woonplaats: String = "",
-        val adres: String = "",
-        val postcode: String = "",
-        val land: String = "") {
+        val uuid: String? = "",
+        val klantNummer: String? = "",
+        val naam: String? = "",
+        val tenNameVan: String? = "",
+        val woonplaats: String? = "",
+        val adres: String? = "",
+        val postcode: String? = "",
+        val land: String? = "") {
 
     fun toContact(): Contact = Contact(
-                uuid=uuid,
+                uuid=uuid?:UUID.randomUUID().toString(),
                 klantNummer=klantNummer,
                 naam=naam,
                 tenNameVan=tenNameVan,

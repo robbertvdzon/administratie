@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.gebruiker
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.GebruikerDto
 import com.vdzon.administratie.model.Administratie
@@ -22,7 +23,7 @@ class GebruikerService {
     fun postGebruiker(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val nieuweGebruikerJson = req.body()
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val nieuweGebruikerDto = mapper.readValue(nieuweGebruikerJson, GebruikerDto::class.java)
         var originalGebruiker: Gebruiker? = crudService!!.getGebruiker(nieuweGebruikerDto.uuid)
         if (originalGebruiker == null) {

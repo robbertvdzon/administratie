@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.rubriceren
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
@@ -59,7 +60,7 @@ class RubriceerService {
     @Throws(java.io.IOException::class)
     private fun getRubriceerRegels(req: Request): RubriceerRegels {
         val regelsJson = req.body()
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         return mapper.readValue(regelsJson, RubriceerRegels::class.java)
     }
 

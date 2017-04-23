@@ -12,7 +12,7 @@ data class Administratie(@MongoId
                          val adresboek: MutableList<Contact> = ArrayList<Contact>(),
                          val rekeningen: MutableList<Rekening> = ArrayList<Rekening>(),
                          val afschriften: MutableList<Afschrift> = ArrayList<Afschrift>(),
-                         val declaraties: MutableList<Declaratie>? = ArrayList<Declaratie>(),
+                         var declaraties: MutableList<Declaratie>? = ArrayList<Declaratie>(),
                          val boekingen: MutableList<Boeking> = ArrayList<Boeking>()) {
 
     fun addFactuur(factuur: Factuur) {
@@ -82,8 +82,9 @@ data class Administratie(@MongoId
 
 
     fun removeBestelling(uuid: String?) {
+        if (bestellingen==null) return
         var bestellingToRemove: Bestelling? = null
-        for (bestelling in bestellingen!!) {
+        for (bestelling in bestellingen) {
             if (bestellingNummerMatchesUuid(uuid, bestelling)) {
                 bestellingToRemove = bestelling
             }
@@ -108,7 +109,7 @@ data class Administratie(@MongoId
 
     fun removeContact(uuid: String?) {
         if (uuid==null) return
-        val adresboekClone = adresboek
+        val adresboekClone = ArrayList(adresboek)
         for (contact in adresboekClone) {
             if (contact.uuid == uuid) {
                 this.adresboek.remove(contact)
@@ -121,7 +122,7 @@ data class Administratie(@MongoId
     }
 
     fun removeRekening(uuid: String) {
-        val rekeningenClone = rekeningen
+        val rekeningenClone = ArrayList(rekeningen)
         for (rekening in rekeningenClone) {
             if (rekening.uuid == uuid) {
                 this.rekeningen.remove(rekening)
@@ -143,16 +144,18 @@ data class Administratie(@MongoId
     }
 
     fun addDeclaratie(declaratie: Declaratie) {
-        if (declaraties==null) return
-        declaraties.add(declaratie)
+        if (declaraties==null) {
+            declaraties = ArrayList()
+        }
+        declaraties!!.add(declaratie)
     }
 
     fun removeDeclaratie(uuid: String) {
         if (declaraties==null) return
-        val declaratiesClone = declaraties
+        val declaratiesClone = ArrayList(declaraties)
         for (declaratie in declaratiesClone) {
             if (declaratie.uuid == uuid) {
-                this.declaraties.remove(declaratie)
+                this.declaraties!!.remove(declaratie)
             }
         }
     }
@@ -162,7 +165,7 @@ data class Administratie(@MongoId
     }
 
     fun removeAfschrift(nummer: String) {
-        val afschriftenClone = afschriften
+        val afschriftenClone = ArrayList(afschriften)
         for (afschrift in afschriftenClone) {
             if (afschrift.nummer == nummer) {
                 this.afschriften.remove(afschrift)
@@ -175,7 +178,7 @@ data class Administratie(@MongoId
     }
 
     fun removeBoeking(uuid: String) {
-        val boekingenClone = boekingen
+        val boekingenClone = ArrayList(boekingen)
         for (boeking in boekingenClone) {
             if (boeking.uuid == uuid) {
                 this.boekingen.remove(boeking)

@@ -1,5 +1,6 @@
 package com.vdzon.administratie.pdfgenerator.overzicht
 
+import com.vdzon.administratie.extensions.ADMINISTRATIE_DATE_FORMATTER
 import com.vdzon.administratie.model.*
 import com.vdzon.administratie.model.boekingen.VerrijkteBoeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
@@ -13,14 +14,13 @@ import java.util.stream.Collectors
 import java.util.stream.Stream
 
 object CalculateOverzicht {
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
     fun calculateOverzicht(administratie: Administratie, beginDateStr: String, endDateStr: String): Overzicht {
         val overzicht = Overzicht()
         val verrijkteBoekings = BoekingsVerrijker.verrijk(administratie)
         val boekingenCache = BoekingenCache(administratie.boekingen)
-        overzicht.beginDate = LocalDate.parse(beginDateStr, DATE_FORMATTER)
-        overzicht.endDate = LocalDate.parse(endDateStr, DATE_FORMATTER)
+        overzicht.beginDate = LocalDate.parse(beginDateStr, ADMINISTRATIE_DATE_FORMATTER)
+        overzicht.endDate = LocalDate.parse(endDateStr, ADMINISTRATIE_DATE_FORMATTER)
 
         overzicht.filteredFacturen = administratie.facturen.filter{ factuur -> betweenOrAtDates(factuur.factuurDate, overzicht.beginDate, overzicht.endDate) }
         overzicht.filteredRekeningen = administratie.rekeningen.filter({ rekening -> betweenOrAtDates(rekening.rekeningDate, overzicht.beginDate, overzicht.endDate) })

@@ -60,7 +60,7 @@ data class Gebruiker(
             }
         }
         if (administratieToRemove != null) {
-            administraties!!.remove(administratieToRemove)
+            administraties.remove(administratieToRemove)
         }
     }
 

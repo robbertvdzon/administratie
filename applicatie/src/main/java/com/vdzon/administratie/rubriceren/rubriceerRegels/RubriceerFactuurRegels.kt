@@ -1,6 +1,8 @@
 package com.vdzon.administratie.rubriceren.rubriceerRegels
 
 import com.vdzon.administratie.dto.AfschriftDto
+import com.vdzon.administratie.extensions.compareToNormalized
+import com.vdzon.administratie.extensions.normalizedCopy
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.Factuur
@@ -11,6 +13,7 @@ import com.vdzon.administratie.model.boekingen.InkomstenZonderFactuurBoeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import com.vdzon.administratie.rubriceren.model.RubriceerAction
 import com.vdzon.administratie.rubriceren.model.RubriceerRegel
+import java.math.BigDecimal
 import java.util.UUID
 
 class RubriceerFactuurRegels : RubriceerHelper() {
@@ -26,7 +29,7 @@ class RubriceerFactuurRegels : RubriceerHelper() {
                 var factuurNummer: String? = null
                 for (factuur in gebruiker.defaultAdministratie.facturen) {
                     val omschrijvingZonderSpaties = afschrift.omschrijving.replace(" ".toRegex(), "")
-                    if (factuur.bedragIncBtw.compareTo(afschrift.bedrag) == 0 && omschrijvingZonderSpaties.contains(factuur.factuurNummer)) {
+                    if (factuur.bedragIncBtw.compareToNormalized(afschrift.bedrag) == 0 && omschrijvingZonderSpaties.contains(factuur.factuurNummer)) {
                         rubriceerAction = RubriceerAction.CONNECT_EXISTING_FACTUUR
                         factuurNummer = factuur.factuurNummer
                     }

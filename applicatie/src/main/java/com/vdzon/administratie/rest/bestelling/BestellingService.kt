@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.bestelling
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.BestellingDto
@@ -22,7 +23,7 @@ class BestellingService {
     fun putBestelling(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val bestellingJson = req.body()
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val bestellingDto = mapper.readValue(bestellingJson, BestellingDto::class.java)
         val bestelling = bestellingDto.toBestelling()
 

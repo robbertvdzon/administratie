@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.declaratie
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.DeclaratieDto
@@ -22,7 +23,7 @@ class DeclaratieService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val declaratieJson = req.body()
         var declaratie: Declaratie? = null
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val declaratieDto = mapper.readValue(declaratieJson, DeclaratieDto::class.java)
         declaratie = declaratieDto.toDeclaratie()
 

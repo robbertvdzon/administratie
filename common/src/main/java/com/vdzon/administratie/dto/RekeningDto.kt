@@ -1,6 +1,7 @@
 package com.vdzon.administratie.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.vdzon.administratie.extensions.ADMINISTRATIE_DATE_FORMATTER
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.Rekening
 import com.vdzon.administratie.model.boekingen.Boeking
@@ -26,22 +27,19 @@ class RekeningDto (
     var boekingen: List<BoekingDto> = ArrayList(),
     var maandenAfschrijving:Int = 0){
 
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
     fun toRekening(): Rekening = Rekening(
                 uuid=uuid,
                 rekeningNummer=rekeningNummer,
                 factuurNummer=factuurNummer,
                 naam=naam,
                 omschrijving=omschrijving,
-                rekeningDate=LocalDate.parse(rekeningDate, DATE_FORMATTER),
+                rekeningDate=LocalDate.parse(rekeningDate, ADMINISTRATIE_DATE_FORMATTER),
                 bedragExBtw=bedragExBtw,
                 bedragIncBtw=bedragIncBtw,
                 btw=btw,
                 maandenAfschrijving=maandenAfschrijving)
 
     companion object {
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         fun toDto(rekening: Rekening, boekingenCache: BoekingenCache) = RekeningDto(
             uuid = rekening.uuid,
@@ -49,7 +47,7 @@ class RekeningDto (
             factuurNummer = rekening.factuurNummer?:"",
             naam = rekening.naam,
             omschrijving = rekening.omschrijving,
-            rekeningDate = if (rekening.rekeningDate == null) "" else rekening.rekeningDate.format(DATE_FORMATTER),
+            rekeningDate = if (rekening.rekeningDate == null) "" else rekening.rekeningDate.format(ADMINISTRATIE_DATE_FORMATTER),
             bedragExBtw = rekening.bedragExBtw,
             bedragIncBtw = rekening.bedragIncBtw,
             btw = rekening.btw,

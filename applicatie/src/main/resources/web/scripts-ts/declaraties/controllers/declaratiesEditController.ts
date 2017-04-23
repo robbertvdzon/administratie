@@ -41,6 +41,7 @@ module Application.Controllers {
         }
 
         add() {
+            this.declaratieDataService.copyInto(this.$scope.data.declaratieToEdit, this.$scope.data.selecteddeclaratie);
             this.declaratieDataService.addDeclaratie().then((response) => {
                 this.declaratieGuiService.closePage(SCREEN_DECLARATIE_EDIT);
             }).catch((response) => {

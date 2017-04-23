@@ -53,36 +53,42 @@ class AdministratieDto(
             return bestellingen
                     .map { bestelling -> BestellingDto.toDto(bestelling) }
                     .sortedBy { it.bestellingNummer }
+                    .reversed()
         }
 
         private fun toRekeningenDto(rekeningen: List<Rekening>, boekingenCache: BoekingenCache): List<RekeningDto> {
             return rekeningen
                     .map { rekening -> RekeningDto.toDto(rekening, boekingenCache) }
                     .sortedBy { it.rekeningNummer }
+                    .reversed()
         }
 
         private fun toAfschriftenDto(afschriften: List<Afschrift>, boekingenCache: BoekingenCache): List<AfschriftDto> {
             return afschriften
                     .map { afschrift -> AfschriftDto.toDto(afschrift, boekingenCache) }
                     .sortedBy { it.nummer }
+                    .reversed()
         }
 
         private fun toDeclaratiesDto(declaraties: List<Declaratie>, boekingenCache: BoekingenCache): List<DeclaratieDto> {
             return declaraties
                     .map { declaratie -> DeclaratieDto.toDto(declaratie) }
                     .sortedBy { it.declaratieNummer }
+                    .reversed()
         }
 
         private fun toAdressenDto(klanten: List<Contact>): List<ContactDto> {
             return klanten
                     .map { klant -> ContactDto.toDto(klant) }
                     .sortedBy { it.klantNummer }
+                    .reversed()
         }
 
         private fun toFacturenDto(facturen: List<Factuur>, boekingenCache: BoekingenCache): List<FactuurDto> {
             return facturen
                     .map { factuur -> FactuurDto.toDto(factuur, boekingenCache) }
                     .sortedBy { it.factuurNummer }
+                    .reversed()
         }
     }
 

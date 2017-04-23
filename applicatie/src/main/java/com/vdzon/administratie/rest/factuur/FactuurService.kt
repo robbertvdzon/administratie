@@ -1,20 +1,19 @@
 package com.vdzon.administratie.rest.factuur
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.vdzon.administratie.dto.BoekingDto
-import com.vdzon.administratie.model.*
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
-import com.vdzon.administratie.util.SessionHelper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.FactuurDto
+import com.vdzon.administratie.model.BoekingenCache
+import com.vdzon.administratie.model.Factuur
+import com.vdzon.administratie.model.Gebruiker
+import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur
+import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
-
-import javax.inject.Inject
 import java.io.BufferedOutputStream
+import javax.inject.Inject
 
 class FactuurService {
 
@@ -26,7 +25,7 @@ class FactuurService {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val factuurJson = req.body()
         var factuur: Factuur? = null
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
         val factuurDto = mapper.readValue(factuurJson, FactuurDto::class.java)
         factuur = factuurDto.toFactuur()
 
@@ -36,9 +35,11 @@ class FactuurService {
         val boekingenVanFactuur = BoekingenCache(gebruiker.defaultAdministratie.boekingen).getBoekingenVanFactuur(factuur.factuurNummer)
         for (boeking in boekingenVanFactuur) {
             var found = false
-            for (boekingDto in factuurDto.boekingen) {
-                if (boekingDto.uuid == boeking.uuid) {
-                    found = true
+            if (factuurDto.boekingen != null) {
+                for (boekingDto in factuurDto.boekingen!!) {
+                    if (boekingDto.uuid == boeking.uuid) {
+                        found = true
+                    }
                 }
             }
             if (!found) {
@@ -46,7 +47,7 @@ class FactuurService {
             }
         }
 
-        crudService!!.updateGebruiker(gebruiker)
+        crudService.updateGebruiker(gebruiker)
         return SingleAnswer("ok")
     }
 
@@ -62,7 +63,7 @@ class FactuurService {
         gebruiker.defaultAdministratie.removeFactuur(factuurUuid)
         removeBoekingenVanFactuur(gebruiker, factuur!!.factuurNummer)
 
-        crudService!!.updateGebruiker(gebruiker)
+        crudService.updateGebruiker(gebruiker)
         return SingleAnswer("ok")
     }
 
@@ -73,7 +74,7 @@ class FactuurService {
         if (gekoppelBestelling != null) {
             val updatedBestelling = gekoppelBestelling.copy(gekoppeldFactuurNummer = factuur.factuurNummer)
             gebruiker.defaultAdministratie.removeBestelling(gekoppelBestelling.uuid)
-            gebruiker.defaultAdministratie.addBestelling(updatedBestelling!!)
+            gebruiker.defaultAdministratie.addBestelling(updatedBestelling)
         }
         gebruiker.defaultAdministratie.addFactuur(factuur)
     }
@@ -93,9 +94,9 @@ class FactuurService {
     private fun removeBoekingenVanFactuur(gebruiker: Gebruiker, factuurNr: String) {
         val defaultAdministratie = gebruiker.defaultAdministratie
         defaultAdministratie.boekingen
-                .filter{ boeking -> boeking is BoekingMetFactuur }
-                .map{ boeking -> boeking  as BoekingMetFactuur}
-                .filter{ boeking -> boeking.factuurNummer == factuurNr }
+                .filter { boeking -> boeking is BoekingMetFactuur }
+                .map { boeking -> boeking as BoekingMetFactuur }
+                .filter { boeking -> boeking.factuurNummer == factuurNr }
                 .forEach { boeking -> defaultAdministratie.removeBoeking(boeking.uuid) }
     }
 
