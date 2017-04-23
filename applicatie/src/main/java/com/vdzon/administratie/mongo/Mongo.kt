@@ -53,11 +53,11 @@ private constructor() {
         val mongoDbName = System.getProperties().getProperty("mongoDbName")
 
         println("Check parameters:")
-        println("mongoDbPort:" + mongoDbPort!!)
-        println("mongoDbHost:" + mongoDbHostname!!)
-        println("mongoDbUsername:" + mongoDbUsername!!)
-        println("mongoDbPasswd:" + mongoDbPasswd!!)
-        println("mongoDbName:" + mongoDbName!!)
+        println("mongoDbPort:" + mongoDbPort)
+        println("mongoDbHost:" + mongoDbHostname)
+        println("mongoDbUsername:" + mongoDbUsername)
+        println("mongoDbPasswd:" + mongoDbPasswd)
+        println("mongoDbName:" + mongoDbName)
         println("usage voorbeeld: -DmongoDbPort=9903 -DmongoDbHost=\"37.97.149.78\" -DmongoDbUsername=\"robbert\" -DmongoDbPasswd=\"mypasswd\" -DmongoDbName=\"mijndb\"")
 
         val host = mongoDbHostname ?: "localhost"
