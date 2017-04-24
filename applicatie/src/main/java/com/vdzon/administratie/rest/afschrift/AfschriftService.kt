@@ -2,7 +2,8 @@ package com.vdzon.administratie.rest.afschrift
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.bankimport.ImportFromAbnAmro
+import com.vdzon.administratie.abnamrobankimport.ImportFromAbnAmro
+import com.vdzon.administratie.bankimport.ImportFromBank
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.AfschriftDto
 import com.vdzon.administratie.dto.BoekingDto
@@ -23,10 +24,10 @@ import javax.inject.Inject
 import java.nio.file.Path
 import java.util.UUID
 
-class AfschriftService {
+class AfschriftService
 
     @Inject
-    lateinit internal var crudService: UserCrud
+    constructor(val importFromBank: ImportFromBank, var crudService: UserCrud){
 
     @Throws(Exception::class)
     fun putAfschrift(req: Request, res: Response): Any {
@@ -117,7 +118,7 @@ class AfschriftService {
     fun uploadabn(request: Request, response: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(request, crudService)
         val uploadedFile = SessionHelper.getUploadedFile(request)
-        val afschriften = ImportFromAbnAmro().parseFile(uploadedFile, gebruiker)
+        val afschriften = importFromBank.parseFile(uploadedFile, gebruiker)
         updateAfschriftenVanGebruiker(gebruiker, afschriften)
         crudService!!.updateGebruiker(gebruiker)
         return "OK"

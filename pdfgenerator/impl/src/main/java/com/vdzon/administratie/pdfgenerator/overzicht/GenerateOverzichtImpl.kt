@@ -8,6 +8,7 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
 import com.vdzon.administratie.model.*
+import com.vdzon.administratie.pdfgenerator.factuur.GenerateOverzicht
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
@@ -21,13 +22,33 @@ import java.net.URL
 import java.time.LocalDate
 import java.util.stream.Collectors
 
-class GenerateOverzicht {
+class GenerateOverzichtImpl : GenerateOverzicht {
     private var pos = 0f
     private var pageHeight = 0f
     private var pageWidth = 0f
     private var page: PDPageContentStream? = null
     private var document: PDDocument? = null
     private var pdfPage: PDPage? = null
+
+    private val fontPlain = PDType1Font.HELVETICA
+    private val fontBold = PDType1Font.HELVETICA_BOLD
+
+    @Throws(IOException::class)
+    override fun buildPdf(administratie: Administratie, beginDate: String, endDate: String, outputStream: BufferedOutputStream) {
+        GenerateOverzichtImpl().start(administratie, beginDate, endDate, outputStream)
+    }
+
+    private fun betweenOrAtDates(date: LocalDate?, beginDate: LocalDate, endData: LocalDate): Boolean {
+        if (date == null) return true
+        return date == beginDate || date == endData || betweenDates(date, beginDate, endData)
+    }
+
+    private fun betweenDates(date: LocalDate, beginDate: LocalDate, endData: LocalDate): Boolean {
+        return date.isAfter(beginDate) && date.isBefore(endData)
+    }
+
+    private val LIJST_FONT_SIZE = 10
+
 
     @Throws(IOException::class)
     private fun start(administratie: Administratie, beginDate: String, endDate: String, outputStream: BufferedOutputStream) {
@@ -574,28 +595,6 @@ class GenerateOverzicht {
         page!!.closeAndStroke()
     }
 
-    companion object {
 
-        //Todo: deze class opruimen
-
-        private val fontPlain = PDType1Font.HELVETICA
-        private val fontBold = PDType1Font.HELVETICA_BOLD
-
-        @Throws(IOException::class)
-        fun buildPdf(administratie: Administratie, beginDate: String, endDate: String, outputStream: BufferedOutputStream) {
-            GenerateOverzicht().start(administratie, beginDate, endDate, outputStream)
-        }
-
-        private fun betweenOrAtDates(date: LocalDate?, beginDate: LocalDate, endData: LocalDate): Boolean {
-            if (date == null) return true
-            return date == beginDate || date == endData || betweenDates(date, beginDate, endData)
-        }
-
-        private fun betweenDates(date: LocalDate, beginDate: LocalDate, endData: LocalDate): Boolean {
-            return date.isAfter(beginDate) && date.isBefore(endData)
-        }
-
-        private val LIJST_FONT_SIZE = 10
-    }
 
 }

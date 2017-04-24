@@ -4,16 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vdzon</groupId>
-    <artifactId>administratie</artifactId>
+    <artifactId>pdfgenerator</artifactId>
     <version>0.4</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>applicatie</module>
-        <module>common</module>
-        <module>checkandfix</module>
-        <module>bankimport</module>
-        <module>pdfgenerator</module>
+        <module>api</module>
+        <module>impl</module>
     </modules>
 
 

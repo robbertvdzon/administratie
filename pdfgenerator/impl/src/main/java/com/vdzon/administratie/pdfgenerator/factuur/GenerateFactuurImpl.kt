@@ -17,7 +17,12 @@ import java.io.BufferedOutputStream
 import java.io.IOException
 import java.util.ArrayList
 
-class GenerateFactuur {
+class GenerateFactuurImpl : GenerateFactuur {
+
+    @Throws(IOException::class)
+    override fun buildPdf(administratie: Administratie, factuur: Factuur, outputStream: BufferedOutputStream) {
+        GenerateFactuurImpl().start(administratie, factuur, outputStream)
+    }
 
     @Throws(IOException::class)
     private fun start(administratie: Administratie, factuur: Factuur, outputStream: BufferedOutputStream) {
@@ -168,12 +173,5 @@ class GenerateFactuur {
         pdfData.pos = pdfData.pageHeight
     }
 
-    companion object {
-
-        @Throws(IOException::class)
-        fun buildPdf(administratie: Administratie, factuur: Factuur, outputStream: BufferedOutputStream) {
-            GenerateFactuur().start(administratie, factuur, outputStream)
-        }
-    }
 
 }

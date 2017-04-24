@@ -44,6 +44,26 @@
             <artifactId>checkandfix</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>bankimport.impl</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>bankimport.api</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>pdfgenerator.impl</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>pdfgenerator.api</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.mongobee</groupId>
             <artifactId>mongobee</artifactId>
             <version>0.12</version>
@@ -94,9 +114,9 @@
             <version>3.3.5</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.mongodb.morphia</groupId>-->
-            <!--<artifactId>morphia</artifactId>-->
-            <!--<version>1.0.1</version>-->
+        <!--<groupId>org.mongodb.morphia</groupId>-->
+        <!--<artifactId>morphia</artifactId>-->
+        <!--<version>1.0.1</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
@@ -115,11 +135,6 @@
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <version>1.50.2</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -142,29 +157,37 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <goals> <goal>compile</goal> </goals>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
                     </execution>
 
                     <execution>
                         <id>test-compile</id>
-                        <goals> <goal>test-compile</goal> </goals>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <executions><execution>
-                    <id>enforce-java-version</id>
-                    <goals><goal>enforce</goal></goals>
-                    <configuration>
-                        <rules>
-                            <requireJavaVersion>
-                                <version>[${java.version},)</version>
-                            </requireJavaVersion>
-                            <!--<DependencyConvergence/>-->
-                        </rules>
-                    </configuration>
-                </execution></executions>
+                <executions>
+                    <execution>
+                        <id>enforce-java-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[${java.version},)</version>
+                                </requireJavaVersion>
+                                <!--<DependencyConvergence/>-->
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
 
@@ -238,27 +261,31 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                <source>${java.version}</source>
-                <target>${java.version}</target>
-                </configuration>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
                 </plugin>
                 <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                <excludes><exclude>it/**</exclude></excludes>
-                <disableXmlReport>true</disableXmlReport>
-                </configuration>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.17</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>it/**</exclude>
+                        </excludes>
+                        <disableXmlReport>true</disableXmlReport>
+                    </configuration>
                 </plugin>
                 <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                <includes><include>it/**</include></includes>
-                </configuration>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.17</version>
+                    <configuration>
+                        <includes>
+                            <include>it/**</include>
+                        </includes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
@@ -297,7 +324,7 @@
             </dependency>
 
 
-             <!--test scoped-->
+            <!--test scoped-->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

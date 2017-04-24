@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.factuur
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.vdzon.administratie.bankimport.ImportFromBank
 import com.vdzon.administratie.crud.UserCrud
 import com.vdzon.administratie.dto.FactuurDto
 import com.vdzon.administratie.model.BoekingenCache
@@ -8,6 +9,7 @@ import com.vdzon.administratie.model.Factuur
 import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur
+import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuurImpl
 import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
@@ -15,10 +17,10 @@ import spark.Response
 import java.io.BufferedOutputStream
 import javax.inject.Inject
 
-class FactuurService {
+class FactuurService
 
     @Inject
-    lateinit internal var crudService: UserCrud
+    constructor(val generateFactuur: GenerateFactuur, var crudService: UserCrud){
 
     @Throws(Exception::class)
     fun putFactuur(req: Request, res: Response): Any {
@@ -113,7 +115,7 @@ class FactuurService {
         res.raw().contentType = "application/pdf"
         res.raw().setHeader("Content-Disposition", "attachment; filename=" + factuur!!.factuurNummer + ".pdf")
         BufferedOutputStream(res.raw().outputStream).use { zipOutputStream ->
-            GenerateFactuur.buildPdf(gebruiker.defaultAdministratie, factuur, zipOutputStream)
+            generateFactuur.buildPdf(gebruiker.defaultAdministratie, factuur, zipOutputStream)
             zipOutputStream.flush()
             zipOutputStream.close()
         }

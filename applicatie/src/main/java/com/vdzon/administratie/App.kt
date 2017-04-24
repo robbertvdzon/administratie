@@ -1,8 +1,10 @@
 package com.vdzon.administratie
 
 import com.github.mongobee.exception.MongobeeException
-import com.google.inject.Guice
-import com.google.inject.Injector
+import com.google.inject.*
+import com.google.inject.binder.AnnotatedBindingBuilder
+import com.vdzon.administratie.bankimport.ImportFromBank
+import com.vdzon.administratie.abnamrobankimport.ImportFromAbnAmro
 import com.vdzon.administratie.mongo.Mongo
 import com.vdzon.administratie.rest.administratie.AdministratieResource
 import com.vdzon.administratie.rest.afschrift.AfschriftResource
