@@ -4,17 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.vdzon.administratie</groupId>
+    <artifactId>bankimport.impl</artifactId>
+    <packaging>jar</packaging>
+
     <parent>
         <relativePath>../../pom.xml</relativePath>
         <groupId>com.vdzon</groupId>
         <artifactId>administratie</artifactId>
         <version>0.4</version>
     </parent>
-
-    <groupId>com.vdzon.administratie</groupId>
-    <artifactId>bankimport.impl</artifactId>
-    <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
