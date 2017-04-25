@@ -19,7 +19,6 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
@@ -28,82 +27,67 @@
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>bankimport.impl</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>bankimport.api</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>rubriceren.impl</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>rubriceren.api</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>storage.impl</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>storage.api</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>pdfgenerator.impl</artifactId>
-            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>pdfgenerator.api</artifactId>
-            <version>0.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
-            <version>2.5.5</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.7</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.0</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>2.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <version>1.50.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>rest</artifactId>
-            <version>0.4</version>
         </dependency>
 
     </dependencies>
