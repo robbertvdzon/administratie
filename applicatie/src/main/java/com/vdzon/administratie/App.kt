@@ -11,7 +11,7 @@ import com.vdzon.administratie.rest.afschrift.AfschriftResource
 import com.vdzon.administratie.rest.auth.AuthResource
 import com.vdzon.administratie.rest.bestelling.BestellingResource
 import com.vdzon.administratie.rest.checkandfix.CheckAndFixResource
-import com.vdzon.administratie.exceptions.ForbiddenException
+import com.vdzon.administratie.util.ForbiddenException
 import com.vdzon.administratie.rest.contact.ContactResource
 import com.vdzon.administratie.rest.data.DataResource
 import com.vdzon.administratie.rest.declaratie.DeclaratieResource
@@ -34,19 +34,16 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Enumeration
 import java.util.Properties
+import com.vdzon.administratie.rest.version.VersionData
 
 object App {
-    var version = "Undetermined"
-    var buildTime = "Undetermined"
+    lateinit var versionData:VersionData
 
     @Throws(MongobeeException::class)
     @JvmStatic fun main(args: Array<String>) {
 
         // init Mongo
         Mongo.start()
-
-
-        loadVersion()
 
         // init spark with web statics
         if (File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()) {
@@ -84,6 +81,7 @@ object App {
         val injector = Guice.createInjector(AppInjector())
 
         // instanciate the objects that need injections
+        versionData = injector.getInstance(VersionData::class.java)
         val dataResource = injector.getInstance(DataResource::class.java)
         val authResource = injector.getInstance(AuthResource::class.java)
         val versionResource = injector.getInstance(VersionResource::class.java)
@@ -98,6 +96,9 @@ object App {
         val rubriceerResource = injector.getInstance(RubriceerResource::class.java)
         val overzichtResource = injector.getInstance(OverzichtResource::class.java)
         val checkAndFixResource = injector.getInstance(CheckAndFixResource::class.java)
+
+        loadVersion()
+
     }
 
     private fun loadVersion() {
@@ -115,16 +116,16 @@ object App {
                 val mainClass = properties.getProperty("Main-Class")
                 if (mainClass != null && mainClass == App::class.java.canonicalName) {
                     //Correct manifest found
-                    version = properties.getProperty("Implementation-Version")
-                    buildTime = reformatBuildTime(properties.getProperty("Build-Time"))
+                    versionData.version = properties.getProperty("Implementation-Version")
+                    versionData.buildTime = reformatBuildTime(properties.getProperty("Build-Time"))
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-        println("Version is " + version)
-        println("Buildtime is " + buildTime)
+        println("Version is " + versionData.version)
+        println("Buildtime is " + versionData.buildTime)
     }
 
     private fun reformatBuildTime(buildTime: String): String {

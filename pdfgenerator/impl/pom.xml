@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>model</artifactId>
             <version>0.4</version>
         </dependency>
         <dependency>

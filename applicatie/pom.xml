@@ -37,7 +37,11 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rest</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
@@ -55,6 +59,26 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rubriceren.impl</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rubriceren.api</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>storage.impl</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>storage.api</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>pdfgenerator.impl</artifactId>
             <version>0.4</version>
         </dependency>
@@ -63,11 +87,7 @@
             <artifactId>pdfgenerator.api</artifactId>
             <version>0.4</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.mongobee</groupId>
-            <artifactId>mongobee</artifactId>
-            <version>0.12</version>
-        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -103,16 +123,7 @@
             <artifactId>guice</artifactId>
             <version>4.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.litote.kmongo</groupId>
-            <artifactId>kmongo</artifactId>
-            <version>3.3.5</version>
-        </dependency>
+
         <!--<dependency>-->
         <!--<groupId>org.mongodb.morphia</groupId>-->
         <!--<artifactId>morphia</artifactId>-->
@@ -140,6 +151,11 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rest</artifactId>
+            <version>0.4</version>
         </dependency>
 
     </dependencies>
@@ -314,7 +330,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>model</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>

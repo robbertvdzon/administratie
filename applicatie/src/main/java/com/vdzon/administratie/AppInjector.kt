@@ -9,6 +9,9 @@ import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuurImpl
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateOverzicht
 import com.vdzon.administratie.pdfgenerator.overzicht.GenerateOverzichtImpl
+import com.vdzon.administratie.rest.rubriceren.RubriceerService
+import com.vdzon.administratie.rest.rubriceren.RubriceerServiceImpl
+import com.vdzon.administratie.rest.version.VersionData
 
 class AppInjector : AbstractModule() {
 
@@ -17,7 +20,8 @@ class AppInjector : AbstractModule() {
         bind(GenerateFactuur::class.java).to(GenerateFactuurImpl::class.java)
         bind(GenerateOverzicht::class.java).to(GenerateOverzichtImpl::class.java)
         bind(UserCrud::class.java).to(UserCrudImpl::class.java)
-
+        bind(RubriceerService::class.java).to(RubriceerServiceImpl::class.java)
+        bind(VersionData::class.java).to(VersionDataImpl::class.java)
     }
 
 }
