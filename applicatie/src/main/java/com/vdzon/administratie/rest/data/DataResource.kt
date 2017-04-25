@@ -1,4 +1,4 @@
-package com.vdzon.administratie.data
+package com.vdzon.administratie.rest.data
 
 import com.vdzon.administratie.util.JsonUtil
 import spark.Route
