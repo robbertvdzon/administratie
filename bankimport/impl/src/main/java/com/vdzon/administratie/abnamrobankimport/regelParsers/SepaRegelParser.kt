@@ -7,9 +7,7 @@ class SepaRegelParser : RegelParser {
 
     //TODO: deze class kan wat mooier
 
-    override fun match(omschrijving: String): Boolean {
-        return omschrijving.startsWith("SEPA")
-    }
+    override fun match(omschrijving: String): Boolean = omschrijving.startsWith("SEPA")
 
     override fun extractNaam(omschrijving: String): String {
         val pos = omschrijving.indexOf("Naam:")

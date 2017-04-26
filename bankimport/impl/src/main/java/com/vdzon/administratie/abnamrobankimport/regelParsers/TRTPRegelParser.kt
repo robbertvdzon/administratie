@@ -4,10 +4,7 @@ class TRTPRegelParser : RegelParser {
 
     //TODO: deze class kan wat mooier
 
-    override fun match(omschrijving: String): Boolean {
-        return omschrijving.startsWith("/TRTP")
-    }
-
+    override fun match(omschrijving: String): Boolean = omschrijving.startsWith("/TRTP")
 
     override fun extractNaam(omschrijving: String): String {
         val split = omschrijving.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
