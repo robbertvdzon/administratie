@@ -23,6 +23,14 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>checkandfix.impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>checkandfix.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>bankimport.impl</artifactId>
         </dependency>
         <dependency>

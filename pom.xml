@@ -44,12 +44,17 @@
             </dependency>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>checkandfix</artifactId>
+                <artifactId>rest</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>rest</artifactId>
+                <artifactId>checkandfix.impl</artifactId>
+                <version>0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vdzon.administratie</groupId>
+                <artifactId>checkandfix.api</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>

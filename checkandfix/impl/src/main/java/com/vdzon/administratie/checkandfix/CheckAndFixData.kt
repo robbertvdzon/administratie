@@ -6,10 +6,8 @@ import com.vdzon.administratie.model.Factuur
 import com.vdzon.administratie.model.Rekening
 import com.vdzon.administratie.model.boekingen.Boeking
 
-/**
- * Created by robbe on 2/12/2017.
- */
-data class CheckAndFixData2(
+
+data class CheckAndFixData(
         val alleAfschriften: List<Afschrift>,
         val alleRekeningen: List<Rekening>,
         val alleFacturen: List<Factuur>,

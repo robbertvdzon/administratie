@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>checkandfix</artifactId>
+            <artifactId>checkandfix.api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>

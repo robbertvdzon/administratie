@@ -1,7 +1,7 @@
 package com.vdzon.administratie.pdfgenerator.overzicht
 
 import com.vdzon.administratie.checkandfix.CheckService
-import com.vdzon.administratie.checkandfix.model.CheckAndFixRegel2
+import com.vdzon.administratie.checkandfix.CheckAndFixRegel
 
 import com.vdzon.administratie.model.boekingen.Boeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
@@ -255,7 +255,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         return rekening.rekeningDate.plusMonths(rekening.maandenAfschrijving.toLong()).isAfter(beginDate)
     }
 
-    private fun listWaarschuwing(regel: CheckAndFixRegel2) {
+    private fun listWaarschuwing(regel: CheckAndFixRegel) {
         try {
             skipDown(15f)
             writeText(LIJST_FONT_SIZE.toFloat(), 30f, fontPlain, regel.omschrijving)
