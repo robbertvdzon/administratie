@@ -1,13 +1,11 @@
 package com.vdzon.administratie.pdfgenerator.overzicht
 
-import com.vdzon.administratie.checkandfix.CheckService
 import com.vdzon.administratie.checkandfix.CheckAndFixRegel
-
+import com.vdzon.administratie.checkandfix.CheckService
+import com.vdzon.administratie.model.*
 import com.vdzon.administratie.model.boekingen.Boeking
-import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
-import com.vdzon.administratie.model.*
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateOverzicht
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -16,11 +14,9 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle
 import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
-
 import java.io.*
 import java.net.URL
 import java.time.LocalDate
-import java.util.stream.Collectors
 import kotlin.reflect.jvm.internal.impl.javax.inject.Inject
 
 class GenerateOverzichtImpl : GenerateOverzicht {
@@ -140,7 +136,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         //        listFactuurHeader();
         overzicht
                 .filteredFacturen!!
-                .sortedBy {  it.factuurNummer}
+                .sortedBy { it.factuurNummer }
                 .reversed()
                 .forEach { factuur -> listFactuur(factuur, boekingenCache) }
 
@@ -159,7 +155,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         writeTitle("Alle rekeningen")
         overzicht
                 .filteredRekeningen!!
-                .sortedBy{it.rekeningNummer}
+                .sortedBy { it.rekeningNummer }
                 .reversed()
                 .forEach { rekening -> listRekening(rekening, boekingenCache) }
 
@@ -196,7 +192,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         skipDown(10f)
         overzicht
                 .filteredAfschriften!!
-                .sortedBy{it.nummer}
+                .sortedBy { it.nummer }
                 .reversed()
                 .forEach { afschrift -> listAfschrift(afschrift, boekingenCache) }
 
@@ -215,8 +211,8 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         writeTitle("Alle rekeningen met nog lopende afschrijvingen")
         administratie
                 .rekeningen
-                .filter{ rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate) }
-                .sortedBy{it.rekeningNummer}
+                .filter { rekening -> rekeningHeeftLopendeAfschrijving(rekening, overzicht.beginDate) }
+                .sortedBy { it.rekeningNummer }
                 .reversed()
                 .forEach { rekening -> listRekening(rekening, boekingenCache) }
 
@@ -232,7 +228,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
 
         skipDown(10f)
         val checkAndFixRegels = checkService.getCheckAndFixRegels(administratie).
-                filter{ regel -> betweenOrAtDates(regel.date, overzicht.beginDate!!, overzicht.endDate!!) }
+                filter { regel -> betweenOrAtDates(regel.date, overzicht.beginDate!!, overzicht.endDate!!) }
         if (checkAndFixRegels.isEmpty()) {
             writeTitle("Geen waarschuwingen gevonden")
         } else {
@@ -492,7 +488,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
             val out = ByteArrayOutputStream()
             val buf = ByteArray(1024)
             var n = 0
-            while (-1 != {n = `in`.read(buf);n}()) {
+            while (-1 != { n = `in`.read(buf);n }()) {
                 out.write(buf, 0, n)
             }
             out.close()
@@ -599,7 +595,6 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         page!!.lineTo(pageWidth, pos)
         page!!.closeAndStroke()
     }
-
 
 
 }

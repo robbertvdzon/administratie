@@ -37,15 +37,13 @@ class RubriceerServiceImpl : RubriceerService{
 
     }
 
-    @Throws(Exception::class)
-    override fun getRubriceerRegels(req: Request, res: Response): Any {
+    override fun getRubriceerRegels(req: Request, res: Response): RubriceerRegels {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val regels = getRubriceerRegels(gebruiker)
         return RubriceerRegels(rubriceerRegelList=regels)
     }
 
-    @Throws(Exception::class)
-    override fun rubriceerRegels(req: Request, res: Response): Any {
+    override fun rubriceerRegels(req: Request, res: Response): SingleAnswer {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
         val rubriceerRegels = getRubriceerRegels(req)
         processRubriceerRegels(gebruiker, rubriceerRegels)
