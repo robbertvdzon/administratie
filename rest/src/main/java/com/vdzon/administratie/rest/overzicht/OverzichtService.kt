@@ -9,9 +9,14 @@ import spark.Response
 import java.io.BufferedOutputStream
 import javax.inject.Inject
 
-class OverzichtService
-@Inject
-constructor(val generateOverzicht: GenerateOverzicht, var crudService: UserCrud) {
+class OverzichtService(){
+
+    @Inject
+    lateinit internal var generateOverzicht: GenerateOverzicht
+
+    @Inject
+    lateinit internal var crudService: UserCrud
+
 
     @Throws(Exception::class)
     fun getPdf(req: Request, res: Response): Any? {

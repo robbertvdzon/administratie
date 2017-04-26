@@ -20,13 +20,13 @@ import com.vdzon.administratie.rest.version.VersionData
 class AppInjector : AbstractModule() {
 
     override fun configure() {
+        bind(FixService::class.java).to(FixServiceImpl::class.java)
+        bind(CheckService::class.java).to(CheckServiceImpl::class.java)
         bind(ImportFromBank::class.java).to(ImportFromAbnAmro::class.java)
         bind(GenerateFactuur::class.java).to(GenerateFactuurImpl::class.java)
         bind(GenerateOverzicht::class.java).to(GenerateOverzichtImpl::class.java)
         bind(UserCrud::class.java).to(UserCrudImpl::class.java)
         bind(RubriceerService::class.java).to(RubriceerServiceImpl::class.java)
-        bind(FixService::class.java).to(FixServiceImpl::class.java)
-        bind(CheckService::class.java).to(CheckServiceImpl::class.java)
 
         bind(VersionData::class.java).to(VersionDataImpl::class.java).asEagerSingleton()
     }

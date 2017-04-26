@@ -17,7 +17,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import java.io.*
 import java.net.URL
 import java.time.LocalDate
-import kotlin.reflect.jvm.internal.impl.javax.inject.Inject
+import javax.inject.Inject
 
 class GenerateOverzichtImpl : GenerateOverzicht {
 
@@ -36,7 +36,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
 
     @Throws(IOException::class)
     override fun buildPdf(administratie: Administratie, beginDate: String, endDate: String, outputStream: BufferedOutputStream) {
-        GenerateOverzichtImpl().start(administratie, beginDate, endDate, outputStream)
+        start(administratie, beginDate, endDate, outputStream)
     }
 
     private fun betweenOrAtDates(date: LocalDate?, beginDate: LocalDate, endData: LocalDate): Boolean {
