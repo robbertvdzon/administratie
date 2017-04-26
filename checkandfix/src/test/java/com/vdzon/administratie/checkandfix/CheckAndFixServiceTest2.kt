@@ -12,6 +12,10 @@ import org.junit.Test
 import java.util.*
 
 internal class CheckAndFixServiceTest2 {
+
+    val checkServiceImpl = CheckServiceImpl()
+    val fixServiceImpl = FixServiceImpl()
+
     @Test
     fun when_alle_facturen_betaald_then_geen_checkregels() {
         val administratie = Administratie(
@@ -20,7 +24,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2")))
 
-        val regels = CheckService.getCheckAndFixRegels(administratie)
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie)
         regels.forEach { f -> println(f.omschrijving) };
 
         assertEquals(1, regels.size)
@@ -34,7 +38,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList(buildRekening("r1", 100.0, 80.0, 20.0)),
                 boekingen=Arrays.asList(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2"), rekeningBoeking("b3", "r1", "a3")))
 
-        val regels = CheckService.getCheckAndFixRegels(administratie)
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie)
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 0)
     }
@@ -47,7 +51,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2")))
 
-        val regels = CheckService.getCheckAndFixRegels(administratie)
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie)
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.REMOVE_BOEKING)
@@ -63,7 +67,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2")))
 
-        val fixedAdministratie = FixService.getFixedAdministratie(administratie);
+        val fixedAdministratie = fixServiceImpl.getFixedAdministratie(administratie);
         assertEquals(fixedAdministratie.boekingen.size,1)
         assertEquals(fixedAdministratie.boekingen[0].uuid, "b1")
     }
@@ -76,7 +80,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList(rekeningBoeking("b1", "r1", "a1")))
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.REMOVE_BOEKING)
@@ -92,7 +96,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList(factuurBoeking("b1", "f1", "a1"), factuurBoeking("b2", "f2", "a2")))
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.REMOVE_BOEKING)
@@ -108,7 +112,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList(buildRekening("r1", 100.0, 80.0, 20.0)),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.NONE)
@@ -123,7 +127,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList(buildRekening("r1", 0.0, 0.0, 0.0)),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 0)
     }
@@ -136,7 +140,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 0)
     }
@@ -149,7 +153,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList(buildRekening("r1", 0.0, 0.0, 0.0), buildRekening("r1", 0.0, 0.0, 0.0)),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.NONE)
@@ -164,7 +168,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.NONE)
@@ -179,7 +183,7 @@ internal class CheckAndFixServiceTest2 {
                 rekeningen=Arrays.asList<Rekening>(),
                 boekingen=Arrays.asList<Boeking>())
 
-        val regels = CheckService.getCheckAndFixRegels(administratie);
+        val regels = checkServiceImpl.getCheckAndFixRegels(administratie);
         regels.forEach { f -> println(f.omschrijving) };
         assertTrue("", regels.size == 1)
         assertTrue("", regels[0].rubriceerAction == FixAction.NONE)

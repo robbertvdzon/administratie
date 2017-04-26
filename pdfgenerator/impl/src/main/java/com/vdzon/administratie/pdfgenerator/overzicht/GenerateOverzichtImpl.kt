@@ -21,8 +21,13 @@ import java.io.*
 import java.net.URL
 import java.time.LocalDate
 import java.util.stream.Collectors
+import kotlin.reflect.jvm.internal.impl.javax.inject.Inject
 
 class GenerateOverzichtImpl : GenerateOverzicht {
+
+    @Inject
+    lateinit internal var checkService: CheckService
+
     private var pos = 0f
     private var pageHeight = 0f
     private var pageWidth = 0f
@@ -226,7 +231,7 @@ class GenerateOverzichtImpl : GenerateOverzicht {
         page = PDPageContentStream(document!!, pdfPage!!)
 
         skipDown(10f)
-        val checkAndFixRegels = CheckService.getCheckAndFixRegels(administratie).
+        val checkAndFixRegels = checkService.getCheckAndFixRegels(administratie).
                 filter{ regel -> betweenOrAtDates(regel.date, overzicht.beginDate!!, overzicht.endDate!!) }
         if (checkAndFixRegels.isEmpty()) {
             writeTitle("Geen waarschuwingen gevonden")

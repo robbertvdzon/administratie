@@ -18,15 +18,21 @@ class CheckAndFixService {
     @Inject
     lateinit internal var crudService: UserCrud
 
+    @Inject
+    lateinit internal var checkService: CheckService
+
+    @Inject
+    lateinit internal var fixService: FixService
+
     fun getCheckAndFixRegels(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
-        return CheckService.getCheckAndFixRegels(gebruiker.defaultAdministratie)
+        return checkService.getCheckAndFixRegels(gebruiker.defaultAdministratie)
     }
 
     @Throws(Exception::class)
     fun fix(req: Request, res: Response): Any {
         val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
-        val updatedGebruiker = gebruiker.copy(administraties = Arrays.asList(FixService.getFixedAdministratie(gebruiker.defaultAdministratie) ))
+        val updatedGebruiker = gebruiker.copy(administraties = Arrays.asList(fixService.getFixedAdministratie(gebruiker.defaultAdministratie) ))
         crudService!!.updateGebruiker(updatedGebruiker)
         return SingleAnswer("ok")
     }
