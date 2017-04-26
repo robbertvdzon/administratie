@@ -37,21 +37,58 @@ import java.util.Properties
 import com.vdzon.administratie.rest.version.VersionData
 
 object App {
-    lateinit var versionData:VersionData
 
     @Throws(MongobeeException::class)
     @JvmStatic fun main(args: Array<String>) {
 
-        // init Mongo
-        Mongo.start()
+        startMongo()
 
         // init spark with web statics
-        if (File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()) {
-            Spark.externalStaticFileLocation("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web")
-        } else {
-            Spark.staticFileLocation("/web")
-        }
+        initWebResources()
+        initExceptionHandlers()
+        initSparkPort(args)
+        initJsonResonce()
 
+        val injector = createDependencyInjector()
+
+        initAllRestResources(injector)
+
+        loadApplicationVersion(injector)
+
+
+    }
+
+    private fun startMongo() = Mongo.start()
+
+    private fun createDependencyInjector() = Guice.createInjector(AppInjector())
+
+    private fun initAllRestResources(injector: Injector) {
+        injector.getInstance(DataResource::class.java)
+        injector.getInstance(AuthResource::class.java)
+        injector.getInstance(VersionResource::class.java)
+        injector.getInstance(FactuurResource::class.java)
+        injector.getInstance(ContactResource::class.java)
+        injector.getInstance(GebruikerResource::class.java)
+        injector.getInstance(RekeningResource::class.java)
+        injector.getInstance(DeclaratieResource::class.java)
+        injector.getInstance(AfschriftResource::class.java)
+        injector.getInstance(AdministratieResource::class.java)
+        injector.getInstance(BestellingResource::class.java)
+        injector.getInstance(RubriceerResource::class.java)
+        injector.getInstance(OverzichtResource::class.java)
+        injector.getInstance(CheckAndFixResource::class.java)
+    }
+
+    private fun initJsonResonce() {
+        val f: Filter = Filter() { request: Request, response: Response -> response.type("application/json") }
+        Spark.before(f)
+    }
+
+    private fun initSparkPort(args: Array<String>) {
+        if (args.isNotEmpty()) Spark.port(Integer.parseInt(args[0]))
+    }
+
+    private fun initExceptionHandlers() {
         // Handle exceptions
         Spark.exception(ForbiddenException::class.java) { exception, request, response ->
             response.status(403)
@@ -62,46 +99,19 @@ object App {
             response.status(500)
             response.body(exception.message)
         }
-
-
-        // change port if needed
-        if (args.size > 0) {
-            Spark.port(Integer.parseInt(args[0]))
-        }
-        if (args.size > 1) {
-            System.getProperties().setProperty("mongoDbPort", args[1])
-        }
-
-
-        // default json response
-        val f:Filter = Filter(){ request: Request, response: Response -> response.type("application/json")}
-        Spark.before(f)
-
-        // create guice injector
-        val injector = Guice.createInjector(AppInjector())
-
-        // instanciate the objects that need injections
-        versionData = injector.getInstance(VersionData::class.java)
-        val dataResource = injector.getInstance(DataResource::class.java)
-        val authResource = injector.getInstance(AuthResource::class.java)
-        val versionResource = injector.getInstance(VersionResource::class.java)
-        val factuurResource = injector.getInstance(FactuurResource::class.java)
-        val contactResource = injector.getInstance(ContactResource::class.java)
-        val gebruikerResource = injector.getInstance(GebruikerResource::class.java)
-        val rekeningResource = injector.getInstance(RekeningResource::class.java)
-        val declaratieResource = injector.getInstance(DeclaratieResource::class.java)
-        val afschriftResource = injector.getInstance(AfschriftResource::class.java)
-        val administratieResource = injector.getInstance(AdministratieResource::class.java)
-        val bestellingResource = injector.getInstance(BestellingResource::class.java)
-        val rubriceerResource = injector.getInstance(RubriceerResource::class.java)
-        val overzichtResource = injector.getInstance(OverzichtResource::class.java)
-        val checkAndFixResource = injector.getInstance(CheckAndFixResource::class.java)
-
-        loadVersion()
-
     }
 
-    private fun loadVersion() {
+    private fun initWebResources() {
+        if (File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()) {
+            Spark.externalStaticFileLocation("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web")
+        } else {
+            Spark.staticFileLocation("/web")
+        }
+    }
+
+    private fun loadApplicationVersion(injector: Injector) {
+
+        val versionData = injector.getInstance(VersionData::class.java)
 
         println("Load version from manifest")
 
@@ -123,9 +133,6 @@ object App {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        println("Version is " + versionData.version)
-        println("Buildtime is " + versionData.buildTime)
     }
 
     private fun reformatBuildTime(buildTime: String): String {
@@ -137,6 +144,5 @@ object App {
         }
 
         return "Unknown"
-
     }
 }

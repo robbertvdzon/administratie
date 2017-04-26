@@ -21,7 +21,7 @@ class AppInjector : AbstractModule() {
         bind(GenerateOverzicht::class.java).to(GenerateOverzichtImpl::class.java)
         bind(UserCrud::class.java).to(UserCrudImpl::class.java)
         bind(RubriceerService::class.java).to(RubriceerServiceImpl::class.java)
-        bind(VersionData::class.java).to(VersionDataImpl::class.java)
+        bind(VersionData::class.java).to(VersionDataImpl::class.java).asEagerSingleton()
     }
 
 }

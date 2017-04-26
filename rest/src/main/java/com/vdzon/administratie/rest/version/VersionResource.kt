@@ -17,14 +17,10 @@ constructor(val versionData: VersionData) {
     }
 
     @Throws(Exception::class)
-    protected fun getVersion(req: Request, res: Response): Any {
-        return versionData.version
-    }
+    protected fun getVersion(req: Request, res: Response) = versionData.version
 
     @Throws(Exception::class)
-    protected fun getBuildtime(req: Request, res: Response): Any {
-        return versionData.buildTime
-    }
+    protected fun getBuildtime(req: Request, res: Response) = versionData.buildTime
 
 
 }
