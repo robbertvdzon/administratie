@@ -15,11 +15,8 @@
         <version>0.4</version>
     </parent>
 
+    <!--Eigen modules-->
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>rest</artifactId>
@@ -56,7 +53,16 @@
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>pdfgenerator.api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rest</artifactId>
+        </dependency>
 
+        <!--Externe modules        -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
@@ -70,6 +76,7 @@
             <artifactId>guice</artifactId>
         </dependency>
 
+        <!--Test-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -84,10 +91,6 @@
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>rest</artifactId>
         </dependency>
 
     </dependencies>

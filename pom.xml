@@ -33,11 +33,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-stdlib</artifactId>
-                <version>1.0.6</version>
-            </dependency>
-            <dependency>
                 <groupId>com.vdzon.administratie</groupId>
                 <artifactId>model</artifactId>
                 <version>0.4</version>
@@ -49,12 +44,12 @@
             </dependency>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>rest</artifactId>
+                <artifactId>checkandfix</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>checkandfix</artifactId>
+                <artifactId>rest</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>
@@ -99,6 +94,11 @@
             </dependency>
 
             <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>1.0.6</version>
+            </dependency>
+            <dependency>
                 <groupId>com.sparkjava</groupId>
                 <artifactId>spark-core</artifactId>
                 <version>2.5.5</version>
@@ -127,11 +127,6 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>2.7.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.litote.kmongo</groupId>
-                <artifactId>kmongo</artifactId>
-                <version>3.3.5</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
@@ -178,11 +173,6 @@
                 <artifactId>de.flapdoodle.embed.mongo</artifactId>
                 <version>1.50.2</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.vdzon.administratie</groupId>
-                <artifactId>rest</artifactId>
-                <version>0.4</version>
             </dependency>
 
         </dependencies>
