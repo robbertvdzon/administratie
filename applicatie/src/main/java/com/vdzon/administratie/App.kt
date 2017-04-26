@@ -50,17 +50,9 @@ object App {
         initJsonResonce()
 
         val injector = createDependencyInjector()
-
         initAllRestResources(injector)
-
-        loadApplicationVersion(injector)
-
-
+        AppUtil.loadApplicationVersion(injector)
     }
-
-    private fun startMongo() = Mongo.start()
-
-    private fun createDependencyInjector() = Guice.createInjector(AppInjector())
 
     private fun initAllRestResources(injector: Injector) {
         injector.getInstance(DataResource::class.java)
@@ -79,10 +71,9 @@ object App {
         injector.getInstance(CheckAndFixResource::class.java)
     }
 
-    private fun initJsonResonce() {
-        val f: Filter = Filter() { request: Request, response: Response -> response.type("application/json") }
-        Spark.before(f)
-    }
+    private fun startMongo() = Mongo.start()
+    private fun createDependencyInjector() = Guice.createInjector(AppInjector())
+    private fun initJsonResonce() = Spark.before(Filter() { request: Request, response: Response -> response.type("application/json") })
 
     private fun initSparkPort(args: Array<String>) {
         if (args.isNotEmpty()) Spark.port(Integer.parseInt(args[0]))
@@ -109,40 +100,5 @@ object App {
         }
     }
 
-    private fun loadApplicationVersion(injector: Injector) {
 
-        val versionData = injector.getInstance(VersionData::class.java)
-
-        println("Load version from manifest")
-
-        try {
-            val resources = App::class.java.classLoader.getResources("META-INF/MANIFEST.MF")
-            // walk through all manifest files (for each included jar there is a manifest,
-            // we need find ours by checking the mainClass
-            while (resources.hasMoreElements()) {
-                val url = resources.nextElement()
-                val properties = Properties()
-                properties.load(url.openStream())
-                val mainClass = properties.getProperty("Main-Class")
-                if (mainClass != null && mainClass == App::class.java.canonicalName) {
-                    //Correct manifest found
-                    versionData.version = properties.getProperty("Implementation-Version")
-                    versionData.buildTime = reformatBuildTime(properties.getProperty("Build-Time"))
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun reformatBuildTime(buildTime: String): String {
-        try {
-            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(buildTime.replace("Z$".toRegex(), "+0000"))
-            return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-
-        return "Unknown"
-    }
 }
