@@ -17,7 +17,6 @@
 
     <!--Eigen modules-->
     <dependencies>
-
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>frontend1</artifactId>
