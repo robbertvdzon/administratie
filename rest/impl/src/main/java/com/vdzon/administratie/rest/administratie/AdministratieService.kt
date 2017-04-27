@@ -37,4 +37,5 @@ class AdministratieService {
         userDao!!.updateGebruiker(gebruikerToUpdate);
         return SingleAnswer("ok")
     }
+
 }
