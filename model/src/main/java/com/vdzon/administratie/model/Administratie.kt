@@ -2,6 +2,7 @@ package com.vdzon.administratie.model
 
 import com.vdzon.administratie.model.boekingen.Boeking
 import org.litote.kmongo.MongoId
+import java.io.Serializable
 import java.util.*
 
 data class Administratie(@MongoId
@@ -13,7 +14,7 @@ data class Administratie(@MongoId
                          val rekeningen: MutableList<Rekening> = ArrayList<Rekening>(),
                          val afschriften: MutableList<Afschrift> = ArrayList<Afschrift>(),
                          var declaraties: MutableList<Declaratie>? = ArrayList<Declaratie>(),
-                         val boekingen: MutableList<Boeking> = ArrayList<Boeking>()) {
+                         val boekingen: MutableList<Boeking> = ArrayList<Boeking>()) : Serializable {
 
     fun addFactuur(factuur: Factuur) {
         facturen.add(factuur)

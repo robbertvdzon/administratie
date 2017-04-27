@@ -3,6 +3,7 @@ package com.vdzon.administratie.model
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.litote.kmongo.MongoId
+import java.io.Serializable
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -20,7 +21,7 @@ data class Bestelling(
         val bestellingRegels: List<BestellingRegel> = ArrayList(),
         var bedragExBtw: BigDecimal = BigDecimal.ZERO,
         var bedragIncBtw: BigDecimal = BigDecimal.ZERO,
-        var btw: BigDecimal = BigDecimal.ZERO) {
+        var btw: BigDecimal = BigDecimal.ZERO) : Serializable {
 
     init {
         calculate()

@@ -8,7 +8,12 @@ import com.mongodb.client.MongoDatabase
 import com.vdzon.administratie.model.Gebruiker
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollection
+import org.litote.kmongo.toList
 import java.util.*
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+
+
 
 class MongoDatabase : AdministratieDatabase{
 
@@ -57,6 +62,15 @@ class MongoDatabase : AdministratieDatabase{
         datastore = client.getDatabase(dbName)
 
         UpdateMongo().start(client, dbName)
+
+//        serializeAll()
+    }
+
+    private fun serializeAll() {
+        val allGebruikers = datastore.getCollection<Gebruiker>().find().toList()
+        val fout = FileOutputStream("c:\\git\\db.data")
+        val oos = ObjectOutputStream(fout)
+        oos.writeObject(allGebruikers)
     }
 
     private fun createAdminUserWhenNotExists() {

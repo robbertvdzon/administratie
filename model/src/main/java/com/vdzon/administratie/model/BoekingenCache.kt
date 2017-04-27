@@ -4,13 +4,14 @@ import com.vdzon.administratie.model.boekingen.Boeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
+import java.io.Serializable
 
 import java.util.ArrayList
 import java.util.HashMap
 
 import java.util.stream.Collectors.groupingBy
 
-class BoekingenCache {
+class BoekingenCache : Serializable {
     private var alleFactuurBoekingen: Map<String, List<BoekingMetFactuur>> = HashMap<String, List<BoekingMetFactuur>>()
     private var alleRekeningBoekingen: Map<String, List<BoekingMetRekening>> = HashMap<String, List<BoekingMetRekening>>()
     private var alleAfschriftBoekingen: Map<String, List<BoekingMetAfschrift>> = HashMap<String, List<BoekingMetAfschrift>>()

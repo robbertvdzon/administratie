@@ -3,6 +3,7 @@ package com.vdzon.administratie.model
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.litote.kmongo.MongoId
+import java.io.Serializable
 
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -20,5 +21,5 @@ class Rekening(
         val bedragExBtw: BigDecimal = BigDecimal.ZERO,
         val bedragIncBtw: BigDecimal = BigDecimal.ZERO,
         val btw: BigDecimal = BigDecimal.ZERO,
-        var maandenAfschrijving: Int = 0) {
+        var maandenAfschrijving: Int = 0) : Serializable {
 }

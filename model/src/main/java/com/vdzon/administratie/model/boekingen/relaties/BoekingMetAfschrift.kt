@@ -1,6 +1,8 @@
 package com.vdzon.administratie.model.boekingen.relaties
 
-interface BoekingMetAfschrift {
+import java.io.Serializable
+
+interface BoekingMetAfschrift : Serializable {
     val uuid: String
     val afschriftNummer: String
 }

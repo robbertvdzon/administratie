@@ -1,6 +1,7 @@
 package com.vdzon.administratie.model
 
 import org.litote.kmongo.MongoId
+import java.io.Serializable
 
 class AdministratieGegevens (
     @MongoId
@@ -12,6 +13,6 @@ class AdministratieGegevens (
     val adres: String="",
     val postcode: String="",
     val woonplaats: String="",
-    val logoUrl: String="") {
+    val logoUrl: String="") : Serializable {
 
 }

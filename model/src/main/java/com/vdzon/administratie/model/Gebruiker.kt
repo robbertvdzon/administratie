@@ -2,16 +2,17 @@ package com.vdzon.administratie.model
 
 import com.vdzon.administratie.model.boekingen.Boeking
 import org.litote.kmongo.MongoId
+import java.io.Serializable
 import java.util.*
 
-data class Gebruiker(
+data class Gebruiker (
         @MongoId
         var uuid: String? = null,
         var name: String? = null,
         var username: String? = null,
         var password: String? = null,
         var isAdmin: Boolean? = null,
-        var administraties: MutableList<Administratie> = ArrayList()) {
+        var administraties: MutableList<Administratie> = ArrayList()) : Serializable {
 
     constructor():
         this(null,null,null,null,null)
