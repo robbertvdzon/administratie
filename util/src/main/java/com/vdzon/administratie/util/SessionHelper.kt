@@ -1,7 +1,7 @@
 package com.vdzon.administratie.util
 
 import com.vdzon.administratie.util.ForbiddenException
-import com.vdzon.administratie.crud.UserCrud
+import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Gebruiker
 import spark.Request
 import spark.Session
@@ -35,9 +35,9 @@ object SessionHelper {
         session.removeAttribute(AUTHENTICATED_USER_UUID)
     }
 
-    fun getGebruikerOrThowForbiddenExceptin(req: Request, crudService: UserCrud): Gebruiker {
+    fun getGebruikerOrThowForbiddenExceptin(req: Request, daoService: UserDao): Gebruiker {
         val uuid = getAuthenticatedUserUuid(req)
-        val gebruiker = crudService.getGebruiker(uuid) ?: throw ForbiddenException()
+        val gebruiker = daoService.getGebruiker(uuid) ?: throw ForbiddenException()
         return gebruiker
     }
 

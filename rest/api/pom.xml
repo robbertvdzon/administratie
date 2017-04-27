@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vdzon.administratie</groupId>
-    <artifactId>storage.impl</artifactId>
+    <artifactId>rest.api</artifactId>
     <packaging>jar</packaging>
 
     <parent>
@@ -16,14 +16,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>storage.api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>model</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -32,18 +24,6 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.mongobee</groupId>
-            <artifactId>mongobee</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.litote.kmongo</groupId>
-            <artifactId>kmongo</artifactId>
         </dependency>
 
         <dependency>

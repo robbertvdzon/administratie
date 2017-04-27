@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vdzon.administratie</groupId>
-    <artifactId>storage.impl</artifactId>
+    <artifactId>rest.impl</artifactId>
     <packaging>jar</packaging>
 
     <parent>
@@ -18,11 +18,35 @@
     <dependencies>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rest.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>storage.api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>checkandfix.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>pdfgenerator.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>rubriceren.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>bankimport.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>checkandfix.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>util</artifactId>
         </dependency>
 
         <dependency>
@@ -34,16 +58,12 @@
             <artifactId>guice</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.mongobee</groupId>
-            <artifactId>mongobee</artifactId>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.litote.kmongo</groupId>
-            <artifactId>kmongo</artifactId>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
 
         <dependency>

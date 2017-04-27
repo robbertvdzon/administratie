@@ -44,7 +44,12 @@
             </dependency>
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
-                <artifactId>rest</artifactId>
+                <artifactId>rest.impl</artifactId>
+                <version>0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vdzon.administratie</groupId>
+                <artifactId>rest.api</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>

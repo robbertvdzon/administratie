@@ -2,7 +2,7 @@ package com.vdzon.administratie.rest.rubriceren
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.crud.UserCrud
+import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.Gebruiker
@@ -26,7 +26,7 @@ import com.vdzon.administratie.util.ReflectionUtils.getInstance
 
 class RubriceerServiceImpl : RubriceerService{
     @Inject
-    lateinit internal var crudService: UserCrud
+    lateinit internal var daoService: UserDao
     private val methodsAnnotatedWithRule: Set<Method>
     private val methodsAnnotatedWithCommit: Set<Method>
 
@@ -38,16 +38,16 @@ class RubriceerServiceImpl : RubriceerService{
     }
 
     override fun getRubriceerRegels(req: Request, res: Response): RubriceerRegels {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
         val regels = getRubriceerRegels(gebruiker)
         return RubriceerRegels(rubriceerRegelList=regels)
     }
 
     override fun rubriceerRegels(req: Request, res: Response): SingleAnswer {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, crudService)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
         val rubriceerRegels = getRubriceerRegels(req)
         processRubriceerRegels(gebruiker, rubriceerRegels)
-        crudService!!.updateGebruiker(gebruiker)
+        daoService!!.updateGebruiker(gebruiker)
         return SingleAnswer("ok")
     }
 

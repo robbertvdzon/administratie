@@ -1,32 +1,30 @@
 package com.vdzon.administratie
 
-import com.github.mongobee.exception.MongobeeException
 import com.google.inject.Guice
 import com.google.inject.Injector
-import com.vdzon.administratie.mongo.Mongo
+import com.vdzon.administratie.database.AdministratieDatabase
 import com.vdzon.administratie.rest.Rest
 
 object App {
 
-    @Throws(MongobeeException::class)
     @JvmStatic fun main(args: Array<String>) {
-
-        startMongo()
-
         val injector: Injector = createDependencyInjector()
         AppUtil.loadApplicationVersion(injector)
-
+        startMongo(injector)
         startRest(injector)
-
     }
+
+    private fun createDependencyInjector() = Guice.createInjector(AppInjector())
 
     private fun startRest(injector: Injector) {
         val rest: Rest = injector.getInstance(Rest::class.java)
-        rest.initRest(injector);
+        rest.initRest(injector)
     }
 
+    private fun startMongo(injector: Injector) {
+        val database = injector.getInstance(AdministratieDatabase::class.java)
+        database.startDatabase()
+    }
 
-    private fun startMongo() = Mongo.start()
-    private fun createDependencyInjector() = Guice.createInjector(AppInjector())
 
 }
