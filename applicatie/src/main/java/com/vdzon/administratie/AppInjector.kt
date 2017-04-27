@@ -13,6 +13,8 @@ import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuurImpl
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateOverzicht
 import com.vdzon.administratie.pdfgenerator.overzicht.GenerateOverzichtImpl
+import com.vdzon.administratie.rest.Rest
+import com.vdzon.administratie.rest.RestImpl
 import com.vdzon.administratie.rest.rubriceren.RubriceerService
 import com.vdzon.administratie.rest.rubriceren.RubriceerServiceImpl
 import com.vdzon.administratie.rest.version.VersionData
@@ -20,6 +22,7 @@ import com.vdzon.administratie.rest.version.VersionData
 class AppInjector : AbstractModule() {
 
     override fun configure() {
+        bind(Rest::class.java).to(RestImpl::class.java)
         bind(FixService::class.java).to(FixServiceImpl::class.java)
         bind(CheckService::class.java).to(CheckServiceImpl::class.java)
         bind(ImportFromBank::class.java).to(ImportFromAbnAmro::class.java)
