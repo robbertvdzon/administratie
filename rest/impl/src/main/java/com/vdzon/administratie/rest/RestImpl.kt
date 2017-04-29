@@ -71,11 +71,11 @@ class RestImpl : Rest {
     }
 
     private fun initWebResources() {
-        if (File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()) {
-            Spark.externalStaticFileLocation("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web")
-        } else {
+//        if (File("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web").exists()) {
+//            Spark.externalStaticFileLocation("C:\\git\\administratie\\applicatie\\src\\main\\resources\\web")
+//        } else {
             Spark.staticFileLocation("/web")
-        }
+//        }
     }
 
 

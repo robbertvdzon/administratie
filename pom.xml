@@ -20,6 +20,7 @@
         <module>rest</module>
         <module>authenticatie</module>
         <module>frontend1</module>
+        <module>frontend2</module>
     </modules>
 
 
@@ -37,6 +38,11 @@
             <dependency>
                 <groupId>com.vdzon.administratie</groupId>
                 <artifactId>frontend1</artifactId>
+                <version>0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vdzon.administratie</groupId>
+                <artifactId>frontend2</artifactId>
                 <version>0.4</version>
             </dependency>
             <dependency>
