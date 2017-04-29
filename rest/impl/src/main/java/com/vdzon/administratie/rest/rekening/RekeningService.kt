@@ -1,20 +1,16 @@
 package com.vdzon.administratie.rest.rekening
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
-import com.vdzon.administratie.dto.BoekingDto
 import com.vdzon.administratie.dto.RekeningDto
-import com.vdzon.administratie.model.Administratie
 import com.vdzon.administratie.model.BoekingenCache
 import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.model.Rekening
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetRekening
-import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
-
 import javax.inject.Inject
 
 class RekeningService {
@@ -22,9 +18,12 @@ class RekeningService {
     @Inject
     lateinit internal var daoService: UserDao
 
+    @Inject
+    lateinit internal var athenticationService: AuthenticationService
+
     @Throws(Exception::class)
     fun putRekening(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val contactJson = req.body()
         var rekening: Rekening? = null
         val mapper = jacksonObjectMapper()
@@ -54,7 +53,7 @@ class RekeningService {
 
     @Throws(Exception::class)
     fun removeRekening(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         var rekeningUuid: String? = req.params(":uuid")
         if ("undefined" == rekeningUuid) {
             rekeningUuid = null
@@ -69,9 +68,9 @@ class RekeningService {
     private fun removeBoekingenVanRekening(gebruiker: Gebruiker, rekeningNr: String) {
         val defaultAdministratie = gebruiker.defaultAdministratie
         defaultAdministratie.boekingen
-                .filter{ boeking -> boeking is BoekingMetRekening }
-                .map{ boeking -> boeking as BoekingMetRekening }
-                .filter{ boeking -> boeking.rekeningNummer == rekeningNr }
+                .filter { boeking -> boeking is BoekingMetRekening }
+                .map { boeking -> boeking as BoekingMetRekening }
+                .filter { boeking -> boeking.rekeningNummer == rekeningNr }
                 .forEach { boeking -> defaultAdministratie.removeBoeking(boeking.uuid) }
     }
 

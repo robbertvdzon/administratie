@@ -1,16 +1,13 @@
 package com.vdzon.administratie.rest.contact
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.util.SessionHelper
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.dto.ContactDto
 import com.vdzon.administratie.model.Contact
-import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
-
 import javax.inject.Inject
 
 class ContactService {
@@ -18,9 +15,13 @@ class ContactService {
     @Inject
     lateinit internal var daoService: UserDao
 
+    @Inject
+    lateinit internal var athenticationService: AuthenticationService
+
+
     @Throws(Exception::class)
     fun putContact(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val contactJson = req.body()
         var contact: Contact? = null
         val mapper = jacksonObjectMapper()
@@ -35,7 +36,7 @@ class ContactService {
 
     @Throws(Exception::class)
     fun removeContact(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         var contactUuid: String? = req.params(":uuid")
         if ("undefined" == contactUuid) {
             contactUuid = null

@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.afschrift
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.bankimport.ImportFromBank
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.dto.AfschriftDto
@@ -10,7 +11,6 @@ import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.model.boekingen.BetaaldeFactuurBoeking
 import com.vdzon.administratie.model.boekingen.BetaaldeRekeningBoeking
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
-import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
@@ -19,11 +19,11 @@ import javax.inject.Inject
 
 class AfschriftService
 @Inject
-constructor(val importFromBank: ImportFromBank, var daoService: UserDao) {
+constructor(val importFromBank: ImportFromBank, var daoService: UserDao, var athenticationService: AuthenticationService) {
 
     @Throws(Exception::class)
     fun putAfschrift(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val afschriftJson = req.body()
         val mapper = jacksonObjectMapper()
         val afschriftDto = mapper.readValue(afschriftJson, AfschriftDto::class.java)
@@ -87,7 +87,7 @@ constructor(val importFromBank: ImportFromBank, var daoService: UserDao) {
 
     @Throws(Exception::class)
     fun removeAfschrift(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         var nummer: String? = req.params(":nummer")
         if ("undefined" == nummer) {
             nummer = null
@@ -108,8 +108,8 @@ constructor(val importFromBank: ImportFromBank, var daoService: UserDao) {
     }
 
     fun uploadabn(request: Request, response: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(request, daoService)
-        val uploadedFile = SessionHelper.getUploadedFile(request)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(request, response)
+        val uploadedFile = athenticationService.getUploadedFile(request)
         val afschriften = importFromBank.parseFile(uploadedFile, gebruiker)
         updateAfschriftenVanGebruiker(gebruiker, afschriften)
         daoService!!.updateGebruiker(gebruiker)

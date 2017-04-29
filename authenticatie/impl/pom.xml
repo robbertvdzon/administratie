@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vdzon.administratie</groupId>
-    <artifactId>rubriceren.impl</artifactId>
+    <artifactId>authenticatie.impl</artifactId>
     <packaging>jar</packaging>
 
     <parent>
@@ -15,14 +15,25 @@
         <version>0.4</version>
     </parent>
 
+    <properties>
+        <sparkPac4j.version>2.0.0-RC2</sparkPac4j.version>
+        <pac4j.version>2.0.0-RC2</pac4j.version>
+    </properties>
+
     <dependencies>
         <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>authenticatie.api</artifactId>
+            <groupId>org.pac4j</groupId>
+            <artifactId>spark-pac4j</artifactId>
+            <version>${sparkPac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-oauth</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>rubriceren.api</artifactId>
+            <artifactId>rest.api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
@@ -30,12 +41,15 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>authenticatie.api</artifactId>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>util</artifactId>
+            <version>0.4</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -46,8 +60,12 @@
             <artifactId>guice</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.mongobee</groupId>
-            <artifactId>mongobee</artifactId>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
 
         <dependency>
@@ -55,7 +73,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 

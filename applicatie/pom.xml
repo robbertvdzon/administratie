@@ -63,6 +63,14 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>authenticatie.impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>authenticatie.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>rest.api</artifactId>
         </dependency>
         <dependency>

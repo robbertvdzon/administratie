@@ -1,23 +1,24 @@
 package com.vdzon.administratie.rest.auth
 
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Administratie
 import com.vdzon.administratie.model.Gebruiker
-import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
-
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.util.ArrayList
-import java.util.UUID
 
 @Singleton
 class AuthService {
 
     @Inject
     lateinit internal var userDao: UserDao
+
+    @Inject
+    lateinit internal var athenticationService: AuthenticationService
 
     @Throws(Exception::class)
     fun register(req: Request, res: Response): Any {
@@ -29,7 +30,7 @@ class AuthService {
 
         if (gebruiker != null) {
             res.status(401)
-            SessionHelper.removeAuthenticatedUserUuid(req)
+            athenticationService.removeAuthenticatedUserUuid(req)
             return SingleAnswer("username bestaat al")
         }
 
@@ -43,7 +44,7 @@ class AuthService {
         gebruiker.initDefaultAdministratie()
         try {
             userDao.updateGebruiker(gebruiker)
-            SessionHelper.setAuthenticatedUserUuid(req, gebruiker.uuid!!)
+            athenticationService.setAuthenticatedUserUuid(req, gebruiker.uuid!!)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -58,16 +59,16 @@ class AuthService {
         val gebruiker = userDao!!.getGebruikerByUsername(username)
         if (gebruiker == null || !gebruiker.authenticate(password)) {
             res.status(401)
-            SessionHelper.removeAuthenticatedUserUuid(req)
+            athenticationService.removeAuthenticatedUserUuid(req)
             return SingleAnswer("not authorized")
         }
-        SessionHelper.setAuthenticatedUserUuid(req, gebruiker.uuid!!)
+        athenticationService.setAuthenticatedUserUuid(req, gebruiker.uuid!!)
         return SingleAnswer("ok")
     }
 
     @Throws(Exception::class)
     fun logout(req: Request, res: Response): Any {
-        SessionHelper.removeAuthenticatedUserUuid(req)
+        athenticationService.removeAuthenticatedUserUuid(req)
         return SingleAnswer("ok")
     }
 

@@ -1,11 +1,8 @@
 package com.vdzon.administratie.util
 
-
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import spark.ResponseTransformer
-
-import spark.Spark.get
 
 object JsonUtil {
     fun <P> fromJson(json: String, clazz: Class<*>): P {

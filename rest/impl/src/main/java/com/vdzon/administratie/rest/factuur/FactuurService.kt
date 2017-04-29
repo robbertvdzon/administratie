@@ -1,6 +1,7 @@
 package com.vdzon.administratie.rest.factuur
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.dto.FactuurDto
 import com.vdzon.administratie.model.BoekingenCache
@@ -8,7 +9,6 @@ import com.vdzon.administratie.model.Factuur
 import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.model.boekingen.relaties.BoekingMetFactuur
 import com.vdzon.administratie.pdfgenerator.factuur.GenerateFactuur
-import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
@@ -17,11 +17,11 @@ import javax.inject.Inject
 
 class FactuurService
 @Inject
-constructor(val generateFactuur: GenerateFactuur, var daoService: UserDao) {
+constructor(val generateFactuur: GenerateFactuur, var daoService: UserDao, var athenticationService: AuthenticationService) {
 
     @Throws(Exception::class)
     fun putFactuur(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val factuurJson = req.body()
         var factuur: Factuur? = null
         val mapper = jacksonObjectMapper()
@@ -52,7 +52,7 @@ constructor(val generateFactuur: GenerateFactuur, var daoService: UserDao) {
 
     @Throws(Exception::class)
     fun removeFactuur(req: Request, res: Response): Any {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         var factuurUuid: String? = req.params(":uuid")
         if ("undefined" == factuurUuid) {
             factuurUuid = null
@@ -101,7 +101,7 @@ constructor(val generateFactuur: GenerateFactuur, var daoService: UserDao) {
 
     @Throws(Exception::class)
     fun getPdf(req: Request, res: Response): Any? {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val factuurUuid = req.params(":uuid")
         if ("undefined" == factuurUuid) {
             res.status(404)

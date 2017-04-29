@@ -1,7 +1,7 @@
 package com.vdzon.administratie.rest.rubriceren
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
@@ -10,23 +10,24 @@ import com.vdzon.administratie.rubriceren.model.RubriceerRegel
 import com.vdzon.administratie.rubriceren.model.RubriceerRegels
 import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRule
 import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRuleCommit
-import com.vdzon.administratie.util.SessionHelper
+import com.vdzon.administratie.util.ReflectionUtils.callMethod
+import com.vdzon.administratie.util.ReflectionUtils.getInstance
 import com.vdzon.administratie.util.SingleAnswer
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import spark.Request
 import spark.Response
-
-import javax.inject.Inject
 import java.lang.reflect.Method
-import java.util.ArrayList
+import java.util.*
+import javax.inject.Inject
 
-import com.vdzon.administratie.util.ReflectionUtils.callMethod
-import com.vdzon.administratie.util.ReflectionUtils.getInstance
-
-class RubriceerServiceImpl : RubriceerService{
+class RubriceerServiceImpl : RubriceerService {
     @Inject
     lateinit internal var daoService: UserDao
+
+    @Inject
+    lateinit internal var athenticationService: AuthenticationService
+
     private val methodsAnnotatedWithRule: Set<Method>
     private val methodsAnnotatedWithCommit: Set<Method>
 
@@ -38,13 +39,13 @@ class RubriceerServiceImpl : RubriceerService{
     }
 
     override fun getRubriceerRegels(req: Request, res: Response): RubriceerRegels {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val regels = getRubriceerRegels(gebruiker)
-        return RubriceerRegels(rubriceerRegelList=regels)
+        return RubriceerRegels(rubriceerRegelList = regels)
     }
 
     override fun rubriceerRegels(req: Request, res: Response): SingleAnswer {
-        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenExceptin(req, daoService)
+        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
         val rubriceerRegels = getRubriceerRegels(req)
         processRubriceerRegels(gebruiker, rubriceerRegels)
         daoService!!.updateGebruiker(gebruiker)

@@ -22,6 +22,10 @@
         </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
+            <artifactId>authenticatie.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
             <artifactId>storage.api</artifactId>
         </dependency>
         <dependency>
