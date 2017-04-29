@@ -2,7 +2,7 @@ package com.vdzon.administratie.authenticatie
 
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Gebruiker
-import com.vdzon.administratie.rest.DemoConfigFactory
+import com.vdzon.administratie.rest.AuthConfigFactory
 import com.vdzon.administratie.rest.DemoHttpActionAdapter
 import com.vdzon.administratie.util.ForbiddenException
 import com.vdzon.administratie.util.JsonUtil
@@ -32,7 +32,7 @@ class AuthenticationServiceImpl : AuthenticationService {
 
 
     override fun init() {
-        val config = DemoConfigFactory().build()
+        val config = AuthConfigFactory().build()
         config.addAuthorizer("admin", RequireAnyRoleAuthorizer<CommonProfile>("ROLE_ADMIN"))
         config.httpActionAdapter = DemoHttpActionAdapter()
         val callback = CallbackRoute(config)
