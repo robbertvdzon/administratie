@@ -14,8 +14,14 @@ import com.vdzon.administratie.model.boekingen.relaties.BoekingMetAfschrift
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
 import javax.inject.Inject
+import javax.servlet.MultipartConfigElement
+import javax.servlet.ServletException
 
 class AfschriftService
 @Inject
@@ -109,13 +115,42 @@ constructor(val importFromBank: ImportFromBank, var daoService: UserDao, var ath
 
     fun uploadabn(request: Request, response: Response): Any {
         val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(request, response)
-        val uploadedFile = athenticationService.getUploadedFile(request)
+        val uploadedFile = getUploadedFile(request)
         val afschriften = importFromBank.parseFile(uploadedFile, gebruiker)
         updateAfschriftenVanGebruiker(gebruiker, afschriften)
         daoService!!.updateGebruiker(gebruiker)
         return "OK"
     }
 
+
+    fun getUploadedFile(request: Request): Path {
+        try {
+            val location = "image"
+            val maxFileSize: Long = 100000000
+            val maxRequestSize: Long = 100000000
+            val fileSizeThreshold = 1024
+
+            val multipartConfigElement = MultipartConfigElement(
+                    location, maxFileSize, maxRequestSize, fileSizeThreshold)
+            request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement)
+            val filename = request.raw().getPart("file").submittedFileName
+            val uploadedFile = request.raw().getPart("file")
+            val out = Paths.get(filename)
+            out.toFile().delete()
+            uploadedFile.inputStream.use { `in` ->
+                Files.copy(`in`, out)
+                uploadedFile.delete()
+            }
+            return out
+        } catch (e: IOException) {
+            e.printStackTrace()
+            throw RuntimeException(e)
+        } catch (e: ServletException) {
+            e.printStackTrace()
+            throw RuntimeException(e)
+        }
+
+    }
 
     private fun updateAfschriftenVanGebruiker(gebruiker: Gebruiker, afschriften: List<Afschrift>) {
         for (afschrift in afschriften) {

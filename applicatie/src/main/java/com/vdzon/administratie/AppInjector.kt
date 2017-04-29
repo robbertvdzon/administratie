@@ -19,7 +19,6 @@ import com.vdzon.administratie.pdfgenerator.factuur.GenerateOverzicht
 import com.vdzon.administratie.pdfgenerator.overzicht.GenerateOverzichtImpl
 import com.vdzon.administratie.rest.Rest
 import com.vdzon.administratie.rest.RestImpl
-import com.vdzon.administratie.rest.auth.AuthService
 import com.vdzon.administratie.rest.rubriceren.RubriceerService
 import com.vdzon.administratie.rest.rubriceren.RubriceerServiceImpl
 import com.vdzon.administratie.rest.version.VersionData

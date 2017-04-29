@@ -4,7 +4,6 @@ import com.google.inject.Injector
 import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.rest.administratie.AdministratieResource
 import com.vdzon.administratie.rest.afschrift.AfschriftResource
-import com.vdzon.administratie.rest.auth.AuthResource
 import com.vdzon.administratie.rest.bestelling.BestellingResource
 import com.vdzon.administratie.rest.checkandfix.CheckAndFixResource
 import com.vdzon.administratie.rest.contact.ContactResource
@@ -37,7 +36,6 @@ class RestImpl : Rest {
         initAuthentication()
 
         injector.getInstance(DataResource::class.java)
-        injector.getInstance(AuthResource::class.java)
         injector.getInstance(VersionResource::class.java)
         injector.getInstance(FactuurResource::class.java)
         injector.getInstance(ContactResource::class.java)

@@ -3,7 +3,6 @@ package com.vdzon.administratie.authenticatie
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Gebruiker
 import com.vdzon.administratie.rest.AuthConfigFactory
-import com.vdzon.administratie.rest.DemoHttpActionAdapter
 import com.vdzon.administratie.util.ForbiddenException
 import com.vdzon.administratie.util.JsonUtil
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer
@@ -34,7 +33,6 @@ class AuthenticationServiceImpl : AuthenticationService {
     override fun init() {
         val config = AuthConfigFactory().build()
         config.addAuthorizer("admin", RequireAnyRoleAuthorizer<CommonProfile>("ROLE_ADMIN"))
-        config.httpActionAdapter = DemoHttpActionAdapter()
         val callback = CallbackRoute(config)
         Spark.get("/callback", callback)
         Spark.post("/callback", callback)
@@ -72,41 +70,5 @@ class AuthenticationServiceImpl : AuthenticationService {
         return "OK"
     }
 
-    override fun removeAuthenticatedUserUuid(req: Request) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setAuthenticatedUserUuid(req: Request, uuid: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getUploadedFile(request: Request): Path {
-        try {
-            val location = "image"
-            val maxFileSize: Long = 100000000
-            val maxRequestSize: Long = 100000000
-            val fileSizeThreshold = 1024
-
-            val multipartConfigElement = MultipartConfigElement(
-                    location, maxFileSize, maxRequestSize, fileSizeThreshold)
-            request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement)
-            val filename = request.raw().getPart("file").submittedFileName
-            val uploadedFile = request.raw().getPart("file")
-            val out = Paths.get(filename)
-            out.toFile().delete()
-            uploadedFile.inputStream.use { `in` ->
-                Files.copy(`in`, out)
-                uploadedFile.delete()
-            }
-            return out
-        } catch (e: IOException) {
-            e.printStackTrace()
-            throw RuntimeException(e)
-        } catch (e: ServletException) {
-            e.printStackTrace()
-            throw RuntimeException(e)
-        }
-
-    }
 
 }
