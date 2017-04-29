@@ -62,21 +62,12 @@ class MongoDatabase : AdministratieDatabase{
         datastore = client.getDatabase(dbName)
 
         UpdateMongo().start(client, dbName)
-
-//        serializeAll()
-    }
-
-    private fun serializeAll() {
-        val allGebruikers = datastore.getCollection<Gebruiker>().find().toList()
-        val fout = FileOutputStream("c:\\git\\db.data")
-        val oos = ObjectOutputStream(fout)
-        oos.writeObject(allGebruikers)
     }
 
     private fun createAdminUserWhenNotExists() {
         val gebruikers: MongoCollection<Gebruiker> = this.datastore!!.getCollection<Gebruiker>()
         if (gebruikers.count().equals(0)) {
-            TestDataGenerator.buildTestData("admin", "admin", "admin", true, datastore)
+            TestDataGenerator.buildTestData("admin", "admin", true, datastore)
         }
     }
 

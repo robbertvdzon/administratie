@@ -28,7 +28,7 @@ class GebruikerService {
         val nieuweGebruikerDto = mapper.readValue(nieuweGebruikerJson, GebruikerDto::class.java)
         var originalGebruiker: Gebruiker? = daoService!!.getGebruiker(nieuweGebruikerDto.uuid)
         if (originalGebruiker == null) {
-            originalGebruiker = Gebruiker("", "", "", "", false, ArrayList<Administratie>())
+            originalGebruiker = Gebruiker("", "", "", false, ArrayList<Administratie>())
         }
         val updatedGebruiker = nieuweGebruikerDto.cloneGebruikerWithDtoFields(originalGebruiker)
         daoService!!.updateGebruiker(updatedGebruiker)

@@ -13,7 +13,7 @@ import java.util.UUID
 
 object TestDataGenerator {
 
-    fun buildTestData(username: String, name: String, passwd: String, admin: Boolean, datastore: MongoDatabase) {
+    fun buildTestData(username: String, name: String, admin: Boolean, datastore: MongoDatabase) {
         println("Maak admin user")
         val adresboek = ArrayList<Contact>()
         val bestellingen = ArrayList<Bestelling>()
@@ -34,7 +34,7 @@ object TestDataGenerator {
                 boekingen)
         val administraties = ArrayList<Administratie>()
         administraties.add(administratie)
-        val gebruiker = Gebruiker(newUuid, name, username, passwd, admin, administraties)
+        val gebruiker = Gebruiker(newUuid, name, username, admin, administraties)
         datastore.getCollection<Gebruiker>().insertOne(gebruiker)
     }
 
