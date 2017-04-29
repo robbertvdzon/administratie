@@ -16,13 +16,7 @@ import spark.Request
 import spark.Response
 import spark.Route
 import spark.Spark
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 import javax.inject.Inject
-import javax.servlet.MultipartConfigElement
-import javax.servlet.ServletException
 
 class AuthenticationServiceImpl : AuthenticationService {
 
@@ -34,15 +28,24 @@ class AuthenticationServiceImpl : AuthenticationService {
         val config = AuthConfigFactory().build()
         config.addAuthorizer("admin", RequireAnyRoleAuthorizer<CommonProfile>("ROLE_ADMIN"))
         val callback = CallbackRoute(config)
-        Spark.get("/callback", callback)
-        Spark.post("/callback", callback)
         val facebookFilter = SecurityFilter(config, "FacebookClient")
-        Spark.before("/facebook", facebookFilter)
-        Spark.get("/facebook", Route { req, res -> getRedirect(req, res) }, JsonUtil.json())
-
         val localLogout = LogoutRoute(config, "/#/login")
         localLogout.destroySession = true
+
+
+        Spark.post("/callback", callback)
+        Spark.before("/facebook", facebookFilter)
+
+        Spark.get("/callback", callback)
+        Spark.get("/facebook", Route { req, res -> getRedirect(req, res) }, JsonUtil.json())
         Spark.get("/facebooklogout", localLogout)
+
+    }
+
+    override fun getGebruikerOrThowForbiddenException(req: Request, res: Response): Gebruiker {
+        val email = getEmail(req, res)
+        val gebruiker = daoService.getGebruikerByUsername(email) ?: throw ForbiddenException()
+        return gebruiker
 
     }
 
@@ -56,13 +59,6 @@ class AuthenticationServiceImpl : AuthenticationService {
         return commonProfile.email
     }
 
-
-    override fun getGebruikerOrThowForbiddenException(req: Request, res: Response): Gebruiker {
-        val email = getEmail(req, res)
-        val gebruiker = daoService.getGebruikerByUsername(email) ?: throw ForbiddenException()
-        return gebruiker
-
-    }
 
     private fun getRedirect(request: Request, response: Response): String {
         response.status(201)
