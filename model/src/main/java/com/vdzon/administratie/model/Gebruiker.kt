@@ -10,12 +10,11 @@ data class Gebruiker (
         var uuid: String? = null,
         var name: String? = null,
         var username: String? = null,
-        var password: String? = null,
         var isAdmin: Boolean? = null,
         var administraties: MutableList<Administratie> = ArrayList()) : Serializable {
 
     constructor():
-        this(null,null,null,null,null)
+        this(null,null,null,null)
 
 
 
@@ -67,10 +66,6 @@ data class Gebruiker (
 
     private fun administratieNummerMatchesUuid(uuid: String?, administratie: Administratie): Boolean {
         return uuid == null && administratie.uuid == null || uuid != null && uuid == administratie.uuid
-    }
-
-    fun authenticate(password: String): Boolean {
-        return password == password
     }
 
 }
