@@ -12,9 +12,9 @@ class DemoConfigFactory : ConfigFactory {
 
     override fun build(): Config {
         val facebookClient = FacebookClient("1891503724455349", "288016a6bd29d32e6dd9ec250e6c6d76")
-        val property = System.getProperties().getProperty("JAVA_DEBIAN_VERSION")
+        val property = System.getenv("JAVA_DEBIAN_VERSION")
         println("callbackHost prop=$property")
-        println("JAVA_DEBIAN_VERSION="+System.getProperties().getProperty("JAVA_DEBIAN_VERSION"))
+        println("JAVA_DEBIAN_VERSION="+System.getenv("JAVA_DEBIAN_VERSION"))
 
         val callbackHost:String = property ?:"http://localhost:4567"
         println("callbackHost=$callbackHost")
