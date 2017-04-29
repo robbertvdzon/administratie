@@ -46,15 +46,4 @@ class GebruikerService {
         return SingleAnswer("ok")
     }
 
-    @Throws(Exception::class)
-    fun updatePassword(req: Request, res: Response): Any {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
-        val gebruikerUuid = req.params(":uuid")
-        val newPassword = req.params(":newPassword")
-        val gebruikerToChange = daoService!!.getGebruiker(gebruikerUuid)
-        val changedGebruiker = gebruikerToChange?.copy(password = newPassword)
-        daoService!!.updateGebruiker(changedGebruiker)
-        return SingleAnswer("ok")
-    }
-
 }

@@ -14,7 +14,6 @@ constructor(gebruikerService: GebruikerService) {
         Spark.post("/rest/gebruiker/", Route { req, res -> gebruikerService.postGebruiker(req, res) }, JsonUtil.json())
         Spark.put("/rest/gebruiker/", Route { req, res -> gebruikerService.postGebruiker(req, res) }, JsonUtil.json())
         Spark.delete("/rest/gebruiker/:uuid", Route { req, res -> gebruikerService.removeGebruiker(req, res) }, JsonUtil.json())
-        Spark.post("/rest/gebruiker/updatePassword/:uuid/:newPassword", Route { req, res -> gebruikerService.updatePassword(req, res) }, JsonUtil.json())
     }
 
 
