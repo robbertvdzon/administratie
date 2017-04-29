@@ -6,58 +6,20 @@
                     <h2>Login</h2>
                 </div>
             </md-toolbar>
-                <md-input-container>
-                    <label>Gebruikersnaam:</label>
-                    <input ng-model="username" id="username">
-                </md-input-container>
-                <md-input-container>
-                    <label>Password:</label>
-                    <input ng-model="passwd" type="password" id="password">
-                </md-input-container>
-
-                <p ng-show="loginfailed" class="error" id="auth_failed">
-                    Authentication failed
-                </p>
+            <p>Gebruik onderstaande knop om in te loggen via facebook</p>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <span flex></span>
-                <md-button ng-click="logincontroller.login()" style="margin-right:20px;" id="submit_button">
-                    Login
+                <!--<span flex></span>-->
+                <md-button href="/facebook" style="margin-right:20px;" id="submit_button">
+                Login via facebook
                 </md-button>
-                <md-button ng-click="logincontroller.startRegistreer()" style="margin-right:20px;">
-                    Registreer
-                </md-button>
+
             </md-dialog-actions>
         </form>
-        <a href="/facebook">Login via facebook</a>
         <br>
         Versie: {{version}}<br>
         <small>({{buildtime}})</small>
 
-    </div>
-    <div ng-show="registerUserMode">
-
-            <md-input-container>
-                <label>Naam:</label>
-                <input ng-model="name" required >
-            </md-input-container>
-            <md-input-container>
-                <label>Gebruikersnaam:</label>
-                <input ng-model="username" required >
-            </md-input-container>
-            <md-input-container>
-                <label>Password:</label>
-                <input ng-model="passwd" required >
-            </md-input-container>
-            <span flex></span>
-        <md-dialog-actions layout="row">
-            <md-button ng-click="logincontroller.registreer()" style="margin-right:20px;" id="submit_button">
-                Registreer
-            </md-button>
-            <md-button ng-click="logincontroller.cancelRegistreer()" style="margin-right:20px;">
-                Annuleer
-            </md-button>
-        </md-dialog-actions>
     </div>
 </div>
 

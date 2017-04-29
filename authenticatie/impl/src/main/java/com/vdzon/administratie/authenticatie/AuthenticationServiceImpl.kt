@@ -6,11 +6,11 @@ import com.vdzon.administratie.rest.DemoConfigFactory
 import com.vdzon.administratie.rest.DemoHttpActionAdapter
 import com.vdzon.administratie.util.ForbiddenException
 import com.vdzon.administratie.util.JsonUtil
-import com.vdzon.administratie.util.SingleAnswer
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer
 import org.pac4j.core.profile.CommonProfile
 import org.pac4j.core.profile.ProfileManager
 import org.pac4j.sparkjava.CallbackRoute
+import org.pac4j.sparkjava.LogoutRoute
 import org.pac4j.sparkjava.SecurityFilter
 import org.pac4j.sparkjava.SparkWebContext
 import spark.Request
@@ -41,6 +41,11 @@ class AuthenticationServiceImpl : AuthenticationService {
         val facebookFilter = SecurityFilter(config, "FacebookClient")
         Spark.before("/facebook", facebookFilter)
         Spark.get("/facebook", Route { req, res -> getRedirect(req, res) }, JsonUtil.json())
+
+        val localLogout = LogoutRoute(config, "/#/login")
+        localLogout.destroySession = true
+        Spark.get("/facebooklogout", localLogout)
+
     }
 
     private fun getEmail(request: Request, response: Response): String? {
@@ -49,7 +54,7 @@ class AuthenticationServiceImpl : AuthenticationService {
         val all = manager.getAll(true)
         if (all.isEmpty()) return null
         val commonProfile = all[0]
-        println("email"+commonProfile.email)
+        println("email" + commonProfile.email)
         return commonProfile.email
     }
 
@@ -63,7 +68,7 @@ class AuthenticationServiceImpl : AuthenticationService {
 
     private fun getRedirect(request: Request, response: Response): String {
         response.status(201)
-        response.redirect("/#/facturen")
+        response.redirect("/#/")
         return "OK"
     }
 
