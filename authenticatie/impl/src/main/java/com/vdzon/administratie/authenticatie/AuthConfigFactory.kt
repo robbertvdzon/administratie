@@ -12,8 +12,8 @@ class AuthConfigFactory : ConfigFactory {
 
     override fun build(): Config {
         val callbackHost:String = System.getenv("callbackHost") ?:"http://localhost:4567"
-        val facebookKey:String = System.getenv("facebookKey") ?:"1891503724455349"
-        val facebookPasswd:String = System.getenv("facebookPasswd") ?:"288016a6bd29d32e6dd9ec250e6c6d76"
+        val facebookKey:String = System.getenv("facebookKey") ?:"1891669624438759"
+        val facebookPasswd:String = System.getenv("facebookPasswd") ?:"3d9d6bc369072d9b666cc767d3ede7c7"
         println("callbackHost=$callbackHost")
         println("facebookKey=$facebookKey")
 
