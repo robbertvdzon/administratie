@@ -19,7 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <npm.executable>npm</npm.executable>
-        <ng.executable>ng.cmd</ng.executable>
+        <ng.executable>ng</ng.executable>
         <destDir>${project.build.outputDirectory}/web</destDir>
     </properties>
 
@@ -43,6 +43,20 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                  <execution>
+                    <id>exec-ng-build</id>
+                    <phase>process-resources</phase>
+                    <configuration>
+                      <workingDirectory>${project.basedir}</workingDirectory>
+                      <executable>${ng.executable}</executable>
+                      <arguments>
+                        <argument>build</argument>
+                      </arguments>
+                    </configuration>
+                    <goals>
+                      <goal>exec</goal>
+                    </goals>
+                  </execution>
                     <execution>
                         <id>run unit tests</id>
                         <goals>
