@@ -57,21 +57,21 @@
                       <goal>exec</goal>
                     </goals>
                   </execution>
-                    <execution>
-                        <id>run unit tests</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>test</phase>
-                        <configuration>
-                            <workingDirectory>${project.basedir}</workingDirectory>
-                            <executable>${ng.executable}</executable>
-                            <arguments>
-                                <argument>test</argument>
-                                <argument>--single-run</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
+                    <!--<execution>-->
+                        <!--<id>run unit tests</id>-->
+                        <!--<goals>-->
+                            <!--<goal>exec</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>test</phase>-->
+                        <!--<configuration>-->
+                            <!--<workingDirectory>${project.basedir}</workingDirectory>-->
+                            <!--<executable>${ng.executable}</executable>-->
+                            <!--<arguments>-->
+                                <!--<argument>test</argument>-->
+                                <!--<argument>&#45;&#45;single-run</argument>-->
+                            <!--</arguments>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
                 </executions>
             </plugin>
 
