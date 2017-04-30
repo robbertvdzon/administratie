@@ -17,10 +17,10 @@
 
     <!--Eigen modules-->
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.vdzon.administratie</groupId>-->
-            <!--<artifactId>frontend1</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.vdzon.administratie</groupId>
+            <artifactId>frontend1</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>frontend2</artifactId>

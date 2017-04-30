@@ -18,7 +18,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <npm.executable>npm.cmd</npm.executable>
+        <npm.executable>npm</npm.executable>
         <ng.executable>ng.cmd</ng.executable>
         <destDir>${project.build.outputDirectory}/web</destDir>
     </properties>
