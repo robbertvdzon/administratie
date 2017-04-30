@@ -65,7 +65,7 @@
                         <!--<phase>test</phase>-->
                         <!--<configuration>-->
                             <!--<workingDirectory>${project.basedir}</workingDirectory>-->
-                            <!--<executable>${ng.executable}</executable>-->
+                            <!--<executable>${ng.executable}</executable> -->
                             <!--<arguments>-->
                                 <!--<argument>test</argument>-->
                                 <!--<argument>&#45;&#45;single-run</argument>-->
