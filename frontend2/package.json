@@ -4,11 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy-conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng lint && ng build --base-href /"
   },
   "private": true,
   "dependencies": {
@@ -20,9 +21,14 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "bulma": "^0.4.1",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
+    "prismjs": "^1.6.0",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+    "web-animations-js": "^2.2.2",
+    "zone.js": "^0.8.4",
+    "intl":"^1.2.5"
   },
   "devDependencies": {
     "@angular/cli": "1.0.1",
