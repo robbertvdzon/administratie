@@ -44,7 +44,17 @@ class AuthenticationServiceImpl : AuthenticationService {
 
     override fun getGebruikerOrThowForbiddenException(req: Request, res: Response): Gebruiker {
         val email = getEmail(req, res)
-        val gebruiker = daoService.getGebruikerByUsername(email) ?: throw ForbiddenException()
+        val gebruiker = daoService.getGebruikerByUsername(email)
+        if (gebruiker==null ) {
+            if (!email.isNullOrBlank()) {
+                val newGebruiker = Gebruiker(name = "", isAdmin = false, username = email)
+                daoService.addGebruiker(newGebruiker)
+                return newGebruiker
+            } else {
+                throw ForbiddenException()
+            }
+        }
+
         return gebruiker
 
     }
