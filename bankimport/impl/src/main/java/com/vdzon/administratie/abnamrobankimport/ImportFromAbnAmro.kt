@@ -27,7 +27,7 @@ class ImportFromAbnAmro : ImportFromBank() {
     override fun parseFile(out: Path, gebruiker: Gebruiker): List<Afschrift> {
         val nextNummerHolder = NextNummerHolder(findNextAfschriftNummer(gebruiker))
         try {
-            return Files.lines(out).map({ line:String -> parseLine(line, gebruiker, nextNummerHolder) }).collect(Collectors.toList<Afschrift>())
+            return Files.lines(out).map({ line:String -> parseLine(line, gebruiker, nextNummerHolder) }).filter { afschrift -> afschrift!=null }.collect(Collectors.toList<Afschrift>())
         } catch (e: IOException) {
             e.printStackTrace()
             return ArrayList()
@@ -45,8 +45,8 @@ class ImportFromAbnAmro : ImportFromBank() {
     }
 
     private fun extractNaam(omschrijving: String): String {
-        val regel = regelParsers.filter{ parser -> parser.match(omschrijving) }.firstOrNull()?: DefaultRegelParser()
-        return regel.extractNaam(omschrijving)
+        val regelParser: RegelParser = regelParsers.filter{ parser -> parser.match(omschrijving) }.firstOrNull()?: DefaultRegelParser()
+        return regelParser.extractNaam(omschrijving)
     }
 
     private fun extractOmschrijving(omschrijving: String): String {
@@ -59,6 +59,7 @@ class ImportFromAbnAmro : ImportFromBank() {
             val parsers = ArrayList<RegelParser>()
             parsers.add(SepaRegelParser())
             parsers.add(TRTPRegelParser())
+            parsers.add(DefaultRegelParser())
             return parsers
         }
 }
