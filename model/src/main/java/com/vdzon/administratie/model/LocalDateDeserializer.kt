@@ -13,13 +13,18 @@ class LocalDateDeserializer : JsonDeserializer<LocalDate>() {
     @Throws(IOException::class, JsonProcessingException::class)
     override fun deserialize(arg0: JsonParser, arg1: DeserializationContext): LocalDate {
         try {
-            val text = arg0.text.replace("CET", "CEST") // oei! Dat is lelijk! Maar blijkbaar kan jackson niet goed omgaan met timezone afkortingen ?!
-            //Tue Apr 05 00:00:00 CEST 2016
-            val pattern = DateTimeFormatter.ofPattern("E MMM dd HH:m:ss 'CEST' yyyy")
-            if (text.contains("CEST")) { // oei: Dit is al helemaal lelijk! We check op CEST om te kijken of het een date of een datetime is!
-                return LocalDateTime.parse(text, pattern).toLocalDate()
-            } else {
+            // niet mooi, maar eerst parsen als een date. Als dat niet lukt, kijken of het een timestamp is en die parsen.
+            try{
                 return LocalDate.parse(arg0.text)
+            }
+            catch(ex:java.time.format.DateTimeParseException){
+                val text = arg0.text
+                        .replace("CET", "") // oei! Dat is lelijk! Maar blijkbaar kan jackson niet goed omgaan met timezone afkortingen ?!
+                        .replace("CEST","")
+                        .replace("UTC","")
+                        .replace("GMT","")
+                val pattern = DateTimeFormatter.ofPattern("E MMM dd HH:m:ss  yyyy")
+                return LocalDateTime.parse(text, pattern).toLocalDate()
             }
         } catch (ex: Exception) {
             ex.printStackTrace()
