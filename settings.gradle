@@ -1,0 +1,40 @@
+rootProject.name = 'administratie'
+include ':applicatie'
+include ':model'
+include ':checkandfix.api'
+include ':checkandfix.impl'
+include ':bankimport.api'
+include ':bankimport.impl'
+include ':pdfgenerator.api'
+include ':pdfgenerator.impl'
+include ':storage.api'
+include ':storage.impl'
+include ':rubriceren.api'
+include ':rubriceren.impl'
+include ':util'
+include ':rest.api'
+include ':rest.impl'
+include ':authenticatie.api'
+include ':authenticatie.impl'
+include ':frontend1'
+include ':frontend2'
+
+project(':applicatie').projectDir = "$rootDir/applicatie" as File
+project(':model').projectDir = "$rootDir/model" as File
+project(':checkandfix.api').projectDir = "$rootDir/checkandfix/api" as File
+project(':checkandfix.impl').projectDir = "$rootDir/checkandfix/impl" as File
+project(':bankimport.api').projectDir = "$rootDir/bankimport/api" as File
+project(':bankimport.impl').projectDir = "$rootDir/bankimport/impl" as File
+project(':pdfgenerator.api').projectDir = "$rootDir/pdfgenerator/api" as File
+project(':pdfgenerator.impl').projectDir = "$rootDir/pdfgenerator/impl" as File
+project(':storage.api').projectDir = "$rootDir/storage/api" as File
+project(':storage.impl').projectDir = "$rootDir/storage/impl" as File
+project(':rubriceren.api').projectDir = "$rootDir/rubriceren/api" as File
+project(':rubriceren.impl').projectDir = "$rootDir/rubriceren/impl" as File
+project(':util').projectDir = "$rootDir/util" as File
+project(':rest.api').projectDir = "$rootDir/rest/api" as File
+project(':rest.impl').projectDir = "$rootDir/rest/impl" as File
+project(':authenticatie.api').projectDir = "$rootDir/authenticatie/api" as File
+project(':authenticatie.impl').projectDir = "$rootDir/authenticatie/impl" as File
+project(':frontend1').projectDir = "$rootDir/frontend1" as File
+project(':frontend2').projectDir = "$rootDir/frontend2" as File

@@ -5,4 +5,5 @@
 *.db
 *.old
 *.tab
+.gradle/
 logo.png

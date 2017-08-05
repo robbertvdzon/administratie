@@ -1,0 +1,9 @@
+group = 'com.vdzon.administratie'
+description = ''
+dependencies {
+  compile project(':model')
+  compile project(':bankimport.api')
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:'1.0.6'
+    compile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'RELEASE'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+}
