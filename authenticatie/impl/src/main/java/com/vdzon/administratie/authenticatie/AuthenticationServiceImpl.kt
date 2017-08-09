@@ -23,7 +23,6 @@ class AuthenticationServiceImpl : AuthenticationService {
     @Inject
     lateinit internal var daoService: UserDao
 
-
     override fun init() {
         val config = AuthConfigFactory().build()
         config.addAuthorizer("admin", RequireAnyRoleAuthorizer<CommonProfile>("ROLE_ADMIN"))
