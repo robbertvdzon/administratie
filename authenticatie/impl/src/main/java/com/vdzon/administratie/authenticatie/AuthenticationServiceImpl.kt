@@ -31,7 +31,6 @@ class AuthenticationServiceImpl : AuthenticationService {
         val localLogout = LogoutRoute(config, "/#/login")
         localLogout.destroySession = true
 
-
         Spark.post("/callback", callback)
         Spark.before("/facebook", facebookFilter)
 
