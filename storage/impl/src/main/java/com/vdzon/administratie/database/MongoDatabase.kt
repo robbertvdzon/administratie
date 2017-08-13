@@ -28,12 +28,11 @@ class MongoDatabase : AdministratieDatabase{
     @Throws(MongobeeException::class)
     fun init() {
         println("connect to mongo")
-
-        val mongoDbPort = System.getProperties().getProperty("mongoDbPort")
-        val mongoDbHostname = System.getProperties().getProperty("mongoDbHost")
-        val mongoDbUsername = System.getProperties().getProperty("mongoDbUsername")
-        val mongoDbPasswd = System.getProperties().getProperty("mongoDbPasswd")
-        val mongoDbName = System.getProperties().getProperty("mongoDbName")
+        val mongoDbPort = System.getenv("mongoDbPort")
+        val mongoDbHostname = System.getenv("mongoDbHost")
+        val mongoDbUsername = System.getenv("mongoDbUsername")
+        val mongoDbPasswd = System.getenv("mongoDbPasswd")
+        val mongoDbName = System.getenv("mongoDbName")
 
         println("Check parameters:")
         println("mongoDbPort:" + mongoDbPort)
