@@ -46,14 +46,14 @@ class MongoDatabase : AdministratieDatabase{
         val port = mongoDbPort ?: "27017"
         val username = mongoDbUsername ?: ""
         val passwd = mongoDbPasswd ?: ""
-        val dbName = mongoDbName ?: "zzp-administratie"
+        val dbName = mongoDbName ?: "administratie"
 
         val usernamePasswd = if (username.length == 0) "" else "$username:$passwd@"
         val url = "mongodb://$usernamePasswd$host:$port"
         println("Login using: " + url)
 
         val serverAddress: ServerAddress = ServerAddress(host, port.toInt())
-        val credentias = MongoCredential.createCredential(username, "admin", passwd.toCharArray())
+        val credentias = MongoCredential.createCredential(username, dbName, passwd.toCharArray())
 
 
         val credentials: List<MongoCredential> = Arrays.asList(credentias)
