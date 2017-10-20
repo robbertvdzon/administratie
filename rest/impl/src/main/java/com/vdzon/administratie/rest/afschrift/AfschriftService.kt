@@ -78,8 +78,8 @@ constructor(val importFromBank: ImportFromBank, var daoService: UserDao, var ath
                     gebruiker.defaultAdministratie.addBoeking(boeking)
                 } else if (notEmpty(boekingDto.rekeningNummer)) {
                     val boeking = BetaaldeRekeningBoeking(
-                            afschriftDto.nummer,
                             boekingDto.rekeningNummer!!,
+                            afschriftDto.nummer,
                             UUID.randomUUID().toString())
                     gebruiker.defaultAdministratie.addBoeking(boeking)
                 }
