@@ -65,7 +65,7 @@ class GenerateFactuurImpl : GenerateFactuur {
         if (administratieGegevens != null) {
             val tabelCols = TabelCols(30, 190, 200)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Rekeningnummer", ":", administratieGegevens.rekeningNummer)
-            generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Onder vermelding van", ":", administratieGegevens.rekeningNaam)
+            generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Ter attentie van", ":", administratieGegevens.rekeningNaam)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "BTW-nr", ":", administratieGegevens.btwNummer)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Handelsregister", ":", administratieGegevens.handelsRegister)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Adres", ":", administratieGegevens.adres)
