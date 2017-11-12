@@ -119,6 +119,7 @@ module Application.Model {
         uuid:String;
         name:String;
         rekeningNummer:String;
+        rekeningNaam:String;
         btwNummer:String;
         handelsRegister:String;
         adres:String;

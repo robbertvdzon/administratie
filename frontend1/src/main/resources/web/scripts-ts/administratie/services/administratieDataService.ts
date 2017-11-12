@@ -25,6 +25,7 @@ module Application.Services {
             administratieGegevensClone.uuid = administratieGegevens.uuid;
             administratieGegevensClone.name = administratieGegevens.name;
             administratieGegevensClone.rekeningNummer = administratieGegevens.rekeningNummer;
+            administratieGegevensClone.rekeningNaam = administratieGegevens.rekeningNaam;
             administratieGegevensClone.btwNummer = administratieGegevens.btwNummer;
             administratieGegevensClone.handelsRegister = administratieGegevens.handelsRegister;
             administratieGegevensClone.adres = administratieGegevens.adres;

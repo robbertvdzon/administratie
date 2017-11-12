@@ -8,6 +8,7 @@ class AdministratieGegevens (
     val uuid: String = "",
     val name: String = "",
     val rekeningNummer: String="",
+    val rekeningNaam: String="",
     val btwNummer: String="",
     val handelsRegister: String="",
     val adres: String="",
