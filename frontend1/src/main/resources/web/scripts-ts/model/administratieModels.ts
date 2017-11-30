@@ -126,6 +126,7 @@ module Application.Model {
         postcode:String;
         woonplaats:String;
         logoUrl:String;
+        betalingstermijn:Number;
     }
 
     export class RubriceerRegels {

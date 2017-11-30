@@ -17,7 +17,8 @@ class AdministratieGegevensDto(
         var adres: String = "",
         var postcode: String = "",
         var woonplaats: String = "",
-        var logoUrl: String = "") {
+        var logoUrl: String = "",
+        var betalingstermijn:Long = 0) {
 
     fun toAdministratieGegevens(): AdministratieGegevens = AdministratieGegevens(
             uuid = uuid,
@@ -29,7 +30,8 @@ class AdministratieGegevensDto(
             adres = adres,
             postcode = postcode,
             woonplaats = woonplaats,
-            logoUrl = logoUrl)
+            logoUrl = logoUrl,
+            betalingstermijn = betalingstermijn)
 
 
     companion object {
@@ -45,7 +47,8 @@ class AdministratieGegevensDto(
                         adres = administratieGegegens.adres,
                         postcode = administratieGegegens.postcode,
                         woonplaats = administratieGegegens.woonplaats,
-                        logoUrl = administratieGegegens.logoUrl)
+                        logoUrl = administratieGegegens.logoUrl,
+                        betalingstermijn = administratieGegegens.betalingstermijn)
             } else {
                 return AdministratieGegevensDto(
                         uuid = UUID.randomUUID().toString());

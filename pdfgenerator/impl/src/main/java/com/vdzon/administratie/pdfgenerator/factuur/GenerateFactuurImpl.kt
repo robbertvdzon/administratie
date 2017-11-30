@@ -57,11 +57,11 @@ class GenerateFactuurImpl : GenerateFactuur {
         printSummeryTotals(factuur, pdfData, generatePdfHelper)
         printSeparatorLine(generatePdfHelper)
         printBetalingsGegevens(factuur, generatePdfHelper)
-        printBedrijfGegevens(pdfData, administratieGegevens, generatePdfHelper)
+        printBedrijfGegevens(factuur, pdfData, administratieGegevens, generatePdfHelper)
     }
 
     @Throws(IOException::class)
-    private fun printBedrijfGegevens(pdfData: PdfData, administratieGegevens: AdministratieGegevens?, generatePdfHelper: GeneratePdfHelper) {
+    private fun printBedrijfGegevens(factuur: Factuur, pdfData: PdfData, administratieGegevens: AdministratieGegevens?, generatePdfHelper: GeneratePdfHelper) {
         if (administratieGegevens != null) {
             val tabelCols = TabelCols(30, 190, 200)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Rekeningnummer", ":", administratieGegevens.rekeningNummer)
@@ -70,6 +70,9 @@ class GenerateFactuurImpl : GenerateFactuur {
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Handelsregister", ":", administratieGegevens.handelsRegister)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Adres", ":", administratieGegevens.adres)
             generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "", "", administratieGegevens.postcode + " " + administratieGegevens.woonplaats)
+            generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Betalingstermijn", ":", administratieGegevens.betalingstermijn.toString()+" dagen")
+            val vervaldatum = factuur.factuurDate?.plusDays(administratieGegevens.betalingstermijn);
+            generatePdfHelper.writeTabel3(pdfData.fontPlain, tabelCols, "Vervaldatum", ":", vervaldatum.toString())
         }
     }
 

@@ -14,6 +14,8 @@ class AdministratieGegevens (
     val adres: String="",
     val postcode: String="",
     val woonplaats: String="",
-    val logoUrl: String="") : Serializable {
+    val logoUrl: String="",
+    val betalingstermijn: Long=30 ) : Serializable {
+
 
 }
