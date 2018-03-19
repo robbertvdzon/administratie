@@ -11,7 +11,7 @@ import org.pac4j.sparkjava.DefaultHttpActionAdapter
 
 class AuthConfigFactory : ConfigFactory {
 
-    override fun build(): Config {
+    override fun build(vararg  vars:Any): Config {
         val callbackHost: String = System.getenv("callbackHost") ?: "http://localhost:4567"
         val facebookKey: String = System.getenv("facebookKey") ?: "1891669624438759"
         val facebookPasswd: String = System.getenv("facebookPasswd") ?: "3d9d6bc369072d9b666cc767d3ede7c7"
