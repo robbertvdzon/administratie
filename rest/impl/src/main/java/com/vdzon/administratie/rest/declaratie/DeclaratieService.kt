@@ -1,10 +1,10 @@
 package com.vdzon.administratie.rest.declaratie
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.dto.DeclaratieDto
 import com.vdzon.administratie.model.Declaratie
+import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
@@ -15,12 +15,9 @@ class DeclaratieService {
     @Inject
     lateinit internal var daoService: UserDao
 
-    @Inject
-    lateinit internal var athenticationService: AuthenticationService
-
     @Throws(Exception::class)
     fun putDeclaratie(req: Request, res: Response): Any {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         val declaratieJson = req.body()
         var declaratie: Declaratie? = null
         val mapper = jacksonObjectMapper()
@@ -35,7 +32,7 @@ class DeclaratieService {
 
     @Throws(Exception::class)
     fun removeDeclaratie(req: Request, res: Response): Any {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         var declaratieUuid: String? = req.params(":uuid")
         if ("undefined" == declaratieUuid) {
             declaratieUuid = null

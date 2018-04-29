@@ -1,7 +1,6 @@
 package com.vdzon.administratie.rest.rubriceren
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.model.Afschrift
 import com.vdzon.administratie.model.BoekingenCache
@@ -12,6 +11,7 @@ import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRule
 import com.vdzon.administratie.rubriceren.rubriceerRegels.RubriceerRuleCommit
 import com.vdzon.administratie.util.ReflectionUtils.callMethod
 import com.vdzon.administratie.util.ReflectionUtils.getInstance
+import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
@@ -25,9 +25,6 @@ class RubriceerServiceImpl : RubriceerService {
     @Inject
     lateinit internal var daoService: UserDao
 
-    @Inject
-    lateinit internal var athenticationService: AuthenticationService
-
     private val methodsAnnotatedWithRule: Set<Method>
     private val methodsAnnotatedWithCommit: Set<Method>
 
@@ -39,13 +36,13 @@ class RubriceerServiceImpl : RubriceerService {
     }
 
     override fun getRubriceerRegels(req: Request, res: Response): RubriceerRegels {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         val regels = getRubriceerRegels(gebruiker)
         return RubriceerRegels(rubriceerRegelList = regels)
     }
 
     override fun rubriceerRegels(req: Request, res: Response): SingleAnswer {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         val rubriceerRegels = getRubriceerRegels(req)
         processRubriceerRegels(gebruiker, rubriceerRegels)
         daoService!!.updateGebruiker(gebruiker)

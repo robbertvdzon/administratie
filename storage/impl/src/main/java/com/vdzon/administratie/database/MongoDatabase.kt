@@ -66,7 +66,7 @@ class MongoDatabase : AdministratieDatabase{
     private fun createAdminUserWhenNotExists() {
         val gebruikers: MongoCollection<Gebruiker> = this.datastore!!.getCollection<Gebruiker>()
         if (gebruikers.count().equals(0)) {
-            TestDataGenerator.buildTestData("admin", "admin", true, datastore)
+            TestDataGenerator.buildTestData("admin", "admin", "admin", true, datastore)
         }
     }
 

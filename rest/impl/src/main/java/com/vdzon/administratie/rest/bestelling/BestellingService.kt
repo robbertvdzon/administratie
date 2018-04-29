@@ -1,11 +1,11 @@
 package com.vdzon.administratie.rest.bestelling
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.database.UserDao
 import com.vdzon.administratie.dto.BestellingDto
 import com.vdzon.administratie.model.Bestelling
 import com.vdzon.administratie.model.Gebruiker
+import com.vdzon.administratie.util.SessionHelper
 import com.vdzon.administratie.util.SingleAnswer
 import spark.Request
 import spark.Response
@@ -16,13 +16,9 @@ class BestellingService {
     @Inject
     lateinit internal var daoService: UserDao
 
-    @Inject
-    lateinit internal var athenticationService: AuthenticationService
-
-
     @Throws(Exception::class)
     fun putBestelling(req: Request, res: Response): Any {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         val bestellingJson = req.body()
         val mapper = jacksonObjectMapper()
         val bestellingDto = mapper.readValue(bestellingJson, BestellingDto::class.java)
@@ -48,7 +44,7 @@ class BestellingService {
 
     @Throws(Exception::class)
     fun removeBestelling(req: Request, res: Response): Any {
-        val gebruiker = athenticationService.getGebruikerOrThowForbiddenException(req, res)
+        val gebruiker = SessionHelper.getGebruikerOrThowForbiddenException(req, daoService)
         var bestellingUuid: String? = req.params(":uuid")
         if ("undefined" == bestellingUuid) {
             bestellingUuid = null

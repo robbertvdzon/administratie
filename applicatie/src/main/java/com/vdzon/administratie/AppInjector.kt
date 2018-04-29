@@ -3,8 +3,6 @@ package com.vdzon.administratie
 import com.google.inject.AbstractModule
 import com.vdzon.administratie.bankimport.ImportFromBank
 import com.vdzon.administratie.abnamrobankimport.ImportFromAbnAmro
-import com.vdzon.administratie.authenticatie.AuthenticationService
-import com.vdzon.administratie.authenticatie.AuthenticationServiceImpl
 import com.vdzon.administratie.checkandfix.CheckService
 import com.vdzon.administratie.checkandfix.CheckServiceImpl
 import com.vdzon.administratie.checkandfix.FixService
@@ -36,7 +34,6 @@ class AppInjector : AbstractModule() {
         bind(UserDao::class.java).to(UserDaoImpl::class.java).asEagerSingleton()
         bind(RubriceerService::class.java).to(RubriceerServiceImpl::class.java).asEagerSingleton()
         bind(VersionData::class.java).to(VersionDataImpl::class.java).asEagerSingleton()
-        bind(AuthenticationService::class.java).to(AuthenticationServiceImpl::class.java).asEagerSingleton()
     }
 
 }

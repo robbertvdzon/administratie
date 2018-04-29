@@ -1,9 +1,9 @@
 package com.vdzon.administratie.rest
 
 import com.google.inject.Injector
-import com.vdzon.administratie.authenticatie.AuthenticationService
 import com.vdzon.administratie.rest.administratie.AdministratieResource
 import com.vdzon.administratie.rest.afschrift.AfschriftResource
+import com.vdzon.administratie.rest.auth.AuthResource
 import com.vdzon.administratie.rest.bestelling.BestellingResource
 import com.vdzon.administratie.rest.checkandfix.CheckAndFixResource
 import com.vdzon.administratie.rest.contact.ContactResource
@@ -20,22 +20,18 @@ import spark.Filter
 import spark.Request
 import spark.Response
 import spark.Spark
-import java.io.File
 import javax.inject.Inject
 
 
 class RestImpl : Rest {
 
-    @Inject
-    lateinit internal var athenticationService: AuthenticationService
-
     override fun initRest(injector: Injector) {
         initWebResources()
         initExceptionHandlers()
         initJsonResonce()
-        initAuthentication()
 
         injector.getInstance(DataResource::class.java)
+        injector.getInstance(AuthResource::class.java)
         injector.getInstance(VersionResource::class.java)
         injector.getInstance(FactuurResource::class.java)
         injector.getInstance(ContactResource::class.java)
@@ -48,11 +44,6 @@ class RestImpl : Rest {
         injector.getInstance(RubriceerResource::class.java)
         injector.getInstance(OverzichtResource::class.java)
         injector.getInstance(CheckAndFixResource::class.java)
-
-    }
-
-    private fun initAuthentication() {
-        athenticationService.init()
     }
 
     private fun initJsonResonce() = Spark.before(Filter() { request: Request, response: Response -> response.type("application/json") })

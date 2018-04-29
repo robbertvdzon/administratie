@@ -100,8 +100,8 @@
         <md-button ng-click="menuController.openLoginPopup()" ng-hide="menuController.isAuth()" class="md-primary" id="login_button" >
             Login
         </md-button>
-        <md-button href="/facebooklogout"  ng-show="menuController.isAuth()" class="md-primary" id="logoff_button">
-        Logoff
+        <md-button ng-click="menuController.logOff()" ng-show="menuController.isAuth()" class="md-primary" id="logoff_button">
+            Logoff
         </md-button>
 
     </md-toolbar>

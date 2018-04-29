@@ -65,11 +65,7 @@
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>pdfgenerator.api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vdzon.administratie</groupId>
-            <artifactId>authenticatie.impl</artifactId>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>com.vdzon.administratie</groupId>
             <artifactId>authenticatie.api</artifactId>
         </dependency>
