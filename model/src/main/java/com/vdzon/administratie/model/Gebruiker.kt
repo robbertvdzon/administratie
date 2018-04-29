@@ -70,7 +70,7 @@ data class Gebruiker (
     }
 
     fun authenticate(password: String): Boolean {
-        return password == password
+        return this.password == password
     }
 
 }
